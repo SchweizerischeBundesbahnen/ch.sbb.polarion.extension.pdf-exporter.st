@@ -1,0 +1,100 @@
+---
+name: Build & Release
+on:
+  push:
+    branches: ['**']
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened, ready_for_review]
+  workflow_dispatch:
+jobs:
+  verify-with-tox:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write  # Required for SonarCloud to comment on PRs and update status
+    steps:
+      - name: 📄 Checkout code
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
+        with:
+          persist-credentials: false
+          fetch-depth: 0  # Full history required for SonarCloud analysis
+      - name: Set up Python from .tool-versions
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405  # v6.2.0
+        with:
+          python-version-file: .tool-versions
+      - name: 🧱 Install uv
+        uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78  # v7.6.0
+        with:
+          enable-cache: true
+      - name: 🧱 Install dependencies
+        run: uv sync --all-groups --locked
+      - name: 🧪 Run tests
+        run: uv run tox
+      - name: SonarCloud scan for PR
+        uses: sonarsource/sonarqube-scan-action@a31c9398be7ace6bbfaf30c0bd5d415f843d45e9  # v7.0.0
+        if: github.event_name == 'pull_request'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          args: |
+            -Dsonar.pullrequest.key=${{ github.event.pull_request.number }}
+      - name: SonarCloud scan for Push
+        uses: sonarsource/sonarqube-scan-action@a31c9398be7ace6bbfaf30c0bd5d415f843d45e9  # v7.0.0
+        if: github.event_name == 'push'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          args: |
+            -Dsonar.branch.name=${{ github.head_ref }}
+  release-please:
+    if: github.event_name != 'pull_request' && github.ref_name == 'main'
+    uses: SchweizerischeBundesbahnen/github-workflows-polarion/.github/workflows/reusable-release-please.yml@main
+    permissions:
+      contents: write
+      pull-requests: write
+    with:
+      release-type: python
+      include-v-in-tag: false
+  build-and-publish:
+    needs: [verify-with-tox, release-please]
+    runs-on: ubuntu-latest
+    if: ${{ needs.release-please.outputs.release_created == 'true' }}
+    permissions:
+#      id-token: write  # IMPORTANT: this permission is mandatory for trusted publishing for PyPI
+      contents: write  # Required for uploading artifacts to GitHub release
+    steps:
+      - name: 📄 Checkout code
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Set up Python from .tool-versions
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405  # v6.2.0
+        with:
+          python-version-file: .tool-versions
+      - name: 🧱 Install uv
+        uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78  # v7.6.0
+        with:
+          enable-cache: true
+      - name: 🧱 Install dependencies
+        run: uv sync --locked
+      - name: 📦 Build the package
+        run: uv build
+      - name: 📦 Publish artifacts to GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_VERSION: ${{ needs.release-please.outputs.version }}
+        run: gh release upload "${RELEASE_VERSION}" dist/*.{tar.gz,whl}
+#      - name: 📦 Publish artifacts to PyPI/TestPyPI
+#        env:
+#          name: testpypi
+#          url: https://test.pypi.org/p/python-requirements-inspector
+#          name: pypi
+#          url: https://pypi.org/p/python-requirements-inspector
+#        uses: pypa/gh-action-pypi-publish@release/v1.12.3
+#        with:
+#          repository-url: https://test.pypi.org/legacy/  # it must be removed when publishing to PyPI
+#          verbose: true

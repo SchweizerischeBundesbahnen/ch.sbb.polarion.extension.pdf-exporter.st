@@ -1,0 +1,85 @@
+[project]
+name = "open-source-polarion-python-repo-template"
+version = "0.0.0"  # the version is controlled by the pipeline
+description = ""
+authors = [
+    {name = "SBB Polarion Team", email = "polarion-opensource@sbb.ch"},
+]
+license = "Apache-2.0"
+readme = "README.md"
+requires-python = ">=3.14,<3.15"
+
+dependencies = [
+    "httpx==0.28.1",
+]
+
+[project.urls]
+Homepage = "https://github.com/SchweizerischeBundesbahnen/open-source-polarion-python-repo-template"
+Repository = "https://github.com/SchweizerischeBundesbahnen/open-source-polarion-python-repo-template"
+
+[dependency-groups]
+dev = [
+    "pre-commit==4.5.1",
+    "ruff==0.15.6",
+    "mypy==1.19.1",
+]
+
+test = [
+    "tox==4.49.1",
+    "tox-uv==1.33.4",
+    "pytest==9.0.2",
+    "coverage==7.13.4",
+]
+
+[tool.uv]
+# Set to true because this project is a library, not an application
+package = true
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.ruff]
+line-length = 240
+fix = true
+show-fixes = true
+
+[tool.ruff.lint]
+extend-select = [
+    # --- Recommended ---
+    "E", "W", # pycodestyle errors and warnings
+    "F",      # Pyflakes
+    "I",      # isort
+    "C4",     # flake8-comprehensions
+    "C90",    # mccabe
+    "B",      # flake8-bugbear
+    "UP",     # pyupgrade
+    "S",      # flake8-bandit
+    "PL",     # Pylint
+    "PTH",    # flake8-pathlib
+    "TCH",    # type-checking imports
+    "SIM",    # flake8-simplify
+    "T20",    # flake8-print
+    "ERA",    # eradicate
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = [
+    "S101" # No assert rule (bandit)
+]
+
+[tool.ruff.format]
+line-ending = "lf"
+
+[tool.mypy]
+explicit_package_bases = true
+disallow_untyped_defs = true
+exclude = "tests/.*"
+install_types = true
+non_interactive = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]

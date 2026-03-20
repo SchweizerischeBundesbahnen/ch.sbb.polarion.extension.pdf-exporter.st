@@ -1,0 +1,101 @@
+---
+default_install_hook_types: [pre-commit, commit-msg]
+repos:
+  - repo: local
+    hooks:
+      # Run the formatter
+      - id: ruff-format
+        name: ruff formatter
+        entry: uv run ruff format
+        language: system
+        types: [python]
+      # Run the linter (inherits config from pyproject.toml)
+      - id: ruff-check
+        name: ruff linter
+        entry: uv run ruff check
+        language: system
+        types: [python]
+        args: [--fix]
+        exclude: ^tests/
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: check-added-large-files
+        args: [--maxkb=5120]
+      - id: check-case-conflict
+      - id: check-merge-conflict
+      - id: trailing-whitespace
+        exclude_types: [markdown]  # Avoid conflicts with markdown formatting
+      - id: check-json
+      - id: check-toml
+      - id: check-yaml
+      - id: no-commit-to-branch
+      - id: mixed-line-ending
+      - id: end-of-file-fixer
+  - repo: local
+    hooks:
+      - id: sensitive-data-leak-urls
+        name: Sensitive data leak - URLs
+        entry: (?<!polarion-opensource@)(?<!www\.)sbb\.ch
+        language: pygrep
+        types: [text]
+      - id: sensitive-data-leak-ue-numbers
+        name: Sensitive data leak - UE numbers
+        entry: \b([uUeE]{1,2})\d{5,6}\b
+        language: pygrep
+        types: [text]
+      - id: sensitive-data-leak-dev-ticket-numbers
+        name: Sensitive data leak - DEV ticket numbers
+        entry: \bDEV-\d{1,6}\b
+        language: pygrep
+        types: [text]
+  - repo: local
+    hooks:
+      - id: mypy
+        name: mypy
+        entry: uv run mypy
+        language: system
+        types: [python]
+        exclude: (^tests/)
+        args: [--config-file, pyproject.toml]
+        require_serial: true  # Serial processing is required for mypy (better performance and error reporting)
+        pass_filenames: false  # Don't pass individual files, use the specified path
+  - repo: local
+    hooks:
+      # Custom code style linter (PSP001-PSP005)
+      - id: python-sbb-polarion-linter
+        name: python-sbb-polarion code style linter
+        entry: uv run python -m python_sbb_polarion.linter
+        language: system
+        types: [python]
+        pass_filenames: false
+        files: ^python_sbb_polarion/
+  - repo: local
+    hooks:
+      - id: uv-lock
+        name: uv-lock
+        entry: uv lock --check
+        language: system
+        pass_filenames: false
+        files: ^(pyproject\.toml|uv\.lock)$
+  - repo: https://github.com/zricethezav/gitleaks
+    rev: v8.30.1
+    hooks:
+      - id: gitleaks
+  - repo: https://github.com/grigoriev/pre-commit-check-git-user
+    rev: v0.9.3
+    hooks:
+      - id: check-git-config-user-email
+        args: [--templates, ^\S+\.\S+@sbb\.ch$]
+  - repo: https://github.com/commitizen-tools/commitizen
+    rev: v4.13.9
+    hooks:
+      - id: commitizen
+  - repo: https://github.com/woodruffw/zizmor-pre-commit
+    rev: v1.23.1
+    hooks:
+      - id: zizmor
+  - repo: https://github.com/rhysd/actionlint
+    rev: v1.7.11
+    hooks:
+      - id: actionlint
