@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<work-item>
+    <field id="assignee">jRequirement</field>
+    <field id="author">rProject</field>
+    <field id="created">2013-04-25 17:58:02.906 +0200</field>
+    <field id="description" text-type="text/html">This is a sample of non functional requirement.</field>
+    <field id="previousStatus">draft</field>
+    <field id="priority">50.0</field>
+    <field id="reqType" type="enum:reqtype">other</field>
+    <field id="resolution">invalid</field>
+    <field id="resolvedOn">2017-05-03 13:28:48.214 +0200</field>
+    <field id="severity">should_have</field>
+    <field id="status">rejected</field>
+    <field id="type">requirement</field>
+</work-item>

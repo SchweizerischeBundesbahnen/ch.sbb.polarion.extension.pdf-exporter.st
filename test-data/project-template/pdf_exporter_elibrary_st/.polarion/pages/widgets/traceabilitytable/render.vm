@@ -1,0 +1,304 @@
+###############################################################################
+##
+##  render.vm - this velocity script is executed to render the actual widget
+##
+
+###############################################################################
+##
+## Velocity Context - following objects are in the velocity context
+##
+## com.polarion.alm.shared.api.transaction.ReadOnlyTransaction $transaction
+## com.polarion.alm.shared.api.model.rp.widget.RichPageWidgetRenderingContext $widgetContext
+## com.polarion.alm.shared.api.model.rp.parameter.RichPageParameters $parameters
+## org.apache.velocity.tools.generic.MathTool $math
+## com.polarion.alm.shared.api.utils.velocity.ObjectFactory $objectFactory
+## com.polarion.alm.shared.api.model.wi.WorkItem $workItem
+## com.polarion.alm.shared.api.model.rp.parameter.CompositeParameter $column
+##
+
+###############################################################################
+##
+## Texts 1/2
+##
+#set($warnEmptyDataSet = "Provided Data Set does not contain any data.")
+#set($warnInvalidInputType = "Input Type for the Data Set must be a collection of Work Items or a set of objects that contains a collection of Work Items.")
+#set($textCovered = "Source Work Item is covered by a Linked Work Item(s)")
+#set($textNotCovered = "Source Work Item is NOT covered by any Linked Work Item(s)")
+
+###############################################################################
+##
+## Page Parameters
+##
+#set($allowRendering = true)
+
+#set($sortBy = "")
+#set($sortBy = $parameters.dataSet.sortBy.asLuceneSortString())
+
+#set($workItemsCollection = $objectFactory.newSet())
+#set($dataSetParam = $parameters.dataSet)
+#set($dataSet = $dataSetParam.getFor().sort("$sortBy").revision($null))
+#if($dataSet.size() == 0)
+	$widgetContext.renderWarning("$warnEmptyDataSet")
+	#set($allowRendering = false)
+#else
+	#if($dataSetParam.prototype().name().equals("WorkItem"))
+		#set($workItems = $dataSet.items())
+	#elseif($dataSetParam.prototype().name().equals("TestRun") || $dataSetParam.prototype().name().equals("RichPage"))
+		$widgetContext.renderWarning("$warnInvalidInputType")
+		#set($allowRendering = false)
+	#else
+		#foreach($notWorkItem in $dataSet.items())
+			$notWorkItem.items().addAllTo($workItemsCollection)
+		#end
+		#set($workItems = $workItemsCollection)
+	#end
+#end
+
+#set($linkedItemTypes = $parameters.settings.linkedItemTypes)
+#set($linkedRoles = $parameters.settings.linkedRoles)
+#set($defectItemTypes = $parameters.settings.defectItemTypes)
+#set($defectRoles = $parameters.settings.defectRoles)
+
+#set($hideCovered = false)
+#set($hideNotCovered = false)
+#set($displayOnlyProblematic = false)
+#if($parameters.settings.filterByCoverage.singleValue().equals("hideCovered"))
+	#set($hideCovered = true)
+#end
+#if($parameters.settings.filterByCoverage.singleValue().equals("hideNotCovered"))
+	#set($hideNotCovered = true)
+#end
+#if($parameters.settings.filterByCoverage.singleValue().equals("displayOnlyProblematic"))
+	#set($displayOnlyProblematic = true)
+#end
+
+#set($collapseLimit = $parameters.advanced.collapseLimit.value())
+#set($sourceItemColumnTitle = $parameters.advanced.sourceItemColumnTitle.value())
+#set($linkedItemColumnTitle = $parameters.advanced.linkedItemColumnTitle.value())
+#set($defectItemColumnTitle = $parameters.advanced.defectItemColumnTitle.value())
+
+###############################################################################
+##
+## Texts 2/2
+##
+#set($textNoLinkedWIsFound = "No $linkedItemColumnTitle(s) Found.")
+#set($textCoveredWithunresolvedDefects = "Source Work Item is covered by a Linked Work Item(s) but has unresolved $defectItemColumnTitle(s) linked to it")
+
+###############################################################################
+##
+## Styles
+##
+<style>
+	.hover-highlight:hover {
+	    background-color: #FDFAF3 !important;
+	}
+</style>
+
+###############################################################################
+##
+## Macros
+##
+#macro(getLinkedItems $inputItem $linkedSet $linkRoles $WITypes)
+	#foreach($backLinkedWI in $inputItem.fields().linkedWorkItems().back())
+		#set($currentWI = $backLinkedWI.fields().workItem().get())
+		#if(!$currentWI.isUnresolvable() && $linkRoles.values().contains($backLinkedWI.fields().role().get()) && $WITypes.values().contains($currentWI.fields().type().get()))
+			#if(!$linkedSet.contains($currentWI))
+				#set($void = $linkedSet.add($currentWI))
+			#end
+		#end
+	#end
+#end
+
+###############################################################################
+##
+## Render
+##
+#if($allowRendering == true)
+#set($apo = "'")
+#set($projectId = $page.getReference().projectId())
+#set($imgOKSource = "/polarion/icons/default/enums/build_OK.png")
+#set($imgOK = "<img style='float: left;' src='$imgOKSource' alt='$textCovered' title='$textCovered'/>")
+#set($imgUnresolvedDefectsSource = "/polarion/icons/default/enums/build_OK_WITH_FAILURES.png")
+#set($imgUnresolvedDefects = "<img style='float: left;' src='$imgUnresolvedDefectsSource' alt='$textCoveredWithunresolvedDefects' title='$textCoveredWithunresolvedDefects'/>")
+#set($imgKOSource = "/polarion/icons/default/enums/build_FAILED.png")
+#set($imgKO = "<img style='float: left;' src='$imgKOSource' alt='$textNotCovered' title='$textNotCovered'/>")
+
+#set($imgStyle = "vertical-align: text-bottom; border: 0px; margin-right: 2px;")
+#set($imgDetailStyle = "vertical-align: text-bottom; border: 0px; margin-left: 2px;")
+
+#set($imgArrowRightSrc = "/polarion/ria/images/tree/T+.gif")
+#set($imgArrowDownSrc = "/polarion/ria/images/tree/T-.gif")
+
+#set($headerRowStyle = "border-bottom: 1px solid rgb(213, 214, 218); vertical-align: middle;")
+<table class="polarion-rpw-table-main">
+	<tbody>
+		<tr>
+			<td>
+
+				## Sidebar Preparation START
+				#set($builderWithSidebar = $transaction.context().createHtmlFragmentBuilderFor().rpeView())
+				#set($displayedFieldsMap = $objectFactory.newMap())
+				## Sidebar: Displayed fields configuration for each group (main, linked, linkedToLinked) taken from Widget Parameters
+				#set($mainSidebarConfigFields = $parameters.dataSet.mainSidebarConfig.fields())
+				#set($mainSidebarConfig = [])
+				#foreach($field in $mainSidebarConfigFields)
+					#set($void = $mainSidebarConfig.add("$field.id()"))
+				#end
+				#set($linkedSidebarConfigFields = $parameters.settings.linkedSidebarConfig.fields())
+				#set($linkedSidebarConfig = [])
+				#foreach($field in $linkedSidebarConfigFields)
+					#set($void = $linkedSidebarConfig.add("$field.id()"))
+				#end
+				#set($linkedToLinkedSidebarConfigFields = $parameters.settings.linkedToLinkedSidebarConfig.fields())
+				#set($linkedToLinkedSidebarConfig = [])
+				#foreach($field in $linkedToLinkedSidebarConfigFields)
+					#set($void = $linkedToLinkedSidebarConfig.add("$field.id()"))
+				#end
+				## Sidebar: Add each group to the Displayed Fields Map - #set($void = $displayedFieldsMap.put("groupid", $displayedFieldsGroupID))
+				#set($void = $displayedFieldsMap.put("main", $mainSidebarConfig))
+				#set($void = $displayedFieldsMap.put("linked", $linkedSidebarConfig))
+				#set($void = $displayedFieldsMap.put("linkedToLinked", $linkedToLinkedSidebarConfig))
+				## Sidebar: Choose unique ID - #set($myContainerId = "myUniqueId")
+				#set($myContainerId = "traceabilityTableWithSidebar_$widgetContext.generateUniqueElementId()")
+				#set($sidebarConfiguration = $renderingContext.propertiesSidebarConfiguration().containerId("$myContainerId").fieldsConfiguration($displayedFieldsMap).addTo($builderWithSidebar))
+				#set($pathAttr = $sidebarConfiguration.attributes().referencePath())
+				#set($clickClass = $sidebarConfiguration.attributes().clickableCssClass())
+				#set($wiFieldsKey = $sidebarConfiguration.attributes().fieldsConfigurationKey())
+				## Sidebar Configuration END
+
+				## Sidebar: Assign a unique ID to the table that contains lines that should be clickable - <table id="$myContainerId">
+				<table class="polarion-rpw-table-content" id="$myContainerId">
+					<tbody>
+						<tr class="polarion-rpw-table-header-row">
+							<th style="$headerRowStyle width:5%;"></th>
+							<th style="$headerRowStyle width:10%;"><b>$sourceItemColumnTitle</b></th>
+							<th style="$headerRowStyle width:30%;">$linkedItemColumnTitle(s)</th>
+							<th style="$headerRowStyle width:30%;">$defectItemColumnTitle(s)</th>
+							<th style="$headerRowStyle width:25%;"><b>Details</b></th>
+						</tr>
+						#foreach($workItem in $workItems)
+							#set($hasNonResolvedDefect = false)
+							#set($linkedWISet = $objectFactory.newSet())
+							#set($linkedWITableRowsForItem = $objectFactory.newSet())
+							#getLinkedItems($workItem $linkedWISet $linkedRoles $linkedItemTypes)
+							#if($linkedWISet.size() > 0)
+								#set($isWICovered = true)
+							#else
+								#set($isWICovered = false)
+							#end
+							#foreach($linkedWI in $linkedWISet)
+								#set($defects = "")
+								#set($linkedDefectsSet = $objectFactory.newSet())
+								#getLinkedItems($linkedWI $linkedDefectsSet $defectRoles $defectItemTypes)
+								#if($linkedDefectsSet.size() != 0)
+									#set($defects = "<table class='polarion-rpw-table-content'><tbody>")
+									#foreach($defect in $linkedDefectsSet)
+										#set($defectDivId = $widgetContext.generateUniqueElementId())
+										#set($defectImageId = $widgetContext.generateUniqueElementId())
+										#set($onClick = "var style = getElementById('$defectDivId').style; style.display = (style.display.match('block')) ? 'none' : 'block'; var image = getElementById('$defectImageId'); image.src = (image.src.match('T-')) ? '$imgArrowRightSrc' : '$imgArrowDownSrc';")
+										#set($defectDescription = $defect.fields().description().render().htmlFor().forFrame().replaceAll("background-color: #ffffff;", ""))
+										#set($newDefect = "$defect.render().withLinks().withTitle()<span title=${esc.q}Display/Close The Description${esc.q} style=${esc.q}cursor: pointer;${esc.q} onclick=${esc.q}$onClick${esc.q}><a><img style=${esc.q}$imgDetailStyle${esc.q} id=${esc.q}$defectImageId${esc.q} src=${esc.q}$imgArrowRightSrc${esc.q}/></a></span><br/><div id=${esc.q}$defectDivId${esc.q} style=${esc.q}display: none; padding-top: 10px;${esc.q}>#if(!$defect.fields().description().is().empty())$defectDescription#else<span style=${esc.q}text-align: center; display: block;${esc.q}>The description has not been filled-in yet.</span>#end</div>")
+										#set($defects = "$defects<tr class='polarion-rpw-table-content-row $clickClass hover-highlight' $pathAttr='$defect.getReference().toPath()' $wiFieldsKey='linkedToLinked'><td style='border-bottom: none; padding: 4px;'>$newDefect</td></tr>")
+										#if($defect.fields().resolution().is().empty())
+											#set($hasNonResolvedDefect = true)
+										#end
+									#end
+									#set($defects = "$defects</tbody></table>")
+								#end
+								#set($row = "")
+								#if($defects.isEmpty())
+									## Sidebar: Add click class to each row - <tr class="$clickClass">
+									## Sidebar: Add path to the Work Item for each row - <tr $pathAttr="$workItem.getReference().toPath()">
+									## Sidebar: Add wi fields key to each row to load proper group's configuration of displayed fields - <tr $wiFieldsKey="groupid">
+									#set($row = "<tr class='polarion-rpw-table-content-row $clickClass' $pathAttr='$linkedWI.getReference().toPath()' $wiFieldsKey='linked'><td colspan='2' style='width:15%;'></td><td colspan='3' style='width:85%;'>$linkedWI.render().withLinks().withTitle()</td></tr>")
+								#else
+									## Sidebar: Add click class to each row - <tr class="$clickClass">
+									## Sidebar: Add path to the Work Item for each row - <tr $pathAttr="$workItem.getReference().toPath()">
+									## Sidebar: Add wi fields key to each row to load proper group's configuration of displayed fields - <tr $wiFieldsKey="groupid">
+									#set($row = "<tr class='polarion-rpw-table-content-row $clickClass' $pathAttr='$linkedWI.getReference().toPath()' $wiFieldsKey='linked'><td colspan='2' style='width:15%;'></td><td style='width:30%;'>$linkedWI.render().withLinks().withTitle()</td><td colspan='2' style='width:55%;'>$defects</td></tr>")
+								#end
+								#set($void = $linkedWITableRowsForItem.add($row))
+							#end
+
+							#set($isCovered = !$linkedWITableRowsForItem.isEmpty())
+
+							#set($canRender = true)
+							#if($hideCovered && $isCovered)
+								#set($canRender = false)
+							#end
+							#if($hideNotCovered && !$isCovered)
+								#set($canRender = false)
+							#end
+							#if($displayOnlyProblematic && ($isCovered && !$hasNonResolvedDefect))
+								#set($canRender = false)
+							#end
+
+							#if($canRender)
+								## Sidebar: Add click class to each row - <tr class="$clickClass">
+								## Sidebar: Add path to the Work Item for each row - <tr $pathAttr="$workItem.getReference().toPath()">
+								## Sidebar: Add wi fields key to each row to load proper group's configuration of displayed fields - <tr $wiFieldsKey="groupid">
+								<tr class="polarion-rpw-table-content-row $clickClass" $pathAttr="$workItem.getReference().toPath()" $wiFieldsKey="main">
+								## OVERAL COVERAGE RESULT ICON
+									<td style="width: 5%;">
+										#if($isWICovered)
+											#if($hasNonResolvedDefect)
+												$imgUnresolvedDefects
+											#else
+												$imgOK
+											#end
+										#else
+											$imgKO
+										#end
+									</td>
+									## WORK ITEM TITLE
+									<td colspan="3" style="width: 70%;">
+										$workItem.render().withLinks().withTitle()
+									</td>
+									## DETAILS COLUMN
+									<td style="width: 25%;">
+										#if($linkedWITableRowsForItem.size() == 0)
+											<span style="opacity: 0.3;">$textNoLinkedWIsFound</span>
+										#else
+											#set($divID = "$widgetContext.generateUniqueElementId()")
+											#set($imageID = "$widgetContext.generateUniqueElementId()")
+											#if($linkedWITableRowsForItem.size() > $collapseLimit)
+												#set($imgArrowA = $imgArrowRightSrc)
+												#set($imgArrowB = $imgArrowDownSrc)
+											#else
+												#set($imgArrowB = $imgArrowRightSrc)
+												#set($imgArrowA = $imgArrowDownSrc)
+											#end
+											<span style="cursor: pointer;" onclick="var style = getElementById('$divID').style; style.display = (style.display.match('table')) ? 'none' : 'table'; var image = getElementById('$imageID'); image.src = (image.src.match('T-')) ? '$imgArrowRightSrc' : '$imgArrowDownSrc';">
+												<a>
+													<img style="$imgStyle" id="$imageID" src='$imgArrowA' />$linkedWITableRowsForItem.size() $linkedItemColumnTitle#if($linkedWITableRowsForItem.size() > 1)s#end Found
+												</a>
+											</span>
+										#end
+									</td>
+									## COVERAGE
+									<tr>
+										<td colspan="5">
+											<div>
+												<table class="polarion-rpw-table-content" id="$divID" style="width: 100%; display:#if($linkedWITableRowsForItem.size() > $collapseLimit) none;#else table#end">
+													<tbody>
+														#foreach($row in $linkedWITableRowsForItem)
+															$row
+														#end
+													</tbody>
+												</table>
+											</div>
+										</td>
+									</tr>
+								</tr>
+							#end
+						#end
+					</tbody>
+				</table>
+				## Sidebar: Render helper HTML fragment
+				$builderWithSidebar
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+#end

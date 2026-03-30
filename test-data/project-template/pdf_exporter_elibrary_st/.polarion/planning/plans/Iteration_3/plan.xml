@@ -1,0 +1,777 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<plan>
+    <field id="allowedTypes">
+        <list>
+            <item>userstory</item>
+        </list>
+    </field>
+    <field id="author">rProject</field>
+    <field id="calculationType">customFieldBased</field>
+    <field id="capacity">32.0</field>
+    <field id="created">2017-02-20 11:21:04.615 +0100</field>
+    <field id="description" text-type="text/plain">Iterations are short time frames (timeboxes) that typically last from one to four weeks.</field>
+    <field id="dueDate">2017-02-14</field>
+    <field id="estimationField">storyPoints</field>
+    <field id="homePageContent" text-type="text/html"><![CDATA[<div class="polarion-rp-column" style="width: 100%;">
+  <div id="polarion_client4" class="polarion-rp-widget-part" data-widget="com.polarion.planLabel">
+    <span class="polarion-rp-widget-parameters">
+      <sub id="plan">
+        <sub id="paths">
+          <sub>@current</sub>
+        </sub>
+      </sub>
+      <sub id="childTemplate"></sub>
+      <sub id="showAddButton">false</sub>
+    </span>
+  </div>
+  <p id="polarion_client5">
+    <span class="polarion-rp-inline-widget" data-widget="com.polarion.scriptInline">
+      <span class="polarion-rp-widget-parameters" style="display: none;">
+        <sub id="script">
+          <sub id="script" style="white-space:pre;">## Warning Panel
+#if(!$plan.fields().status().optionId().equals(&quot;open&quot;) &amp;&amp; $plan.fields().capacity().is().empty())
+	$widgetContext.renderWarning(&quot;Plan is $plan.fields().status().render() but Capacity is not filled in yet.&quot;)
+#end</sub>
+        </sub>
+      </span>
+    </span>
+  </p>
+</div>
+<div class="polarion-rp-row-separator" page_min_width="1000"></div>
+<div class="polarion-rp-column" style="width: 100%;">
+  <div id="polarion_client9" class="polarion-rp-widget-part" data-widget="com.polarion.planProgress">
+    <span class="polarion-rp-widget-parameters" style="display: none;"></span>
+  </div>
+  <p id="polarion_client7"></p>
+</div>
+<div class="polarion-rp-row-separator"></div>
+<div class="polarion-rp-column" style="width: 35%;">
+  <div id="polarion_client15" class="polarion-rp-widget-part" data-widget="com.polarion.scriptedChart">
+    <span class="polarion-rp-widget-parameters" style="display: none;">
+      <sub id="script">
+        <sub id="script" style="white-space:pre;">## Iteration 3
+{
+	chart: {},
+	title: {
+		text: &#39;&#39;, useHTML: true
+	},
+	exporting: {
+		enabled: false
+	},
+	credits: {
+		href: null,
+		text: null
+	},
+	xAxis: {
+		maxPadding: 0,
+		type: &#39;datetime&#39;
+	},
+	yAxis: {
+		title: {
+			text: &#39;Story Points&#39;,
+			useHTML:true
+		},
+		gridLineWidth: 0
+	},
+	tooltip: {
+		backgroundColor: &#39;rgba(247, 247, 247, 0.9)&#39;,
+		formatter: function() {
+			return &#39;&lt;i&gt;This is sample content only&lt;/i&gt;&lt;br/&gt;&#39; +
+			&#39;&lt;small&gt;&#39; + Highcharts.dateFormat(&#39;%A, %b %e, %Y&#39;, this.x) + &#39;&lt;/small&gt;&lt;br/&gt;&#39; +
+			this.series.name + &#39;: &lt;b&gt;&#39; + this.y + &#39;&lt;/b&gt;&#39;;
+		}
+	},
+	series: [
+		{
+			name: &#39;Ideal Work To Do&#39;,
+			type: &#39;area&#39;,
+			color: &#39;#1D9BD6&#39;,
+			marker: {
+				enabled: false
+			},
+			dashStyle: &#39;ShortDot&#39;,
+			fillColor: &#39;rgba(225, 240, 255, 0.5)&#39;,
+			data: [
+				{x: Date.UTC(2017, 1, 1), y: 37.0},
+				{x: Date.UTC(2017, 1, 5), y: 25.0},
+				{x: Date.UTC(2017, 1, 10), y: 12.0},
+				{x: Date.UTC(2017, 1, 14), y: 0.0}
+			]
+		},
+		{
+			name: &#39;Work To Do&#39;,
+			type: &#39;area&#39;,
+			color: &#39;#53CCB1&#39;,
+			marker: {
+				radius: 5,
+				lineWidth: 2,
+				lineColor: &#39;white&#39;,
+				fillColor: &#39;#53CCB1&#39;
+			},
+			fillOpacity: 0.3,
+			data: [
+				{x: Date.UTC(2017, 1, 1), y: 37.0},
+				{x: Date.UTC(2017, 1, 6), y: 34.0},
+				{x: Date.UTC(2017, 1, 12), y: 31.0}
+			]
+		},
+		{
+			name: &#39;Relative Progress&#39;,
+			type: &#39;column&#39;,
+			color: &#39;#AED77E&#39;,
+			marker: {
+				enabled: false
+			},
+			data: [
+				{x: Date.UTC(2017, 1, 1), y: 0.0},
+				{x: Date.UTC(2017, 1, 2), y: 0.0},
+				{x: Date.UTC(2017, 1, 3), y: 1.0},
+				{x: Date.UTC(2017, 1, 4), y: 2.0},
+				{x: Date.UTC(2017, 1, 5), y: 2.0},
+				{x: Date.UTC(2017, 1, 6), y: 1.0},
+				{x: Date.UTC(2017, 1, 7), y: 3.0},
+				{x: Date.UTC(2017, 1, 8), y: 3.0},
+				{x: Date.UTC(2017, 1, 9), y: 4.0},
+				{x: Date.UTC(2017, 1, 10), y: 5.0},
+				{x: Date.UTC(2017, 1, 11), y: 0.0},
+				{x: Date.UTC(2017, 1, 12), y: 4.0}
+			]
+		}
+	]
+};</sub>
+      </sub>
+      <sub id="advanced">
+        <sub id="height"></sub><sub id="width"></sub>
+      </sub>
+    </span>
+  </div>
+  <p id="polarion_client10"></p>
+</div>
+<div class="polarion-rp-column" style="width: 35%;">
+  <div id="polarion_client17" class="polarion-rp-widget-part" data-widget="com.polarion.scriptedChart">
+    <span class="polarion-rp-widget-parameters" style="display: none;">
+      <sub id="script">
+        <sub id="script" style="white-space:pre;">## Iteration 3
+{
+	&quot;chart&quot;: {},
+	&quot;plotOptions&quot;: {
+		&quot;area&quot;: {
+			stacking: &#39;normal&#39;,
+			marker: {
+				enabled: false
+			}
+		},
+		&quot;series&quot;: {
+			&quot;animation&quot;: false
+		}
+	},
+	&quot;yAxis&quot;: {
+		&quot;gridLineWidth&quot;: 0,
+		&quot;title&quot;: {
+			&quot;text&quot;: &quot;# of Items&quot;
+		}
+	},
+	&quot;exporting&quot;: {
+		&quot;enabled&quot;: false
+	},
+	&quot;xAxis&quot;: {
+		&quot;minTickInterval&quot;: 86400000,
+		&quot;type&quot;: &quot;datetime&quot;
+	},
+	&quot;credits&quot;: {
+		&quot;href&quot;: null,
+		&quot;enabled&quot;: false
+	},
+	&quot;tooltip&quot;: {
+		&quot;backgroundColor&quot;: &quot;rgba(247, 247, 247, 0.9)&quot;,
+		formatter: function() {
+			return &#39;&lt;i&gt;This is sample content only&lt;/i&gt;&lt;br/&gt;&#39; +
+			&#39;&lt;small&gt;&#39; + Highcharts.dateFormat(&#39;%A, %b %e, %Y&#39;, this.x) + &#39;&lt;/small&gt;&lt;br/&gt;&#39; +
+			this.series.name + &#39;: &lt;b&gt;&#39; + this.y + &#39;&lt;/b&gt;&#39;;
+		}
+	},
+	&quot;title&quot;: {
+		&quot;useHTML&quot;: true,
+		&quot;text&quot;: &quot;&quot;
+	},
+	&quot;series&quot;: [
+		{
+			&quot;color&quot;: &quot;#7F8C8D&quot;,
+			&quot;name&quot;: &quot;Rejected&quot;,
+			&quot;type&quot;: &quot;area&quot;,
+			&quot;data&quot;: [
+				{&quot;x&quot;: Date.UTC(2017, 1, 1), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2017, 1, 2), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2017, 1, 3), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2017, 1, 4), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2017, 1, 5), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2017, 1, 6), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2017, 1, 7), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2017, 1, 8), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2017, 1, 9), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2017, 1, 10), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2017, 1, 11), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2017, 1, 12), &quot;y&quot;: 0}
+			]
+		},
+		{
+			&quot;color&quot;: &quot;#BDC3C7&quot;,
+			&quot;name&quot;: &quot;Verified&quot;,
+			&quot;type&quot;: &quot;area&quot;,
+			&quot;data&quot;: [
+				{&quot;x&quot;: Date.UTC(2017, 1, 1), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2017, 1, 2), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2017, 1, 3), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2017, 1, 4), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2017, 1, 5), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2017, 1, 6), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2017, 1, 7), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2017, 1, 8), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2017, 1, 9), &quot;y&quot;: 1},
+				{&quot;x&quot;: Date.UTC(2017, 1, 10), &quot;y&quot;: 1},
+				{&quot;x&quot;: Date.UTC(2017, 1, 11), &quot;y&quot;: 1},
+				{&quot;x&quot;: Date.UTC(2017, 1, 12), &quot;y&quot;: 1}
+			]
+		},
+		{
+			&quot;color&quot;: &quot;#2ECC71&quot;,
+			&quot;name&quot;: &quot;Implemented&quot;,
+			&quot;type&quot;: &quot;area&quot;,
+			&quot;data&quot;: [
+				{&quot;x&quot;: Date.UTC(2017, 1, 1), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2017, 1, 2), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2017, 1, 3), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2017, 1, 4), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2017, 1, 5), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2017, 1, 6), &quot;y&quot;: 1},
+				{&quot;x&quot;: Date.UTC(2017, 1, 7), &quot;y&quot;: 1},
+				{&quot;x&quot;: Date.UTC(2017, 1, 8), &quot;y&quot;: 1},
+				{&quot;x&quot;: Date.UTC(2017, 1, 9), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2017, 1, 10), &quot;y&quot;: 1},
+				{&quot;x&quot;: Date.UTC(2017, 1, 11), &quot;y&quot;: 1},
+				{&quot;x&quot;: Date.UTC(2017, 1, 12), &quot;y&quot;: 1}
+			]
+		},
+		{
+			&quot;color&quot;: &quot;#F1C40F&quot;,
+			&quot;name&quot;: &quot;Change Implementation&quot;,
+			&quot;type&quot;: &quot;area&quot;,
+			&quot;data&quot;: [
+				{&quot;x&quot;: Date.UTC(2017, 1, 1), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2017, 1, 2), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2017, 1, 3), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2017, 1, 4), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2017, 1, 5), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2017, 1, 6), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2017, 1, 7), &quot;y&quot;: 1},
+				{&quot;x&quot;: Date.UTC(2017, 1, 8), &quot;y&quot;: 2},
+				{&quot;x&quot;: Date.UTC(2017, 1, 9), &quot;y&quot;: 1},
+				{&quot;x&quot;: Date.UTC(2017, 1, 10), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2017, 1, 11), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2017, 1, 12), &quot;y&quot;: 1}
+			]
+		},
+		{
+			&quot;color&quot;: &quot;#3498DB&quot;,
+			&quot;name&quot;: &quot;In Progress&quot;,
+			&quot;type&quot;: &quot;area&quot;,
+			&quot;data&quot;: [
+				{&quot;x&quot;: Date.UTC(2017, 1, 1), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2017, 1, 2), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2017, 1, 3), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2017, 1, 4), &quot;y&quot;: 2},
+				{&quot;x&quot;: Date.UTC(2017, 1, 5), &quot;y&quot;: 3},
+				{&quot;x&quot;: Date.UTC(2017, 1, 6), &quot;y&quot;: 3},
+				{&quot;x&quot;: Date.UTC(2017, 1, 7), &quot;y&quot;: 4},
+				{&quot;x&quot;: Date.UTC(2017, 1, 8), &quot;y&quot;: 4},
+				{&quot;x&quot;: Date.UTC(2017, 1, 9), &quot;y&quot;: 5},
+				{&quot;x&quot;: Date.UTC(2017, 1, 10), &quot;y&quot;: 5},
+				{&quot;x&quot;: Date.UTC(2017, 1, 11), &quot;y&quot;: 5},
+				{&quot;x&quot;: Date.UTC(2017, 1, 12), &quot;y&quot;: 4}
+			]
+		},
+		{
+			&quot;color&quot;: &quot;#8E44AD&quot;,
+			&quot;name&quot;: &quot;Accepted&quot;,
+			&quot;type&quot;: &quot;area&quot;,
+			&quot;data&quot;: [
+				{&quot;x&quot;: Date.UTC(2017, 1, 1), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2017, 1, 2), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2017, 1, 3), &quot;y&quot;: 2},
+				{&quot;x&quot;: Date.UTC(2017, 1, 4), &quot;y&quot;: 2},
+				{&quot;x&quot;: Date.UTC(2017, 1, 5), &quot;y&quot;: 3},
+				{&quot;x&quot;: Date.UTC(2017, 1, 6), &quot;y&quot;: 3},
+				{&quot;x&quot;: Date.UTC(2017, 1, 7), &quot;y&quot;: 3},
+				{&quot;x&quot;: Date.UTC(2017, 1, 8), &quot;y&quot;: 3},
+				{&quot;x&quot;: Date.UTC(2017, 1, 9), &quot;y&quot;: 3},
+				{&quot;x&quot;: Date.UTC(2017, 1, 10), &quot;y&quot;: 3},
+				{&quot;x&quot;: Date.UTC(2017, 1, 11), &quot;y&quot;: 3},
+				{&quot;x&quot;: Date.UTC(2017, 1, 12), &quot;y&quot;: 3}
+			]
+		},
+		{
+			&quot;color&quot;: &quot;#9B59B6&quot;,
+			&quot;name&quot;: &quot;Reviewed&quot;,
+			&quot;type&quot;: &quot;area&quot;,
+			&quot;data&quot;: [
+				{&quot;x&quot;: Date.UTC(2017, 1, 1), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2017, 1, 2), &quot;y&quot;: 3},
+				{&quot;x&quot;: Date.UTC(2017, 1, 3), &quot;y&quot;: 4},
+				{&quot;x&quot;: Date.UTC(2017, 1, 4), &quot;y&quot;: 3},
+				{&quot;x&quot;: Date.UTC(2017, 1, 5), &quot;y&quot;: 2},
+				{&quot;x&quot;: Date.UTC(2017, 1, 6), &quot;y&quot;: 2},
+				{&quot;x&quot;: Date.UTC(2017, 1, 7), &quot;y&quot;: 1},
+				{&quot;x&quot;: Date.UTC(2017, 1, 8), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2017, 1, 9), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2017, 1, 10), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2017, 1, 11), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2017, 1, 12), &quot;y&quot;: 0}
+			]
+		},
+		{
+			&quot;color&quot;: &quot;#2980B9&quot;,
+			&quot;name&quot;: &quot;Draft&quot;,
+			&quot;type&quot;: &quot;area&quot;,
+			&quot;data&quot;: [
+				{&quot;x&quot;: Date.UTC(2017, 1, 1), &quot;y&quot;: 10},
+				{&quot;x&quot;: Date.UTC(2017, 1, 2), &quot;y&quot;: 7},
+				{&quot;x&quot;: Date.UTC(2017, 1, 3), &quot;y&quot;: 4},
+				{&quot;x&quot;: Date.UTC(2017, 1, 4), &quot;y&quot;: 3},
+				{&quot;x&quot;: Date.UTC(2017, 1, 5), &quot;y&quot;: 2},
+				{&quot;x&quot;: Date.UTC(2017, 1, 6), &quot;y&quot;: 1},
+				{&quot;x&quot;: Date.UTC(2017, 1, 7), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2017, 1, 8), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2017, 1, 9), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2017, 1, 10), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2017, 1, 11), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2017, 1, 12), &quot;y&quot;: 0}
+			]
+		}
+	]
+};</sub>
+      </sub>
+      <sub id="advanced">
+        <sub id="height"></sub><sub id="width"></sub>
+      </sub>
+    </span>
+  </div>
+  <p id="polarion_client11"></p>
+</div>
+<div class="polarion-rp-column" style="width: 30%;">
+  <div id="polarion_client20" class="polarion-rp-widget-part" data-widget="com.polarion.scriptBlock">
+    <span class="polarion-rp-widget-parameters" style="display: none;">
+      <sub id="script">
+        <sub id="script" style="white-space:pre;">###############################################################################
+##
+## Status Bar and Icons
+## com.polarion.alm.shared.api.model.rp.widget.RichPageWidgetRenderingContext $widgetContext
+## com.polarion.alm.shared.api.model.plan.Plan $plan
+##
+&lt;style&gt;
+	.plan-bluepanel {
+		background-color: #EDF6FF;
+		padding: 20px;
+		border-radius: 5px;
+		margin: auto;
+		text-align: left;
+	}
+	.plan-links {
+		padding-bottom: 5px;
+		padding-left: 30px;
+	}
+	.plan-links &gt; a {
+		padding-left: 5px;
+		padding-right: 5px;
+		font-weight: bold;
+	}
+	.plan-links img {
+		padding-right: 3px;
+	}
+&lt;/style&gt;
+
+#set($projectId = $plan.getReference().projectId())
+#set($planId = $plan.getReference().id())
+&lt;div class=&quot;plan-bluepanel&quot;&gt;
+	&lt;div style=&quot;text-align: center;&quot;&gt;
+		&lt;span class=&quot;polarion-rp-inline-widget&quot; data-widget=&quot;com.polarion.planStatusButton&quot; style=&quot;display: block; width: 316px; margin: 0 auto;&quot;&gt;
+			&lt;span class=&quot;polarion-rp-widget-parameters&quot;&gt;&lt;/span&gt;
+		&lt;/span&gt;
+	&lt;/div&gt;
+    &lt;br/&gt;
+    &lt;div class=&quot;plan-links&quot;&gt;
+		&lt;a target=&quot;_top&quot; href=&quot;$pageContext.browseAllPlannedLink&quot;&gt;&lt;img src=&quot;/polarion/icons/default/actions/openInTable.png&quot;/&gt;Open in Table&lt;/a&gt;
+		&lt;br/&gt;&lt;br/&gt;
+		#if($plan.fields().capacity().is().empty())
+			#set($link = $transaction.context().createPortalLink().project(&quot;$projectId&quot;).plan(&quot;$planId&quot;).toEncodedRelativeUrl())
+			&lt;a href=&#39;$link&amp;tab=properties&#39; target=&#39;_top&#39;&gt;&lt;img src=&quot;/polarion/icons/default/enums/testrun_type_loadtest.png&quot;/&gt;Set Capacity&lt;/a&gt;&lt;/a&gt;
+			&lt;br/&gt;&lt;br/&gt;
+		#end
+		#if(!$plan.fields().dueDate().get() || !$plan.fields().startDate().get())
+			#set($link = $transaction.context().createPortalLink().project(&quot;$projectId&quot;).plan(&quot;$planId&quot;).tabProperties().toEncodedRelativeUrl())
+			&lt;a target=&quot;_top&quot; href=&quot;$pageContext.addWorkItemsLink&quot;&gt;&lt;img src=&quot;/polarion/icons/default/enums/testrun_status_inprogress.png&quot;/&gt;Set Start and Due Dates&lt;/a&gt;
+			&lt;br/&gt;&lt;br/&gt;
+		#end
+		&lt;a target=&quot;_top&quot; href=&quot;$pageContext.addWorkItemsLink&quot;&gt;&lt;img src=&quot;/polarion/icons/default/actions/create_link.gif&quot;/&gt;Add Work Items to the Plan&lt;/a&gt;
+		&lt;br/&gt;&lt;br/&gt;
+		#set($link = $plan.utils().getPrioritizationLink().toEncodedRelativeUrl())
+		&lt;a target=&quot;_top&quot; href=&quot;$link&quot;&gt;&lt;img src=&quot;/polarion/icons/default/actions/prioritizePlan.png&quot;/&gt;Prioritize Planned Items&lt;/a&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</sub>
+      </sub>
+    </span>
+  </div>
+  <p id="polarion_client13"></p>
+</div>
+<div class="polarion-rp-row-separator"></div>
+<div class="polarion-rp-column" style="width: 70%;">
+  <h2 id="polarion_client18">Plan</h2>
+  <div id="polarion_client22" class="polarion-rp-widget-part" data-widget="com.polarion.plan.workItemsBoard">
+    <span class="polarion-rp-widget-parameters">
+      <sub id="plan">
+        <sub id="paths">
+          <sub>@current</sub>
+        </sub>
+      </sub>
+      <sub id="columns">
+        <sub id="elements">
+          <sub>
+            <sub id="columnTitle">Open</sub>
+            <sub id="columnStatuses">
+              <sub id="values">
+                <sub>open</sub>
+              </sub>
+            </sub>
+          </sub>
+          <sub>
+            <sub id="columnTitle">In Progress</sub>
+            <sub id="columnStatuses">
+              <sub id="values">
+                <sub>inprogress</sub>
+                <sub>reopened</sub>
+              </sub>
+            </sub>
+          </sub>
+          <sub>
+            <sub id="columnTitle">Done</sub>
+            <sub id="columnStatuses">
+              <sub id="values">
+                <sub>done</sub>
+              </sub>
+            </sub>
+          </sub>
+          <sub>
+            <sub id="columnTitle">Resolved</sub>
+            <sub id="columnStatuses">
+              <sub id="values">
+                <sub>verified</sub>
+                <sub>rejected</sub>
+              </sub>
+            </sub>
+          </sub>
+        </sub>
+      </sub>
+      <sub id="roles"></sub>
+      <sub id="compactStatuses">
+        <sub id="values">
+          <sub>verified</sub>
+          <sub>rejected</sub>
+        </sub>
+      </sub>
+      <sub id="swimlanePropertiesSidebarFields">
+        <sub>
+          <sub id="id">assignee</sub>
+        </sub>
+        <sub>
+          <sub id="id">severity</sub>
+        </sub>
+        <sub>
+          <sub id="id">status</sub>
+        </sub>
+        <sub>
+          <sub id="id">resolution</sub>
+        </sub>
+        <sub>
+          <sub id="id">initialEstimate</sub>
+        </sub>
+        <sub>
+          <sub id="id">plannedIn</sub>
+        </sub>
+        <sub>
+          <sub id="id">linkedWorkItems</sub>
+        </sub>
+      </sub>
+      <sub id="cardPropertiesSidebarFields">
+        <sub>
+          <sub id="id">assignee</sub>
+        </sub>
+        <sub>
+          <sub id="id">severity</sub>
+        </sub>
+        <sub>
+          <sub id="id">status</sub>
+        </sub>
+        <sub>
+          <sub id="id">resolution</sub>
+        </sub>
+        <sub>
+          <sub id="id">initialEstimate</sub>
+        </sub>
+        <sub>
+          <sub id="id">remainingEstimate</sub>
+        </sub>
+        <sub>
+          <sub id="id">timeSpent</sub>
+        </sub>
+        <sub>
+          <sub id="id">linkedWorkItems</sub>
+        </sub>
+        <sub>
+          <sub id="id">workRecords</sub>
+        </sub>
+      </sub>
+    </span>
+  </div>
+  <h2 id="polarion_client2">Issues Backlog</h2>
+  <div id="polarion_client6" class="polarion-rp-widget-part" data-widget="com.polarion.table">
+    <span class="polarion-rp-widget-parameters" style="display: none;">
+      <sub id="dataSet">
+        <sub id="prototype">WorkItem</sub>
+        <sub id="subtype">issue</sub>
+        <sub id="queryType">luceneVelocity</sub>
+        <sub id="luceneQuery" style="white-space:pre;">## Issues Backlog
+#if($plan.fields().parent().getIfCan())
+	#set($parentId = $plan.fields().parent().get().getReference().id())
+	targetVersion.KEY:$parentId
+#else
+	NOT *:*
+#end</sub>
+        <sub id="children">
+          <sub id="columns">
+            <sub>
+              <sub id="id">id</sub>
+            </sub>
+            <sub>
+              <sub id="id">title</sub>
+            </sub>
+            <sub>
+              <sub id="id">status</sub>
+            </sub>
+            <sub>
+              <sub id="id">severity</sub>
+            </sub>
+            <sub>
+              <sub id="id">priority</sub>
+            </sub>
+          </sub>
+          <sub id="sortBy">
+            <sub>
+              <sub id="id">severity</sub>
+              <sub id="descending">true</sub>
+            </sub>
+            <sub>
+              <sub id="id">priority</sub>
+              <sub id="descending">true</sub>
+            </sub>
+          </sub>
+        </sub>
+      </sub>
+      <sub id="propertiesSidebarFields">
+        <sub>
+          <sub id="id">assignee</sub>
+        </sub>
+        <sub>
+          <sub id="id">severity</sub>
+        </sub>
+        <sub>
+          <sub id="id">priority</sub>
+        </sub>
+        <sub>
+          <sub id="id">status</sub>
+        </sub>
+        <sub>
+          <sub id="id">resolution</sub>
+        </sub>
+        <sub>
+          <sub id="id">targetVersion</sub>
+        </sub>
+        <sub>
+          <sub id="id">linkedWorkItems</sub>
+        </sub>
+      </sub>
+      <sub id="advanced">
+        <sub id="top">50</sub>
+      </sub>
+    </span>
+  </div>
+  <p id="polarion_client14"></p><p id="polarion_client25"></p><p id="polarion_client26"></p>
+</div>
+<div class="polarion-rp-column" style="width: 30%;" data-print="0" data-pdf="0">
+  <h2 id="polarion_client65">Activities</h2>
+  <div id="polarion_client67" class="polarion-rp-widget-part" data-widget="com.polarion.planActivityStream">
+    <span class="polarion-rp-widget-parameters">
+      <sub id="plan">
+        <sub id="paths">
+          <sub>@current</sub>
+        </sub>
+      </sub>
+      <sub id="advanced">
+        <sub id="top"></sub>
+      </sub>
+    </span>
+  </div>
+</div>
+<div class="polarion-rp-row-separator"></div>
+<pre id="polarion-rp-page-script">###############################################################################
+##
+## Page Script
+##
+## com.polarion.alm.shared.api.transaction.ReadOnlyTransaction $transaction
+## com.polarion.alm.shared.api.model.rp.widget.RichPageWidgetRenderingContext $widgetContext
+## com.polarion.alm.shared.api.model.plan.Plan $plan
+##
+
+#set($projectId = $plan.getReference().projectId())
+$!pageContext.put(&quot;projectId&quot;, $projectId)
+
+#set($planId = $projectId)
+#set($planPath = $plan.getReference().toPath())
+#set($planQuery = &quot;PLAN:($planPath)&quot;)
+$!pageContext.put(&quot;planId&quot;, $planId)
+$!pageContext.put(&quot;planPath&quot;, $planPath)
+$!pageContext.put(&quot;planQuery&quot;, $planQuery)
+
+
+#set($prioritizationField = &quot;$plan.fields().prioritizationField().get()&quot;)
+$!pageContext.put(&quot;prioritizationField&quot;, &quot;$prioritizationField&quot;)
+
+#######################################
+## $pageContext.browseAllPlannedLink
+## $pageContext.scope
+##
+#set($query = $planQuery)
+#if(!$plan.fields().projectSpan().isEmpty())
+	#set($spanQuery = &quot;AND project.id:(&quot;)
+	#foreach($project in $plan.fields().projectSpan())
+		#set($spanQuery = &quot;$spanQuery$project.getReference().id() &quot;)
+	#end
+	#set($spanQuery = &quot;$spanQuery.trim())&quot;)
+	#set($query = &quot;$planQuery $spanQuery&quot;)
+	#set($browseAllPlannedLink = $transaction.context().createPortalLink().repository().workItems().query(&quot;$query&quot;).sorting(&quot;~$prioritizationField&quot;).toEncodedRelativeUrl())
+	#set($scope = &quot;/&quot;)
+#else
+	#set($scope = $plan.getReference().projectId())
+	#set($browseAllPlannedLink = $transaction.context().createPortalLink().project(&quot;$projectId&quot;).workItems().query(&quot;$query&quot;).sorting(&quot;~$prioritizationField&quot;).toEncodedRelativeUrl())
+#end
+
+$!pageContext.put(&quot;browseAllPlannedLink&quot;, &quot;$browseAllPlannedLink&quot;)
+$!pageContext.put(&quot;scope&quot;, &quot;$scope&quot;)
+
+###############################################################################
+##
+## Cumulative Flow Chart
+## $pageContext.startDate
+## $pageContext.dueDate
+##
+
+$!scriptedPageParameters.put(&quot;startDate&quot;, $factory.date(&quot;Start Date&quot;).absolute($plan.fields().startDate().get()).build())
+$!scriptedPageParameters.put(&quot;dueDate&quot;, $factory.date(&quot;Due Date&quot;).absolute($plan.fields().dueDate().get()).build())
+
+#######################################
+## $pageContext.addWorkItemsLink
+##
+#set($query = &quot;&quot;)
+
+#if(!$plan.fields().allowedTypes().isEmpty())
+	#set($allowedTypesQuery = &quot;type:(&quot;)
+	#foreach($type in $plan.fields().allowedTypes())
+		#set($allowedTypesQuery = &quot;$allowedTypesQuery$type.id() &quot;)
+	#end
+	#set($allowedTypesQuery = &quot;$allowedTypesQuery.trim())&quot;)
+	#if($query.equals(&quot;&quot;))
+		#set($query = &quot;$allowedTypesQuery&quot;)
+	#else
+		#set($query = &quot;$query AND $allowedTypesQuery&quot;)
+	#end
+#end
+
+#if($plan.fields().parent().get())
+	#set($parentQuery = &quot;PLAN:($plan.fields().parent().get().getReference().toPath())&quot;)
+	#if($query.equals(&quot;&quot;))
+		#set($query = &quot;$parentQuery&quot;)
+	#else
+		#set($query = &quot;$query AND $parentQuery&quot;)
+	#end
+#end
+
+#if(!$plan.fields().projectSpan().isEmpty())
+	#set($spanQuery = &quot;project.id:(&quot;)
+	#foreach($project in $plan.fields().projectSpan())
+		#set($spanQuery = &quot;$spanQuery$project.getReference().id() &quot;)
+	#end
+	#set($spanQuery = &quot;$spanQuery.trim())&quot;)
+	#if($query.equals(&quot;&quot;))
+		#set($query = &quot;$spanQuery&quot;)
+	#else
+		#set($query = &quot;$query AND $spanQuery&quot;)
+	#end
+	#set($addWorkItemsLink = $transaction.context().createPortalLink().repository().workItems().query(&quot;$query&quot;).sorting(&quot;~$prioritizationField&quot;).sidebarPlanning(&quot;$planPath&quot;).toEncodedRelativeUrl())
+#else
+	#set($addWorkItemsLink = $transaction.context().createPortalLink().project(&quot;$projectId&quot;).workItems().query(&quot;$query&quot;).sorting(&quot;~$prioritizationField&quot;).sidebarPlanning(&quot;$planPath&quot;).toEncodedRelativeUrl())
+#end
+
+$!pageContext.put(&quot;addWorkItemsLink&quot;, &quot;$addWorkItemsLink&quot;)
+
+#######################################
+## Display debug info
+##
+projectId: $projectId &lt;br/&gt;
+planId: $planId &lt;br/&gt;
+planPath: $planPath &lt;br/&gt;
+planQuery: $planQuery &lt;br/&gt;
+prioritizationField: $pageContext.prioritizationField &lt;br/&gt;
+browseAllPlannedLink: $pageContext.browseAllPlannedLink &lt;br/&gt;
+scope: $pageContext.scope &lt;br/&gt;
+addWorkItemsLink: $pageContext.addWorkItemsLink &lt;br/&gt;
+</pre>]]></field>
+    <field id="name">Iteration 3</field>
+    <field id="parent">Version_1_0</field>
+    <field id="prioritizationField">priority</field>
+    <field id="records">
+        <list>
+            <struct>
+                <item id="item">EL-139</item>
+            </struct>
+            <struct>
+                <item id="item">EL-138</item>
+            </struct>
+            <struct>
+                <item id="item">EL-137</item>
+            </struct>
+            <struct>
+                <item id="item">EL-136</item>
+            </struct>
+            <struct>
+                <item id="item">EL-132</item>
+            </struct>
+            <struct>
+                <item id="item">EL-131</item>
+            </struct>
+            <struct>
+                <item id="item">EL-122</item>
+            </struct>
+            <struct>
+                <item id="item">EL-109</item>
+            </struct>
+            <struct>
+                <item id="item">EL-204</item>
+            </struct>
+            <struct>
+                <item id="item">EL-205</item>
+            </struct>
+        </list>
+    </field>
+    <field id="startDate">2017-02-01</field>
+    <field id="startedOn">2017-02-01 11:45:00.000 +0100</field>
+    <field id="status">inprogress</field>
+    <field id="template">iteration</field>
+</plan>

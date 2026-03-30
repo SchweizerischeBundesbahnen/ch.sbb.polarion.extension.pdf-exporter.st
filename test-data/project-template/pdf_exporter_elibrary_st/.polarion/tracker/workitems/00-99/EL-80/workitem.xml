@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<work-item>
+    <field id="assignee">pGUI</field>
+    <field id="author">rProject</field>
+    <field id="categories">
+        <list>
+            <item>ui</item>
+        </list>
+    </field>
+    <field id="created">2011-05-26 08:35:39.130 +0200</field>
+    <field id="initialEstimate">3h</field>
+    <field id="linkedWorkItems">
+        <list>
+            <struct>
+                <item id="role">implements</item>
+                <item id="workItem">EL-131</item>
+            </struct>
+        </list>
+    </field>
+    <field id="occurredInVersion" type="string">1.0</field>
+    <field id="previousStatus">open</field>
+    <field id="priority">50.0</field>
+    <field id="remainingEstimate"/>
+    <field id="resolution">done</field>
+    <field id="resolvedOn">2014-02-13 18:39:27.673 +0100</field>
+    <field id="severity">normal</field>
+    <field id="status">done</field>
+    <field id="targetVersion" type="enum:@plan[template.id:release]">Version_1_0</field>
+    <field id="timeSpent">3h</field>
+    <field id="title">Comment threads on the Book properties dialog are sorted wrong</field>
+    <field id="type">issue</field>
+</work-item>

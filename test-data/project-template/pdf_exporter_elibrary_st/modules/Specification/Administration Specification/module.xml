@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<module>
+    <field id="allowedWITypes">
+        <list>
+            <item>requirement</item>
+        </list>
+    </field>
+    <field id="author">admin</field>
+    <field id="created">2010-11-20 08:47:14.910 +0100</field>
+    <field id="headingSidebarFields">severity,status</field>
+    <field id="homePageContent" text-type="text/html"><![CDATA[<h1 id="polarion_wiki macro name=module-workitem;params=id=EL-103"></h1><h2 id="polarion_wiki macro name=module-workitem;params=id=EL-161"></h2><h3 id="polarion_wiki macro name=module-workitem;params=id=EL-187"></h3><p id="polarion_merged_2">This document describes couple of requirements related to the configuration (administration) portal.</p><h3 id="polarion_wiki macro name=module-workitem;params=id=EL-186"></h3><p id="polarion_2">Specifications:</p><ul id="polarion_3">
+  <li><span class="polarion-rte-link" data-type="document" id="fake" data-item-name="Product Specification" data-space-name="Specification" data-option-id="default"></span></li>
+</ul><p id="polarion_4">Testing:</p><ul id="polarion_5">
+  <li><span class="polarion-rte-link" data-type="document" id="fake" data-item-name="Test Specification" data-space-name="Testing" data-option-id="default"></span></li>
+</ul><h2 id="polarion_wiki macro name=module-workitem;params=id=EL-162"></h2><h3 id="polarion_wiki macro name=module-workitem;params=id=EL-163"></h3><div id="polarion_wiki macro name=module-workitem;params=id=EL-164"></div><div id="polarion_wiki macro name=module-workitem;params=id=EL-165"></div><div id="polarion_wiki macro name=module-workitem;params=id=EL-166"></div><p id="polarion_6"></p>]]></field>
+    <field id="renderingLayouts">
+        <list>
+            <struct>
+                <item id="label">Requirement</item>
+                <item id="layouter">section</item>
+                <item id="properties">
+                    <list>
+                        <struct>
+                            <item id="key">fieldsAtStart</item>
+                            <item id="value">id</item>
+                        </struct>
+                        <struct>
+                            <item id="key">fieldsAtEnd</item>
+                            <item id="value">severity,status,targetVersion</item>
+                        </struct>
+                        <struct>
+                            <item id="key">fieldsAtEndAsTable</item>
+                            <item id="value">false</item>
+                        </struct>
+                        <struct>
+                            <item id="key">hidden</item>
+                        </struct>
+                        <struct>
+                            <item id="key">noPageBreak</item>
+                        </struct>
+                        <struct>
+                            <item id="key">sidebarWorkItemFields</item>
+                            <item id="value">severity,status</item>
+                        </struct>
+                        <struct>
+                            <item id="key">typeNotInProject</item>
+                        </struct>
+                    </list>
+                </item>
+                <item id="type">requirement</item>
+            </struct>
+            <struct>
+                <item id="label">User Story</item>
+                <item id="layouter">section</item>
+                <item id="properties">
+                    <list>
+                        <struct>
+                            <item id="key">fieldsAtStart</item>
+                            <item id="value">id</item>
+                        </struct>
+                        <struct>
+                            <item id="key">fieldsAtEnd</item>
+                            <item id="value">severity,status,plannedIn</item>
+                        </struct>
+                        <struct>
+                            <item id="key">fieldsAtEndAsTable</item>
+                            <item id="value">false</item>
+                        </struct>
+                        <struct>
+                            <item id="key">hidden</item>
+                        </struct>
+                        <struct>
+                            <item id="key">noPageBreak</item>
+                        </struct>
+                        <struct>
+                            <item id="key">sidebarWorkItemFields</item>
+                            <item id="value">severity,status</item>
+                        </struct>
+                        <struct>
+                            <item id="key">typeNotInProject</item>
+                        </struct>
+                    </list>
+                </item>
+                <item id="type">userstory</item>
+            </struct>
+            <struct>
+                <item id="label">Epic</item>
+                <item id="layouter">section</item>
+                <item id="properties">
+                    <list>
+                        <struct>
+                            <item id="key">fieldsAtStart</item>
+                            <item id="value">id</item>
+                        </struct>
+                        <struct>
+                            <item id="key">fieldsAtEnd</item>
+                            <item id="value">severity,status,targetVersion</item>
+                        </struct>
+                        <struct>
+                            <item id="key">fieldsAtEndAsTable</item>
+                            <item id="value">false</item>
+                        </struct>
+                        <struct>
+                            <item id="key">hidden</item>
+                        </struct>
+                        <struct>
+                            <item id="key">noPageBreak</item>
+                        </struct>
+                        <struct>
+                            <item id="key">sidebarWorkItemFields</item>
+                            <item id="value">severity,status</item>
+                        </struct>
+                        <struct>
+                            <item id="key">typeNotInProject</item>
+                        </struct>
+                    </list>
+                </item>
+                <item id="type">epic</item>
+            </struct>
+        </list>
+    </field>
+    <field id="status">active</field>
+    <field id="structureLinkRole">parent</field>
+    <field id="type">productSpecification</field>
+    <field id="usesOutlineNumbering">true</field>
+    <field id="version" type="string">1.0</field>
+</module>

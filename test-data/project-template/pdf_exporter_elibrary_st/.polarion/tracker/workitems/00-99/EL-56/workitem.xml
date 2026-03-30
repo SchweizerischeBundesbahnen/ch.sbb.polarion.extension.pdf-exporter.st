@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<work-item>
+    <field id="assignee">sDeveloper</field>
+    <field id="author">rProject</field>
+    <field id="categories">
+        <list>
+            <item>api</item>
+            <item>database</item>
+            <item>objects</item>
+        </list>
+    </field>
+    <field id="created">2009-05-24 13:15:49.503 +0200</field>
+    <field id="initialEstimate">3d</field>
+    <field id="linkedWorkItems">
+        <list>
+            <struct>
+                <item id="role">implements</item>
+                <item id="workItem">EL-109</item>
+            </struct>
+        </list>
+    </field>
+    <field id="previousStatus">done</field>
+    <field id="priority">50.0</field>
+    <field id="resolution">done</field>
+    <field id="resolvedOn">2009-05-24 13:16:09.711 +0200</field>
+    <field id="severity">normal</field>
+    <field id="status">verified</field>
+    <field id="timeSpent">6d</field>
+    <field id="title">Define Basic API and DB model to support a table view</field>
+    <field id="type">task</field>
+</work-item>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<work-item>
+    <field id="author">rProject</field>
+    <field id="build" type="enum:@build">20170211-2357</field>
+    <field id="codeFreezeDate" type="date">2017-02-27</field>
+    <field id="created">2017-05-03 15:12:35.882 +0200</field>
+    <field id="featureFreezeDate" type="date">2017-01-31</field>
+    <field id="previousStatus">inprogress</field>
+    <field id="priority">50.0</field>
+    <field id="publicLaunch" type="date">2017-03-31</field>
+    <field id="releasePM" type="enum:@user[project_assignable]">rProject</field>
+    <field id="releasePlan" type="enum:@plan[template.id:release]">Version_1_0</field>
+    <field id="releaseQA" type="enum:@user[project_assignable]">mTest</field>
+    <field id="releaseTestEvidence" multi="true" type="enum:@testRun">
+        <list>
+            <item>build_quick-20170130-235620</item>
+            <item>1_0 UAT</item>
+            <item>1_0 FMST</item>
+            <item>build_all-20170211-235702</item>
+        </list>
+    </field>
+    <field id="severity">should_have</field>
+    <field id="status">featurefreezed</field>
+    <field id="title">Release 1.0</field>
+    <field id="type">release</field>
+</work-item>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<work-item>
+    <field id="author">rProject</field>
+    <field id="categories">
+        <list>
+            <item>objects</item>
+        </list>
+    </field>
+    <field id="created">2010-11-20 13:08:12.630 +0100</field>
+    <field id="description" text-type="text/html">When viewing book details, users also want to read a book&amp;#39;s summary (abstract).</field>
+    <field id="previousStatus">approved</field>
+    <field id="priority">40.0</field>
+    <field id="resolvedOn">2010-12-02 10:36:52.692 +0100</field>
+    <field id="severity">should_have</field>
+    <field id="status">accepted</field>
+    <field id="storyPoints" type="integer">5</field>
+    <field id="title">Summary of the book</field>
+    <field id="type">userstory</field>
+</work-item>

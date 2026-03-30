@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<work-item>
+    <field id="approvals">
+        <list>
+            <struct>
+                <item id="status">approved</item>
+                <item id="user">rProject</item>
+            </struct>
+        </list>
+    </field>
+    <field id="assignee">jRequirement</field>
+    <field id="author">rProject</field>
+    <field id="categories">
+        <list>
+            <item>api</item>
+            <item>gui</item>
+        </list>
+    </field>
+    <field id="created">2011-01-05 18:24:42.243 +0100</field>
+    <field id="description" text-type="text/html">User must be informed on the login screen when Caps Lock is turned on</field>
+    <field id="previousStatus">reviewed</field>
+    <field id="priority">50.0</field>
+    <field id="reqType" type="enum:reqtype">software</field>
+    <field id="resolvedOn">2017-05-03 13:28:08.436 +0200</field>
+    <field id="severity">should_have</field>
+    <field id="status">approved</field>
+    <field id="targetVersion" type="enum:@plan[template.id:release]">Version_1_0</field>
+    <field id="type">requirement</field>
+</work-item>

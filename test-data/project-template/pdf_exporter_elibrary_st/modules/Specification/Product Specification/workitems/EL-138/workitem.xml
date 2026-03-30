@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<work-item>
+    <field id="assignee">pGUI</field>
+    <field id="author">rProject</field>
+    <field id="categories">
+        <list>
+            <item>gui</item>
+            <item>searching</item>
+        </list>
+    </field>
+    <field id="created">2010-12-02 10:44:57.048 +0100</field>
+    <field id="description" text-type="text/html">Users must be able to easily access their list of &amp;quot;Favorite&amp;quot; books.</field>
+    <field id="initialEstimate">2d</field>
+    <field id="previousStatus">accepted</field>
+    <field id="priority">61.0</field>
+    <field id="remainingEstimate">2h</field>
+    <field id="resolution">done</field>
+    <field id="resolvedOn">2010-12-02 10:45:24.458 +0100</field>
+    <field id="severity">nice_to_have</field>
+    <field id="status">implemented</field>
+    <field id="storyPoints" type="integer">3</field>
+    <field id="timeSpent">1d 2h</field>
+    <field id="title">Access the list of favorite books</field>
+    <field id="type">userstory</field>
+</work-item>

@@ -1,0 +1,40 @@
+###############################################################################
+##
+##  parameters.vm - this velocity script defines the widget parameters
+##
+
+###############################################################################
+##
+##  Velocity Context - following objects are in the velocity context
+##
+## java.util.Map $parameters
+## com.polarion.alm.shared.api.model.rp.parameter.ParameterFactory $factory
+## com.polarion.alm.shared.api.transaction.ReadOnlyTransaction $transaction
+## com.polarion.alm.shared.api.model.rp.widget.RichPageWidgetRenderingContext $widgetContext
+## com.polarion.alm.shared.api.utils.velocity.ObjectFactory $objectFactory
+##
+
+###############################################################################
+##
+##  Add parameters
+
+#set($currentProjectId = $page.getReference().projectId())
+$parameters.put("scope", $factory.scope("Scope").scope().forProject("$currentProjectId").dependencySource(true).build())
+$parameters.put("type", $factory.enumeration("(Optional) Load Work Item Type Specific Enumerations", "workitem-type").allowNoValue(true).dependencyTarget(true).dependencySource(true).build())
+$parameters.put("enum", $factory.customEnum("Enumeration").dependencyTarget(true).dependencySource(true).build())
+$parameters.put("enumOpt", $factory.enumeration("Enumeration Option", "none").allowNoValue(true).dependencyTarget(true).build())
+
+#set($renderModelObject = $factory.bool("Render Model Object Instead of Enumeration Option").value(false).build())
+#set($withBaselineIcon = $factory.bool("With Baseline Icon").value(true).build())
+#set($withColor = $factory.bool("With Color (Works with Enumerations Only)").value(false).build())
+#set($withIcon = $factory.bool("With Icon").value(true).build())
+#set($withLinks = $factory.bool("With Links (Works with Model Objects Only)").value(true).build())
+#set($withRevisionIcon = $factory.bool("With Revision Icon").value(true).build())
+#set($withText = $factory.bool("With Text").value(true).build())
+$parameters.put("render", $factory.composite("Render Options").add("renderModelObject", $renderModelObject).add("withBaselineIcon", $withBaselineIcon).add("withColor", $withColor).add("withIcon", $withIcon).add("withLinks", $withLinks).add("withRevisionIcon", $withRevisionIcon).add("withText", $withText).collapsedByDefault(true).build())
+
+#set($textBefore = $factory.string("HTML/Text Before").build())
+#set($textAfter = $factory.string("HTML/Text After").build())
+#set($customLinkTarget = $factory.customEnum("Custom Link Target").addEnumItem("_blank", "_blank").addEnumItem("_self", "_self").addEnumItem("_parent", "_parent").addEnumItem("_top", "_top").singleValue("_top").build())
+#set($customLink = $factory.script("Custom Link - Click within the field and start typing").build())
+$parameters.put("customization", $factory.composite("Customization Options").add("textBefore", $textBefore).add("textAfter", $textAfter).add("customLinkTarget", $customLinkTarget).add("customLink", $customLink).collapsedByDefault(true).build())

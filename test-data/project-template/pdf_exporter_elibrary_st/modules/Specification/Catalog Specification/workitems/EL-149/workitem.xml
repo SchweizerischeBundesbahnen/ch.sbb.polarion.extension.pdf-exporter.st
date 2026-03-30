@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<work-item>
+    <field id="approvals">
+        <list>
+            <struct>
+                <item id="status">approved</item>
+                <item id="user">rProject</item>
+            </struct>
+        </list>
+    </field>
+    <field id="assignee">jRequirement</field>
+    <field id="author">rProject</field>
+    <field id="categories">
+        <list>
+            <item>security</item>
+            <item>usermanagement</item>
+        </list>
+    </field>
+    <field id="created">2011-01-05 18:21:08.465 +0100</field>
+    <field id="description" text-type="text/html">Password must differ from the user name</field>
+    <field id="previousStatus">approved</field>
+    <field id="priority">50.0</field>
+    <field id="reqType" type="enum:reqtype">security</field>
+    <field id="resolvedOn">2017-05-03 12:35:48.520 +0200</field>
+    <field id="severity">should_have</field>
+    <field id="status">verified</field>
+    <field id="targetVersion" type="enum:@plan[template.id:release]">Version_0_9b</field>
+    <field id="type">requirement</field>
+</work-item>

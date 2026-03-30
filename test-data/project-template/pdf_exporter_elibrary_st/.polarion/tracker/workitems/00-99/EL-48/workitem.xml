@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<work-item>
+    <field id="assignee">sDeveloper</field>
+    <field id="author">rProject</field>
+    <field id="categories">
+        <list>
+            <item>searching</item>
+            <item>ui</item>
+        </list>
+    </field>
+    <field id="created">2009-05-24 11:28:45.754 +0200</field>
+    <field id="initialEstimate">2h</field>
+    <field id="linkedWorkItems">
+        <list>
+            <struct>
+                <item id="role">implements</item>
+                <item id="workItem">EL-122</item>
+            </struct>
+        </list>
+    </field>
+    <field id="priority">50.0</field>
+    <field id="remainingEstimate">2h</field>
+    <field id="severity">normal</field>
+    <field id="status">open</field>
+    <field id="title">Implement advanced full text search area on search dialog</field>
+    <field id="type">task</field>
+</work-item>

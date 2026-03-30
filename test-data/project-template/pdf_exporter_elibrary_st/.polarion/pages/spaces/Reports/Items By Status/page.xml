@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<rich-page>
+    <field id="author">admin</field>
+    <field id="created">2015-02-18 12:05:55.181 +0100</field>
+    <field id="homePageContent" text-type="text/html"><![CDATA[<div class="polarion-rp-column" style="width: 100%;">
+  <h1 id="polarion_client16">Items by Status</h1>
+  <p id="polarion_1">
+    <span class="polarion-rp-inline-widget" data-widget="com.polarion.scriptInline">
+      <span class="polarion-rp-widget-parameters" style="display: none;">
+        <sub id="script">
+          <sub id="script" style="white-space:pre;">## Reported By
+#set($infoText = &quot;Reported by $transaction.users().getBy().id($securityService.getCurrentUser()).render()&lt;br/&gt;$date.long&quot;)
+#if($widgetContext.target().isEditor())
+	&lt;div style=&quot;color: grey; text-align: left;&quot;&gt;$infoText&lt;div&gt;
+#elseif($widgetContext.target().isPdf())
+	&lt;div style=&quot;color: grey; text-align: right; position: absolute; top: 22px; right: 10px;&quot;&gt;$infoText&lt;div&gt;
+#elseif($widgetContext.target().isPrint())
+	&lt;div style=&quot;text-align: right; position: absolute; top: 35px; right: 10px;&quot;&gt;$infoText&lt;div&gt;
+#end</sub>
+        </sub>
+      </span>
+    </span>
+  </p>
+</div>
+<div class="polarion-rp-row-separator" page_min_width="1000"></div>
+<div class="polarion-rp-column" style="width: 70%;">
+  <div id="polarion_client24" class="polarion-rp-widget-part" data-widget="com.polarion.scriptBlock">
+    <span class="polarion-rp-widget-parameters">
+      <sub id="script">
+        <sub id="script" style="white-space:pre;">#info(&quot;Displays Work Items filtered by Work Item type and grouped by Status.&quot;)</sub>
+      </sub>
+    </span>
+  </div>
+  <p id="polarion_client25"></p>
+  <div id="polarion_client17" class="polarion-rp-widget-part" data-widget="com.polarion.scriptBlock">
+    <span class="polarion-rp-widget-parameters">
+      <sub id="script">
+        <sub id="script" style="white-space:pre;">## Status Chart
+&lt;div class=&quot;polarion-rp-widget-part&quot; data-widget=&quot;com.polarion.separateByPieChart&quot;&gt;
+	&lt;span class=&quot;polarion-rp-widget-parameters&quot;&gt;
+		&lt;sub id=&quot;title&quot;&gt;&lt;/sub&gt;
+		&lt;sub id=&quot;dataSet&quot;&gt;
+			&lt;sub id=&quot;prototype&quot;&gt;WorkItem&lt;/sub&gt;
+			&lt;sub id=&quot;subtype&quot;&gt;$pageParameters.wiType.values().get(0).id()&lt;/sub&gt;
+			&lt;sub id=&quot;queryType&quot;&gt;lucene&lt;/sub&gt;
+			&lt;sub id=&quot;luceneQuery&quot;&gt;#if(!$pageParameters.query.value().equals(&quot;&quot;))$pageParameters.query.value()#end&lt;/sub&gt;
+			&lt;sub id=&quot;children&quot;&gt;
+				&lt;sub id=&quot;separateBy&quot;&gt;
+					&lt;sub id=&quot;field&quot;&gt;status&lt;/sub&gt;
+				&lt;/sub&gt;
+			&lt;/sub&gt;
+		&lt;/sub&gt;
+		&lt;sub id=&quot;showDataLabels&quot;&gt;true&lt;/sub&gt;
+		&lt;sub id=&quot;showZeroValues&quot;&gt;false&lt;/sub&gt;
+		&lt;sub id=&quot;advanced&quot;&gt;
+			&lt;sub id=&quot;height&quot;&gt;300px&lt;/sub&gt;
+			&lt;sub id=&quot;width&quot;&gt;&lt;/sub&gt;
+		&lt;/sub&gt;
+	&lt;/span&gt;
+&lt;/div&gt;</sub>
+      </sub>
+    </span>
+  </div>
+  <p id="polarion_client11"></p>
+  <div id="polarion_client12" class="polarion-rp-widget-part" data-widget="com.polarion.scriptBlock">
+    <span class="polarion-rp-widget-parameters">
+      <sub id="script">
+        <sub id="script" style="white-space:pre;">## Status Icons
+&lt;div class=&quot;polarion-rp-widget-part&quot; data-widget=&quot;itemsbystatustiles&quot;&gt;
+	&lt;span class=&quot;polarion-rp-widget-parameters&quot;&gt;
+		&lt;sub id=&quot;dataSet&quot;&gt;
+			&lt;sub id=&quot;prototype&quot;&gt;WorkItem&lt;/sub&gt;
+			&lt;sub id=&quot;subtype&quot;&gt;$pageParameters.wiType.values().get(0).id()&lt;/sub&gt;
+			&lt;sub id=&quot;queryType&quot;&gt;lucene&lt;/sub&gt;
+			&lt;sub id=&quot;luceneQuery&quot;&gt;#if(!$pageParameters.query.value().equals(&quot;&quot;))$pageParameters.query.value()#end&lt;/sub&gt;
+		&lt;/sub&gt;
+		&lt;sub id=&quot;displayChart&quot;&gt;false&lt;/sub&gt;
+		&lt;sub id=&quot;align&quot;&gt;
+			&lt;sub id=&quot;values&quot;&gt;
+				&lt;sub&gt;center&lt;/sub&gt;
+			&lt;/sub&gt;
+		&lt;/sub&gt;
+	&lt;/span&gt;
+&lt;/div&gt;</sub>
+      </sub>
+    </span>
+  </div>
+  <div id="polarion_client1" class="polarion-rp-widget-part" data-widget="com.polarion.scriptBlock">
+    <span class="polarion-rp-widget-parameters">
+      <sub id="script">
+        <sub id="script" style="white-space:pre;">## Items by Status
+#set($projectId = $page.getReference().projectId())
+#foreach($status in $transaction.enumerations().getEnumeration(&quot;status&quot;).forType(&quot;$pageParameters.wiType.values().get(0).id()&quot;).forProject(&quot;$projectId&quot;).options())
+	#set($statusId = $status.getReference().id())
+	#set($query = &quot;type:$pageParameters.wiType.values().get(0).id() AND status:$statusId&quot;)
+	#if(!$pageParameters.query.value().equals(&quot;&quot;))
+		#set($query = &quot;$query AND $pageParameters.query.value()&quot;)
+	#end
+	#set($count = $transaction.workItems().count().query(&quot;project.id:($projectId) AND $query&quot;).result())
+	#if($count &gt; 0)
+		&lt;h3&gt;$status.fields().name().render()&lt;/h3&gt;
+		&lt;div id=&quot;wiSidebar$statusId&quot; class=&quot;polarion-rp-widget-part&quot; data-widget=&quot;com.polarion.table&quot;&gt;
+			&lt;span class=&quot;polarion-rp-widget-parameters&quot;&gt;
+				&lt;sub id=&quot;dataSet&quot;&gt;
+					&lt;sub id=&quot;prototype&quot;&gt;WorkItem&lt;/sub&gt;
+					&lt;sub id=&quot;queryType&quot;&gt;luceneVelocity&lt;/sub&gt;
+					&lt;sub id=&quot;luceneQuery&quot;&gt;$query&lt;/sub&gt;
+					&lt;sub id=&quot;children&quot;&gt;
+						&lt;sub id=&quot;columns&quot;&gt;
+							#foreach($column in $pageParameters.columns.value().split(&quot;,&quot;))
+								&lt;sub&gt;
+									&lt;sub id=&quot;id&quot;&gt;$column&lt;/sub&gt;
+								&lt;/sub&gt;
+							#end
+						&lt;/sub&gt;
+						&lt;sub id=&quot;sortBy&quot;&gt;
+							&lt;sub&gt;
+								&lt;sub id=&quot;id&quot;&gt;$pageParameters.sortby.value()&lt;/sub&gt;
+								&lt;sub id=&quot;descending&quot;&gt;true&lt;/sub&gt;
+							&lt;/sub&gt;
+						&lt;/sub&gt;
+					&lt;/sub&gt;
+				&lt;/sub&gt;
+				&lt;sub id=&quot;propertiesSidebarFields&quot;&gt;
+					&lt;sub&gt;
+						&lt;sub id=&quot;id&quot;&gt;assignee&lt;/sub&gt;
+					&lt;/sub&gt;
+					&lt;sub&gt;
+						&lt;sub id=&quot;id&quot;&gt;severity&lt;/sub&gt;
+					&lt;/sub&gt;
+					&lt;sub&gt;
+						&lt;sub id=&quot;id&quot;&gt;status&lt;/sub&gt;
+					&lt;/sub&gt;
+					&lt;sub&gt;
+						&lt;sub id=&quot;id&quot;&gt;resolution&lt;/sub&gt;
+					&lt;/sub&gt;
+					&lt;sub&gt;
+						&lt;sub id=&quot;id&quot;&gt;linkedWorkItems&lt;/sub&gt;
+					&lt;/sub&gt;
+				&lt;/sub&gt;
+				&lt;sub id=&quot;advanced&quot;&gt;
+					&lt;sub id=&quot;top&quot;&gt;$pageParameters.top.value()&lt;/sub&gt;
+				&lt;/sub&gt;
+			&lt;/span&gt;
+		&lt;/div&gt;
+	#end
+#end</sub>
+      </sub>
+    </span>
+  </div>
+  <p id="polarion_client3"></p><p id="polarion_client5"></p><p id="polarion_client10"></p>
+</div>
+<div class="polarion-rp-column" style="width: 30%;">
+  <div id="polarion_client14" class="polarion-rp-widget-part" data-widget="com.polarion.pageParametersForm">
+    <span class="polarion-rp-widget-parameters">
+      <sub id="title"></sub>
+      <sub id="content">
+        <sub>query</sub>
+        <sub>wiType</sub>
+        <sub>columns</sub>
+        <sub>sortby</sub>
+        <sub>top</sub>
+      </sub>
+      <sub id="width">300</sub>
+    </span>
+  </div>
+  <p id="polarion_2">
+    <span class="polarion-rp-inline-widget" data-widget="com.polarion.scriptInline">
+      <span class="polarion-rp-widget-parameters" style="display: none;">
+        <sub id="script">
+          <sub id="script" style="white-space:pre;">&lt;style&gt;
+.polarion-rpe-ParameterEditor-outerPanel {
+	border-radius: 5px 5px 5px 5px;
+}
+.polarion-rp-parameters-form-editor-panel {
+	border: none;
+}
+&lt;/style&gt;</sub>
+        </sub>
+      </span>
+    </span>
+  </p>
+</div>
+<div class="polarion-rp-row-separator"></div>
+<span id="polarion-rp-parameters">
+  <sub id="columns" data-label="Columns" data-type="String">id,title</sub>
+  <sub id="query" data-label="Query" data-type="String"></sub>
+  <sub id="top" data-label="Show top #" data-type="Integer">10</sub>
+  <sub id="sortby" data-label="Sort By" data-type="String">id</sub>
+  <sub id="wiType" data-label="Type" data-type="Enumeration">
+    <sub id="values">
+      <sub>issue</sub>
+    </sub>
+    <sub id="enumId">workitem-type</sub>
+    <sub id="allowNoValue">false</sub>
+    <sub id="allowMultipleValues">false</sub>
+    <sub id="loadForAllTypes">true</sub>
+  </sub>
+</span>]]></field>
+    <field id="title">Items by Status</field>
+</rich-page>

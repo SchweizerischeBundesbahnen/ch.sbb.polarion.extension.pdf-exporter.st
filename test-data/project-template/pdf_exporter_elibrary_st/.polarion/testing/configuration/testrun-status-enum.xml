@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<enumeration>
+    <option color="#2980B9" iconURL="/polarion/icons/default/enums/testrun_status_open2.png" id="open" name="Open" sortOrder="1"/>
+    <option color="#3498DB" iconURL="/polarion/icons/default/enums/testrun_status_inprogress.png" id="inProgress" name="In Progress" sortOrder="2"/>
+    <option color="#F1C40F" iconURL="/polarion/icons/default/enums/testrun_status_reopened.png" id="reopened" name="Reopened" sortOrder="3"/>
+    <option color="#2ECC71" iconURL="/polarion/icons/default/enums/testrun_status_review_passed.png" id="passed" name="Passed" sortOrder="4"/>
+    <option color="#E74C3C" iconURL="/polarion/icons/default/enums/testrun_status_review_failed.png" id="failed" name="Failed" sortOrder="5"/>
+    <option color="#27AE60" iconURL="/polarion/icons/default/enums/testrun_status_passed.png" id="verifiedPassed" name="Verified Passed" sortOrder="6"/>
+    <option color="#D35400" iconURL="/polarion/icons/default/enums/testrun_status_failed.png" id="verifiedFailed" name="Verified Failed" sortOrder="7"/>
+    <option color="#7F8C8D" iconURL="/polarion/icons/default/enums/status_verifed-rejected.gif" id="rejected" name="Rejected" sortOrder="8"/>
+</enumeration>

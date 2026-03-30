@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<work-item>
+    <field id="assignee">pGUI</field>
+    <field id="author">rProject</field>
+    <field id="categories">
+        <list>
+            <item>gui</item>
+        </list>
+    </field>
+    <field id="created">2011-09-19 12:48:11.707 +0200</field>
+    <field id="description" text-type="text/plain">NPE on adding favorite book</field>
+    <field id="linkedWorkItems">
+        <list>
+            <struct>
+                <item id="role">triggered_by</item>
+                <item id="workItem">EL-43</item>
+            </struct>
+        </list>
+    </field>
+    <field id="occurredInVersion" type="string">0.9b</field>
+    <field id="priority">50.0</field>
+    <field id="severity">major</field>
+    <field id="status">open</field>
+    <field id="title">Failed: Favorite Books</field>
+    <field id="type">issue</field>
+</work-item>

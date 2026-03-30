@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<work-item>
+    <field id="author">rProject</field>
+    <field id="created">2012-02-01 18:22:44.001 +0100</field>
+    <field id="previousStatus">draft</field>
+    <field id="priority">50.0</field>
+    <field id="severity">basic</field>
+    <field id="status">active</field>
+    <field id="testSteps" type="struct:TestSteps">
+        <struct>
+            <item id="keys">
+                <list>
+                    <item>step</item>
+                    <item>description</item>
+                    <item>expectedResult</item>
+                </list>
+            </item>
+            <item id="steps">
+                <list>
+                    <struct>
+                        <item id="values">
+                            <list>
+                                <item text-type="text/html">Check Step 1 from the Checklist</item>
+                                <item text-type="text/html"/>
+                                <item text-type="text/html">Passed</item>
+                            </list>
+                        </item>
+                    </struct>
+                    <struct>
+                        <item id="values">
+                            <list>
+                                <item text-type="text/html">Check Step 2 from the Checklist</item>
+                                <item text-type="text/html"/>
+                                <item text-type="text/html">Passed</item>
+                            </list>
+                        </item>
+                    </struct>
+                    <struct>
+                        <item id="values">
+                            <list>
+                                <item text-type="text/html">Check Step 3 from the Checklist</item>
+                                <item text-type="text/html"/>
+                                <item text-type="text/html">Passed</item>
+                            </list>
+                        </item>
+                    </struct>
+                </list>
+            </item>
+        </struct>
+    </field>
+    <field id="testType" type="enum:testtype">release</field>
+    <field id="title">Perform checklist #DE-234</field>
+    <field id="type">testcase</field>
+</work-item>

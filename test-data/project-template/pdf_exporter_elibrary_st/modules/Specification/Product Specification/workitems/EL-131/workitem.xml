@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<work-item>
+    <field id="assignee">rProject</field>
+    <field id="author">rProject</field>
+    <field id="categories">
+        <list>
+            <item>ui</item>
+        </list>
+    </field>
+    <field id="created">2010-11-25 16:16:28.926 +0100</field>
+    <field id="description" text-type="text/html">If the book is an eBook, users must be able to get information about the supported reader applications and platforms.</field>
+    <field id="initialEstimate">3d</field>
+    <field id="previousStatus">implemented</field>
+    <field id="priority">49.0</field>
+    <field id="resolution">done</field>
+    <field id="resolvedOn">2014-02-13 18:40:26.630 +0100</field>
+    <field id="severity">should_have</field>
+    <field id="status">verified</field>
+    <field id="storyPoints" type="integer">3</field>
+    <field id="timeSpent">1d 7h</field>
+    <field id="title">EBook -  supported readers</field>
+    <field id="type">userstory</field>
+</work-item>

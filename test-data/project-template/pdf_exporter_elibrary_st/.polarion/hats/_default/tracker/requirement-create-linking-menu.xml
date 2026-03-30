@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<menu>
+	<item childInModule="true" copyFields="categories"/>
+	<item copyFields="categories" label="Implementing User Story" role="implements" titlePrefix="Implement: " type="userstory"/>
+	<item copyFields="categories" label="Verifying Test Case" role="verifies" titlePrefix="Test: " type="testcase"/>
+	<separator/>
+	<item label="Dependent User Story" role="depends_on" type="userstory"/>
+	<item label="Related" role="relates_to"/>
+</menu>

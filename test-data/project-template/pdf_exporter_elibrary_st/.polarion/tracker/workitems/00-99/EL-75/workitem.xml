@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<work-item>
+    <field id="assignee">
+        <list>
+            <item>sDeveloper</item>
+            <item>pGUI</item>
+        </list>
+    </field>
+    <field id="author">rProject</field>
+    <field id="categories">
+        <list>
+            <item>persistence</item>
+        </list>
+    </field>
+    <field id="created">2009-05-25 21:04:33.089 +0200</field>
+    <field id="initialEstimate">1d</field>
+    <field id="linkedWorkItems">
+        <list>
+            <struct>
+                <item id="role">implements</item>
+                <item id="workItem">EL-139</item>
+            </struct>
+        </list>
+    </field>
+    <field id="previousStatus">open</field>
+    <field id="priority">50.0</field>
+    <field id="resolution">done</field>
+    <field id="resolvedOn">2009-05-26 07:54:26.014 +0200</field>
+    <field id="severity">normal</field>
+    <field id="status">done</field>
+    <field id="timeSpent">1d 2h</field>
+    <field id="title">Implement administration section for user shortcuts</field>
+    <field id="type">task</field>
+</work-item>

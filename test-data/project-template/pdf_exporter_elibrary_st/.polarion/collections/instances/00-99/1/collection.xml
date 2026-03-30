@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<baseline-collection>
+    <field id="author">admin</field>
+    <field id="created">2020-02-19 13:30:46.882 +0100</field>
+    <field id="description" text-type="text/html">&lt;span style="font-size: 10pt;line-height: 1.5;"&gt;Represents the set of v1.0 Requirements, Stories and Tests.&lt;/span&gt;&lt;br&gt;&lt;span style="font-size: 10pt;line-height: 1.5;"&gt;​A work in progress - not baselined yet.​&lt;/span&gt;</field>
+    <field id="elements">
+        <list>
+            <struct>
+                <item id="object">{Module}{moduleFolder}Specification#Administration Specification</item>
+            </struct>
+            <struct>
+                <item id="object">{Module}{moduleFolder}Specification#Catalog Specification</item>
+            </struct>
+            <struct>
+                <item id="object">{Module}{moduleFolder}Specification#Product Specification</item>
+            </struct>
+            <struct>
+                <item id="object">{Module}{moduleFolder}Testing#Test Specification</item>
+            </struct>
+        </list>
+    </field>
+    <field id="name">Specification v1.0</field>
+</baseline-collection>

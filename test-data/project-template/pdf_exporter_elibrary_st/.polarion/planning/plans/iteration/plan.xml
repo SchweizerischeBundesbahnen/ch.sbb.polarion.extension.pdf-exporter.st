@@ -1,0 +1,540 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<plan>
+    <field id="allowedTypes">
+        <list>
+            <item>userstory</item>
+        </list>
+    </field>
+    <field id="author">rProject</field>
+    <field id="calculationType">customFieldBased</field>
+    <field id="color">#E67E22</field>
+    <field id="created">2015-09-28 17:38:00.000 +0200</field>
+    <field id="description" text-type="text/plain">Iterations are short time frames (timeboxes) that typically last from one to four weeks.</field>
+    <field id="estimationField">storyPoints</field>
+    <field id="homePageContent" text-type="text/html"><![CDATA[<div class="polarion-rp-column" style="width: 100%;">
+  <div id="polarion_client4" class="polarion-rp-widget-part" data-widget="com.polarion.planLabel">
+    <span class="polarion-rp-widget-parameters">
+      <sub id="plan">
+        <sub id="paths">
+          <sub>@current</sub>
+        </sub>
+      </sub>
+      <sub id="childTemplate"></sub>
+      <sub id="showAddButton">false</sub>
+    </span>
+  </div>
+  <p id="polarion_client5">
+    <span class="polarion-rp-inline-widget" data-widget="com.polarion.scriptInline">
+      <span class="polarion-rp-widget-parameters" style="display: none;">
+        <sub id="script">
+          <sub id="script" style="white-space:pre;">## Warning Panel
+#if(!$plan.fields().status().optionId().equals(&quot;open&quot;) &amp;&amp; $plan.fields().capacity().is().empty())
+	$widgetContext.renderWarning(&quot;Plan is $plan.fields().status().render() but Capacity is not filled in yet.&quot;)
+#end</sub>
+        </sub>
+      </span>
+    </span>
+  </p>
+</div>
+<div class="polarion-rp-row-separator" page_min_width="1000"></div>
+<div class="polarion-rp-column" style="width: 100%;">
+  <div id="polarion_client9" class="polarion-rp-widget-part" data-widget="com.polarion.planProgress">
+    <span class="polarion-rp-widget-parameters" style="display: none;"></span>
+  </div>
+  <p id="polarion_client7"></p>
+</div>
+<div class="polarion-rp-row-separator"></div>
+<div class="polarion-rp-column" style="width: 35%;">
+  <div id="polarion_client26" class="polarion-rp-widget-part" data-widget="com.polarion.burnDownChart">
+    <span class="polarion-rp-widget-parameters" style="display: none;">
+      <sub id="title"></sub>
+      <sub id="plan">
+        <sub id="paths">
+          <sub>@current</sub>
+        </sub>
+      </sub>
+      <sub id="timeAxis">
+        <sub id="scaleType">day</sub>
+        <sub id="baseDate">1</sub>
+      </sub>
+      <sub id="advanced">
+        <sub id="yAxisName"></sub>
+        <sub id="height">300px</sub>
+        <sub id="width"></sub>
+      </sub>
+    </span>
+  </div>
+  <p id="polarion_client10"></p>
+</div>
+<div class="polarion-rp-column" style="width: 35%;">
+  <div id="polarion_client29" class="polarion-rp-widget-part" data-widget="cfd">
+    <span class="polarion-rp-widget-parameters" style="display: none;">
+      <sub id="data">
+        <sub id="elements">
+          <sub>
+            <sub id="prototype">WorkItem</sub>
+            <sub id="queryType">luceneVelocity</sub>
+            <sub id="luceneQuery" style="white-space:pre;">$pageContext.planQuery AND status:rejected</sub>
+            <sub id="children">
+              <sub id="name">Rejected</sub>
+              <sub id="color">#7F8C8D</sub>
+            </sub>
+          </sub>
+          <sub>
+            <sub id="prototype">WorkItem</sub>
+            <sub id="queryType">luceneVelocity</sub>
+            <sub id="luceneQuery" style="white-space:pre;">$pageContext.planQuery AND status:verified</sub>
+            <sub id="children">
+              <sub id="name">Verified</sub>
+              <sub id="color">#BDC3C7</sub>
+            </sub>
+          </sub>
+          <sub>
+            <sub id="prototype">WorkItem</sub>
+            <sub id="queryType">luceneVelocity</sub>
+            <sub id="luceneQuery" style="white-space:pre;">$pageContext.planQuery AND status:implemented</sub>
+            <sub id="children">
+              <sub id="name">Implemented</sub>
+              <sub id="color">#2ECC71</sub>
+            </sub>
+          </sub>
+          <sub>
+            <sub id="prototype">WorkItem</sub>
+            <sub id="queryType">luceneVelocity</sub>
+            <sub id="luceneQuery" style="white-space:pre;">$pageContext.planQuery AND status:changesneeded</sub>
+            <sub id="children">
+              <sub id="name">Change Implementation</sub>
+              <sub id="color">#F1C40F</sub>
+            </sub>
+          </sub>
+          <sub>
+            <sub id="prototype">WorkItem</sub>
+            <sub id="queryType">luceneVelocity</sub>
+            <sub id="luceneQuery" style="white-space:pre;">$pageContext.planQuery AND status:inprogress</sub>
+            <sub id="children">
+              <sub id="name">In Progress</sub>
+              <sub id="color">#3498DB</sub>
+            </sub>
+          </sub>
+          <sub>
+            <sub id="prototype">WorkItem</sub>
+            <sub id="queryType">luceneVelocity</sub>
+            <sub id="luceneQuery" style="white-space:pre;">$pageContext.planQuery AND status:accepted</sub>
+            <sub id="children">
+              <sub id="name">Accepted</sub>
+              <sub id="color">#8E44AD</sub>
+            </sub>
+          </sub>
+          <sub>
+            <sub id="prototype">WorkItem</sub>
+            <sub id="queryType">luceneVelocity</sub>
+            <sub id="luceneQuery" style="white-space:pre;">$pageContext.planQuery AND status:reviewed</sub>
+            <sub id="children">
+              <sub id="name">Reviewed</sub>
+              <sub id="color">#9B59B6</sub>
+            </sub>
+          </sub>
+          <sub>
+            <sub id="prototype">WorkItem</sub>
+            <sub id="queryType">luceneVelocity</sub>
+            <sub id="luceneQuery" style="white-space:pre;">$pageContext.planQuery AND status:draft</sub>
+            <sub id="children">
+              <sub id="name">Draft</sub>
+              <sub id="color">#2980B9</sub>
+            </sub>
+          </sub>
+        </sub>
+      </sub>
+      <sub id="datePoints">
+        <sub id="from" data-inherit="startDate"></sub><sub id="to" data-inherit="dueDate"></sub>
+        <sub id="scaleType">day</sub>
+        <sub id="baseDate">1</sub>
+      </sub>
+      <sub id="title"></sub>
+      <sub id="height">300</sub>
+    </span>
+  </div>
+  <p id="polarion_client11"></p>
+</div>
+<div class="polarion-rp-column" style="width: 30%;">
+  <div id="polarion_client20" class="polarion-rp-widget-part" data-widget="com.polarion.scriptBlock">
+    <span class="polarion-rp-widget-parameters" style="display: none;">
+      <sub id="script">
+        <sub id="script" style="white-space:pre;">###############################################################################
+##
+## Status Bar and Icons
+## com.polarion.alm.shared.api.model.rp.widget.RichPageWidgetRenderingContext $widgetContext
+## com.polarion.alm.shared.api.model.plan.Plan $plan
+##
+&lt;style&gt;
+	.plan-bluepanel {
+		background-color: #EDF6FF;
+		padding: 20px;
+		border-radius: 5px;
+		margin: auto;
+		text-align: left;
+	}
+	.plan-links {
+		padding-bottom: 5px;
+		padding-left: 30px;
+	}
+	.plan-links &gt; a {
+		padding-left: 5px;
+		padding-right: 5px;
+		font-weight: bold;
+	}
+	.plan-links img {
+		padding-right: 3px;
+	}
+&lt;/style&gt;
+
+#set($projectId = $plan.getReference().projectId())
+#set($planId = $plan.getReference().id())
+&lt;div class=&quot;plan-bluepanel&quot;&gt;
+	&lt;div style=&quot;text-align: center;&quot;&gt;
+		&lt;span class=&quot;polarion-rp-inline-widget&quot; data-widget=&quot;com.polarion.planStatusButton&quot; style=&quot;display: block; width: 316px; margin: 0 auto;&quot;&gt;
+			&lt;span class=&quot;polarion-rp-widget-parameters&quot;&gt;&lt;/span&gt;
+		&lt;/span&gt;
+	&lt;/div&gt;
+    &lt;br/&gt;
+    &lt;div class=&quot;plan-links&quot;&gt;
+		&lt;a target=&quot;_top&quot; href=&quot;$pageContext.browseAllPlannedLink&quot;&gt;&lt;img src=&quot;/polarion/icons/default/actions/openInTable.png&quot;/&gt;Open in Table&lt;/a&gt;
+		&lt;br/&gt;&lt;br/&gt;
+		#if($plan.fields().capacity().is().empty())
+			#set($link = $transaction.context().createPortalLink().project(&quot;$projectId&quot;).plan(&quot;$planId&quot;).toEncodedRelativeUrl())
+			&lt;a href=&#39;$link&amp;tab=properties&#39; target=&#39;_top&#39;&gt;&lt;img src=&quot;/polarion/icons/default/enums/testrun_type_loadtest.png&quot;/&gt;Set Capacity&lt;/a&gt;&lt;/a&gt;
+			&lt;br/&gt;&lt;br/&gt;
+		#end
+		#if(!$plan.fields().dueDate().get() || !$plan.fields().startDate().get())
+			#set($link = $transaction.context().createPortalLink().project(&quot;$projectId&quot;).plan(&quot;$planId&quot;).tabProperties().toEncodedRelativeUrl())
+			&lt;a target=&quot;_top&quot; href=&quot;$pageContext.addWorkItemsLink&quot;&gt;&lt;img src=&quot;/polarion/icons/default/enums/testrun_status_inprogress.png&quot;/&gt;Set Start and Due Dates&lt;/a&gt;
+			&lt;br/&gt;&lt;br/&gt;
+		#end
+		&lt;a target=&quot;_top&quot; href=&quot;$pageContext.addWorkItemsLink&quot;&gt;&lt;img src=&quot;/polarion/icons/default/actions/create_link.gif&quot;/&gt;Add Work Items to the Plan&lt;/a&gt;
+		&lt;br/&gt;&lt;br/&gt;
+		#set($link = $plan.utils().getPrioritizationLink().toEncodedRelativeUrl())
+		&lt;a target=&quot;_top&quot; href=&quot;$link&quot;&gt;&lt;img src=&quot;/polarion/icons/default/actions/prioritizePlan.png&quot;/&gt;Prioritize Planned Items&lt;/a&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</sub>
+      </sub>
+    </span>
+  </div>
+  <p id="polarion_client13"></p>
+</div>
+<div class="polarion-rp-row-separator"></div>
+<div class="polarion-rp-column" style="width: 70%;">
+  <h2 id="polarion_client18">Plan</h2>
+  <div id="polarion_client22" class="polarion-rp-widget-part" data-widget="com.polarion.plan.workItemsBoard">
+    <span class="polarion-rp-widget-parameters">
+      <sub id="plan">
+        <sub id="paths">
+          <sub>@current</sub>
+        </sub>
+      </sub>
+      <sub id="columns">
+        <sub id="elements">
+          <sub>
+            <sub id="columnTitle">Open</sub>
+            <sub id="columnStatuses">
+              <sub id="values">
+                <sub>open</sub>
+              </sub>
+            </sub>
+          </sub>
+          <sub>
+            <sub id="columnTitle">In Progress</sub>
+            <sub id="columnStatuses">
+              <sub id="values">
+                <sub>inprogress</sub>
+                <sub>reopened</sub>
+              </sub>
+            </sub>
+          </sub>
+          <sub>
+            <sub id="columnTitle">Done</sub>
+            <sub id="columnStatuses">
+              <sub id="values">
+                <sub>done</sub>
+              </sub>
+            </sub>
+          </sub>
+          <sub>
+            <sub id="columnTitle">Resolved</sub>
+            <sub id="columnStatuses">
+              <sub id="values">
+                <sub>verified</sub>
+                <sub>rejected</sub>
+              </sub>
+            </sub>
+          </sub>
+        </sub>
+      </sub>
+      <sub id="roles"></sub>
+      <sub id="compactStatuses">
+        <sub id="values">
+          <sub>verified</sub>
+          <sub>rejected</sub>
+        </sub>
+      </sub>
+      <sub id="swimlanePropertiesSidebarFields">
+        <sub>
+          <sub id="id">assignee</sub>
+        </sub>
+        <sub>
+          <sub id="id">severity</sub>
+        </sub>
+        <sub>
+          <sub id="id">status</sub>
+        </sub>
+        <sub>
+          <sub id="id">resolution</sub>
+        </sub>
+        <sub>
+          <sub id="id">initialEstimate</sub>
+        </sub>
+        <sub>
+          <sub id="id">plannedIn</sub>
+        </sub>
+        <sub>
+          <sub id="id">linkedWorkItems</sub>
+        </sub>
+      </sub>
+      <sub id="cardPropertiesSidebarFields">
+        <sub>
+          <sub id="id">assignee</sub>
+        </sub>
+        <sub>
+          <sub id="id">severity</sub>
+        </sub>
+        <sub>
+          <sub id="id">status</sub>
+        </sub>
+        <sub>
+          <sub id="id">resolution</sub>
+        </sub>
+        <sub>
+          <sub id="id">initialEstimate</sub>
+        </sub>
+        <sub>
+          <sub id="id">remainingEstimate</sub>
+        </sub>
+        <sub>
+          <sub id="id">timeSpent</sub>
+        </sub>
+        <sub>
+          <sub id="id">linkedWorkItems</sub>
+        </sub>
+        <sub>
+          <sub id="id">workRecords</sub>
+        </sub>
+      </sub>
+    </span>
+  </div>
+  <h2 id="polarion_client2">Issues Backlog</h2>
+  <div id="polarion_client6" class="polarion-rp-widget-part" data-widget="com.polarion.table">
+    <span class="polarion-rp-widget-parameters" style="display: none;">
+      <sub id="dataSet">
+        <sub id="prototype">WorkItem</sub>
+        <sub id="subtype">issue</sub>
+        <sub id="queryType">luceneVelocity</sub>
+        <sub id="luceneQuery" style="white-space:pre;">## Issues Backlog
+#if($plan.fields().parent().getIfCan())
+	#set($parentId = $plan.fields().parent().get().getReference().id())
+	targetVersion.KEY:$parentId
+#else
+	NOT *:*
+#end</sub>
+        <sub id="children">
+          <sub id="columns">
+            <sub>
+              <sub id="id">id</sub>
+            </sub>
+            <sub>
+              <sub id="id">title</sub>
+            </sub>
+            <sub>
+              <sub id="id">status</sub>
+            </sub>
+            <sub>
+              <sub id="id">severity</sub>
+            </sub>
+            <sub>
+              <sub id="id">priority</sub>
+            </sub>
+          </sub>
+          <sub id="sortBy">
+            <sub>
+              <sub id="id">severity</sub>
+              <sub id="descending">true</sub>
+            </sub>
+            <sub>
+              <sub id="id">priority</sub>
+              <sub id="descending">true</sub>
+            </sub>
+          </sub>
+        </sub>
+      </sub>
+      <sub id="propertiesSidebarFields">
+        <sub>
+          <sub id="id">assignee</sub>
+        </sub>
+        <sub>
+          <sub id="id">severity</sub>
+        </sub>
+        <sub>
+          <sub id="id">priority</sub>
+        </sub>
+        <sub>
+          <sub id="id">status</sub>
+        </sub>
+        <sub>
+          <sub id="id">resolution</sub>
+        </sub>
+        <sub>
+          <sub id="id">targetVersion</sub>
+        </sub>
+        <sub>
+          <sub id="id">linkedWorkItems</sub>
+        </sub>
+      </sub>
+      <sub id="advanced">
+        <sub id="top">50</sub>
+      </sub>
+    </span>
+  </div>
+  <p id="polarion_client14"></p><p id="polarion_client25"></p><p id="polarion_client26"></p>
+</div>
+<div class="polarion-rp-column" style="width: 30%;" data-print="0" data-pdf="0">
+  <h2 id="polarion_client65">Activities</h2>
+  <div id="polarion_client67" class="polarion-rp-widget-part" data-widget="com.polarion.planActivityStream">
+    <span class="polarion-rp-widget-parameters">
+      <sub id="plan">
+        <sub id="paths">
+          <sub>@current</sub>
+        </sub>
+      </sub>
+      <sub id="advanced">
+        <sub id="top"></sub>
+      </sub>
+    </span>
+  </div>
+</div>
+<div class="polarion-rp-row-separator"></div>
+<pre id="polarion-rp-page-script">###############################################################################
+##
+## Page Script
+##
+## com.polarion.alm.shared.api.transaction.ReadOnlyTransaction $transaction
+## com.polarion.alm.shared.api.model.rp.widget.RichPageWidgetRenderingContext $widgetContext
+## com.polarion.alm.shared.api.model.plan.Plan $plan
+##
+
+#set($projectId = $plan.getReference().projectId())
+$!pageContext.put(&quot;projectId&quot;, $projectId)
+
+#set($planId = $projectId)
+#set($planPath = $plan.getReference().toPath())
+#set($planQuery = &quot;PLAN:($planPath)&quot;)
+$!pageContext.put(&quot;planId&quot;, $planId)
+$!pageContext.put(&quot;planPath&quot;, $planPath)
+$!pageContext.put(&quot;planQuery&quot;, $planQuery)
+
+
+#set($prioritizationField = &quot;$plan.fields().prioritizationField().get()&quot;)
+$!pageContext.put(&quot;prioritizationField&quot;, &quot;$prioritizationField&quot;)
+
+#######################################
+## $pageContext.browseAllPlannedLink
+## $pageContext.scope
+##
+#set($query = $planQuery)
+#if(!$plan.fields().projectSpan().isEmpty())
+	#set($spanQuery = &quot;AND project.id:(&quot;)
+	#foreach($project in $plan.fields().projectSpan())
+		#set($spanQuery = &quot;$spanQuery$project.getReference().id() &quot;)
+	#end
+	#set($spanQuery = &quot;$spanQuery.trim())&quot;)
+	#set($query = &quot;$planQuery $spanQuery&quot;)
+	#set($browseAllPlannedLink = $transaction.context().createPortalLink().repository().workItems().query(&quot;$query&quot;).sorting(&quot;~$prioritizationField&quot;).toEncodedRelativeUrl())
+	#set($scope = &quot;/&quot;)
+#else
+	#set($scope = $plan.getReference().projectId())
+	#set($browseAllPlannedLink = $transaction.context().createPortalLink().project(&quot;$projectId&quot;).workItems().query(&quot;$query&quot;).sorting(&quot;~$prioritizationField&quot;).toEncodedRelativeUrl())
+#end
+
+$!pageContext.put(&quot;browseAllPlannedLink&quot;, &quot;$browseAllPlannedLink&quot;)
+$!pageContext.put(&quot;scope&quot;, &quot;$scope&quot;)
+
+###############################################################################
+##
+## Cumulative Flow Chart
+## $pageContext.startDate
+## $pageContext.dueDate
+##
+
+$!scriptedPageParameters.put(&quot;startDate&quot;, $factory.date(&quot;Start Date&quot;).absolute($plan.fields().startDate().get()).build())
+$!scriptedPageParameters.put(&quot;dueDate&quot;, $factory.date(&quot;Due Date&quot;).absolute($plan.fields().dueDate().get()).build())
+
+#######################################
+## $pageContext.addWorkItemsLink
+##
+#set($query = &quot;&quot;)
+
+#if(!$plan.fields().allowedTypes().isEmpty())
+	#set($allowedTypesQuery = &quot;type:(&quot;)
+	#foreach($type in $plan.fields().allowedTypes())
+		#set($allowedTypesQuery = &quot;$allowedTypesQuery$type.id() &quot;)
+	#end
+	#set($allowedTypesQuery = &quot;$allowedTypesQuery.trim())&quot;)
+	#if($query.equals(&quot;&quot;))
+		#set($query = &quot;$allowedTypesQuery&quot;)
+	#else
+		#set($query = &quot;$query AND $allowedTypesQuery&quot;)
+	#end
+#end
+
+#if($plan.fields().parent().get())
+	#set($parentQuery = &quot;PLAN:($plan.fields().parent().get().getReference().toPath())&quot;)
+	#if($query.equals(&quot;&quot;))
+		#set($query = &quot;$parentQuery&quot;)
+	#else
+		#set($query = &quot;$query AND $parentQuery&quot;)
+	#end
+#end
+
+#if(!$plan.fields().projectSpan().isEmpty())
+	#set($spanQuery = &quot;project.id:(&quot;)
+	#foreach($project in $plan.fields().projectSpan())
+		#set($spanQuery = &quot;$spanQuery$project.getReference().id() &quot;)
+	#end
+	#set($spanQuery = &quot;$spanQuery.trim())&quot;)
+	#if($query.equals(&quot;&quot;))
+		#set($query = &quot;$spanQuery&quot;)
+	#else
+		#set($query = &quot;$query AND $spanQuery&quot;)
+	#end
+	#set($addWorkItemsLink = $transaction.context().createPortalLink().repository().workItems().query(&quot;$query&quot;).sorting(&quot;~$prioritizationField&quot;).sidebarPlanning(&quot;$planPath&quot;).toEncodedRelativeUrl())
+#else
+	#set($addWorkItemsLink = $transaction.context().createPortalLink().project(&quot;$projectId&quot;).workItems().query(&quot;$query&quot;).sorting(&quot;~$prioritizationField&quot;).sidebarPlanning(&quot;$planPath&quot;).toEncodedRelativeUrl())
+#end
+
+$!pageContext.put(&quot;addWorkItemsLink&quot;, &quot;$addWorkItemsLink&quot;)
+
+#######################################
+## Display debug info
+##
+projectId: $projectId &lt;br/&gt;
+planId: $planId &lt;br/&gt;
+planPath: $planPath &lt;br/&gt;
+planQuery: $planQuery &lt;br/&gt;
+prioritizationField: $pageContext.prioritizationField &lt;br/&gt;
+browseAllPlannedLink: $pageContext.browseAllPlannedLink &lt;br/&gt;
+scope: $pageContext.scope &lt;br/&gt;
+addWorkItemsLink: $pageContext.addWorkItemsLink &lt;br/&gt;
+</pre>]]></field>
+    <field id="isTemplate">true</field>
+    <field id="name">Iteration</field>
+    <field id="prioritizationField">priority</field>
+    <field id="status">open</field>
+    <field id="useReportFromTemplate">true</field>
+</plan>

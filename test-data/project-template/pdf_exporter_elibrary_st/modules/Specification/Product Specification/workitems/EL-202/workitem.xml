@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<work-item>
+    <field id="assignee">rProject</field>
+    <field id="author">rProject</field>
+    <field id="categories">
+        <list>
+            <item>usermanagement</item>
+            <item>administration</item>
+            <item>projectadmin</item>
+        </list>
+    </field>
+    <field id="created">2017-05-03 16:17:15.230 +0200</field>
+    <field id="description" text-type="text/html">This Epic sums up all the information on the User Roles feature.&lt;br/&gt;</field>
+    <field id="previousStatus">done</field>
+    <field id="priority">90.0</field>
+    <field id="resolution">done</field>
+    <field id="resolvedOn">2017-05-03 16:18:38.124 +0200</field>
+    <field id="severity">should_have</field>
+    <field id="status">verified</field>
+    <field id="epicEstimate" type="enum:tshirt-sizes">s</field>
+    <field id="targetVersion" type="enum:@plan[template.id:release]">Version_1_0</field>
+    <field id="title">User Roles</field>
+    <field id="type">epic</field>
+</work-item>

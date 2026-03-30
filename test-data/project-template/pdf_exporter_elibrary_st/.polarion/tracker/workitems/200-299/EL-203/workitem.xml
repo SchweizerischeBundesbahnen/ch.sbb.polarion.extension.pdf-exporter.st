@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<work-item>
+    <field id="approvals">
+        <list>
+            <struct>
+                <item id="status">approved</item>
+                <item id="user">rProject</item>
+            </struct>
+        </list>
+    </field>
+    <field id="assignee">jRequirement</field>
+    <field id="author">rProject</field>
+    <field id="categories">
+        <list>
+            <item>searching</item>
+            <item>objects</item>
+        </list>
+    </field>
+    <field id="created">2017-05-03 16:33:50.729 +0200</field>
+    <field id="description" text-type="text/html">The list should display 50 books, not 20</field>
+    <field id="linkedWorkItems">
+        <list>
+            <struct>
+                <item id="role">tracks</item>
+                <item id="workItem">EL-196</item>
+            </struct>
+        </list>
+    </field>
+    <field id="previousStatus">approved</field>
+    <field id="priority">50.0</field>
+    <field id="resolution">valid</field>
+    <field id="resolvedOn">2017-05-03 16:34:12.430 +0200</field>
+    <field id="severity">should_have</field>
+    <field id="status">verified</field>
+    <field id="title">Listing of the most frequently borrowed eBooks.</field>
+    <field id="type">changerequest</field>
+</work-item>

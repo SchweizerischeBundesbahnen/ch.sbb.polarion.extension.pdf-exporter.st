@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<fields>
+    <field id="testType" name="Test Type" type="enum:testtype"/>
+    <field id="testCaseID" name="Test Case ID" type="string"/>
+    <field id="testSteps" name="Test Steps" type="struct:TestSteps"/>
+</fields>

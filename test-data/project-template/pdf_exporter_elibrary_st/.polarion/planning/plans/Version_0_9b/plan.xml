@@ -1,0 +1,2231 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<plan>
+    <field id="allowedTypes">
+        <list>
+            <item>userstory</item>
+        </list>
+    </field>
+    <field id="author">rProject</field>
+    <field id="calculationType">customFieldBased</field>
+    <field id="capacity">58.0</field>
+    <field id="created">2017-03-27 10:45:49.194 +0200</field>
+    <field id="description" text-type="text/plain">The release plan specifies which Work Items are going to be implemented for each system release and dates for those releases. These selected Work Items are then translated into individual tasks to be implemented during the iteration to complete the Work Items.</field>
+    <field id="dueDate">2016-12-31</field>
+    <field id="estimationField">storyPoints</field>
+    <field id="finishedOn">2017-05-10 14:47:30.624 +0200</field>
+    <field id="homePageContent" text-type="text/html"><![CDATA[<div class="polarion-rp-column" style="width: 100%;">
+  <div id="polarion_client1" class="polarion-rp-widget-part" data-widget="com.polarion.planLabel">
+    <span class="polarion-rp-widget-parameters">
+      <sub id="plan">
+        <sub id="paths">
+          <sub>@current</sub>
+        </sub>
+      </sub>
+      <sub id="childTemplate">
+        <sub id="paths">
+          <sub>iteration</sub>
+        </sub>
+      </sub>
+      <sub id="showAddButton">true</sub>
+    </span>
+  </div>
+  <p id="polarion_client7">
+    <span class="polarion-rp-inline-widget" data-widget="com.polarion.scriptInline">
+      <span class="polarion-rp-widget-parameters" style="display: none;">
+        <sub id="script">
+          <sub id="script" style="white-space:pre;">## Warning Panel
+#if(!$plan.fields().status().optionId().equals(&quot;open&quot;) &amp;&amp; $plan.fields().capacity().is().empty())
+	$widgetContext.renderWarning(&quot;Plan is $plan.fields().status().render() but Capacity is not filled in yet.&quot;)
+#end
+
+#if($pageContext.releaseWorkItemLink)
+	$widgetContext.renderWarning(&quot;&lt;a href=&#39;$pageContext.releaseWorkItemLink&#39;&gt;There is &lt;b&gt;more than one&lt;/b&gt; Release Work Item&lt;/a&gt; for this Release Plan. There should be only one Release for each Release Plan.&quot;)
+#end</sub>
+        </sub>
+      </span>
+    </span>
+  </p>
+</div>
+<div class="polarion-rp-row-separator" page_min_width="1000"></div>
+<div class="polarion-rp-column" style="width: 100%;">
+  <div id="polarion_client17" class="polarion-rp-widget-part" data-widget="com.polarion.planProgress">
+    <span class="polarion-rp-widget-parameters" style="display: none;">
+      <sub id="plan">
+        <sub id="paths">
+          <sub>@current</sub>
+        </sub>
+      </sub>
+      <sub id="showIdealProgress">true</sub>
+      <sub id="showLabel">true</sub>
+      <sub id="advanced">
+        <sub id="width"> </sub>
+      </sub>
+    </span>
+  </div>
+</div>
+<div class="polarion-rp-row-separator"></div>
+<div class="polarion-rp-column" style="width: 35%;">
+  <div id="polarion_client27" class="polarion-rp-widget-part" data-widget="com.polarion.scriptedChart">
+    <span class="polarion-rp-widget-parameters" style="display: none;">
+      <sub id="script">
+        <sub id="script" style="white-space:pre;">## Version 0.9b
+{
+	chart: {},
+	title: {
+		text: &#39;&#39;,
+		useHTML:true
+	},
+	exporting: {
+		enabled: false
+	},
+	credits: {
+		href: null,
+		text: null
+	},
+	xAxis: {
+		maxPadding: 0,
+		type: &#39;datetime&#39;
+	},
+	yAxis: {
+		title: {
+			text: &#39;Story Points&#39;,
+			useHTML:true
+		},
+		gridLineWidth: 0
+	},
+	tooltip: {
+		backgroundColor: &#39;rgba(247, 247, 247, 0.9)&#39;,
+		formatter: function() {
+			return &#39;&lt;i&gt;This is sample content only&lt;/i&gt;&lt;br/&gt;&#39; +
+			&#39;&lt;small&gt;&#39; + Highcharts.dateFormat(&#39;%A, %b %e, %Y&#39;, this.x) + &#39;&lt;/small&gt;&lt;br/&gt;&#39; +
+			this.series.name + &#39;: &lt;b&gt;&#39; + this.y + &#39;&lt;/b&gt;&#39;;
+		}
+	},
+	series: [
+		{
+			name: &#39;Ideal Work Done&#39;,
+			type: &#39;area&#39;,
+			color: &#39;#1D9BD6&#39;,
+			marker: {
+				enabled: false
+			},
+			dashStyle: &#39;ShortDot&#39;,
+			fillColor: &#39;rgba(225, 240, 255, 0.5)&#39;,
+			data: [
+				{x: Date.UTC(2016, 9, 1), y: 0.0},
+				{x: Date.UTC(2016, 9, 13), y: 25.0},
+				{x: Date.UTC(2016, 10, 20), y: 38.0},
+				{x: Date.UTC(2016, 11, 27), y: 55.0}
+			]
+		},
+		{
+			name: &#39;Work Done&#39;,
+			type: &#39;area&#39;,
+			color: &#39;#53CCB1&#39;,
+			marker: {
+				radius: 5,
+				lineWidth: 2,
+				lineColor: &#39;white&#39;,
+				fillColor: &#39;#53CCB1&#39;
+			},
+			fillOpacity: 0.3,
+			data: [
+				{x: Date.UTC(2016, 9, 1), y: 0.0},
+				{x: Date.UTC(2016, 9, 7), y: 4.0},
+				{x: Date.UTC(2016, 9, 14), y: 8.0},
+				{x: Date.UTC(2016, 9, 21), y: 11.0},
+				{x: Date.UTC(2016, 9, 28), y: 14.0},
+				{x: Date.UTC(2016, 10, 1), y: 17.0},
+				{x: Date.UTC(2016, 10, 8), y: 22.0},
+				{x: Date.UTC(2016, 10, 15), y: 23.0},
+				{x: Date.UTC(2016, 10, 22), y: 31.0},
+				{x: Date.UTC(2016, 10, 29), y: 36.0},
+				{x: Date.UTC(2016, 11, 3), y: 42.0},
+				{x: Date.UTC(2016, 11, 10), y: 46.0},
+				{x: Date.UTC(2016, 11, 17), y: 49.0},
+				{x: Date.UTC(2016, 11, 24), y: 51.0},
+				{x: Date.UTC(2016, 11, 27), y: 55.0}
+			]
+		},
+		{
+			name: &#39;Relative Progress&#39;,
+			type: &#39;column&#39;,
+			color: &#39;#AED77E&#39;,
+			marker: {
+				enabled: false
+			},
+			data: [
+				{x: Date.UTC(2016, 9, 1), y: 0.0},
+				{x: Date.UTC(2016, 9, 7), y: 2.0},
+				{x: Date.UTC(2016, 9, 14), y: 4.0},
+				{x: Date.UTC(2016, 9, 21), y: 3.0},
+				{x: Date.UTC(2016, 9, 28), y: 1.0},
+				{x: Date.UTC(2016, 10, 1), y: 4.0},
+				{x: Date.UTC(2016, 10, 8), y: 5.0},
+				{x: Date.UTC(2016, 10, 15), y: 1.0},
+				{x: Date.UTC(2016, 10, 22), y: 6.0},
+				{x: Date.UTC(2016, 10, 29), y: 2.0},
+				{x: Date.UTC(2016, 11, 3), y: 5.0},
+				{x: Date.UTC(2016, 11, 10), y: 6.0},
+				{x: Date.UTC(2016, 11, 17), y: 4.0},
+				{x: Date.UTC(2016, 11, 24), y: 3.0},
+				{x: Date.UTC(2016, 11, 27), y: 5.0}
+			]
+		},
+		{
+			name: &#39;Total Work&#39;,
+			type: &#39;line&#39;,
+			color: &#39;#BADCE5&#39;,
+			marker: {
+				enabled: false
+			},
+			data: [
+				{x: Date.UTC(2016, 9, 1), y: 75.0},
+				{x: Date.UTC(2016, 10, 13), y: 75.0},
+				{x: Date.UTC(2016, 10, 20), y: 55.0},
+				{x: Date.UTC(2016, 11, 27), y: 55.0}
+			]
+		}
+	]
+};</sub>
+      </sub>
+      <sub id="advanced">
+        <sub id="height"></sub><sub id="width"></sub>
+      </sub>
+    </span>
+  </div>
+  <p id="polarion_client21"></p>
+</div>
+<div class="polarion-rp-column" style="width: 35%;">
+  <div id="polarion_client29" class="polarion-rp-widget-part" data-widget="com.polarion.scriptedChart">
+    <span class="polarion-rp-widget-parameters" style="display: none;">
+      <sub id="script">
+        <sub id="script" style="white-space:pre;">## Version 0.9b
+{
+	&quot;chart&quot;: {},
+	&quot;plotOptions&quot;: {
+		&quot;area&quot;: {
+			stacking: &#39;normal&#39;,
+			marker: {
+				enabled: false
+			}
+		},
+		&quot;series&quot;: {
+			&quot;animation&quot;: false
+		}
+	},
+	&quot;yAxis&quot;: {
+		&quot;gridLineWidth&quot;: 0,
+		&quot;title&quot;: {
+			&quot;text&quot;: &quot;# of Items&quot;
+		}
+	},
+	&quot;exporting&quot;: {
+		&quot;enabled&quot;: false
+	},
+	&quot;xAxis&quot;: {
+		&quot;minTickInterval&quot;: 86400000,
+		&quot;type&quot;: &quot;datetime&quot;
+	},
+	&quot;credits&quot;: {
+		&quot;href&quot;: null,
+		&quot;enabled&quot;: false
+	},
+	&quot;tooltip&quot;: {
+		&quot;backgroundColor&quot;: &quot;rgba(247, 247, 247, 0.9)&quot;,
+		formatter: function() {
+			return &#39;&lt;i&gt;This is sample content only&lt;/i&gt;&lt;br/&gt;&#39; +
+			&#39;&lt;small&gt;&#39; + Highcharts.dateFormat(&#39;%A, %b %e, %Y&#39;, this.x) + &#39;&lt;/small&gt;&lt;br/&gt;&#39; +
+			this.series.name + &#39;: &lt;b&gt;&#39; + this.y + &#39;&lt;/b&gt;&#39;;
+		}
+	},
+	&quot;title&quot;: {
+		&quot;useHTML&quot;: true,
+		&quot;text&quot;: &quot;&quot;
+	},
+	&quot;series&quot;: [
+		{
+			&quot;color&quot;: &quot;#7F8C8D&quot;,
+			&quot;name&quot;: &quot;Rejected&quot;,
+			&quot;type&quot;: &quot;area&quot;,
+			&quot;data&quot;: [
+				{&quot;x&quot;: Date.UTC(2016, 9, 1), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2016, 9, 8), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2016, 9, 16), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2016, 9, 24), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2016, 9, 31), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2016, 10, 7), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2016, 10, 15), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2016, 10, 23), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2016, 10, 30), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2016, 11, 7), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2016, 11, 14), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2016, 11, 20), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2016, 11, 25), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2016, 11, 31), &quot;y&quot;: 0}
+			]
+		},
+		{
+			&quot;color&quot;: &quot;#BDC3C7&quot;,
+			&quot;name&quot;: &quot;Verified&quot;,
+			&quot;type&quot;: &quot;area&quot;,
+			&quot;data&quot;: [
+				{&quot;x&quot;: Date.UTC(2016, 9, 1), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2016, 9, 8), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2016, 9, 16), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2016, 9, 24), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2016, 9, 31), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2016, 10, 7), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2016, 10, 15), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2016, 10, 23), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2016, 10, 30), &quot;y&quot;: 1},
+				{&quot;x&quot;: Date.UTC(2016, 11, 7), &quot;y&quot;: 3},
+				{&quot;x&quot;: Date.UTC(2016, 11, 14), &quot;y&quot;: 3},
+				{&quot;x&quot;: Date.UTC(2016, 11, 20), &quot;y&quot;: 5},
+				{&quot;x&quot;: Date.UTC(2016, 11, 25), &quot;y&quot;: 7},
+				{&quot;x&quot;: Date.UTC(2016, 11, 31), &quot;y&quot;: 8}
+			]
+		},
+		{
+			&quot;color&quot;: &quot;#2ECC71&quot;,
+			&quot;name&quot;: &quot;Implemented&quot;,
+			&quot;type&quot;: &quot;area&quot;,
+			&quot;data&quot;: [
+				{&quot;x&quot;: Date.UTC(2016, 9, 1), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2016, 9, 8), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2016, 9, 16), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2016, 9, 24), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2016, 9, 31), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2016, 10, 7), &quot;y&quot;: 1},
+				{&quot;x&quot;: Date.UTC(2016, 10, 15), &quot;y&quot;: 2},
+				{&quot;x&quot;: Date.UTC(2016, 10, 23), &quot;y&quot;: 2},
+				{&quot;x&quot;: Date.UTC(2016, 10, 30), &quot;y&quot;: 1},
+				{&quot;x&quot;: Date.UTC(2016, 11, 7), &quot;y&quot;: 2},
+				{&quot;x&quot;: Date.UTC(2016, 11, 14), &quot;y&quot;: 2},
+				{&quot;x&quot;: Date.UTC(2016, 11, 20), &quot;y&quot;: 1},
+				{&quot;x&quot;: Date.UTC(2016, 11, 25), &quot;y&quot;: 1},
+				{&quot;x&quot;: Date.UTC(2016, 11, 31), &quot;y&quot;: 0}
+			]
+		},
+		{
+			&quot;color&quot;: &quot;#F1C40F&quot;,
+			&quot;name&quot;: &quot;Change Implementation&quot;,
+			&quot;type&quot;: &quot;area&quot;,
+			&quot;data&quot;: [
+				{&quot;x&quot;: Date.UTC(2016, 9, 1), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2016, 9, 8), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2016, 9, 16), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2016, 9, 24), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2016, 9, 31), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2016, 10, 7), &quot;y&quot;: 1},
+				{&quot;x&quot;: Date.UTC(2016, 10, 15), &quot;y&quot;: 2},
+				{&quot;x&quot;: Date.UTC(2016, 10, 23), &quot;y&quot;: 1},
+				{&quot;x&quot;: Date.UTC(2016, 10, 30), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2016, 11, 7), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2016, 11, 14), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2016, 11, 20), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2016, 11, 25), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2016, 11, 31), &quot;y&quot;: 0}
+			]
+		},
+		{
+			&quot;color&quot;: &quot;#3498DB&quot;,
+			&quot;name&quot;: &quot;In Progress&quot;,
+			&quot;type&quot;: &quot;area&quot;,
+			&quot;data&quot;: [
+				{&quot;x&quot;: Date.UTC(2016, 9, 1), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2016, 9, 8), &quot;y&quot;: 1},
+				{&quot;x&quot;: Date.UTC(2016, 9, 16), &quot;y&quot;: 2},
+				{&quot;x&quot;: Date.UTC(2016, 9, 24), &quot;y&quot;: 5},
+				{&quot;x&quot;: Date.UTC(2016, 9, 31), &quot;y&quot;: 4},
+				{&quot;x&quot;: Date.UTC(2016, 10, 7), &quot;y&quot;: 3},
+				{&quot;x&quot;: Date.UTC(2016, 10, 15), &quot;y&quot;: 2},
+				{&quot;x&quot;: Date.UTC(2016, 10, 23), &quot;y&quot;: 2},
+				{&quot;x&quot;: Date.UTC(2016, 10, 30), &quot;y&quot;: 3},
+				{&quot;x&quot;: Date.UTC(2016, 11, 7), &quot;y&quot;: 2},
+				{&quot;x&quot;: Date.UTC(2016, 11, 14), &quot;y&quot;: 2},
+				{&quot;x&quot;: Date.UTC(2016, 11, 20), &quot;y&quot;: 2},
+				{&quot;x&quot;: Date.UTC(2016, 11, 25), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2016, 11, 31), &quot;y&quot;: 0}
+			]
+		},
+		{
+			&quot;color&quot;: &quot;#8E44AD&quot;,
+			&quot;name&quot;: &quot;Accepted&quot;,
+			&quot;type&quot;: &quot;area&quot;,
+			&quot;data&quot;: [
+				{&quot;x&quot;: Date.UTC(2016, 9, 1), &quot;y&quot;: 1},
+				{&quot;x&quot;: Date.UTC(2016, 9, 8), &quot;y&quot;: 4},
+				{&quot;x&quot;: Date.UTC(2016, 9, 16), &quot;y&quot;: 5},
+				{&quot;x&quot;: Date.UTC(2016, 9, 24), &quot;y&quot;: 2},
+				{&quot;x&quot;: Date.UTC(2016, 9, 31), &quot;y&quot;: 3},
+				{&quot;x&quot;: Date.UTC(2016, 10, 7), &quot;y&quot;: 2},
+				{&quot;x&quot;: Date.UTC(2016, 10, 15), &quot;y&quot;: 1},
+				{&quot;x&quot;: Date.UTC(2016, 10, 23), &quot;y&quot;: 1},
+				{&quot;x&quot;: Date.UTC(2016, 10, 30), &quot;y&quot;: 2},
+				{&quot;x&quot;: Date.UTC(2016, 11, 7), &quot;y&quot;: 1},
+				{&quot;x&quot;: Date.UTC(2016, 11, 14), &quot;y&quot;: 1},
+				{&quot;x&quot;: Date.UTC(2016, 11, 20), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2016, 11, 25), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2016, 11, 31), &quot;y&quot;: 0}
+			]
+		},
+		{
+			&quot;color&quot;: &quot;#9B59B6&quot;,
+			&quot;name&quot;: &quot;Reviewed&quot;,
+			&quot;type&quot;: &quot;area&quot;,
+			&quot;data&quot;: [
+				{&quot;x&quot;: Date.UTC(2016, 9, 1), &quot;y&quot;: 2},
+				{&quot;x&quot;: Date.UTC(2016, 9, 8), &quot;y&quot;: 2},
+				{&quot;x&quot;: Date.UTC(2016, 9, 16), &quot;y&quot;: 1},
+				{&quot;x&quot;: Date.UTC(2016, 9, 24), &quot;y&quot;: 1},
+				{&quot;x&quot;: Date.UTC(2016, 9, 31), &quot;y&quot;: 1},
+				{&quot;x&quot;: Date.UTC(2016, 10, 7), &quot;y&quot;: 1},
+				{&quot;x&quot;: Date.UTC(2016, 10, 15), &quot;y&quot;: 1},
+				{&quot;x&quot;: Date.UTC(2016, 10, 23), &quot;y&quot;: 2},
+				{&quot;x&quot;: Date.UTC(2016, 10, 30), &quot;y&quot;: 1},
+				{&quot;x&quot;: Date.UTC(2016, 11, 7), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2016, 11, 14), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2016, 11, 20), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2016, 11, 25), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2016, 11, 31), &quot;y&quot;: 0}
+			]
+		},
+		{
+			&quot;color&quot;: &quot;#2980B9&quot;,
+			&quot;name&quot;: &quot;Draft&quot;,
+			&quot;type&quot;: &quot;area&quot;,
+			&quot;data&quot;: [
+				{&quot;x&quot;: Date.UTC(2016, 9, 1), &quot;y&quot;: 5},
+				{&quot;x&quot;: Date.UTC(2016, 9, 8), &quot;y&quot;: 1},
+				{&quot;x&quot;: Date.UTC(2016, 9, 16), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2016, 9, 24), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2016, 9, 31), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2016, 10, 7), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2016, 10, 15), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2016, 10, 23), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2016, 10, 30), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2016, 11, 7), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2016, 11, 14), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2016, 11, 20), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2016, 11, 25), &quot;y&quot;: 0},
+				{&quot;x&quot;: Date.UTC(2016, 11, 31), &quot;y&quot;: 0}
+			]
+		}
+	]
+};
+
+        </sub>
+      </sub>
+      <sub id="advanced">
+        <sub id="height"></sub><sub id="width"></sub>
+      </sub>
+    </span>
+  </div>
+  <p id="polarion_client22"></p>
+</div>
+<div class="polarion-rp-column" style="width: 30%;">
+  <div id="polarion_client25" class="polarion-rp-widget-part" data-widget="com.polarion.scriptBlock">
+    <span class="polarion-rp-widget-parameters" style="display: none;">
+      <sub id="script">
+        <sub id="script" style="white-space:pre;">###############################################################################
+##
+## Status Bar and Icons
+## com.polarion.alm.shared.api.model.rp.widget.RichPageWidgetRenderingContext $widgetContext
+## com.polarion.alm.shared.api.model.plan.Plan $plan
+##
+&lt;style&gt;
+	.plan-bluepanel {
+		background-color: #EDF6FF;
+		padding: 20px;
+		border-radius: 5px;
+		margin: auto;
+		text-align: left;
+	}
+	.plan-links {
+		padding-bottom: 5px;
+		padding-left: 30px;
+	}
+	.plan-links &gt; a {
+		padding-left: 5px;
+		padding-right: 5px;
+		font-weight: bold;
+	}
+	.plan-links img {
+		padding-right: 3px;
+	}
+&lt;/style&gt;
+
+#set($projectId = $plan.getReference().projectId())
+#set($planId = $plan.getReference().id())
+&lt;div class=&quot;plan-bluepanel&quot;&gt;
+	&lt;div style=&quot;text-align: center;&quot;&gt;
+		&lt;span class=&quot;polarion-rp-inline-widget&quot; data-widget=&quot;com.polarion.planStatusButton&quot; style=&quot;display: block; width: 316px; margin: 0 auto;&quot;&gt;
+			&lt;span class=&quot;polarion-rp-widget-parameters&quot;&gt;&lt;/span&gt;
+		&lt;/span&gt;
+	&lt;/div&gt;
+    &lt;br/&gt;
+    &lt;div class=&quot;plan-links&quot;&gt;
+		&lt;a target=&quot;_top&quot; href=&quot;$pageContext.browseAllPlannedLink&quot;&gt;&lt;img src=&quot;/polarion/icons/default/actions/openInTable.png&quot;/&gt;Open in Table&lt;/a&gt;
+		&lt;br/&gt;&lt;br/&gt;
+		#if($plan.fields().capacity().is().empty())
+			#set($link = $transaction.context().createPortalLink().project(&quot;$projectId&quot;).plan(&quot;$planId&quot;).toEncodedRelativeUrl())
+			&lt;a href=&#39;$link&amp;tab=properties&#39; target=&#39;_top&#39;&gt;&lt;img src=&quot;/polarion/icons/default/enums/testrun_type_loadtest.png&quot;/&gt;Set Capacity&lt;/a&gt;
+			&lt;br/&gt;&lt;br/&gt;
+		#end
+		#if(!$plan.fields().dueDate().get() || !$plan.fields().startDate().get())
+			#set($link = $transaction.context().createPortalLink().project(&quot;$projectId&quot;).plan(&quot;$planId&quot;).tabProperties().toEncodedRelativeUrl())
+			&lt;a target=&quot;_top&quot; href=&quot;$pageContext.addWorkItemsLink&quot;&gt;&lt;img src=&quot;/polarion/icons/default/enums/testrun_status_inprogress.png&quot;/&gt;Set Start and Due Dates&lt;/a&gt;
+			&lt;br/&gt;&lt;br/&gt;
+		#end
+		#if(!$pageContext.releaseWorkItemID &amp;&amp; !$pageContext.releaseWorkItemLink)
+			#set($createReleaseLink = &quot;$transaction.context().createPortalLink().project($pageContext.projectId).workItems().toEncodedRelativeUrl()/release?form_mode=create&amp;amp;form_field_type=release&quot;)
+			&lt;a href=&#39;$createReleaseLink&#39; target=&#39;_top&#39;&gt;&lt;img src=&quot;/polarion/icons/default/enums/type_work_package.png&quot;/&gt;Create Release Work Item for this Release Plan&lt;/a&gt;
+			&lt;br/&gt;&lt;br/&gt;
+		#end
+		&lt;a target=&quot;_top&quot; href=&quot;$pageContext.addWorkItemsLink&quot;&gt;&lt;img src=&quot;/polarion/icons/default/actions/create_link.gif&quot;/&gt;Add Work Items to the Plan&lt;/a&gt;
+		&lt;br/&gt;&lt;br/&gt;
+		#set($link = $plan.utils().getPrioritizationLink().toEncodedRelativeUrl())
+		&lt;a target=&quot;_top&quot; href=&quot;$link&quot;&gt;&lt;img src=&quot;/polarion/icons/default/actions/prioritizePlan.png&quot;/&gt;Prioritize Planned Items&lt;/a&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</sub>
+      </sub>
+    </span>
+  </div>
+  <p id="polarion_client23"></p>
+</div>
+<div class="polarion-rp-row-separator"></div>
+<div class="polarion-rp-column" style="width: 70%;">
+  <h2 id="polarion_client56">Statistics</h2>
+  <div id="polarion_client59" class="polarion-rp-widget-part" data-widget="com.polarion.scriptBlock">
+    <span class="polarion-rp-widget-parameters" style="display: none;">
+      <sub id="script">
+        <sub id="script" style="white-space:pre;">###############################################################################
+##
+## Statistics
+##
+## com.polarion.alm.shared.api.transaction.ReadOnlyTransaction $transaction
+## com.polarion.alm.shared.api.model.rp.widget.RichPageWidgetRenderingContext $widgetContext
+## com.polarion.alm.shared.api.model.plan.Plan $plan
+##
+&lt;style&gt;
+	.statistics a {
+		font-weight: bold !important;
+		font-size: 14px;
+		color: black !important;
+		padding-left: 5px;
+		padding-right: 2px;
+	}
+&lt;/style&gt;
+
+#macro(tableLine $label $value)
+	&lt;tr&gt;
+		&lt;td nowrap align=&quot;right&quot; style=&quot;width: 120px;&quot;&gt;
+			$label:
+		&lt;/td&gt;
+		&lt;td nowrap align=&quot;left&quot; style=&quot;padding-left :5px; font-weight: bold;&quot;&gt;
+			$value
+		&lt;/td&gt;
+	&lt;/tr&gt;
+#end
+
+#set($scope = &quot;$pageContext.projectId&quot;)
+#if(!$plan.fields().projectSpan().isEmpty())
+	#foreach($project in $plan.fields().projectSpan())
+		#set($scope = &quot;$scope $project.getReference().projectId()&quot;)
+	#end
+#end
+#if($plan.fields().allowedTypes().isEmpty())
+	$widgetContext.renderWarning(&quot;Statistics cannot be displayed, because no allowed type is configured.&quot;)
+#else
+	#set($topLevelWiType = $plan.fields().allowedTypes().iterator().next().id())
+	#set($stats = $plan.statistics())
+	#set($planQuery = $pageContext.planQuery)
+	&lt;table style=&quot;line-height: 2; width: 100%;&quot; class=&quot;statistics&quot;&gt;
+		&lt;tr&gt;
+			&lt;td style=&quot;min-width: 300px;&quot;&gt;
+				&lt;div class=&quot;polarion-rp-widget-part&quot; data-widget=&quot;com.polarion.separateByPieChart&quot;&gt;
+					&lt;span class=&quot;polarion-rp-widget-parameters&quot;&gt;
+						&lt;sub id=&quot;title&quot;&gt;&lt;/sub&gt;
+						&lt;sub id=&quot;dataSet&quot;&gt;
+							&lt;sub id=&quot;scope&quot;&gt;$pageContext.scope&lt;/sub&gt;
+							&lt;sub id=&quot;prototype&quot;&gt;WorkItem&lt;/sub&gt;
+							&lt;sub id=&quot;subtype&quot;&gt;$topLevelWiType&lt;/sub&gt;
+							&lt;sub id=&quot;queryType&quot;&gt;lucene&lt;/sub&gt;
+							&lt;sub id=&quot;luceneQuery&quot;&gt;$pageContext.planQuery&lt;/sub&gt;
+							&lt;sub id=&quot;children&quot;&gt;
+								&lt;sub id=&quot;separateBy&quot;&gt;
+									&lt;sub id=&quot;field&quot;&gt;status&lt;/sub&gt;
+								&lt;/sub&gt;
+							&lt;/sub&gt;
+						&lt;/sub&gt;
+						&lt;sub id=&quot;showDataLabels&quot;&gt;true&lt;/sub&gt;
+						&lt;sub id=&quot;showZeroValues&quot;&gt;false&lt;/sub&gt;
+						&lt;sub id=&quot;advanced&quot;&gt;
+							&lt;sub id=&quot;height&quot;&gt;150px&lt;/sub&gt;
+							&lt;sub id=&quot;width&quot;&gt;300px&lt;/sub&gt;
+						&lt;/sub&gt;
+					&lt;/span&gt;
+				&lt;/div&gt;
+			&lt;/td&gt;
+			&lt;td style=&quot;vertical-align: top;&quot;&gt;
+				&lt;b&gt;$transaction.workItems().count().query(&quot;project.id:($scope) AND $planQuery&quot;).result()&lt;/b&gt; Planned Work Items&lt;/br&gt;
+				#set($statuses = $transaction.enumerations().getEnumeration(&quot;status&quot;).forType(&quot;$topLevelWiType&quot;).forProject(&quot;$pageContext.projectId&quot;).options())
+				#foreach($status in $statuses)
+					&lt;b&gt;$transaction.workItems().count().query(&quot;project.id:($scope) AND status:$status.id AND $planQuery&quot;).result()&lt;/b&gt;
+					$status.render()&lt;/br&gt;
+				#end
+			&lt;/td&gt;
+			&lt;td style=&quot;vertical-align: top;&quot;&gt;
+				&lt;table cellspacing=&quot;0&quot; cellpadding=&quot;0&quot;&gt;
+					#tableLine(&quot;Start Date&quot; &quot;$!plan.fields().startDate().render()&quot;)
+					#tableLine(&quot;End Date&quot; &quot;$!plan.fields().dueDate().render()&quot;)
+					#tableLine(&quot;Remaining Work&quot; &quot;$stats.todoAsString()&quot;)
+					#tableLine(&quot;Work Done&quot; &quot;$stats.doneAsString() ($stats.progressAsString())&quot;)
+					#tableLine(&quot;Ideal Progress&quot; &quot;$stats.idealProgressAsString()&quot;)
+					#tableLine(&quot;Total Work&quot; &quot;$stats.plannedAsString()&quot;)
+				&lt;/table&gt;
+			&lt;/td&gt;
+			#if($pageContext.releaseWorkItemID)
+				#set($releaseWI = $transaction.workItems().getBy().ids(&quot;$pageContext.projectId&quot;, &quot;$pageContext.releaseWorkItemID&quot;))
+				&lt;td style=&quot;vertical-align: top;&quot;&gt;
+
+					## Sidebar Preparation START
+					#set($builderWithSidebar = $transaction.context().createHtmlFragmentBuilderFor().rpeView())
+					## Sidebar: Configure displayed fields - #set($displayedFields = [&quot;field1&quot;, &quot;field2&quot;, ...]
+					#set($displayedFields = [&quot;releasePlan&quot;, &quot;status&quot;, &quot;resolution&quot;, &quot;releasePM&quot;, &quot;releaseQA&quot;, &quot;featureFreezeDate&quot;, &quot;codeFreezeDate&quot;, &quot;publicLaunch&quot;, &quot;build&quot;, &quot;buildId&quot;, &quot;releaseTestEvidence&quot;, &quot;linkedWorkItems&quot;])
+					## Sidebar: Choose unique ID - #set($myContainerId = &quot;myUniqueId&quot;)
+					#set($myContainerId = &quot;statisticsWithSidebar&quot;)
+					#set($sidebarConfiguration = $renderingContext.propertiesSidebarConfiguration().containerId(&quot;$myContainerId&quot;).fieldIds($displayedFields).addTo($builderWithSidebar))
+					#set($pathAttr = $sidebarConfiguration.attributes().referencePath())
+					#set($clickClass = $sidebarConfiguration.attributes().clickableCssClass())
+					## Sidebar Configuration END
+
+					## Sidebar: Assign a unique ID to the table that contains lines that should be clickable - &lt;table id=&quot;$myContainerId&quot;&gt;
+					&lt;table class=&quot;polarion-rpw-table-main&quot; cellspacing=&quot;0&quot; cellpadding=&quot;0&quot; id=&quot;$myContainerId&quot;&gt;
+						#set($main = $transaction.context().createPortalLink().project(&quot;$pageContext.projectId&quot;).document(&quot;Planning&quot;, &quot;Release Report&quot;).toEncodedRelativeUrl())
+						#set($itemLink = &quot;$main?item=$releaseWI.getReference().id()&quot;)
+						## Sidebar: Add click class to each row - &lt;tr class=&quot;$clickClass&quot;&gt;
+						## Sidebar: Add path to the Work Item for each row - &lt;tr $pathAttr=&quot;$workItem.getReference().toPath()&quot;&gt;
+						&lt;tr class=&quot;polarion-rpw-table-content-row $clickClass&quot; $pathAttr=&quot;$releaseWI.getReference().toPath()&quot;&gt;
+							&lt;td nowrap align=&quot;right&quot; style=&quot;width: 120px; vertical-align: inherit; padding: 0px; border-bottom: none;&quot;&gt;
+								Release Item:
+							&lt;/td&gt;
+							&lt;td nowrap align=&quot;left&quot; style=&quot;font-weight: bold; vertical-align: inherit; padding: 0px; border-bottom: none;&quot;&gt;
+								$releaseWI.render().withLinks().withTitle() &lt;a href=&#39;$itemLink&#39; target=&#39;_top&#39; style=&#39;padding: 0px; color: #0277BB !important; font-size: inherit;&#39;&gt;(Report)&lt;/a&gt;
+							&lt;/td&gt;
+						&lt;/tr&gt;
+						#tableLine(&quot;Status&quot; &quot;$releaseWI.fields().status().render()&quot;)
+						#tableLine(&quot;Release QA&quot; &quot;$releaseWI.fields().get(&#39;releaseQA&#39;).render()&quot;)
+						#tableLine(&quot;Release PM&quot; &quot;$releaseWI.fields().get(&#39;releasePM&#39;).render()&quot;)
+						#tableLine(&quot;Feature Freeze&quot; &quot;$releaseWI.fields().get(&#39;featureFreezeDate&#39;).render()&quot;)
+						#tableLine(&quot;Code Freeze&quot; &quot;$releaseWI.fields().get(&#39;codeFreezeDate&#39;).render()&quot;)
+						#tableLine(&quot;Public Launch&quot; &quot;$releaseWI.fields().get(&#39;publicLaunch&#39;).render()&quot;)
+						#tableLine(&quot;Build ID&quot; &quot;$releaseWI.fields().get(&#39;buildId&#39;).render()&quot;)
+						#set($buildId = &quot;$releaseWI.fields().get(&#39;build&#39;).get().fields().id().get()&quot;)
+						#set($buildLink = $transaction.context().createPortalLink().project(&quot;$pageContext.projectId&quot;).build(&quot;$buildId&quot;).toEncodedRelativeUrl())
+						#tableLine(&quot;Build&quot; &quot;&lt;a href=&#39;$buildLink&#39; target=&#39;_top&#39; style=&#39;padding-left: 0px;&#39;&gt;$releaseWI.fields().get(&#39;build&#39;).render()&lt;/a&gt;&quot;)
+					&lt;/table&gt;
+					## Sidebar: Render helper HTML fragment
+					$builderWithSidebar
+				&lt;/td&gt;
+			#end
+		&lt;/tr&gt;
+		#if($pageContext.releaseWorkItemID &amp;&amp; !$releaseWI.fields().get(&#39;qaAssessment&#39;).is().empty())
+			&lt;tr&gt;
+				&lt;td style=&quot;min-width: 300px;&quot;&gt;&lt;/td&gt;
+				&lt;td&gt;Release QA Assessment:&lt;/td&gt;
+				&lt;td colspan=&quot;2&quot; style=&quot;max-width: 600px;&quot;&gt;$releaseWI.fields().get(&#39;qaAssessment&#39;).render()&lt;/td&gt;
+			&lt;/tr&gt;
+		#end
+	&lt;/table&gt;
+#end</sub>
+      </sub>
+    </span>
+  </div>
+  <h2 id="polarion_client20">Epics</h2>
+  <h3 id="polarion_client44">Targeted Epics</h3>
+  <div id="polarion_client50" class="polarion-rp-widget-part" data-widget="com.polarion.scriptBlock">
+    <span class="polarion-rp-widget-parameters" style="display: none;">
+      <sub id="script">
+        <sub id="script" style="white-space:pre;">#info(&quot;To target an Epic for a Release Plan set it in its &lt;b&gt;Target Version&lt;/b&gt; custom field.&quot;)</sub>
+      </sub>
+    </span>
+  </div>
+  <div id="polarion_1" class="polarion-rp-widget-part" data-widget="com.polarion.scriptBlock">
+    <span class="polarion-rp-widget-parameters">
+      <sub id="script">
+        <sub id="script" style="white-space:pre;">###############################################################################
+##
+## Targeted Epics
+##
+#set($query = &quot;project.id:$pageContext.projectId AND targetVersion.KEY:$pageContext.planId&quot;)
+#set($epicCount = $transaction.workItems().count().query(&quot;$query&quot;).result())
+#if($epicCount == 0)
+	$widgetContext.renderWarning(&quot;No Epics are targeted for this Release. Set &lt;b&gt;Target Version&lt;/b&gt; for an Epic to plan it.&quot;)
+#else
+	&lt;div id=&quot;wiSidebarTargetedEpics&quot; class=&quot;polarion-rp-widget-part&quot; data-widget=&quot;com.polarion.table&quot;&gt;
+		&lt;span class=&quot;polarion-rp-widget-parameters&quot;&gt;
+			&lt;sub id=&quot;dataSet&quot;&gt;
+				&lt;sub id=&quot;prototype&quot;&gt;WorkItem&lt;/sub&gt;
+				&lt;sub id=&quot;subtype&quot;&gt;epic&lt;/sub&gt;
+				&lt;sub id=&quot;queryType&quot;&gt;lucene&lt;/sub&gt;
+				&lt;sub id=&quot;luceneQuery&quot;&gt;targetVersion.KEY:$pageContext.planId&lt;/sub&gt;
+				&lt;sub id=&quot;children&quot;&gt;
+					&lt;sub id=&quot;columns&quot;&gt;
+						&lt;sub&gt;
+							&lt;sub id=&quot;id&quot;&gt;id&lt;/sub&gt;
+						&lt;/sub&gt;
+						&lt;sub&gt;
+							&lt;sub id=&quot;id&quot;&gt;title&lt;/sub&gt;
+						&lt;/sub&gt;
+						&lt;sub&gt;
+							&lt;sub id=&quot;id&quot;&gt;status&lt;/sub&gt;
+						&lt;/sub&gt;
+						&lt;sub&gt;
+							&lt;sub id=&quot;id&quot;&gt;priority&lt;/sub&gt;
+						&lt;/sub&gt;
+						&lt;sub&gt;
+							&lt;sub id=&quot;id&quot;&gt;epicEstimate&lt;/sub&gt;
+						&lt;/sub&gt;
+						&lt;sub&gt;
+							&lt;sub id=&quot;id&quot;&gt;initialEstimate&lt;/sub&gt;
+						&lt;/sub&gt;
+						&lt;sub&gt;
+							&lt;sub id=&quot;id&quot;&gt;timeSpent&lt;/sub&gt;
+						&lt;/sub&gt;
+						&lt;sub&gt;
+							&lt;sub id=&quot;id&quot;&gt;remainingEstimate&lt;/sub&gt;
+						&lt;/sub&gt;
+					&lt;/sub&gt;
+					&lt;sub id=&quot;sortBy&quot;&gt;
+						&lt;sub&gt;
+							&lt;sub id=&quot;id&quot;&gt;priority&lt;/sub&gt;
+							&lt;sub id=&quot;descending&quot;&gt;true&lt;/sub&gt;
+						&lt;/sub&gt;
+					&lt;/sub&gt;
+				&lt;/sub&gt;
+			&lt;/sub&gt;
+            &lt;sub id=&quot;propertiesSidebarFields&quot;&gt;
+				&lt;sub&gt;
+					&lt;sub id=&quot;id&quot;&gt;assignee&lt;/sub&gt;
+				&lt;/sub&gt;
+				&lt;sub&gt;
+					&lt;sub id=&quot;id&quot;&gt;severity&lt;/sub&gt;
+				&lt;/sub&gt;
+				&lt;sub&gt;
+					&lt;sub id=&quot;id&quot;&gt;priority&lt;/sub&gt;
+				&lt;/sub&gt;
+				&lt;sub&gt;
+					&lt;sub id=&quot;id&quot;&gt;epicEstimate&lt;/sub&gt;
+				&lt;/sub&gt;
+				&lt;sub&gt;
+					&lt;sub id=&quot;id&quot;&gt;targetVersion&lt;/sub&gt;
+				&lt;/sub&gt;
+				&lt;sub&gt;
+					&lt;sub id=&quot;id&quot;&gt;status&lt;/sub&gt;
+				&lt;/sub&gt;
+				&lt;sub&gt;
+					&lt;sub id=&quot;id&quot;&gt;resolution&lt;/sub&gt;
+				&lt;/sub&gt;
+				&lt;sub&gt;
+					&lt;sub id=&quot;id&quot;&gt;linkedWorkItems&lt;/sub&gt;
+				&lt;/sub&gt;
+			&lt;/sub&gt;
+			&lt;sub id=&quot;advanced&quot;&gt;
+				&lt;sub id=&quot;top&quot;&gt;20&lt;/sub&gt;
+			&lt;/sub&gt;
+		&lt;/span&gt;
+	&lt;/div&gt;
+#end</sub>
+      </sub>
+    </span>
+  </div>
+  <h3 id="polarion_client38">Additional Epics</h3>
+  <div id="polarion_client47" class="polarion-rp-widget-part" data-widget="com.polarion.scriptBlock">
+    <span class="polarion-rp-widget-parameters" style="display: none;">
+      <sub id="script">
+        <sub id="script" style="white-space:pre;">#info(&quot;Additional Epics belong to the User Stories planned in this Release Plan but are &lt;b&gt;not targeted&lt;/b&gt; for this particular Release.&quot;)</sub>
+      </sub>
+    </span>
+  </div>
+  <div id="polarion_client35" class="polarion-rp-widget-part" data-widget="com.polarion.scriptBlock">
+    <span class="polarion-rp-widget-parameters">
+      <sub id="script">
+        <sub id="script" style="white-space:pre;">###############################################################################
+##
+## Additional Epics
+##
+#set($additionalEpicIds = &quot;&quot;)
+#set($additionalEpicsSet = $objectFactory.newSet())
+#foreach($planned in $plan.items())
+	#foreach($linkedItem in $planned.fields().linkedWorkItems().direct())
+		#set($item = $linkedItem.fields().workItem().get())
+		#set($linkRole = $linkedItem.fields().role().optionId())
+		#if($item.fields().type().optionId().equals(&quot;epic&quot;) &amp;&amp; ($linkRole.equals(&quot;parent&quot;) || $linkRole.equals(&quot;implements&quot;)))
+			#if(!$additionalEpicsSet.contains($item))
+				#set($void = $additionalEpicsSet.add($item))
+				#set($additionalEpicIds = &quot;$additionalEpicIds $item.getReference().id()&quot;)
+			#end
+		#end
+	#end
+#end
+#if($additionalEpicIds.equals(&quot;&quot;))
+	#set($additionalEpicIds = &quot;no_additional_epics_found&quot;)
+#end
+#set($query = &quot;id:($additionalEpicIds.trim()) AND NOT (project.id:$pageContext.projectId AND targetVersion.KEY:$pageContext.planId)&quot;)
+#set($epicCount = $transaction.workItems().count().query(&quot;$query&quot;).result())
+#if($epicCount == 0)
+	$widgetContext.renderWarning(&quot;You are currently not working on any &lt;b&gt;Additional Epics&lt;/b&gt;.&quot;)
+#else
+	&lt;div id=&quot;wiSidebarAdditionalEpics&quot; class=&quot;polarion-rp-widget-part&quot; data-widget=&quot;com.polarion.table&quot;&gt;
+		&lt;span class=&quot;polarion-rp-widget-parameters&quot;&gt;
+			&lt;sub id=&quot;dataSet&quot;&gt;
+				&lt;sub id=&quot;prototype&quot;&gt;WorkItem&lt;/sub&gt;
+				&lt;sub id=&quot;subtype&quot;&gt;epic&lt;/sub&gt;
+				&lt;sub id=&quot;queryType&quot;&gt;lucene&lt;/sub&gt;
+				&lt;sub id=&quot;luceneQuery&quot;&gt;$query&lt;/sub&gt;
+				&lt;sub id=&quot;children&quot;&gt;
+					&lt;sub id=&quot;columns&quot;&gt;
+						&lt;sub&gt;
+							&lt;sub id=&quot;id&quot;&gt;id&lt;/sub&gt;
+						&lt;/sub&gt;
+						&lt;sub&gt;
+							&lt;sub id=&quot;id&quot;&gt;title&lt;/sub&gt;
+						&lt;/sub&gt;
+						&lt;sub&gt;
+							&lt;sub id=&quot;id&quot;&gt;status&lt;/sub&gt;
+						&lt;/sub&gt;
+						&lt;sub&gt;
+							&lt;sub id=&quot;id&quot;&gt;priority&lt;/sub&gt;
+						&lt;/sub&gt;
+						&lt;sub&gt;
+							&lt;sub id=&quot;id&quot;&gt;epicEstimate&lt;/sub&gt;
+						&lt;/sub&gt;
+						&lt;sub&gt;
+							&lt;sub id=&quot;id&quot;&gt;initialEstimate&lt;/sub&gt;
+						&lt;/sub&gt;
+						&lt;sub&gt;
+							&lt;sub id=&quot;id&quot;&gt;timeSpent&lt;/sub&gt;
+						&lt;/sub&gt;
+						&lt;sub&gt;
+							&lt;sub id=&quot;id&quot;&gt;remainingEstimate&lt;/sub&gt;
+						&lt;/sub&gt;
+					&lt;/sub&gt;
+					&lt;sub id=&quot;sortBy&quot;&gt;
+						&lt;sub&gt;
+							&lt;sub id=&quot;id&quot;&gt;priority&lt;/sub&gt;
+							&lt;sub id=&quot;descending&quot;&gt;true&lt;/sub&gt;
+						&lt;/sub&gt;
+					&lt;/sub&gt;
+				&lt;/sub&gt;
+			&lt;/sub&gt;
+           	&lt;sub id=&quot;propertiesSidebarFields&quot;&gt;
+				&lt;sub&gt;
+					&lt;sub id=&quot;id&quot;&gt;assignee&lt;/sub&gt;
+				&lt;/sub&gt;
+				&lt;sub&gt;
+					&lt;sub id=&quot;id&quot;&gt;severity&lt;/sub&gt;
+				&lt;/sub&gt;
+				&lt;sub&gt;
+					&lt;sub id=&quot;id&quot;&gt;priority&lt;/sub&gt;
+				&lt;/sub&gt;
+				&lt;sub&gt;
+					&lt;sub id=&quot;id&quot;&gt;epicEstimate&lt;/sub&gt;
+				&lt;/sub&gt;
+				&lt;sub&gt;
+					&lt;sub id=&quot;id&quot;&gt;targetVersion&lt;/sub&gt;
+				&lt;/sub&gt;
+				&lt;sub&gt;
+					&lt;sub id=&quot;id&quot;&gt;status&lt;/sub&gt;
+				&lt;/sub&gt;
+				&lt;sub&gt;
+					&lt;sub id=&quot;id&quot;&gt;resolution&lt;/sub&gt;
+				&lt;/sub&gt;
+				&lt;sub&gt;
+					&lt;sub id=&quot;id&quot;&gt;linkedWorkItems&lt;/sub&gt;
+				&lt;/sub&gt;
+			&lt;/sub&gt;
+			&lt;sub id=&quot;advanced&quot;&gt;
+				&lt;sub id=&quot;top&quot;&gt;20&lt;/sub&gt;
+			&lt;/sub&gt;
+		&lt;/span&gt;
+	&lt;/div&gt;
+#end</sub>
+      </sub>
+    </span>
+  </div>
+  <h2 id="polarion_client37">Plan</h2>
+  <div id="polarion_client10" class="polarion-rp-widget-part" data-widget="com.siemens.polarion.kanbanBoard">
+    <span class="polarion-rp-widget-parameters" style="display: none;">
+      <sub id="dataSet">
+        <sub id="prototype">WorkItem</sub>
+        <sub id="subtype">userstory</sub>
+        <sub id="queryType">luceneVelocity</sub>
+        <sub id="luceneQuery" style="white-space:pre;">$pageContext.planQuery</sub>
+      </sub>
+      <sub id="columns">
+        <sub id="elements">
+          <sub>
+            <sub id="columnTitle">Planned</sub>
+            <sub id="columnStatuses">
+              <sub id="values">
+                <sub>draft</sub>
+                <sub>reviewed</sub>
+              </sub>
+            </sub>
+            <sub id="sortBy">
+              <sub>
+                <sub id="id">status</sub>
+                <sub id="descending">true</sub>
+              </sub>
+              <sub>
+                <sub id="id">priority</sub>
+                <sub id="descending">true</sub>
+              </sub>
+            </sub>
+          </sub>
+          <sub>
+            <sub id="columnTitle">Accepted</sub>
+            <sub id="columnStatuses">
+              <sub id="values">
+                <sub>accepted</sub>
+              </sub>
+            </sub>
+            <sub id="sortBy">
+              <sub>
+                <sub id="id">priority</sub>
+                <sub id="descending">true</sub>
+              </sub>
+            </sub>
+          </sub>
+          <sub>
+            <sub id="columnTitle">In Process</sub>
+            <sub id="columnStatuses">
+              <sub id="values">
+                <sub>inprogress</sub>
+                <sub>changesneeded</sub>
+              </sub>
+            </sub>
+            <sub id="sortBy">
+              <sub>
+                <sub id="id">priority</sub>
+                <sub id="descending">true</sub>
+              </sub>
+            </sub>
+          </sub>
+          <sub>
+            <sub id="columnTitle">Implemented</sub>
+            <sub id="columnStatuses">
+              <sub id="values">
+                <sub>implemented</sub>
+              </sub>
+            </sub>
+            <sub id="sortBy">
+              <sub>
+                <sub id="id">priority</sub>
+                <sub id="descending">true</sub>
+              </sub>
+            </sub>
+          </sub>
+          <sub>
+            <sub id="columnTitle">Resolved</sub>
+            <sub id="columnStatuses">
+              <sub id="values">
+                <sub>verified</sub>
+                <sub>rejected</sub>
+              </sub>
+            </sub>
+            <sub id="sortBy">
+              <sub>
+                <sub id="id">priority</sub>
+                <sub id="descending">true</sub>
+              </sub>
+            </sub>
+          </sub>
+        </sub>
+      </sub>
+      <sub id="propertiesSidebarFields">
+        <sub>
+          <sub id="id">assignee</sub>
+        </sub>
+        <sub>
+          <sub id="id">severity</sub>
+        </sub>
+        <sub>
+          <sub id="id">priority</sub>
+        </sub>
+        <sub>
+          <sub id="id">status</sub>
+        </sub>
+        <sub>
+          <sub id="id">resolution</sub>
+        </sub>
+        <sub>
+          <sub id="id">storyPoints</sub>
+        </sub>
+        <sub>
+          <sub id="id">initialEstimate</sub>
+        </sub>
+        <sub>
+          <sub id="id">remainingEstimate</sub>
+        </sub>
+        <sub>
+          <sub id="id">timeSpent</sub>
+        </sub>
+        <sub>
+          <sub id="id">plannedIn</sub>
+        </sub>
+        <sub>
+          <sub id="id">linkedWorkItems</sub>
+        </sub>
+      </sub>
+      <sub id="advanced">
+        <sub id="topItemsPerColumn">50</sub>
+        <sub id="enableCustomization">true</sub>
+        <sub id="compositeBoardScript">
+          <sub id="boardScript">
+            <sub id="script" style="white-space:pre;">## This is an example on how to customize the appearance of the Kanban Board cards. It approximates the original Java rendering.
+## Below are the styles used in the Card Script.
+
+&lt;style&gt;
+	.kanbanWorkItemDiv {
+		padding: 7px 3px 3px 7px;
+		box-sizing: border-box;
+		border-left: 5px solid;
+		border-right: 1px solid #EEEEEE;
+		border-top: 1px solid #EEEEEE;
+		border-bottom: 1px solid #EEEEEE;
+		border-radius: 5px;
+		position: relative;
+	}
+	.kanbanWorkItemDivSmall {
+		padding: 0px 3px 0px 3px;
+		box-sizing: border-box;
+		border-left: 5px solid;
+		border-right: 1px solid #EEEEEE;
+		border-top: 1px solid #EEEEEE;
+		border-bottom: 1px solid #EEEEEE;
+		border-radius: 5px;
+		position: relative;
+	}
+	.kanbanWorkItemTitleDiv {
+		height: 38px;
+		vertical-align: top;
+		overflow: hidden;
+		font-size: 12px;
+		color: #0E4A90;
+		padding: 2px 4px 0px 2px;
+		position: relative;
+		line-height: 15px;
+		word-break: break-all;
+		word-wrap: break-word;
+		border-collapse: separate;
+	}
+	.kanbanWorkItemTitleGradientDiv {
+		bottom: 0px;
+		height: 12px;
+		left: 0;
+		position: absolute;
+		width: 100%;
+		display: inline-block;
+		background: linear-gradient(to bottom, rgba(255, 255, 255, 0), white) repeat scroll 0 0 rgba(0, 0, 0, 0);
+		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=&#39;#00FFFFFF&#39;, endColorstr=&#39;#FFFFFFFF&#39;, GradientType=0);
+	}
+	.polarion-sidebar-highlight .kanbanWorkItemTitleGradientDiv {
+		background: none;
+	}
+	.kanbanWorkItemTable {
+		border-spacing: 2px;
+		width: 100%;
+		table-layout: fixed;
+		border-collapse: collapse;
+		height: 38px;
+ 	}
+	.kanbanWorkItemStatusIcon {
+		vertical-align: middle;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		word-break: break-all;
+		word-wrap: break-word;
+		width: 18px;
+	}
+	.kanbanWorkItemID {
+		vertical-align: middle;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		word-break: break-all;
+		word-wrap: break-word;
+		width: 100%;
+	}
+	.kanbanWorkItemAssignee {
+		vertical-align: middle;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		word-break: break-all;
+		word-wrap: break-word;
+		width: 38px;
+	}
+	.kanbanWorkItemAssigneeClosed {
+		white-space: nowrap;
+		text-align: right;
+		padding-right: 4px;
+		color: #A2A2A2;
+		font-size: 11px;
+		text-overflow: ellipsis;
+	}
+	.kanbanWorkItemAssigneeDiv {
+		vertical-align: middle;
+		width: 36px;
+		height: 36px;
+		overflow: hidden;
+		position: relative;
+		padding: 2px;
+	}
+	.kanbanWorkItemAssigneeImg {
+		border: none;
+		vertical-align: middle;
+		width: 36px;
+		height: 36px;
+		float: right;
+		border-radius: 18px;
+	}
+	.kanbanWorkItemAssigneeCountDiv {
+		border-radius: 6px;
+		line-height: 12px;
+		font-size: 9px;
+		text-align: center;
+		top: 26px;
+		left: 26px;
+		height: 12px;
+		width: 12px;
+		margin: 0px;
+		padding: 0px;
+		font-weight: bold;
+		color: white;
+		border: solid 1px white;
+		background-color: grey;
+		position: absolute;
+		overflow: hidden;
+	}
+	.kanbanGreyText {
+		color: #A2A2A2;
+	}
+&lt;/style&gt;
+
+            </sub>
+          </sub>
+        </sub>
+        <sub id="compositeCardScript">
+          <sub id="cardScript">
+            <sub id="script" style="white-space:pre;">## This is an example on how to customize the content of Kanban Board cards.
+##
+## The following additional objects are also available when using velocity customization:
+## $workItem - The Work Item rendered in the card.
+## $columnIndex - The column that the card is rendered on.
+
+#set($wiId = $workItem.getReference().id())
+#set($wiProjectId = $workItem.getReference().projectId())
+#set($wiLink = $transaction.context().createPortalLink().project(&quot;$wiProjectId&quot;).workItem(&quot;$wiId&quot;).toEncodedRelativeUrl())
+#set($wiType = &quot;&quot;)
+#set($wiStatusColor = &quot;white&quot;)
+#set($wiType = $workItem.fields().type().optionIdIfCan())
+#if(!$wiType.equals(&quot;&quot;))
+	#set($wiStatusEnum = $transaction.enumerations().getEnumeration(&quot;status&quot;).forType(&quot;$wiType&quot;).forProject(&quot;$wiProjectId&quot;))
+	#set($wiStatus = $workItem.fields().status().optionId())
+	#set($wiStatusColor = $wiStatusEnum.byId(&quot;$wiStatus&quot;).fields().color().get())
+#end
+#if(!$wiStatus.equals(&quot;verified&quot;) &amp;&amp; !$wiStatus.equals(&quot;rejected&quot;))
+	#set($tableClass = &quot;kanbanWorkItemDiv&quot;)
+#else
+	#set($tableClass = &quot;kanbanWorkItemDivSmall&quot;)
+#end
+&lt;div class=&quot;$tableClass&quot; style=&quot;border-left-color: $wiStatusColor;&quot;&gt;
+	#if(!$wiStatus.equals(&quot;verified&quot;) &amp;&amp; !$wiStatus.equals(&quot;rejected&quot;))
+		&lt;div class=&quot;kanbanWorkItemTitleDiv&quot;&gt;
+			&lt;div class=&quot;kanbanWorkItemTitleGradientDiv&quot;&gt;&lt;/div&gt;
+			&lt;table style=&quot;width: 100%;&quot;&gt;
+				&lt;tr&gt;
+					&lt;td&gt;
+						&lt;a href=&quot;$wiLink&quot; target=&quot;_top&quot; title=&quot;$workItem.fields().title().render()&quot;&gt;$workItem.fields().title().render()&lt;/a&gt;
+					&lt;/td&gt;
+					&lt;td style=&quot;vertical-align: top;&quot;&gt;
+						#set($treeLink = $transaction.context().createPortalLink().project(&quot;$wiProjectId&quot;).workItems().query(&quot;id:$wiId&quot;).toEncodedRelativeUrl())
+						#set($suffix = &#39;&amp;tree_depth=2&amp;tab=tree&#39;)
+						&lt;a href=&quot;$treeLink$suffix&quot; target=&quot;_blank&quot;&gt;
+							&lt;img style=&quot;float: right;&quot; alt=&quot;View Item in a Tree Structure&quot; title=&quot;View Item in a Tree Structure&quot; src=&quot;/polarion/ria/images/details/treetable.gif&quot;/&gt;
+						&lt;/a&gt;
+					&lt;/td&gt;
+				&lt;/tr&gt;
+			&lt;/table&gt;
+		&lt;/div&gt;
+		&lt;table&gt;
+			&lt;tbody&gt;
+				&lt;tr&gt;
+					&lt;td&gt;&lt;span class=&quot;kanbanGreyText&quot;&gt;Priority:&lt;/span&gt; $workItem.fields().priority().render()&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;&lt;span class=&quot;kanbanGreyText&quot;&gt;Estimate in Story Points:&lt;/span&gt; $workItem.fields().get(&quot;storyPoints&quot;).render()&lt;/td&gt;
+				&lt;tr&gt;
+			&lt;/tbody&gt;
+		&lt;/table&gt;
+	#end
+	&lt;table class=&quot;kanbanWorkItemTable&quot;&gt;
+		&lt;tbody&gt;
+			&lt;tr&gt;
+				&lt;td class=&quot;kanbanWorkItemStatusIcon&quot;&gt;
+					$workItem.fields().status().render().withText(false)
+				&lt;/td&gt;
+				&lt;td class=&quot;kanbanWorkItemID&quot;&gt;
+					$workItem.render().withLinks()
+				&lt;/td&gt;
+				#if(!$renderingContext.target.isPdf)
+					#if(!$wiStatus.equals(&quot;verified&quot;) &amp;&amp; !$wiStatus.equals(&quot;rejected&quot;))
+						&lt;td class=&quot;kanbanWorkItemAssignee&quot; rowspan=&quot;2&quot;&gt;
+							#set($wiAssignees = $workItem.fields().assignee())
+							#if(!$wiAssignees.isEmpty())
+								#set($assigneeNames = &quot;&quot;)
+								#foreach($assignee in $wiAssignees)
+									#set($name = &quot;&quot;)
+									#set($name = $assignee.fields().name().getIfCan())
+									#if($name.isEmpty())
+										#set($name = $assignee.getReference().id())
+									#end
+									#if($assigneeNames.isEmpty)
+										#set($assigneeNames = $name)
+									#else
+										#set($assigneeNames = &quot;$assigneeNames, $name&quot;)
+									#end
+								#end
+								#set($firstAssigneeId = $wiAssignees.iterator().next().getReference().id())
+								#set($linkMaker = $transaction.users().getBy().id(&quot;$firstAssigneeId&quot;).fields().avatarFileName().link())
+								#set($assigneeAvatarUrl = $linkMaker.toEncodedRelativeUrl(&quot;$transaction.users().getBy().id(&#39;$firstAssigneeId&#39;).fields().avatarFileName().link()&quot;))
+								&lt;div class=&quot;kanbanWorkItemAssigneeDiv&quot;&gt;
+									&lt;img title=&quot;$assigneeNames&quot; src=&quot;$assigneeAvatarUrl&quot; class=&quot;kanbanWorkItemAssigneeImg&quot;&gt;
+									#if($wiAssignees.size() &gt; 1)
+										&lt;div title=&quot;$assigneeNames&quot; class=&quot;kanbanWorkItemAssigneeCountDiv&quot;&gt;$wiAssignees.size()&lt;/div&gt;
+									#end
+								&lt;/div&gt;
+							#end
+						&lt;/td&gt;
+					#else
+						#set($wiAssignees = $workItem.fields().assignee())
+						#set($width = $math.mul(20, $wiAssignees.size()))
+						&lt;td class=&quot;kanbanWorkItemAssigneeClosed&quot; style=&quot;width: ${width}px&quot;&gt;
+							#if(!$wiAssignees.isEmpty())
+								#foreach($assignee in $wiAssignees)
+									&lt;span title=&quot;$assignee.fields().name().getIfCan()&quot;&gt;$assignee.fields().initials().render()&lt;/span&gt;
+								#end
+							#end
+						&lt;/td&gt;
+					#end
+				#end
+			&lt;/tr&gt;
+			#if(!$wiStatus.equals(&quot;verified&quot;) &amp;&amp; !$wiStatus.equals(&quot;rejected&quot;))
+				&lt;tr&gt;&lt;/tr&gt;
+			#end
+		&lt;/tbody&gt;
+	&lt;/table&gt;
+&lt;/div&gt;
+
+            </sub>
+          </sub>
+        </sub>
+      </sub>
+    </span>
+  </div>
+  <h2 id="polarion_client3">Issues</h2>
+  <h3 id="polarion_client49">Issues for Release</h3>
+  <div id="polarion_client13" class="polarion-rp-widget-part" data-widget="com.polarion.scriptBlock">
+    <span class="polarion-rp-widget-parameters">
+      <sub id="script">
+        <sub id="script" style="white-space:pre;">#info(&quot;Issues that should be fixed in $plan.fields().template().render().withIcon(false). Issues are not calculated in the Release Plan estimate. To plan the Issue, just set a Target Version field.&quot;)</sub>
+      </sub>
+    </span>
+  </div>
+  <div id="polarion_client34" class="polarion-rp-widget-part" data-widget="com.polarion.table">
+    <span class="polarion-rp-widget-parameters" style="display: none;">
+      <sub id="dataSet">
+        <sub id="prototype">WorkItem</sub>
+        <sub id="subtype">issue</sub>
+        <sub id="queryType">luceneVelocity</sub>
+        <sub id="luceneQuery" style="white-space:pre;">targetVersion.KEY:$plan.getReference().id()</sub>
+        <sub id="children">
+          <sub id="columns">
+            <sub>
+              <sub id="id">id</sub>
+            </sub>
+            <sub>
+              <sub id="id">title</sub>
+            </sub>
+            <sub>
+              <sub id="id">status</sub>
+            </sub>
+            <sub>
+              <sub id="id">priority</sub>
+            </sub>
+            <sub>
+              <sub id="id">severity</sub>
+            </sub>
+          </sub>
+          <sub id="sortBy">
+            <sub>
+              <sub id="id">priority</sub>
+              <sub id="descending">true</sub>
+            </sub>
+            <sub>
+              <sub id="id">severity</sub>
+              <sub id="descending">true</sub>
+            </sub>
+            <sub>
+              <sub id="id">created</sub>
+              <sub id="descending">true</sub>
+            </sub>
+          </sub>
+        </sub>
+      </sub>
+      <sub id="propertiesSidebarFields">
+        <sub>
+          <sub id="id">assignee</sub>
+        </sub>
+        <sub>
+          <sub id="id">severity</sub>
+        </sub>
+        <sub>
+          <sub id="id">priority</sub>
+        </sub>
+        <sub>
+          <sub id="id">status</sub>
+        </sub>
+        <sub>
+          <sub id="id">resolution</sub>
+        </sub>
+        <sub>
+          <sub id="id">targetVersion</sub>
+        </sub>
+        <sub>
+          <sub id="id">linkedWorkItems</sub>
+        </sub>
+      </sub>
+      <sub id="advanced">
+        <sub id="top">50</sub>
+      </sub>
+    </span>
+  </div>
+  <div id="polarion_client5" class="polarion-rp-widget-part" data-widget="com.polarion.scriptBlock">
+    <span class="polarion-rp-widget-parameters">
+      <sub id="script">
+        <sub id="script" style="white-space:pre;">###############################################################################
+##
+## Unplanned Issues
+##
+#if(!$plan.utils().isFinished())
+	&lt;h3&gt;Unplanned Issues&lt;/h3&gt;
+	&lt;div id=&quot;wiSidebar&quot; class=&quot;polarion-rp-widget-part&quot; data-widget=&quot;com.polarion.table&quot;&gt;
+		&lt;span class=&quot;polarion-rp-widget-parameters&quot;&gt;
+			&lt;sub id=&quot;dataSet&quot;&gt;
+				&lt;sub id=&quot;prototype&quot;&gt;WorkItem&lt;/sub&gt;
+				&lt;sub id=&quot;subtype&quot;&gt;issue&lt;/sub&gt;
+				&lt;sub id=&quot;queryType&quot;&gt;lucene&lt;/sub&gt;
+				&lt;sub id=&quot;luceneQuery&quot;&gt;NOT HAS_VALUE:targetVersion.KEY&lt;/sub&gt;
+				&lt;sub id=&quot;children&quot;&gt;
+					&lt;sub id=&quot;columns&quot;&gt;
+						&lt;sub&gt;
+							&lt;sub id=&quot;id&quot;&gt;id&lt;/sub&gt;
+						&lt;/sub&gt;
+						&lt;sub&gt;
+							&lt;sub id=&quot;id&quot;&gt;title&lt;/sub&gt;
+						&lt;/sub&gt;
+						&lt;sub&gt;
+							&lt;sub id=&quot;id&quot;&gt;status&lt;/sub&gt;
+						&lt;/sub&gt;
+						&lt;sub&gt;
+							&lt;sub id=&quot;id&quot;&gt;severity&lt;/sub&gt;
+						&lt;/sub&gt;
+						&lt;sub&gt;
+							&lt;sub id=&quot;id&quot;&gt;priority&lt;/sub&gt;
+						&lt;/sub&gt;
+						&lt;sub&gt;
+							&lt;sub id=&quot;id&quot;&gt;occurredInVersion&lt;/sub&gt;
+						&lt;/sub&gt;
+					&lt;/sub&gt;
+					&lt;sub id=&quot;sortBy&quot;&gt;
+						&lt;sub&gt;
+							&lt;sub id=&quot;id&quot;&gt;priority&lt;/sub&gt;
+							&lt;sub id=&quot;descending&quot;&gt;true&lt;/sub&gt;
+						&lt;/sub&gt;
+					&lt;/sub&gt;
+				&lt;/sub&gt;
+			&lt;/sub&gt;
+			&lt;sub id=&quot;propertiesSidebarFields&quot;&gt;
+				&lt;sub&gt;
+					&lt;sub id=&quot;id&quot;&gt;assignee&lt;/sub&gt;
+				&lt;/sub&gt;
+				&lt;sub&gt;
+					&lt;sub id=&quot;id&quot;&gt;severity&lt;/sub&gt;
+				&lt;/sub&gt;
+				&lt;sub&gt;
+					&lt;sub id=&quot;id&quot;&gt;priority&lt;/sub&gt;
+				&lt;/sub&gt;
+				&lt;sub&gt;
+					&lt;sub id=&quot;id&quot;&gt;status&lt;/sub&gt;
+				&lt;/sub&gt;
+				&lt;sub&gt;
+					&lt;sub id=&quot;id&quot;&gt;resolution&lt;/sub&gt;
+				&lt;/sub&gt;
+				&lt;sub&gt;
+					&lt;sub id=&quot;id&quot;&gt;targetVersion&lt;/sub&gt;
+				&lt;/sub&gt;
+				&lt;sub&gt;
+					&lt;sub id=&quot;id&quot;&gt;linkedWorkItems&lt;/sub&gt;
+				&lt;/sub&gt;
+			&lt;/sub&gt;
+			&lt;sub id=&quot;advanced&quot;&gt;
+				&lt;sub id=&quot;top&quot;&gt;20&lt;/sub&gt;
+			&lt;/sub&gt;
+		&lt;/span&gt;
+	&lt;/div&gt;
+#end</sub>
+      </sub>
+    </span>
+  </div>
+  <h2 id="polarion_client54">Definition of Done</h2>
+  <div id="polarion_client52" class="polarion-rp-widget-part" data-widget="com.polarion.scriptBlock">
+    <span class="polarion-rp-widget-parameters">
+      <sub id="script">
+        <sub id="script" style="white-space:pre;">###############################################################################
+##
+## com.polarion.alm.shared.api.transaction.ReadOnlyTransaction $transaction
+## com.polarion.alm.shared.api.model.plan.Plan $plan
+## com.polarion.alm.shared.api.model.project.Project $project
+## com.polarion.alm.shared.api.model.wi.WorkItem $wi
+## com.polarion.alm.shared.api.utils.velocity.ObjectFactory $objectFactory
+##
+
+###############################################################################
+##
+## Macros
+##
+
+#macro(showLine $title $rating $justBoolean $info)
+	#if(!$first)
+		&lt;/td&gt;&lt;/tr&gt;
+	#end
+
+	#set($ratingMessage = $rating)
+	#set($ratingMessage = &quot;$ratingMessage%&quot;)
+	#set($color = &quot;#E74C3C&quot;)
+
+	#if($rating &gt; 100)
+		#set($rating = 100)
+	#end
+	#if($rating &gt; 99)
+		#set($color = &quot;#2ECC71&quot;)
+	#else
+		#if($rating &gt;= 50 &amp;&amp; $rating &lt;= 99)
+			#set($color = &quot;#E67E22&quot;)
+		#else
+			#if($rating == -1)
+				#set($color = &quot;#3498DB&quot;)
+				#set($ratingMessage = &quot;MAN&quot;)
+			#else
+				#if($rating == -2)
+					#set($color = &quot;#95A5A6&quot;)
+					#set($ratingMessage = &quot;---&quot;)
+				#end
+			#end
+		#end
+	#end
+	#if($justBoolean == 1)
+		#if($rating &gt; 99)
+			#set($ratingMessage = &quot;YES&quot;)
+		#elseif($rating != -2)
+			#set($ratingMessage = &quot;NO&quot;)
+		#end
+	#end
+
+	&lt;tr&gt;
+		&lt;td rowspan=&quot;3&quot; style=&quot;font-weight: bold; font-size: 16px; width: 65px;&quot;&gt;&lt;div class=&quot;background&quot; style=&quot;background-color: $color;&quot;&gt;&lt;div class=&quot;text&quot;&gt;$ratingMessage&lt;/div&gt;&lt;/div&gt;&lt;/td&gt;
+		&lt;td style=&quot;height: 10px&quot;&gt;&lt;/td&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;td style=&quot;font-weight: bold; font-size: 20px; text-align:left;&quot;&gt;$title&lt;/td&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;td style=&quot;font-style: italic;&quot;&gt;$info&lt;/td&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;td colspan=&quot;2&quot; style=&quot;padding-bottom: 10px;&quot;&gt;
+		#set($first = true)
+#end
+
+###############################################################################
+##
+## CSS
+##
+&lt;style&gt;
+	.background {
+		border-radius: 50%;
+		-moz-border-radius: 50%;
+		-webkit-border-radius: 50%;
+		color: white;
+		width: 60px;
+		height: 60px;
+		float: left;
+		position: relative;
+	}
+	.text {
+		width: 60px;
+		position: absolute;
+		text-align: center;
+		padding-top: 100%;
+		-webkit-transform: translateY(-50%); /* child now centers itself relative to the midline based on own contents */
+		-moz-transform: translateY(-50%);
+		-o-transform: translateY(-50%);
+		-ms-transform: translateY(-50%);
+		-ms-filter: &#39;progid:DXImageTransform.Microsoft.Matrix(M11=0.5, M12=0, M21=0, M22=0.5, SizingMethod=&quot;auto expand&quot;)&#39;; /*IE8 */
+		filter: progid:DXImageTransform.Microsoft.Matrix(M11=0.5, M12=0, M21=0, M22=0.5, SizingMethod=&#39;auto expand&#39;); /*IE6, IE7*/
+		transform: translateY(-49%);
+	}
+	.filler_main {
+		width: 80px;
+	}
+	.filler_child {
+		width: 10px;
+	}
+	.ok_ko_image {
+		border: 0px none;
+		width: 10px;
+		height: 10px;
+		margin-right: 3px;
+	}
+	#user_story_coverage {
+		display: none;
+	}
+	#requirement_coverage {
+		display: none;
+	}
+&lt;/style&gt;
+
+###############################################################################
+##
+## General
+##
+
+#set($allowRendering = true)
+#if(!$pageContext.releaseWorkItemID)
+	$widgetContext.renderWarning(&quot;Create a Release Work Item for this Release Plan in order to enable the Definition of Done.&quot;)
+	#set($allowRendering = false)
+#end
+
+#if($allowRendering)
+	#set($quo = &#39;&quot;&#39;)
+	#set($projectId = $pageContext.projectId)
+	#set($releaseId = $pageContext.releaseWorkItemID)
+	#set($release = $transaction.workItems().getBy().ids(&quot;$projectId&quot;, &quot;$releaseId&quot;))
+	#set($releasePlan = $plan)
+	#set($plannedInQuery = &quot;PLAN:($releasePlan.getReference().toPath())&quot;)
+	#set($targetVersionQuery = &quot;targetVersion.KEY:$releasePlan.getReference().id()&quot;)
+
+	###############################################################################
+	##
+	## Render
+	##
+	#set($rowMain = &quot;&lt;tr&gt;&lt;td class=&#39;filler_main&#39;&gt;&lt;/td&gt;&lt;td colspan=&#39;2&#39;&gt;&quot;)
+	#set($rowChild = &quot;&lt;tr&gt;&lt;td class=&#39;filler_main&#39;&gt;&lt;/td&gt;&lt;td class=&#39;filler_child&#39;&gt;&lt;/td&gt;&lt;td&gt;&quot;)
+	#set($rowEmpty = &quot;&lt;tr&gt;&lt;td colspan=&#39;3&#39; style=&#39;height: 8px;&#39;&gt;&lt;/td&gt;&lt;/tr&gt;&quot;)
+	#set($rowEnd = &quot;&lt;/td&gt;&lt;/tr&gt;&quot;)
+	#set($ko = &quot;/polarion/icons/default/enums/testrun_status_failed.png&quot;)
+	#set($ok = &quot;/polarion/icons/default/enums/testrun_status_passed.png&quot;)
+
+	&lt;br/&gt;
+	&lt;table style=&quot;width: 80%;&quot; border=&quot;0&quot;&gt;
+
+		##############
+		## 1 - Epics Done and Meet Acceptance Criteria
+		##   - All targeted Epics are Verified or Rejected.
+		##
+		#set($epicsAllQuery = &quot;type:(epic) AND $targetVersionQuery AND project.id:$projectId&quot;)
+		#set($epicsAllLink = $transaction.context().createPortalLink().project(&quot;$projectId&quot;).workItems().query(&quot;$epicsAllQuery&quot;).toEncodedRelativeUrl())
+		#set($epicsAllCount = $transaction.workItems().count().query(&quot;$epicsAllQuery&quot;).result())
+		#set($epicsWrongQuery = &quot;type:(epic) AND NOT status:(verified rejected) AND $targetVersionQuery AND project.id:$projectId&quot;)
+		#set($epicsWrongLink = $transaction.context().createPortalLink().project(&quot;$projectId&quot;).workItems().query(&quot;$epicsWrongQuery&quot;).toEncodedRelativeUrl())
+		#set($epicsWrongCount = $transaction.workItems().count().query(&quot;$epicsWrongQuery&quot;).result())
+		#set($progress = 0)
+		#if($epicsAllCount != 0)
+			#set($progress = 100 - (100 * $epicsWrongCount / $epicsAllCount))
+		#else
+			#set($progress = -2)
+		#end
+
+		#showLine(&quot;Epics Done and Meet Acceptance Criteria&quot; $progress 0 &quot;All targeted Epics are Verified or Rejected.&quot;)
+		&lt;br/&gt;
+		&lt;table&gt;
+			#if($epicsAllCount &gt; 0)
+				$rowMain&lt;a href=&quot;$epicsAllLink&quot; target=&quot;_top&quot;&gt;&lt;b&gt;$epicsAllCount&lt;/b&gt;#if($epicsAllCount == 1) Epic#else Epics#end targeted for this Release&lt;/a&gt;$rowEnd
+				#if($epicsWrongCount &gt; 0)
+					#set($iconURL = $ko)
+					$rowChild&lt;img src=&quot;$iconURL&quot; class=&quot;ok_ko_image&quot;/&gt;&lt;a href=&quot;$epicsWrongLink&quot; target=&quot;_top&quot;&gt;&lt;b&gt;$epicsWrongCount&lt;/b&gt; not Verified or Rejected&lt;/a&gt;$rowEnd
+				#else
+					#set($iconURL = $ok)
+					$rowChild&lt;img src=&quot;$iconURL&quot; class=&quot;ok_ko_image&quot;/&gt;&lt;b&gt;All&lt;/b&gt; Verified or Rejected$rowEnd
+				#end
+			#else
+				$rowMain&lt;b&gt;No targeted Epics&lt;/b&gt; found for this Release$rowEnd
+			#end
+		&lt;/table&gt;
+
+		##############
+		## 2 - User Stories Done and Meet Acceptance Criteria
+		##   - All planned User Stories are Verified or Rejected.
+		##
+		#set($storiesAllQuery = &quot;type:(userstory) AND $plannedInQuery AND project.id:$projectId&quot;)
+		#set($storiesAllLink = $transaction.context().createPortalLink().project(&quot;$projectId&quot;).workItems().query(&quot;$storiesAllQuery&quot;).toEncodedRelativeUrl())
+		#set($storiesAllCount = $transaction.workItems().count().query(&quot;$storiesAllQuery&quot;).result())
+		#set($storiesWrongQuery = &quot;type:(userstory) AND NOT status:(verified rejected) AND $plannedInQuery AND project.id:$projectId&quot;)
+		#set($storiesWrongLink = $transaction.context().createPortalLink().project(&quot;$projectId&quot;).workItems().query(&quot;$storiesWrongQuery&quot;).toEncodedRelativeUrl())
+		#set($storiesWrongCount = $transaction.workItems().count().query(&quot;$storiesWrongQuery&quot;).result())
+		#set($progress = 0)
+		#if($storiesAllCount != 0)
+			#set($progress = 100 - (100 * $storiesWrongCount / $storiesAllCount))
+		#else
+			#set($progress = -2)
+		#end
+
+		#showLine(&quot;User Stories Done and Meet Acceptance Criteria&quot; $progress 0 &quot;All planned User Stories are Verified or Rejected.&quot;)
+		&lt;br/&gt;
+		&lt;table&gt;
+			#if($storiesAllCount &gt; 0)
+				$rowMain&lt;a href=&quot;$storiesAllLink&quot; target=&quot;_top&quot;&gt;&lt;b&gt;$storiesAllCount&lt;/b&gt;#if($storiesAllCount == 1) User Story#else User Stories#end planned in the Release Plan&lt;/a&gt;$rowEnd
+				#if($storiesWrongCount &gt; 0)
+					#set($iconURL = $ko)
+					$rowChild&lt;img src=&quot;$iconURL&quot; class=&quot;ok_ko_image&quot;/&gt;&lt;a href=&quot;$storiesWrongLink&quot; target=&quot;_top&quot;&gt;&lt;b&gt;$storiesWrongCount&lt;/b&gt; not Verified or Rejected&lt;/a&gt;$rowEnd
+				#else
+					#set($iconURL = $ok)
+					$rowChild&lt;img src=&quot;$iconURL&quot; class=&quot;ok_ko_image&quot;/&gt;&lt;b&gt;All&lt;/b&gt; Verified or Rejected$rowEnd
+				#end
+			#else
+				$rowMain&lt;b&gt;No planned User Stories&lt;/b&gt; found for this Release$rowEnd
+			#end
+		&lt;/table&gt;
+
+		##############
+		## 3 - Issues Done and Meet Acceptance Criteria
+		##   - All targeted Issues are Verified or Rejected.
+		##
+		#set($issuesAllQuery = &quot;type:(issue) AND $targetVersionQuery AND project.id:$projectId&quot;)
+		#set($issuesAllLink = $transaction.context().createPortalLink().project(&quot;$projectId&quot;).workItems().query(&quot;$issuesAllQuery&quot;).toEncodedRelativeUrl())
+		#set($issuesAllCount = $transaction.workItems().count().query(&quot;$issuesAllQuery&quot;).result())
+		#set($issuesWrongQuery = &quot;type:(issue) AND NOT status:(verified rejected) AND $targetVersionQuery AND project.id:$projectId&quot;)
+		#set($issuesWrongLink = $transaction.context().createPortalLink().project(&quot;$projectId&quot;).workItems().query(&quot;$issuesWrongQuery&quot;).toEncodedRelativeUrl())
+		#set($issuesWrongCount = $transaction.workItems().count().query(&quot;$issuesWrongQuery&quot;).result())
+		#set($progress = 0)
+		#if($issuesAllCount != 0)
+			#set($progress = 100 - (100 * $issuesWrongCount / $issuesAllCount))
+		#else
+			#set($progress = -2)
+		#end
+
+		#showLine(&quot;Issues Done and Meet Acceptance Criteria&quot; $progress 0 &quot;All targeted Issues are Verified or Rejected.&quot;)
+		&lt;br/&gt;
+		&lt;table&gt;
+			#if($issuesAllCount &gt; 0)
+				$rowMain&lt;a href=&quot;$issuesAllLink&quot; target=&quot;_top&quot;&gt;&lt;b&gt;$issuesAllCount&lt;/b&gt;#if($issuesAllCount == 1) Issue#else Issues#end targeted for this Release&lt;/a&gt;$rowEnd
+				#if($issuesWrongCount &gt; 0)
+					#set($iconURL = $ko)
+					$rowChild&lt;img src=&quot;$iconURL&quot; class=&quot;ok_ko_image&quot;/&gt;&lt;a href=&quot;$issuesWrongLink&quot; target=&quot;_top&quot;&gt;&lt;b&gt;$issuesWrongCount&lt;/b&gt; not Verified or Rejected&lt;/a&gt;$rowEnd
+				#else
+					#set($iconURL = $ok)
+					$rowChild&lt;img src=&quot;$iconURL&quot; class=&quot;ok_ko_image&quot;/&gt;&lt;b&gt;All&lt;/b&gt; Verified or Rejected$rowEnd
+				#end
+			#else
+				$rowMain&lt;b&gt;No targeted Issues&lt;/b&gt; found for this Release$rowEnd
+			#end
+		&lt;/table&gt;
+
+		##############
+		## 4 - Release Verification and Validation Done
+		##   - Release Test Run is executed and Verified Passed or Rejected. All Test Runs from Release Test Evidence field on the Release Work Item are Verified Passed.
+		##
+		#set($testRunsQuery = &quot;project.id:$projectId AND planScope.KEY:$releasePlan.getReference().id()&quot;)
+		#set($testRuns = $transaction.testRuns().search().query(&quot;$testRunsQuery&quot;))
+		#set($releaseCount = 0)
+		#set($releaseIds = &quot;&quot;)
+		#set($releaseLink = &quot;&quot;)
+		#set($releaseValidatedCount = 0)
+		#set($releaseNotValidatedIds = &quot;&quot;)
+		#set($releaseNotValidatedLink = &quot;&quot;)
+		#foreach($testRun in $testRuns)
+			#set($testId = $testRun.getReference().id())
+			#set($testTemplate = $testRun.fields().template().get().getReference().id())
+			#set($testStatus = $testRun.fields().status().get().id())
+			#if($testTemplate.equals(&quot;Release Test&quot;))
+				#set($releaseCount = $releaseCount + 1)
+				#set($releaseIds = &quot;$!releaseIds $quo$testId$quo&quot;)
+				#if($testStatus.equals(&quot;verifiedPassed&quot;) || $testStatus.equals(&quot;rejected&quot;))
+					#set($releaseValidatedCount = $math.add($releaseValidatedCount, 1))
+				#else
+					#set($releaseNotValidatedIds = &quot;$releaseNotValidatedIds $quo$testId$quo&quot;)
+				#end
+			#end
+		#end
+		#set($releaseLink = $transaction.context().createPortalLink().project(&quot;$projectId&quot;).testRuns().query(&quot;id:($releaseIds.trim())&quot;).toEncodedRelativeUrl())
+		#set($releaseNotValidatedLink = $transaction.context().createPortalLink().project(&quot;$projectId&quot;).testRuns().query(&quot;id:($releaseNotValidatedIds.trim())&quot;).toEncodedRelativeUrl())
+
+		#set($testEvidenceTestRuns = $release.fields().get(&quot;releaseTestEvidence&quot;))
+		#set($testEvidenceTestRunCount = $testEvidenceTestRuns.size())
+		#set($testEvidenceTestRunsEmpty = $testEvidenceTestRuns.isEmpty())
+		#if(!$testEvidenceTestRunsEmpty)
+			#set($testEvidenceTestRunsCount = $testEvidenceTestRuns.size())
+			#set($testRunIds = &quot;&quot;)
+			#set($invalidTestRunIds = &quot;&quot;)
+			#set($invalidTestRunCount = 0)
+			#foreach($testRun in $testEvidenceTestRuns)
+				#set($testRunIds = &quot;$!testRunIds $quo$testRun.getReference().id()$quo&quot;)
+				#if(!$testRun.getModelObject().fields().status().optionId().equals(&quot;verifiedPassed&quot;))
+					#set($invalidTestRunIds = &quot;$!invalidTestRunIds $quo$testRun.getReference().id()$quo&quot;)
+					#set($invalidTestRunCount = $math.add($invalidTestRunCount, 1))
+				#end
+			#end
+		#end
+		#set($testEvidenceTestRunsLink = $transaction.context().createPortalLink().project(&quot;$projectId&quot;).testRuns().query(&quot;id:($testRunIds.trim())&quot;).toEncodedRelativeUrl())
+		#set($invalidTestRunsLink = $transaction.context().createPortalLink().project(&quot;$projectId&quot;).testRuns().query(&quot;id:($invalidTestRunIds.trim())&quot;).toEncodedRelativeUrl())
+`
+		#set($progress = 0)
+		#if($releaseCount &gt; 0)
+			#set($progress = $progress + 25)
+		#end
+		#if($testEvidenceTestRunCount &gt; 0)
+			#set($progress = $progress + 25)
+		#end
+		#if($releaseValidatedCount &gt; 0)
+			#set($evaluatedValue = $math.mul($math.div($releaseValidatedCount, $releaseCount), 25))
+			#set($progress = $math.add($progress, $evaluatedValue))
+		#end
+		#if($testEvidenceTestRunCount &gt; 0)
+			#set($evaluatedValue = $math.mul($math.div($math.sub($testEvidenceTestRunCount, $invalidTestRunCount), $testEvidenceTestRunCount), 25))
+			#set($progress = $math.add($progress, $evaluatedValue))
+		#end
+		#if($progress == 0)
+			#set($progress = -2)
+		#end
+
+		#showLine(&quot;Release Verification and Validation Done&quot; $progress.intValue() 0 &quot;Release Test Run is executed and Verified Passed or Rejected. All Test Runs from Release Test Evidence field on the Release Work Item are Verified Passed.&quot;)
+		&lt;br/&gt;
+		&lt;table&gt;
+			#if($releaseCount != 0)
+				$rowMain&lt;a href=&quot;$releaseLink&quot; target=&quot;_top&quot;&gt;&lt;b&gt;$releaseCount&lt;/b&gt; linked Release#if($releaseCount == 1) Test Run#else Test Runs#end&lt;/a&gt;&lt;br/&gt;$rowEnd
+				#if($math.sub($releaseCount, $releaseValidatedCount) &gt; 0)
+					#set($iconURL = $ko)
+					$rowChild&lt;img src=&quot;$iconURL&quot; class=&quot;ok_ko_image&quot;/&gt;&lt;a href=&quot;$releaseNotValidatedLink&quot; target=&quot;_top&quot;&gt;&lt;b&gt;$math.sub($releaseCount, $releaseValidatedCount)&lt;/b&gt; not performed and validated&lt;/a&gt;$rowEnd
+				#else
+					#set($iconURL = $ok)
+					$rowChild&lt;img src=&quot;$iconURL&quot; class=&quot;ok_ko_image&quot;/&gt;&lt;b&gt;All&lt;/b&gt; performed and validated$rowEnd
+				#end
+			#else
+				$rowMain&lt;img src=&quot;$ko&quot; class=&quot;ok_ko_image&quot;/&gt;&lt;b&gt;At least one&lt;/b&gt; Release Test Run must be set for the Release by setting Test Run&#39;s &lt;b&gt;Plan Scope&lt;/b&gt; custom field.$rowEnd
+			#end
+			$rowEmpty
+			#if($testEvidenceTestRunCount != 0)
+				$rowMain&lt;a href=&quot;$testEvidenceTestRunsLink&quot; target=&quot;_top&quot;&gt;&lt;b&gt;$testEvidenceTestRunCount&lt;/b&gt;#if($testEvidenceTestRunCount == 1) Test Run#else Test Runs#end set in the Release Test Evidence&lt;/a&gt;&lt;br/&gt;$rowEnd
+				#if($math.sub($testEvidenceTestRunCount, $invalidTestRunCount) &gt; 0)
+					#set($iconURL = $ko)
+					$rowChild&lt;img src=&quot;$iconURL&quot; class=&quot;ok_ko_image&quot;/&gt;&lt;a href=&quot;$invalidTestRunsLink&quot; target=&quot;_top&quot;&gt;&lt;b&gt;$invalidTestRunCount&lt;/b&gt; not performed and validated&lt;/a&gt;$rowEnd
+				#else
+					#set($iconURL = $ok)
+					$rowChild&lt;img src=&quot;$iconURL&quot; class=&quot;ok_ko_image&quot;/&gt;&lt;b&gt;All&lt;/b&gt; performed and validated$rowEnd
+				#end
+			#else
+				$rowMain&lt;img src=&quot;$ko&quot; class=&quot;ok_ko_image&quot;/&gt;&lt;b&gt;At least one&lt;/b&gt; Test Run must be set for the Release&#39;s &lt;b&gt;Release Test Evidence&lt;/b&gt; custom field.$rowEnd
+			#end
+		&lt;/table&gt;
+
+		##############
+		## 5 - Test Case Traceability Assured
+		##   - All planned User Stories and their parent Requirements are covered by Test Cases.
+		## % of covered Requirements and User Stories
+		##
+		## Get planned User Stories
+		#set($plannedStoriesQuery = &quot;type:(userstory) AND $plannedInQuery&quot;)
+		#set($plannedStoriesLink = $transaction.context().createPortalLink().project(&quot;$projectId&quot;).workItems().query(&quot;$plannedStoriesQuery&quot;).toEncodedRelativeUrl())
+		#set($plannedStories = $transaction.workItems().search().query(&quot;$plannedStoriesQuery&quot;))
+		#set($plannedStoriesCount = $plannedStories.size())
+		#set($notCoveredUserStoryIds = &quot;&quot;)
+		#set($notCoveredUserStoryCount = 0)
+		#set($requirements = $objectFactory.newSet())
+		#set($requirementIds = &quot;&quot;)
+		#set($notCoveredRequirementIds = &quot;&quot;)
+		#set($notCoveredRequirementCount = 0)
+		#foreach($story in $plannedStories)
+			## Get parent Requirements
+			#foreach($linked in $story.fields().linkedWorkItems().direct())
+				#set($item = $linked.fields().workItem().get())
+				#if($item.fields().type().optionId().equals(&quot;requirement&quot;) &amp;&amp; $linked.fields().role().optionId().equals(&quot;implements&quot;))
+					#if(!$requirements.contains($item))
+						#set($void = $requirements.add($item))
+						#set($requirementIds = &quot;$!requirementIds $item.getReference().id()&quot;)
+						## Check Requirement for Test Cases
+						#set($requirementCovered = false)
+						#foreach($backlinked in $item.fields().linkedWorkItems().back())
+							#set($backlinkedItem = $backlinked.fields().workItem().get())
+							#if($backlinkedItem.fields().type().optionId().equals(&quot;testcase&quot;) &amp;&amp; $backlinked.fields().role().optionId().equals(&quot;verifies&quot;))
+								#set($requirementCovered = true)
+							#end
+						#end
+						#if(!$requirementCovered)
+							#set($notCoveredRequirementIds = &quot;$!notCoveredRequirementIds $item.getReference().id()&quot;)
+							#set($notCoveredRequirementCount = $math.add($notCoveredRequirementCount, 1))
+						#end
+					#end
+				#end
+			#end
+			## Check User Story for Test Cases
+			#set($storyCovered = false)
+			#foreach($backlinked in $story.fields().linkedWorkItems().back())
+				#set($backlinkedItem = $backlinked.fields().workItem().get())
+				#if($backlinkedItem.fields().type().optionId().equals(&quot;testcase&quot;) &amp;&amp; $backlinked.fields().role().optionId().equals(&quot;verifies&quot;))
+					#set($storyCovered = true)
+				#end
+			#end
+			#if(!$storyCovered)
+				#set($notCoveredUserStoryIds = &quot;$!notCoveredUserStoryIds $story.getReference().id()&quot;)
+				#set($notCoveredUserStoryCount = $math.add($notCoveredUserStoryCount, 1))
+			#end
+		#end
+		#set($notCoveredUserStoryQuery = &quot;id:($notCoveredUserStoryIds.trim())&quot;)
+		#set($notCoveredUserStoryLink = $transaction.context().createPortalLink().project(&quot;$projectId&quot;).workItems().query(&quot;$notCoveredUserStoryQuery&quot;).toEncodedRelativeUrl())
+		#set($requirementIdsQuery = &quot;id:($requirementIds.trim())&quot;)
+		#set($requirementIdsLink = $transaction.context().createPortalLink().project(&quot;$projectId&quot;).workItems().query(&quot;$requirementIdsQuery&quot;).toEncodedRelativeUrl())
+		#set($notCoveredRequirementQuery = &quot;id:($notCoveredRequirementIds.trim())&quot;)
+		#set($notCoveredRequirementLink = $transaction.context().createPortalLink().project(&quot;$projectId&quot;).workItems().query(&quot;$notCoveredRequirementQuery&quot;).toEncodedRelativeUrl())
+
+		#set($progress = 0)
+		#set($totalItems = $math.add($plannedStories.size(), $requirements.size()))
+		#set($notCoveredItems = $math.add($notCoveredUserStoryCount, $notCoveredRequirementCount))
+		#if($totalItems != 0)
+			#set($progress = 100 * ($totalItems - $notCoveredItems) / $totalItems)
+		#else
+			#set($progress = -2)
+		#end
+
+		#showLine(&quot;Test Case Traceability Assured&quot; $progress 0 &quot;All planned User Stories and their parent Requirements are covered by Test Cases.&quot;)
+		&lt;br/&gt;
+		&lt;table&gt;
+			#if($totalItems &gt; 0)
+				#if($plannedStories.size() &gt; 0)
+					$rowMain&lt;a href=&quot;$plannedStoriesLink&quot; target=&quot;_top&quot;&gt;&lt;b&gt;$plannedStories.size()&lt;/b&gt;#if($plannedStories.size() == 1) User Story#else User Stories#end planned in the Release Plan&lt;/a&gt;$rowEnd
+					#if($notCoveredUserStoryCount &gt; 0)
+						#set($iconURL = $ko)
+						$rowChild&lt;img src=&quot;$iconURL&quot; class=&quot;ok_ko_image&quot;/&gt;&lt;a href=&quot;$notCoveredUserStoryLink&quot; target=&quot;_top&quot;&gt;&lt;b&gt;$notCoveredUserStoryCount&lt;/b&gt; not covered by Test Cases&lt;/a&gt;&lt;span onclick=&quot;var style = getElementById(&#39;user_story_coverage&#39;).style; style.display = (style.display == &#39;block&#39;) ? &#39;none&#39; : &#39;block&#39;;&quot;&gt; - &lt;a&gt;&lt;b&gt;Toggle Detailed View&lt;/b&gt;&lt;/a&gt;&lt;/span&gt;$rowEnd
+						$rowChild
+							&lt;div id=&quot;user_story_coverage&quot; class=&quot;polarion-rp-widget-part&quot; data-widget=&quot;traceabilitytable&quot;&gt;
+								&lt;span class=&quot;polarion-rp-widget-parameters&quot;&gt;
+									&lt;sub id=&quot;dataSet&quot;&gt;
+										&lt;sub id=&quot;prototype&quot;&gt;WorkItem&lt;/sub&gt;
+										&lt;sub id=&quot;subtype&quot;&gt;userstory&lt;/sub&gt;
+										&lt;sub id=&quot;queryType&quot;&gt;luceneVelocity&lt;/sub&gt;
+										&lt;sub id=&quot;luceneQuery&quot;&gt;$notCoveredUserStoryQuery&lt;/sub&gt;
+										&lt;sub id=&quot;children&quot;&gt;
+											&lt;sub id=&quot;sortBy&quot;&gt;
+												&lt;sub&gt;
+													&lt;sub id=&quot;id&quot;&gt;priority&lt;/sub&gt;
+													&lt;sub id=&quot;descending&quot;&gt;true&lt;/sub&gt;
+												&lt;/sub&gt;
+											&lt;/sub&gt;
+										&lt;/sub&gt;
+									&lt;/sub&gt;
+									&lt;sub id=&quot;settings&quot;&gt;
+										&lt;sub id=&quot;linkedItemTypes&quot;&gt;
+											&lt;sub id=&quot;values&quot;&gt;
+												&lt;sub&gt;testcase&lt;/sub&gt;
+											&lt;/sub&gt;
+										&lt;/sub&gt;
+										&lt;sub id=&quot;linkedRoles&quot;&gt;
+											&lt;sub id=&quot;values&quot;&gt;
+												&lt;sub&gt;verifies&lt;/sub&gt;
+											&lt;/sub&gt;
+										&lt;/sub&gt;
+										&lt;sub id=&quot;filterByCoverage&quot;&gt;
+											&lt;sub id=&quot;values&quot;&gt;
+												&lt;sub&gt;hideCovered&lt;/sub&gt;
+											&lt;/sub&gt;
+										&lt;/sub&gt;
+										&lt;sub id=&quot;defectItemTypes&quot;&gt;
+											&lt;sub id=&quot;values&quot;&gt;
+												&lt;sub&gt;issue&lt;/sub&gt;
+											&lt;/sub&gt;
+										&lt;/sub&gt;
+										&lt;sub id=&quot;defectRoles&quot;&gt;
+											&lt;sub id=&quot;values&quot;&gt;
+												&lt;sub&gt;triggered_by&lt;/sub&gt;
+											&lt;/sub&gt;
+										&lt;/sub&gt;
+									&lt;/sub&gt;
+									&lt;sub id=&quot;advanced&quot;&gt;
+										&lt;sub id=&quot;collapseLimit&quot;&gt;5&lt;/sub&gt;
+										&lt;sub id=&quot;sourceItemColumnTitle&quot;&gt;Use Case&lt;/sub&gt;
+										&lt;sub id=&quot;linkedItemColumnTitle&quot;&gt;Test Case&lt;/sub&gt;
+										&lt;sub id=&quot;defectItemColumnTitle&quot;&gt;Issue&lt;/sub&gt;
+									&lt;/sub&gt;
+								&lt;/span&gt;
+							&lt;/div&gt;
+						$rowEnd
+					#else
+						#set($iconURL = $ok)
+						$rowChild&lt;img src=&quot;$iconURL&quot; class=&quot;ok_ko_image&quot;/&gt;&lt;b&gt;All&lt;/b&gt; Covered by Test Cases$rowEnd
+					#end
+				#else
+					$rowMain&lt;b&gt;No planned User Stories&lt;/b&gt; found for this Release$rowEnd
+				#end
+				#if($requirements.size() &gt; 0)
+					$rowEmpty
+					$rowMain&lt;a href=&quot;$requirementIdsLink&quot; target=&quot;_top&quot;&gt;&lt;b&gt;$requirements.size()&lt;/b&gt;#if($requirements.size() == 1) Requirement#else Requirements#end implemented by the User Stories&lt;/a&gt;$rowEnd
+					#if($notCoveredRequirementCount &gt; 0)
+						#set($iconURL = $ko)
+						$rowChild&lt;img src=&quot;$iconURL&quot; class=&quot;ok_ko_image&quot;/&gt;&lt;a href=&quot;$notCoveredRequirementLink&quot; target=&quot;_top&quot;&gt;&lt;b&gt;$notCoveredRequirementCount&lt;/b&gt; not covered by Test Cases&lt;/a&gt;&lt;span onclick=&quot;var style = getElementById(&#39;requirement_coverage&#39;).style; style.display = (style.display == &#39;block&#39;) ? &#39;none&#39; : &#39;block&#39;;&quot;&gt; - &lt;a&gt;&lt;b&gt;Toggle Detailed View&lt;/b&gt;&lt;/a&gt;&lt;/span&gt;$rowEnd
+						$rowChild
+							&lt;div id=&quot;requirement_coverage&quot; class=&quot;polarion-rp-widget-part&quot; data-widget=&quot;traceabilitytable&quot;&gt;
+								&lt;span class=&quot;polarion-rp-widget-parameters&quot;&gt;
+									&lt;sub id=&quot;dataSet&quot;&gt;
+										&lt;sub id=&quot;prototype&quot;&gt;WorkItem&lt;/sub&gt;
+										&lt;sub id=&quot;subtype&quot;&gt;requirement&lt;/sub&gt;
+										&lt;sub id=&quot;queryType&quot;&gt;luceneVelocity&lt;/sub&gt;
+										&lt;sub id=&quot;luceneQuery&quot;&gt;$notCoveredRequirementQuery&lt;/sub&gt;
+										&lt;sub id=&quot;children&quot;&gt;
+											&lt;sub id=&quot;sortBy&quot;&gt;
+												&lt;sub&gt;
+													&lt;sub id=&quot;id&quot;&gt;priority&lt;/sub&gt;
+													&lt;sub id=&quot;descending&quot;&gt;true&lt;/sub&gt;
+												&lt;/sub&gt;
+											&lt;/sub&gt;
+										&lt;/sub&gt;
+									&lt;/sub&gt;
+									&lt;sub id=&quot;settings&quot;&gt;
+										&lt;sub id=&quot;linkedItemTypes&quot;&gt;
+											&lt;sub id=&quot;values&quot;&gt;
+												&lt;sub&gt;testcase&lt;/sub&gt;
+											&lt;/sub&gt;
+										&lt;/sub&gt;
+										&lt;sub id=&quot;linkedRoles&quot;&gt;
+											&lt;sub id=&quot;values&quot;&gt;
+												&lt;sub&gt;verifies&lt;/sub&gt;
+											&lt;/sub&gt;
+										&lt;/sub&gt;
+										&lt;sub id=&quot;filterByCoverage&quot;&gt;
+											&lt;sub id=&quot;values&quot;&gt;
+												&lt;sub&gt;hideCovered&lt;/sub&gt;
+											&lt;/sub&gt;
+										&lt;/sub&gt;
+										&lt;sub id=&quot;defectItemTypes&quot;&gt;
+											&lt;sub id=&quot;values&quot;&gt;
+												&lt;sub&gt;issue&lt;/sub&gt;
+											&lt;/sub&gt;
+										&lt;/sub&gt;
+										&lt;sub id=&quot;defectRoles&quot;&gt;
+											&lt;sub id=&quot;values&quot;&gt;
+												&lt;sub&gt;triggered_by&lt;/sub&gt;
+											&lt;/sub&gt;
+										&lt;/sub&gt;
+									&lt;/sub&gt;
+									&lt;sub id=&quot;advanced&quot;&gt;
+										&lt;sub id=&quot;collapseLimit&quot;&gt;5&lt;/sub&gt;
+										&lt;sub id=&quot;sourceItemColumnTitle&quot;&gt;Requirement&lt;/sub&gt;
+										&lt;sub id=&quot;linkedItemColumnTitle&quot;&gt;Test Case&lt;/sub&gt;
+										&lt;sub id=&quot;defectItemColumnTitle&quot;&gt;Issue&lt;/sub&gt;
+									&lt;/sub&gt;
+								&lt;/span&gt;
+							&lt;/div&gt;
+						$rowEnd
+					#else
+						#set($iconURL = $ok)
+						$rowChild&lt;img src=&quot;$iconURL&quot; class=&quot;ok_ko_image&quot;/&gt;&lt;b&gt;All&lt;/b&gt; Covered by Test Cases$rowEnd
+					#end
+				#else
+					$rowMain&lt;b&gt;No Requirements&lt;/b&gt; implemented by the User Stories found$rowEnd
+				#end
+			#end
+		&lt;/table&gt;
+
+		##############
+		## 6 - No Blocker Issues
+		##   - All currently reported Issues have Severity lower than Blocker.
+		##
+		#set($blockerDefectsQuery = &quot;project.id:$projectId AND type:(issue) AND NOT status:(rejected verified) AND severity:blocker&quot;)
+		#set($blockerDefectsLink = $transaction.context().createPortalLink().project(&quot;$projectId&quot;).workItems().query(&quot;$blockerDefectsQuery&quot;).toEncodedRelativeUrl())
+		#set($blockerDefectsCount = $transaction.workItems().count().query($blockerDefectsQuery).result())
+
+		#set($progress = 0)
+		#if($blockerDefectsCount == 0)
+			#set($progress = 100)
+		#else
+			#set($progress = 0)
+		#end
+
+		#showLine(&quot;No Blocker Issues&quot; $progress 1 &quot;All currently reported Issues have Severity lower than Blocker.&quot;)
+		&lt;br/&gt;
+		&lt;table&gt;
+			#if($blockerDefectsCount &gt; 0)
+				$rowMain&lt;a href=&quot;$blockerDefectsLink&quot; target=&quot;_top&quot;&gt;&lt;img src=&quot;$ko&quot; class=&quot;ok_ko_image&quot;/&gt;&lt;b&gt;$blockerDefectsCount&lt;/b&gt; Blocker#if($linkedDefectsCount == 1) Issue#else Issues#end found&lt;/a&gt;$rowEnd
+			#else
+				$rowMain&lt;img src=&quot;$ok&quot; class=&quot;ok_ko_image&quot;/&gt;&lt;b&gt;No active&lt;/b&gt; Blocker Issues found$rowEnd
+			#end
+		&lt;/table&gt;
+
+		##############
+		## 7 - Release Documentation Complete
+		##   - The required documentation is ready for the release.
+		##
+		#showLine(&quot;Release Documentation Complete&quot; -1 0 &quot;The Release documentation is complete.&quot;)
+		&lt;br/&gt;
+		&lt;table&gt;
+			$rowMain&lt;img src=&quot;/polarion/icons/default/enums/req_status_draft.gif&quot; class=&quot;ok_ko_image&quot;/&gt;Needs to be checked &lt;b&gt;manually&lt;/b&gt;$rowEnd
+		&lt;/table&gt;
+
+		##############
+		## 8 - Approved by Quality Assurance
+		##   - The Release is assigned to a QA and the feedback is noted in &#39;QA Assessment&#39; field.
+		##
+		#set($isReleaseQAEmpty = $release.fields().get(&quot;releaseQA&quot;).is().empty())
+		#set($isqaAssessmentEmpty = $release.fields().get(&quot;qaAssessment&quot;).is().empty())
+		#set($progress = 0)
+		#if(!$isReleaseQAEmpty &amp;&amp; !$isqaAssessmentEmpty)
+			#set($progress = 100)
+		#end
+
+		#showLine(&quot;Approved by Quality Assurance&quot; $progress 1 &quot;The Release is assigned to a QA and the feedback is noted in &#39;QA Assessment&#39; field.&quot;)
+		&lt;br/&gt;
+		&lt;table&gt;
+			#if($isReleaseQAEmpty)
+				#set($iconURL = $ko)
+				$rowMain&lt;img src=&quot;$iconURL&quot; class=&quot;ok_ko_image&quot;/&gt;Release QA &lt;b&gt;not assigned&lt;/b&gt;$rowEnd
+			#else
+				#set($iconURL = $ok)
+				$rowMain&lt;img src=&quot;$iconURL&quot; class=&quot;ok_ko_image&quot;/&gt;Release QA: &lt;b&gt;$release.fields().get(&quot;releaseQA&quot;).render().htmlFor().forFrame()&lt;/b&gt;$rowEnd
+			#end
+			#if($isqaAssessmentEmpty)
+				#set($iconURL = $ko)
+				$rowMain&lt;img src=&quot;$iconURL&quot; class=&quot;ok_ko_image&quot;/&gt;Missing &lt;b&gt;QA Assessment&lt;/b&gt;$rowEnd
+			#else
+				#set($iconURL = $ok)
+				$rowMain&lt;img src=&quot;$iconURL&quot; class=&quot;ok_ko_image&quot;/&gt;Scroll up for &lt;b&gt;QA Assessment&lt;/b&gt;$rowEnd
+			#end
+		&lt;/table&gt;
+
+		##############
+		## 9 - Approved by Product and Release Management
+		##   - The Release is assigned to a PM and it is Completed or Published.
+		##
+		#set($status = $release.fields().status().get().fields().id().get())
+		#set($isReleasePMEmpty = $release.fields().get(&quot;releasePM&quot;).is().empty())
+		#set($progress = 0)
+		#if(!$isReleasePMEmpty &amp;&amp; ($status.equals(&quot;complete&quot;) || $status.equals(&quot;published&quot;)))
+			#set($progress = 100)
+		#end
+
+		#showLine(&quot;Approved by Product and Release Management&quot; $progress 1 &quot;The Release is assigned to a PM and it is Completed or Published.&quot;)
+		&lt;br/&gt;
+		&lt;table&gt;
+			#if($status.equals(&quot;complete&quot;) || $status.equals(&quot;published&quot;))
+				#set($iconURL = $ok)
+				$rowMain&lt;img src=&quot;$iconURL&quot; class=&quot;ok_ko_image&quot;/&gt;Release is &lt;b&gt;$release.fields().status().render().htmlFor().forFrame()&lt;/b&gt;$rowEnd
+			#else
+				#set($iconURL = $ko)
+				$rowMain&lt;img src=&quot;$iconURL&quot; class=&quot;ok_ko_image&quot;/&gt;Release is not &lt;b&gt;Completed or Published&lt;/b&gt;$rowEnd
+			#end
+			#if(!$isReleasePMEmpty)
+				#set($iconURL = $ok)
+				$rowMain&lt;img src=&quot;$iconURL&quot; class=&quot;ok_ko_image&quot;/&gt;Release PM: &lt;b&gt;$release.fields().get(&quot;releasePM&quot;).render().htmlFor().forFrame()&lt;/b&gt;$rowEnd
+			#else
+				#set($iconURL = $ko)
+				$rowMain&lt;img src=&quot;$iconURL&quot; class=&quot;ok_ko_image&quot;/&gt;&lt;b&gt;Release PM&lt;/b&gt; needs to be assigned$rowEnd
+			#end
+		&lt;/table&gt;
+	&lt;/table&gt;
+#end
+
+        </sub>
+      </sub>
+    </span>
+  </div>
+  <p id="polarion_client14"></p><p id="polarion_client15"></p><p id="polarion_client53"></p>
+</div>
+<div class="polarion-rp-column" style="width: 30%;" data-print="0" data-pdf="0">
+  <h2 id="polarion_client63">Activities</h2>
+  <div id="polarion_client71" class="polarion-rp-widget-part" data-widget="com.polarion.planActivityStream">
+    <span class="polarion-rp-widget-parameters">
+      <sub id="plan">
+        <sub id="paths">
+          <sub>@current</sub>
+        </sub>
+      </sub>
+      <sub id="advanced">
+        <sub id="top"></sub>
+      </sub>
+    </span>
+  </div>
+</div>
+<div class="polarion-rp-row-separator"></div>
+<pre id="polarion-rp-page-script">###############################################################################
+##
+## Page Script
+##
+## com.polarion.alm.shared.api.transaction.ReadOnlyTransaction $transaction
+## com.polarion.alm.shared.api.model.rp.widget.RichPageWidgetRenderingContext $widgetContext
+## com.polarion.alm.shared.api.model.plan.Plan $plan
+##
+
+#set($projectId = $plan.getReference().projectId())
+$!pageContext.put(&quot;projectId&quot;, $projectId)
+
+#set($planId = $plan.getReference().id())
+#set($planPath = $plan.getReference().toPath())
+#set($planQuery = &quot;PLAN:($planPath)&quot;)
+$!pageContext.put(&quot;planId&quot;, $planId)
+$!pageContext.put(&quot;planPath&quot;, $planPath)
+$!pageContext.put(&quot;planQuery&quot;, $planQuery)
+
+#set($prioritizationField = &quot;$plan.fields().prioritizationField().get()&quot;)
+$!pageContext.put(&quot;prioritizationField&quot;, &quot;$prioritizationField&quot;)
+
+#######################################
+## $pageContext.browseAllPlannedLink
+## $pageContext.scope
+##
+#set($query = $planQuery)
+#if(!$plan.fields().projectSpan().isEmpty())
+	#set($spanQuery = &quot;AND project.id:(&quot;)
+	#foreach($project in $plan.fields().projectSpan())
+		#set($spanQuery = &quot;$spanQuery$project.getReference().id() &quot;)
+	#end
+	#set($spanQuery = &quot;$spanQuery.trim())&quot;)
+	#set($query = &quot;$planQuery $spanQuery&quot;)
+	#set($browseAllPlannedLink = $transaction.context().createPortalLink().repository().workItems().query(&quot;$query&quot;).sorting(&quot;~$prioritizationField&quot;).toEncodedRelativeUrl())
+	#set($scope = &quot;/&quot;)
+#else
+	#set($scope = $plan.getReference().projectId())
+	#set($browseAllPlannedLink = $transaction.context().createPortalLink().project(&quot;$projectId&quot;).workItems().query(&quot;$query&quot;).sorting(&quot;~$prioritizationField&quot;).toEncodedRelativeUrl())
+#end
+
+$!pageContext.put(&quot;browseAllPlannedLink&quot;, &quot;$browseAllPlannedLink&quot;)
+$!pageContext.put(&quot;scope&quot;, &quot;$scope&quot;)
+
+#######################################
+## $pageContext.addWorkItemsLink
+##
+#set($query = &quot;&quot;)
+
+#if(!$plan.fields().allowedTypes().isEmpty())
+	#set($allowedTypesQuery = &quot;type:(&quot;)
+	#foreach($type in $plan.fields().allowedTypes())
+		#set($allowedTypesQuery = &quot;$allowedTypesQuery$type.id() &quot;)
+	#end
+	#set($allowedTypesQuery = &quot;$allowedTypesQuery.trim())&quot;)
+	#if($query.equals(&quot;&quot;))
+		#set($query = &quot;$allowedTypesQuery&quot;)
+	#else
+		#set($query = &quot;$query AND $allowedTypesQuery&quot;)
+	#end
+#end
+
+#if($plan.fields().parent().get())
+	#set($parentQuery = &quot;PLAN:($plan.fields().parent().get().getReference().toPath())&quot;)
+	#if($query.equals(&quot;&quot;))
+		#set($query = &quot;$parentQuery&quot;)
+	#else
+		#set($query = &quot;$query AND $parentQuery&quot;)
+	#end
+#end
+
+#if(!$plan.fields().projectSpan().isEmpty())
+	#set($spanQuery = &quot;project.id:(&quot;)
+	#foreach($project in $plan.fields().projectSpan())
+		#set($spanQuery = &quot;$spanQuery$project.getReference().id() &quot;)
+	#end
+	#set($spanQuery = &quot;$spanQuery.trim())&quot;)
+	#if($query.equals(&quot;&quot;))
+		#set($query = &quot;$spanQuery&quot;)
+	#else
+		#set($query = &quot;$query AND $spanQuery&quot;)
+	#end
+	#set($addWorkItemsLink = $transaction.context().createPortalLink().repository().workItems().query(&quot;$query&quot;).sorting(&quot;~$prioritizationField&quot;).sidebarPlanning(&quot;$planPath&quot;).toEncodedRelativeUrl())
+#else
+	#set($addWorkItemsLink = $transaction.context().createPortalLink().project(&quot;$projectId&quot;).workItems().query(&quot;$query&quot;).sorting(&quot;~$prioritizationField&quot;).sidebarPlanning(&quot;$planPath&quot;).toEncodedRelativeUrl())
+#end
+
+$!pageContext.put(&quot;addWorkItemsLink&quot;, &quot;$addWorkItemsLink&quot;)
+
+#######################################
+## Release Work Item
+##
+#set($releaseWIQuery = &quot;project.id:$projectId AND releasePlan.KEY:$planId&quot;)
+#set($releaseWILink = $transaction.context().createPortalLink().project(&quot;$projectId&quot;).workItems().query(&quot;$releaseWIQuery&quot;).toEncodedRelativeUrl())
+#set($releaseWISearch = $transaction.workItems().search().query(&quot;$releaseWIQuery&quot;))
+#if($releaseWISearch.size() == 1)
+	#set($releaseWIId = $releaseWISearch.iterator().next().getReference().id())
+	$!pageContext.put(&quot;releaseWorkItemID&quot;, &quot;$releaseWIId&quot;)
+#elseif($releaseWISearch.size() &gt; 1)
+	$!pageContext.put(&quot;releaseWorkItemLink&quot;, $releaseWILink)
+#end
+
+###############################################################################
+##
+## Cumulative Flow Chart
+## $pageContext.startDate
+## $pageContext.dueDate
+##
+
+$!scriptedPageParameters.put(&quot;startDate&quot;, $factory.date(&quot;Start Date&quot;).absolute($plan.fields().startDate().get()).build())
+$!scriptedPageParameters.put(&quot;dueDate&quot;, $factory.date(&quot;Due Date&quot;).absolute($plan.fields().dueDate().get()).build())
+
+#######################################
+## Display debug info
+##
+projectId: $projectId &lt;br/&gt;
+planId: $planId &lt;br/&gt;
+planPath: $planPath &lt;br/&gt;
+planQuery: $planQuery &lt;br/&gt;
+prioritizationField: $pageContext.prioritizationField &lt;br/&gt;
+browseAllPlannedLink: $pageContext.browseAllPlannedLink &lt;br/&gt;
+scope: $pageContext.scope &lt;br/&gt;
+addWorkItemsLink: $pageContext.addWorkItemsLink &lt;br/&gt;
+Release Work Item Id: $releaseWIId &lt;br/&gt;
+Release Work Item Link: $releaseWILink
+</pre>]]></field>
+    <field id="name">Version 0.9b</field>
+    <field id="prioritizationField">priority</field>
+    <field id="records">
+        <list>
+            <struct>
+                <item id="item">EL-116</item>
+            </struct>
+            <struct>
+                <item id="item">EL-119</item>
+            </struct>
+            <struct>
+                <item id="item">EL-108</item>
+            </struct>
+            <struct>
+                <item id="item">EL-105</item>
+            </struct>
+            <struct>
+                <item id="item">EL-115</item>
+            </struct>
+            <struct>
+                <item id="item">EL-118</item>
+            </struct>
+            <struct>
+                <item id="item">EL-133</item>
+            </struct>
+            <struct>
+                <item id="item">EL-107</item>
+            </struct>
+        </list>
+    </field>
+    <field id="startDate">2016-10-01</field>
+    <field id="startedOn">2016-10-01 10:15:00.000 +0200</field>
+    <field id="status">done</field>
+    <field id="template">release</field>
+</plan>

@@ -1,0 +1,34 @@
+###############################################################################
+##
+##  details.vm - this velocity script is executed to render the widget tooltip
+##
+
+Renders <b><i>Enumeration Options</b></i> or, if available, their <b><i>Model Objects</b></i> appropriate to the selected scope.
+The available enumerations will change depending on the "<b><i>Scope</b></i>" and additional options selected.
+<br/>
+<ol>
+	<li>
+		Select a specific project, (the "<b><i>Scope</b></i>"), to load the data from.
+	</li><li>
+		(Optional) Select a Work Item type in the "<b><i>Load Work Item Type Specific Enumerations</b></i>"
+		Drop-down menu to render enumerations that take the selected <b><i>Work Item Type</b></i> into account.
+	</li><li>
+		Select an "<b><i>Enumeration</b></i>". <br/>
+		Enumeration sets that contain parameters of <b><i>built-in</b></i> or <b><i>custom</b></i> fields appear at the top.</br>
+		(<b><i>Status, Severity, Priority</b></i> etc.)<br/>
+		Enumerations that point to a specific object appear at the bottom of the list.
+		(<b><i>Documents, Pages, Users</b></i> etc.)<br/>
+
+	</li><li>
+		Select a specific "<b><i>Enumeration Option</b></i>" to render from the list of available Enumeration Options. <br/>
+		(The available "<b><i>Enumeration Options</b></i>" will depend on the choices made in the first three options.)
+	</ol>
+</ul>
+
+<ul>
+	<li>Render Options: (With icon, with text, render the Model Object instead of the enumeration, and other rendering options.) </li>
+	<li>Customization Options: (Add HTML styles, Text before/after the rendered object, or define links and their properties.)<br/>
+	<b>NOTE</b>: Velocity scripting can be used in the "<b><i>Custom Link</b></i>" field to generate a link to the Backlog etc.
+
+		</li>
+	</ul>

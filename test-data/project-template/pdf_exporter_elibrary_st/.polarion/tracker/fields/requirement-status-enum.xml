@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<enumeration>
+    <option color="#2980B9" iconURL="/polarion/icons/default/enums/req_status_draft.gif" id="draft" name="Draft" sortOrder="1"/>
+    <option color="#9B59B6" iconURL="/polarion/icons/default/enums/req_status_reviewed.gif" id="reviewed" name="Reviewed" sortOrder="3"/>
+    <option color="#2ECC71" iconURL="/polarion/icons/default/enums/req_status_approved.gif" id="approved" name="Approved" sortOrder="8"/>
+    <option color="#BDC3C7" iconURL="/polarion/icons/default/enums/req_status_verified.gif" id="verified" name="Verified" sortOrder="10"/>
+    <option color="#7F8C8D" iconURL="/polarion/icons/default/enums/req_status_rejected.gif" id="rejected" name="Rejected" sortOrder="11"/>
+</enumeration>

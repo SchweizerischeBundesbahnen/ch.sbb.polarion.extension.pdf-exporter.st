@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<test-run-workflow-signature>
+    <field id="signatureState">obsolete</field>
+    <field id="signatures">
+        <list>
+            <struct>
+                <item id="signedBy">mTest</item>
+                <item id="signedRevision">714</item>
+                <item id="verdict">signed</item>
+                <item id="verdictTime">2017-05-18 09:40:33.483 +0000</item>
+            </struct>
+        </list>
+    </field>
+    <field id="targetStatusId">failed</field>
+    <field id="transitionDataRevision">714</field>
+</test-run-workflow-signature>

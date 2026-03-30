@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<work-item>
+    <field id="approvals">
+        <list>
+            <struct>
+                <item id="status">waiting</item>
+                <item id="user">rProject</item>
+            </struct>
+        </list>
+    </field>
+    <field id="assignee">jRequirement</field>
+    <field id="author">rProject</field>
+    <field id="categories">
+        <list>
+            <item>gui</item>
+            <item>ui</item>
+        </list>
+    </field>
+    <field id="created">2011-01-05 18:28:10.292 +0100</field>
+    <field id="description" text-type="text/html">System must support all following web browsers&lt;br/&gt; &lt;table style="width: 80%;margin-left: auto;margin-right: auto;border: 1px solid #CCCCCC;empty-cells: show;border-collapse: collapse;" class="polarion-Document-table" id="polarion_wiki macro name=table"&gt;&lt;tbody&gt;&lt;tr&gt;&lt;th style="font-weight: bold;font-size: 9pt;line-height: 1.5;text-align: left;vertical-align: top;height: 12px;border: 1px solid #CCCCCC;padding: 5px;"&gt;Browser&lt;/th&gt;&lt;th style="font-weight: bold;font-size: 9pt;line-height: 1.5;text-align: left;vertical-align: top;height: 12px;border: 1px solid #CCCCCC;padding: 5px;"&gt;Support Level&lt;/th&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style="font-size: 9pt;line-height: 1.5;text-align: left;vertical-align: top;height: 12px;border: 1px solid #CCCCCC;padding: 5px;"&gt;IE 10&lt;/td&gt;&lt;td style="font-size: 9pt;line-height: 1.5;text-align: left;vertical-align: top;height: 12px;border: 1px solid #CCCCCC;padding: 5px;"&gt;Full Support&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style="font-size: 9pt;line-height: 1.5;text-align: left;vertical-align: top;height: 12px;border: 1px solid #CCCCCC;padding: 5px;"&gt;IE 9&lt;/td&gt;&lt;td style="font-size: 9pt;line-height: 1.5;text-align: left;vertical-align: top;height: 12px;border: 1px solid #CCCCCC;padding: 5px;"&gt;Full Support&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style="font-size: 9pt;line-height: 1.5;text-align: left;vertical-align: top;height: 12px;border: 1px solid #CCCCCC;padding: 5px;"&gt;IE 8&lt;/td&gt;&lt;td style="font-size: 9pt;line-height: 1.5;text-align: left;vertical-align: top;height: 12px;border: 1px solid #CCCCCC;padding: 5px;"&gt;Layout issues are acceptable&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style="font-size: 9pt;line-height: 1.5;text-align: left;vertical-align: top;height: 12px;border: 1px solid #CCCCCC;padding: 5px;"&gt;Firefox 24+&lt;/td&gt;&lt;td style="font-size: 9pt;line-height: 1.5;text-align: left;vertical-align: top;height: 12px;border: 1px solid #CCCCCC;padding: 5px;"&gt;Full Support&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style="font-size: 9pt;line-height: 1.5;text-align: left;vertical-align: top;height: 12px;border: 1px solid #CCCCCC;padding: 5px;"&gt;Chrome 32+&lt;/td&gt;&lt;td style="font-size: 9pt;line-height: 1.5;text-align: left;vertical-align: top;height: 12px;border: 1px solid #CCCCCC;padding: 5px;"&gt;Full Support&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;</field>
+    <field id="previousStatus">draft</field>
+    <field id="priority">50.0</field>
+    <field id="reqType" type="enum:reqtype">software</field>
+    <field id="severity">should_have</field>
+    <field id="status">reviewed</field>
+    <field id="type">requirement</field>
+</work-item>

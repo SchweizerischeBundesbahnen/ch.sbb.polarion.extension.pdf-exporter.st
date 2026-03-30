@@ -1,0 +1,6 @@
+###############################################################################
+##
+##  details.vm - this velocity script is executed to render the widget tooltip
+##
+
+The Widget renders a <b><i>Coverage/Traceability Table</b></i> for the defined set of Work Items.

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<fields>
+    <field description="A rough estimate of the epic size using t-shirt size values." id="epicEstimate" name="Epic Estimate" type="enum:tshirt-sizes"/>
+    <field description="Select Target Release Version for the planned Epic." id="targetVersion" name="Target Version" type="enum:@plan[template.id:release]"/>
+    <field description="Sum of Story Point estimates of all Epic's children User Stories" id="childStoryPoints" name="Child Story Points" type="integer"/>
+</fields>

@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<test-run>
+    <field id="author">mTest</field>
+    <field id="created">2016-02-18 18:07:43.566 +0100</field>
+    <field id="description" text-type="text/plain" type="text/html">This is an user acceptance manual test  that  includes all the user acceptance test cases from the selected project.</field>
+    <field id="document">Testing#Test Specification</field>
+    <field id="environmentDescription" text-type="text/html" type="text/html">&lt;html&gt;&lt;head&gt;&lt;META http-equiv="Content-Type" content="text/html; charset=UTF-8"&gt;&lt;meta content="HTML Tidy for Java (vers. 26 Z&amp;aacute;ř 2004), see www.w3.org" name="generator"&gt;&lt;title&gt;&lt;/title&gt;&lt;/head&gt;&lt;body&gt;All Defaults&lt;/body&gt;&lt;/html&gt;</field>
+    <field id="finishedOn">2017-05-18 11:17:48.185 +0200</field>
+    <field id="groupId">0.9b</field>
+    <field id="planScope" multi="true" type="enum:@plan">
+        <list>
+            <item>Version_0_9b</item>
+        </list>
+    </field>
+    <field id="platform" type="enum:platform">linux</field>
+    <field id="query">testType:user AND type:testcase AND status:active</field>
+    <field id="records">
+        <list>
+            <struct>
+                <item id="comment" text-type="text/html">&lt;b&gt;Retest comment:&lt;/b&gt;&lt;br&gt;OK</item>
+                <item id="defect">EL-18</item>
+                <item id="duration">12.491</item>
+                <item id="executed">2017-05-18 11:17:00.042 +0200</item>
+                <item id="executedBy">mTest</item>
+                <item id="result">passed</item>
+                <item id="signed">true</item>
+                <item id="testCase">EL-36</item>
+                <item id="testStepResults">
+                    <list>
+                        <struct>
+                            <item id="comment" text-type="text/plain">OK</item>
+                            <item id="result">passed</item>
+                        </struct>
+                        <struct>
+                            <item id="comment" text-type="text/plain">OK</item>
+                            <item id="result">passed</item>
+                        </struct>
+                        <struct>
+                            <item id="comment" text-type="text/plain">OK</item>
+                            <item id="result">passed</item>
+                        </struct>
+                    </list>
+                </item>
+            </struct>
+            <struct>
+                <item id="duration">93.498</item>
+                <item id="executed">2016-02-21 17:40:56.387 +0100</item>
+                <item id="executedBy">mTest</item>
+                <item id="result">passed</item>
+                <item id="signed">true</item>
+                <item id="testCase">EL-37</item>
+                <item id="testStepResults">
+                    <list>
+                        <struct>
+                            <item id="result">passed</item>
+                        </struct>
+                        <struct>
+                            <item id="result">passed</item>
+                        </struct>
+                    </list>
+                </item>
+            </struct>
+            <struct>
+                <item id="duration">132.149</item>
+                <item id="executed">2012-08-21 18:42:09.607 +0200</item>
+                <item id="executedBy">mTest</item>
+                <item id="result">passed</item>
+                <item id="signed">true</item>
+                <item id="testCase">EL-38</item>
+                <item id="testStepResults">
+                    <list>
+                        <struct>
+                            <item id="result">passed</item>
+                        </struct>
+                        <struct>
+                            <item id="result">passed</item>
+                        </struct>
+                        <struct>
+                            <item id="result">passed</item>
+                        </struct>
+                        <struct>
+                            <item id="result">passed</item>
+                        </struct>
+                    </list>
+                </item>
+            </struct>
+            <struct>
+                <item id="duration">82.671</item>
+                <item id="executed">2016-02-21 17:44:17.985 +0100</item>
+                <item id="executedBy">mTest</item>
+                <item id="result">passed</item>
+                <item id="signed">true</item>
+                <item id="testCase">EL-39</item>
+                <item id="testStepResults">
+                    <list>
+                        <struct>
+                            <item id="result">passed</item>
+                        </struct>
+                        <struct>
+                            <item id="result">passed</item>
+                        </struct>
+                        <struct>
+                            <item id="result">passed</item>
+                        </struct>
+                    </list>
+                </item>
+            </struct>
+            <struct>
+                <item id="duration">122.934</item>
+                <item id="executed">2016-02-21 17:46:26.105 +0100</item>
+                <item id="executedBy">mTest</item>
+                <item id="result">passed</item>
+                <item id="signed">true</item>
+                <item id="testCase">EL-40</item>
+                <item id="testStepResults">
+                    <list>
+                        <struct>
+                            <item id="result">passed</item>
+                        </struct>
+                        <struct>
+                            <item id="result">passed</item>
+                        </struct>
+                        <struct>
+                            <item id="result">passed</item>
+                        </struct>
+                    </list>
+                </item>
+            </struct>
+            <struct>
+                <item id="comment" text-type="text/html">&lt;b&gt;Retest comment:&lt;/b&gt;&lt;br&gt;Passed</item>
+                <item id="defect">EL-17</item>
+                <item id="duration">16.177</item>
+                <item id="executed">2017-05-18 11:17:27.981 +0200</item>
+                <item id="executedBy">mTest</item>
+                <item id="result">passed</item>
+                <item id="signed">true</item>
+                <item id="testCase">EL-41</item>
+                <item id="testCaseRevision">661</item>
+                <item id="testStepResults">
+                    <list>
+                        <struct>
+                            <item id="comment" text-type="text/plain">OK</item>
+                            <item id="result">passed</item>
+                        </struct>
+                        <struct>
+                            <item id="comment" text-type="text/plain">OK</item>
+                            <item id="result">passed</item>
+                        </struct>
+                        <struct>
+                            <item id="comment" text-type="text/plain">OK</item>
+                            <item id="result">passed</item>
+                        </struct>
+                    </list>
+                </item>
+            </struct>
+            <struct>
+                <item id="duration">92.765</item>
+                <item id="executed">2016-02-21 17:49:35.391 +0100</item>
+                <item id="executedBy">mTest</item>
+                <item id="result">passed</item>
+                <item id="signed">true</item>
+                <item id="testCase">EL-42</item>
+                <item id="testStepResults">
+                    <list>
+                        <struct>
+                            <item id="result">passed</item>
+                        </struct>
+                        <struct>
+                            <item id="result">passed</item>
+                        </struct>
+                        <struct>
+                            <item id="result">passed</item>
+                        </struct>
+                        <struct>
+                            <item id="result">passed</item>
+                        </struct>
+                    </list>
+                </item>
+            </struct>
+            <struct>
+                <item id="duration">132.265</item>
+                <item id="executed">2016-02-21 17:52:16.680 +0100</item>
+                <item id="executedBy">mTest</item>
+                <item id="result">passed</item>
+                <item id="signed">true</item>
+                <item id="testCase">EL-43</item>
+                <item id="testStepResults">
+                    <list>
+                        <struct>
+                            <item id="result">passed</item>
+                        </struct>
+                        <struct>
+                            <item id="result">passed</item>
+                        </struct>
+                    </list>
+                </item>
+            </struct>
+        </list>
+    </field>
+    <field id="selectTestCasesBy">staticLiveDoc</field>
+    <field id="status">verifiedPassed</field>
+    <field id="template">User Acceptance Test</field>
+    <field id="title">User Acceptance Test 0.9b</field>
+    <field id="type">manual</field>
+    <field id="useReportFromTemplate">true</field>
+</test-run>

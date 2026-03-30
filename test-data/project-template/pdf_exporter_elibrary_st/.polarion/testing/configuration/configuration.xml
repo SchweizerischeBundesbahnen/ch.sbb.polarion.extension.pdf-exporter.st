@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?><testsConfiguration>
+  <testCaseTemplate/>
+  <testRunTemplate>xUnit Build Test</testRunTemplate>
+  <defectToTestCaseLinkRoleId>triggered_by</defectToTestCaseLinkRoleId>
+  <defectWorkItemType>issue</defectWorkItemType>
+  <fieldsToCopyFromTestCaseToDefect>
+    <entry>
+      <string>categories</string>
+      <string>categories</string>
+    </entry>
+  </fieldsToCopyFromTestCaseToDefect>
+  <fieldsToCopyFromTestRunToLinkedDefect/>
+  <fieldsToCopyFromTestRunToNewDefect>
+    <entry>
+      <string>groupId</string>
+      <string>occurredInVersion</string>
+    </entry>
+  </fieldsToCopyFromTestRunToNewDefect>
+  <maxCreatedDefects>200</maxCreatedDefects>
+  <maxCreatedDefectsPercent>90</maxCreatedDefectsPercent>
+  <resultErrorEnumId>blocked</resultErrorEnumId>
+  <resultFailedEnumId>failed</resultFailedEnumId>
+  <resultPassedEnumId>passed</resultPassedEnumId>
+  <statusErrorEnumId>failed</statusErrorEnumId>
+  <statusFailedEnumId>failed</statusFailedEnumId>
+  <statusOkEnumId>passed</statusOkEnumId>
+  <summaryDefectSeverity>blocker</summaryDefectSeverity>
+  <testCaseIdCustomField>testCaseID</testCaseIdCustomField>
+  <testCaseWorkItemType>testcase</testCaseWorkItemType>
+  <defectAutoAssignementEnabled>true</defectAutoAssignementEnabled>
+  <retestAllowed>true</retestAllowed>
+  <testCasePlanningQuery>type:testcase AND status:active AND testType:(manual user)</testCasePlanningQuery>
+  <testRunsDeleteEnabled>false</testRunsDeleteEnabled>
+  <testRunsDeleteQuery>type:automated AND finishedOn:[19700101 TO $today-30d$]</testRunsDeleteQuery>
+  <testRunsGeneratedIdEnabled>false</testRunsGeneratedIdEnabled>
+<defectTemplate/>
+    <defectReuseType>always</defectReuseType>
+</testsConfiguration>

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<test-run>
+    <field id="author">admin</field>
+    <field id="created">2026-02-05 10:07:45.246 +0000</field>
+    <field id="description" text-type="text/html" type="text/html">&lt;html&gt;&lt;head&gt;&lt;META http-equiv="Content-Type" content="text/html; charset=UTF-8"&gt;&lt;meta content="HTML Tidy for Java (vers. 26 Z&amp;aacute;ř 2004), see www.w3.org" name="generator"&gt;&lt;title&gt;&lt;/title&gt;&lt;/head&gt;&lt;body&gt;This is a full manual test that includes all the manual test cases from the current project.&lt;/body&gt;&lt;/html&gt;</field>
+    <field id="groupId">- -  enter build id - -</field>
+    <field id="query">type:testcase AND testType:manual AND status:active</field>
+    <field id="records">
+        <list>
+            <struct>
+                <item id="attachments">
+                    <list>
+                        <item>EL-1_image.png</item>
+                    </list>
+                </item>
+                <item id="duration">23.0</item>
+                <item id="executed">2026-02-05 10:08:23.001 +0000</item>
+                <item id="executedBy">admin</item>
+                <item id="result">passed</item>
+                <item id="signed">true</item>
+                <item id="testCase">EL-1</item>
+                <item id="testCaseRevision">39532</item>
+                <item id="testStepResults">
+                    <list>
+                        <struct>
+                            <item id="attachments">
+                                <list>
+                                    <item>EL-1_1_diagram_20251001-1811.58381.mxg.png</item>
+                                </list>
+                            </item>
+                            <item id="result">passed</item>
+                        </struct>
+                        <struct>
+                            <item id="result">passed</item>
+                        </struct>
+                        <struct>
+                            <item id="result">passed</item>
+                        </struct>
+                    </list>
+                </item>
+            </struct>
+            <struct>
+                <item id="duration">13.0</item>
+                <item id="executed">2026-02-05 10:08:36.338 +0000</item>
+                <item id="executedBy">admin</item>
+                <item id="result">passed</item>
+                <item id="signed">true</item>
+                <item id="testCase">EL-2</item>
+                <item id="testCaseRevision">39532</item>
+                <item id="testStepResults">
+                    <list>
+                        <struct>
+                            <item id="result">passed</item>
+                        </struct>
+                        <struct>
+                            <item id="result">passed</item>
+                        </struct>
+                        <struct>
+                            <item id="result">passed</item>
+                        </struct>
+                    </list>
+                </item>
+            </struct>
+            <struct>
+                <item id="duration">15.0</item>
+                <item id="executed">2026-02-05 10:08:51.566 +0000</item>
+                <item id="executedBy">admin</item>
+                <item id="result">passed</item>
+                <item id="signed">true</item>
+                <item id="testCase">EL-3</item>
+                <item id="testCaseRevision">39532</item>
+                <item id="testStepResults">
+                    <list>
+                        <struct>
+                            <item id="result">passed</item>
+                        </struct>
+                        <struct>
+                            <item id="result">passed</item>
+                        </struct>
+                        <struct>
+                            <item id="result">passed</item>
+                        </struct>
+                        <struct>
+                            <item id="result">passed</item>
+                        </struct>
+                    </list>
+                </item>
+            </struct>
+        </list>
+    </field>
+    <field id="selectTestCasesBy">dynamicQueryResult</field>
+    <field id="status">open</field>
+    <field id="template">Full Manual System Test</field>
+    <field id="type">manual</field>
+    <field id="useReportFromTemplate">true</field>
+</test-run>

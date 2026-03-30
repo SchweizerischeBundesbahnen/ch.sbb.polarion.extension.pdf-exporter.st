@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+    <field id="author">admin</field>
+    <field id="created">2026-03-06 12:22:47.987 +0000</field>
+    <field id="crossReferenceMappingData">elibrary/EL-231=elibrary_st_66425dbf8c10/EL-259,elibrary/EL-304=elibrary_st_235189a5c45b/EL-257,elibrary_st_c59b5cf79903/EL-257=elibrary/EL-231,elibrary/EL-303=elibrary_st_235189a5c45b/EL-258,elibrary/EL-232=elibrary_st_66425dbf8c10/EL-260</field>
+    <field id="homePageContent" text-type="text/html"><![CDATA[<h1 id="polarion_wiki macro name=module-workitem;params=id=EL-259"></h1><div id="polarion_wiki macro name=module-workitem;params=id=EL-260"></div><p id="polarion_2"></p><p id="polarion_18">
+  <img src="attachment:diagram_20251001-1814.45899.mxg.svg" style="width: 1250px;height: 75px;" data-lastmodified="2025-10-01T18:14:45.907+02:00"/>
+</p><p id="polarion_19"></p><p id="polarion_4">
+  <img src="attachment:test.svg" style="width: 1250px;height: 592px;" data-lastmodified="2025-10-01T18:13:19.241+02:00"/>
+</p><p id="polarion_17"></p><p id="polarion_9"></p><p id="polarion_3"></p><table id="polarion_wiki macro name=table;params=uid=9" class="polarion-Document-table" style="width: 100%;max-width: 1280px;margin-left: 0px;margin-right: auto;border: 1px solid #CCCCCC;empty-cells: show;border-collapse: collapse;">
+  <tbody>
+    <tr>
+      <th style="font-weight: bold;background-color: #F0F0F0;text-align: left;vertical-align: top;height: 12px;border: 1px solid #CCCCCC;padding: 5px;">Column 1</th>
+      <th style="font-weight: bold;background-color: #F0F0F0;text-align: left;vertical-align: top;height: 12px;border: 1px solid #CCCCCC;padding: 5px;">Column 2</th>
+      <th style="font-weight: bold;background-color: #F0F0F0;text-align: left;vertical-align: top;height: 12px;border: 1px solid #CCCCCC;padding: 5px;">Column 3</th>
+    </tr>
+    <tr>
+      <td style="text-align: left;vertical-align: top;height: 12px;border: 1px solid #CCCCCC;padding: 5px;"><img src="attachment:Project_Timeline__2_.jpg" style="width: 240px;height: 179px;" data-lastmodified="2025-09-29T17:16:51.069+02:00"/></td>
+      <td style="text-align: left;vertical-align: top;height: 12px;border: 1px solid #CCCCCC;padding: 5px;"><span class="polarion-rte-link" data-type="crossReference" id="fake" data-item-id="EL-261" data-option-id="longoutline"></span> </td>
+      <td style="text-align: left;vertical-align: top;height: 12px;border: 1px solid #CCCCCC;padding: 5px;"></td>
+    </tr>
+    <tr>
+      <td style="text-align: left;vertical-align: top;height: 12px;border: 1px solid #CCCCCC;padding: 5px;"></td>
+      <td style="text-align: left;vertical-align: top;height: 12px;border: 1px solid #CCCCCC;padding: 5px;"><img src="attachment:Project_Timeline__2_.jpg" style="width: 240px;height: 179px;" data-lastmodified="2025-09-29T17:16:51.069+02:00"/></td>
+      <td style="text-align: left;vertical-align: top;height: 12px;border: 1px solid #CCCCCC;padding: 5px;"></td>
+    </tr>
+    <tr>
+      <td style="text-align: left;vertical-align: top;height: 12px;border: 1px solid #CCCCCC;padding: 5px;"></td>
+      <td style="text-align: left;vertical-align: top;height: 12px;border: 1px solid #CCCCCC;padding: 5px;"></td>
+      <td style="text-align: left;vertical-align: top;height: 12px;border: 1px solid #CCCCCC;padding: 5px;"><img src="attachment:Project_Timeline__2_.jpg" style="width: 240px;height: 179px;" data-lastmodified="2025-09-29T17:16:51.069+02:00"/></td>
+    </tr>
+  </tbody>
+</table><p id="polarion_10"></p><p id="polarion_11"></p><table id="polarion_wiki macro name=table;params=uid=2" class="polarion-Document-table" style="width: 100%;max-width: 1280px;margin-left: 0px;margin-right: auto;border: 1px solid #CCCCCC;empty-cells: show;border-collapse: collapse;">
+  <tbody>
+    <tr>
+      <th style="font-weight: bold;background-color: #F0F0F0;text-align: left;vertical-align: top;height: 12px;border: 1px solid #CCCCCC;border-top: 1px solid #CCCCCC;border-bottom: 1px solid #CCCCCC;border-right: 1px solid #CCCCCC;border-left: 1px solid #CCCCCC;padding: 5px;">Column 1</th>
+      <th style="font-weight: bold;background-color: #F0F0F0;text-align: left;vertical-align: top;height: 12px;border: 1px solid #CCCCCC;border-top: 1px solid #CCCCCC;border-bottom: 1px solid #CCCCCC;border-right: 1px solid #CCCCCC;border-left: 1px solid #CCCCCC;padding: 5px;">Column 2</th>
+      <th style="font-weight: bold;background-color: #F0F0F0;text-align: left;vertical-align: top;height: 12px;border: 1px solid #CCCCCC;border-top: 1px solid #CCCCCC;border-bottom: 1px solid #CCCCCC;border-right: 1px solid #CCCCCC;border-left: 1px solid #CCCCCC;padding: 5px;">Column 3</th>
+    </tr>
+    <tr>
+      <td style="text-align: left;vertical-align: top;height: 12px;border: 1px solid #CCCCCC;border-top: 1px solid #CCCCCC;border-bottom: 1px solid #CCCCCC;border-right: 1px solid #CCCCCC;border-left: 1px solid #CCCCCC;padding: 5px;"><img src="attachment:Project_Timeline__2_.jpg" style="width: 140px;height: 104px;" data-lastmodified="2025-09-29T17:16:51.069+02:00"/></td>
+      <td style="text-align: left;vertical-align: top;height: 12px;border: 1px solid #CCCCCC;border-top: 1px solid #CCCCCC;border-bottom: 1px solid #CCCCCC;border-right: 1px solid #CCCCCC;border-left: 1px solid #CCCCCC;padding: 5px;"></td>
+      <td style="text-align: left;vertical-align: top;height: 12px;border: 1px solid #CCCCCC;border-top: 1px solid #CCCCCC;border-bottom: 1px solid #CCCCCC;border-right: 1px solid #CCCCCC;border-left: 1px solid #CCCCCC;padding: 5px;"></td>
+    </tr>
+    <tr>
+      <td style="text-align: left;vertical-align: top;height: 12px;border: 1px solid #CCCCCC;border-top: 1px solid #CCCCCC;border-bottom: 1px solid #CCCCCC;border-right: 1px solid #CCCCCC;border-left: 1px solid #CCCCCC;padding: 5px;"></td>
+      <td style="text-align: left;vertical-align: top;height: 12px;border: 1px solid #CCCCCC;border-top: 1px solid #CCCCCC;border-bottom: 1px solid #CCCCCC;border-right: 1px solid #CCCCCC;border-left: 1px solid #CCCCCC;padding: 5px;"><img src="attachment:Project_Timeline__2_.jpg" style="width: 440px;height: 328px;" data-lastmodified="2025-09-29T17:16:51.069+02:00"/></td>
+      <td style="text-align: left;vertical-align: top;height: 12px;border: 1px solid #CCCCCC;border-top: 1px solid #CCCCCC;border-bottom: 1px solid #CCCCCC;border-right: 1px solid #CCCCCC;border-left: 1px solid #CCCCCC;padding: 5px;"></td>
+    </tr>
+    <tr>
+      <td style="text-align: left;vertical-align: top;height: 12px;border: 1px solid #CCCCCC;border-top: 1px solid #CCCCCC;border-bottom: 1px solid #CCCCCC;border-right: 1px solid #CCCCCC;border-left: 1px solid #CCCCCC;padding: 5px;"></td>
+      <td style="text-align: left;vertical-align: top;height: 12px;border: 1px solid #CCCCCC;border-top: 1px solid #CCCCCC;border-bottom: 1px solid #CCCCCC;border-right: 1px solid #CCCCCC;border-left: 1px solid #CCCCCC;padding: 5px;"><span style="font-size: 10pt;line-height: 1.5;">[2026-03-06 10:15:02] INFO  Application startup sequence initiated with environment=production, version=5.4.2, build=20260306-1010, host=node-01.eu-central.internal</span><br/><span style="font-size: 10pt;line-height: 1.5;">    - Initializing configuration subsystem and loading configuration files from /etc/app/config with fallback directories enabled and environment overrides applied</span><br/><span style="font-size: 10pt;line-height: 1.5;">        [2026-03-06 10:15:03] DEBUG Configuration loader detected 14 configuration entries including database, cache, logging, telemetry, authentication, and feature flags</span><br/><span style="font-size: 10pt;line-height: 1.5;">        [2026-03-06 10:15:03] INFO  Configuration validation completed successfully with schema version=3.2 and compatibility mode enabled for legacy settings</span><br/><span style="font-size: 10pt;line-height: 1.5;">    - Establishing database connectivity to primary cluster db-prod-eu-central-01.company.internal:5432 using connection pool size=20 timeout=30s ssl=required retryPolicy=exponentialBackoff</span><br/><span style="font-size: 10pt;line-height: 1.5;">        [2026-03-06 10:15:04] DEBUG Database driver initialized with parameters connectTimeout=30s readTimeout=60s writeTimeout=60s tcpKeepAlive=true preparedStatements=true</span><br/><span style="font-size: 10pt;line-height: 1.5;">        [2026-03-06 10:15:05] INFO  Database connection pool successfully created with activeConnections=5 idleConnections=5 maxConnections=20 validationQuery=&quot;SELECT 1&quot;</span><br/><span style="font-size: 10pt;line-height: 1.5;"><br/></span><br/><span style="font-size: 10pt;line-height: 1.5;">[2026-03-06 10:15:06] INFO  Starting request processing pipeline with middleware chain=[authentication, rateLimit, tracing, metrics, routing, validation, execution]</span><br/><span style="font-size: 10pt;line-height: 1.5;">    - Processing incoming request requestId=9f1c2b4d8a7e4b1fa8c0 userId=4821 sessionId=7dd8f7c1c12c endpoint=/api/v1/orders method=POST clientIp=192.168.14.22 region=eu-central</span><br/><span style="font-size: 10pt;line-height: 1.5;">        [2026-03-06 10:15:06] INFO  Input validation completed successfully for schema=CreateOrderRequest fieldsValidated=12 optionalFieldsMissing=1</span><br/><span style="font-size: 10pt;line-height: 1.5;">        [2026-03-06 10:15:07] DEBUG Business logic execution started orderItems=4 calculatedSubtotal=249.80 currency=EUR promotionApplied=SPRING2026 discount=10%</span><br/><span style="font-size: 10pt;line-height: 1.5;">        [2026-03-06 10:15:08] WARN  External payment gateway latency detected provider=stripe-eu requestDurationMs=1842 thresholdMs=1000 retryAttempt=1</span><br/><span style="font-size: 10pt;line-height: 1.5;">        [2026-03-06 10:15:09] INFO  Order successfully created orderId=ORD-20260306-0004821 status=confirmed paymentStatus=authorized fulfillmentCenter=warehouse-03</span><br/></td>
+      <td style="text-align: left;vertical-align: top;height: 12px;border: 1px solid #CCCCCC;border-top: 1px solid #CCCCCC;border-bottom: 1px solid #CCCCCC;border-right: 1px solid #CCCCCC;border-left: 1px solid #CCCCCC;padding: 5px;"><img src="attachment:Project_Timeline__2_.jpg" style="width: 440px;height: 328px;" data-lastmodified="2025-09-29T17:16:51.069+02:00"/></td>
+    </tr>
+  </tbody>
+</table><p id="polarion_15"></p><div id="polarion_wiki macro name=module-workitem;params=id=EL-261"></div><p id="polarion_12"></p><p id="polarion_14"></p>]]></field>
+    <field id="renderingLayouts">
+        <list>
+            <struct>
+                <item id="label">Test Case</item>
+                <item id="layouter">paragraph</item>
+                <item id="properties">
+                    <list>
+                        <struct>
+                            <item id="key">fieldsAtStart</item>
+                            <item id="value">id</item>
+                        </struct>
+                        <struct>
+                            <item id="key">fieldsAtEnd</item>
+                            <item id="value">status</item>
+                        </struct>
+                    </list>
+                </item>
+                <item id="type">testcase</item>
+            </struct>
+        </list>
+    </field>
+    <field id="status">draft</field>
+    <field id="structureLinkRole">relates_to</field>
+    <field id="title">Indent Test</field>
+    <field id="type">generic</field>
+    <field id="usesOutlineNumbering">true</field>
+</module>

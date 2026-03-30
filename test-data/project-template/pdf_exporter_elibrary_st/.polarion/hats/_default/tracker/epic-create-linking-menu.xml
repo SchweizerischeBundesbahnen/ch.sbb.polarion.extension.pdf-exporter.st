@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<menu>
+	<item childInModule="true" copyFields="categories" type="userstory"/>
+	<item copyFields="categories" label="Follow-up Epic" role="follow_up" type="epic"/>
+	<separator/>
+	<item label="Dependent" role="depends_on"/>
+	<item label="Related" role="relates_to"/>
+</menu>

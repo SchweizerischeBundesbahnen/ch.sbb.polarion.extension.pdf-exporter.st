@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<enumeration>
+    <option id="xs" name="XS" sortOrder="1"/>
+    <option id="s" name="S" sortOrder="2"/>
+    <option id="m" name="M" sortOrder="3"/>
+    <option id="l" name="L" sortOrder="4"/>
+    <option id="xl" name="XL" sortOrder="5"/>
+    <option id="xxl" name="XXL" sortOrder="6"/>
+</enumeration>

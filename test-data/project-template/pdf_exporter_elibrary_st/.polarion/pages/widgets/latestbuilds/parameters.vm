@@ -1,0 +1,31 @@
+###############################################################################
+##
+##  parameters.vm - this velocity script defines the widget parameters
+##
+
+###############################################################################
+##
+##  Velocity Context - following objects are in the velocity context
+##
+## java.util.Map $parameters
+## com.polarion.alm.shared.api.model.rp.parameter.ParameterFactory $factory
+## com.polarion.alm.shared.api.transaction.ReadOnlyTransaction $transaction
+## com.polarion.alm.shared.api.model.rp.widget.RichPageWidgetRenderingContext $widgetContext
+## com.polarion.alm.shared.api.utils.velocity.ObjectFactory $objectFactory
+##
+
+###############################################################################
+##
+##  Add parameters
+$parameters.put("project", $factory.objectSelector("Project").allowedPrototypes(["Project"]).build())
+$parameters.put("count", $factory.integer("Render # Last Builds").value(1).build())
+$parameters.put("sort", $factory.string("Sort Builds by").value("finishTime").build())
+$parameters.put("align", $factory.customEnum("Align").addEnumItem("left", "Left").addEnumItem("center", "Center").addEnumItem("right", "Right").singleValue("center").build())
+#set($colorPassed = $factory.string("Passed").value("#27AE60").build())
+#set($colorFailed = $factory.string("Failed").value("#C0392B").build())
+#set($colorPassedWithFailures = $factory.string("Passed with Failures").value("#F39C12").build())
+#set($colorRunning = $factory.string("Running").value("#2980B9").build())
+#set($colorCancelled = $factory.string("Cancelled").value("#2C3E50").build())
+#set($colorWaiting = $factory.string("Waiting").value("#BDC3C7").build())
+#set($colorOther = $factory.string("Other").value("#8E44AD").build())
+$parameters.put("colors", $factory.composite("Build Status Colors").add("colorPassed", $colorPassed).add("colorFailed", $colorFailed).add("colorPassedWithFailures", $colorPassedWithFailures).add("colorRunning", $colorRunning).add("colorCancelled", $colorCancelled).add("colorWaiting", $colorWaiting).add("colorOther", $colorOther).collapsedByDefault(true).build())

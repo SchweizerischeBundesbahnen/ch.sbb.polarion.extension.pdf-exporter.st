@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<work-item>
+    <field id="author">rProject</field>
+    <field id="created">2011-09-19 12:54:17.368 +0200</field>
+    <field id="initialEstimate"/>
+    <field id="priority">50.0</field>
+    <field id="remainingEstimate"/>
+    <field id="severity">basic</field>
+    <field id="status">draft</field>
+    <field id="testType" type="enum:testtype">automated</field>
+    <field id="timeSpent"/>
+    <field id="title">xUnit Test Case Template</field>
+    <field id="type">testcase</field>
+</work-item>

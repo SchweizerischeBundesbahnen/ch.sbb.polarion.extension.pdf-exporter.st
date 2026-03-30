@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<work-item>
+    <field id="assignee">sDeveloper</field>
+    <field id="author">rProject</field>
+    <field id="created">2011-06-01 18:21:24.781 +0200</field>
+    <field id="initialEstimate">2d</field>
+    <field id="linkedWorkItems">
+        <list>
+            <struct>
+                <item id="role">affects</item>
+                <item id="workItem">EL-195</item>
+            </struct>
+        </list>
+    </field>
+    <field id="occurredInVersion" type="string">0.9b</field>
+    <field id="priority">50.0</field>
+    <field id="remainingEstimate">2d</field>
+    <field id="severity">critical</field>
+    <field id="status">open</field>
+    <field id="targetVersion" type="enum:@plan[template.id:release]">Version_1_0</field>
+    <field id="title">NPE when searching books with non latin characters in book title</field>
+    <field id="type">issue</field>
+</work-item>

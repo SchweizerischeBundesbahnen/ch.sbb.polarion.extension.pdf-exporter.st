@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<work-item>
+    <field id="author">admin</field>
+    <field id="categories">
+        <list>
+            <item>api</item>
+        </list>
+    </field>
+    <field id="child" type="string">c3</field>
+    <field id="created">2026-01-28 08:50:38.682 +0000</field>
+    <field id="description" text-type="text/html">Test Case 1</field>
+    <field id="linkedWorkItems">
+        <list>
+            <struct>
+                <item id="revision">16890</item>
+                <item id="role">duplicates</item>
+                <item id="workItem">elibrary$EL-303</item>
+            </struct>
+        </list>
+    </field>
+    <field id="parent" type="string">p1</field>
+    <field id="priority">70.0</field>
+    <field id="severity">basic</field>
+    <field id="status">draft</field>
+    <field id="testSteps" type="struct:TestSteps">
+        <struct>
+            <item id="keys">
+                <list>
+                    <item>step</item>
+                    <item>description</item>
+                    <item>expectedResult</item>
+                </list>
+            </item>
+            <item id="steps">
+                <list>
+                    <struct>
+                        <item id="values">
+                            <list>
+                                <item text-type="text/html">Step 11</item>
+                                <item text-type="text/html">Descr 11</item>
+                                <item text-type="text/html">Res 11</item>
+                            </list>
+                        </item>
+                    </struct>
+                    <struct>
+                        <item id="values">
+                            <list>
+                                <item text-type="text/html">Step 2</item>
+                                <item text-type="text/html">Descr 2</item>
+                                <item text-type="text/html">Res 2</item>
+                            </list>
+                        </item>
+                    </struct>
+                </list>
+            </item>
+        </struct>
+    </field>
+    <field id="testSteps_de" type="string">{"headers":[{"name":"Step","description":"","columnWidth":"30%"},{"name":"Step Description","description":"","columnWidth":"35%"},{"name":"Expected Result","description":"","columnWidth":"35%"}],"steps":[{"values":["Step 112","Descr 112","Res 112"]},{"values":["Step 21","Descr 21","Res 21"]}]}</field>
+    <field id="testType" type="enum:testtype">manual</field>
+    <field id="title">Test Case 2</field>
+    <field id="type">testcase</field>
+</work-item>

@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<descriptors xmlns="http://polarion.com/schema/Reports/Descriptors" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://polarion.com/schema/Reports/Descriptors">
+ <site-descriptor name="site">
+    <description>Maven Site</description>
+    <maven-report>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jxr-plugin</artifactId>
+      </plugin>
+    </maven-report>
+<!--
+    Commented out, because javadoc executable must be installed manually (see Installation Guide for more details).
+
+    <maven-report>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <configuration>
+          <javadocExecutable>C:\Polarion\bundled\j2re_1.5.0\bin\javadoc.exe</javadocExecutable>
+        </configuration>
+      </plugin>
+    </maven-report>
+ -->
+     <maven-report>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-pmd-plugin</artifactId>
+        <version>3.16.0</version>
+      </plugin>
+    </maven-report>
+    <maven-report>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>3.1.2</version>
+      </plugin>
+    </maven-report>
+ </site-descriptor>
+ <custom-descriptor name="trackeranalysis-projectgroup">
+    <description>Tracker Analysis</description>
+    <aggregation>true</aggregation>
+    <goals>
+	<goal>com.polarion.maven.plugins.qcentre:trackeranalysis:aggregate</goal>
+	<goal>com.polarion.maven.plugins.qcentre:projectscore:aggregate</goal>
+        <goal>com.polarion.maven.plugins.qcentre:projectscore:reportAggregated</goal>
+    </goals>
+  </custom-descriptor>
+  <custom-descriptor name="trackeranalysis">
+    <description>Tracker Analysis</description>
+    <aggregation>true</aggregation>
+    <goals>
+	<goal>com.polarion.maven.plugins.qcentre:trackeranalysis:calculate</goal>
+	<goal>com.polarion.maven.plugins.qcentre:trackeranalysis:report</goal>
+	<goal>com.polarion.maven.plugins.qcentre:projectscore:calculate</goal>
+	<goal>com.polarion.maven.plugins.qcentre:projectscore:report</goal>
+	<goal>com.polarion.maven.plugins.qcentre:projectscore:aggregate</goal>
+        <goal>com.polarion.maven.plugins.qcentre:projectscore:reportAggregated</goal>
+    </goals>
+  </custom-descriptor>
+  <custom-descriptor name="projectscore">
+    <description>Project Score</description>
+    <aggregation>true</aggregation>
+    <goals>
+	<goal>com.polarion.maven.plugins.qcentre:projectscore:calculate</goal>
+	<goal>com.polarion.maven.plugins.qcentre:projectscore:report</goal>
+	<goal>com.polarion.maven.plugins.qcentre:projectscore:aggregate</goal>
+        <goal>com.polarion.maven.plugins.qcentre:projectscore:reportAggregated</goal>
+    </goals>
+  </custom-descriptor>
+  <custom-descriptor name="repoanalysis">
+    <description>Repository Analysis</description>
+    <aggregation>true</aggregation>
+    <goals>
+	<goal>com.polarion.maven.plugins:repoanalysis:calculate</goal>
+	<goal>com.polarion.maven.plugins:repoanalysis:report</goal>
+	<goal>com.polarion.maven.plugins:repoanalysis:aggregate</goal>
+	<goal>com.polarion.maven.plugins:repoanalysis:reportAggregated</goal>
+    </goals>
+  </custom-descriptor>
+
+  <custom-descriptor name="processaudit-source">
+    <description>Process Audit</description>
+    <goals>
+
+        <!-- Pa with source/tests -->
+        <goal>compile</goal>
+
+        <goal>org.apache.maven.plugins:maven-surefire-report-plugin:report</goal>
+		<!-- Uncomment to calculate test coverage report. Plug-in will be downloaded automatically if server has internet access. -->
+		<!--  <goal>org.codehaus.mojo:cobertura-maven-plugin:cobertura</goal>-->
+
+		<goal>com.polarion.maven.processaudit:layout-java:layout-java</goal>
+
+        <goal>com.polarion.maven.processaudit:sensor-source-checks:sensor-source-checks</goal>
+        <goal>com.polarion.maven.processaudit:sensor-surefire-test:sensor-surefire-test</goal>
+
+    	<!-- deploy source artifacts to Polarion RR -->
+    	<goal>com.polarion.maven.processaudit:action-transfer:source-deploy</goal>
+
+	<!-- deploy target/site to site
+		especially I need site/cobertura and site/surefire-report.html in RR in foder for real artifact in RR !
+	-->
+        <goal>com.polarion.maven.plugins:deploy:deploy-reports</goal>
+
+    </goals>
+
+   <!-- compiler -->
+   <calculator>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.8.1</version>
+            <configuration>
+                <failOnError>false</failOnError>
+            </configuration>
+          </plugin>
+   </calculator>
+
+    <!-- polarion deploy -->
+    <calculator>
+           <plugin>
+                <groupId>com.polarion.maven.plugins</groupId>
+                <artifactId>deploy</artifactId>
+                <configuration>
+                   <toPolarionProject>false</toPolarionProject>
+                    <reports>
+                        <report>target/site:site</report>
+                   </reports>
+                </configuration>
+           </plugin>
+    </calculator>
+
+  </custom-descriptor>
+
+
+  <custom-descriptor name="processaudit">
+    <description>Process Audit</description>
+    <properties>
+        <maven.compiler.failOnError>false</maven.compiler.failOnError>
+    </properties>
+    <goals>
+
+        <!-- Pa with source/tests -->
+        <goal>compile</goal>
+
+        <!-- use report only otherwise the test are executed again ! -->
+	<goal>org.apache.maven.plugins:maven-surefire-report-plugin:report</goal>
+
+	<goal>com.polarion.maven.processaudit:layout-java:layout-java</goal>
+
+        <goal>com.polarion.maven.processaudit:sensor-source-checks:sensor-source-checks</goal>
+        <goal>com.polarion.maven.processaudit:sensor-surefire-test:sensor-surefire-test</goal>
+
+    	<!-- deploy source artifacts to Polarion RR -->
+    	<goal>com.polarion.maven.processaudit:action-transfer:source-deploy</goal>
+
+    	<!-- Retrieve source artifacts from Polarion RR to project root -->
+    	<goal>com.polarion.maven.processaudit:action-transfer:source-assemble</goal>
+
+    	<goal>com.polarion.maven.processaudit:source-check-aggregate:source-check-aggregate</goal>
+
+    	<goal>com.polarion.maven.processaudit:sensor-tracker:sensor-tracker</goal>
+    	<goal>com.polarion.maven.processaudit:sensor-plan:sensor-plan</goal>
+
+    	<goal>com.polarion.maven.processaudit:analyzer-score:analyzer-score</goal>
+    	<goal>com.polarion.maven.processaudit:report-general:render</goal>
+
+    	<!-- deploy one-time factbases and html report to Polarion RR -->
+	    <goal>com.polarion.maven.processaudit:action-transfer:deploy-reports</goal>
+
+	<!-- deploy target/site to site
+		especially I need site/cobertura and site/surefire-report.html in RR in foder for real artifact in RR !
+	-->
+        <goal>com.polarion.maven.plugins:deploy:deploy-reports</goal>
+
+	<!-- update project scores -->
+	<goal>com.polarion.maven.plugins.qcentre:projectscore:calculate</goal>
+	<goal>com.polarion.maven.plugins.qcentre:projectscore:report</goal>
+	<goal>com.polarion.maven.plugins.qcentre:projectscore:aggregate</goal>
+        <goal>com.polarion.maven.plugins.qcentre:projectscore:reportAggregated</goal>
+
+    </goals>
+
+   <!-- deploy -->
+   <calculator>
+          <plugin>
+            <groupId>com.polarion.maven.processaudit</groupId>
+            <artifactId>action-transfer</artifactId>
+
+            <configuration>
+                <!-- deploy-reports conf -->
+                <reports>
+                    <report>target/site/processaudit:html/processaudit</report>
+                    <report>target/processaudit/factbases/project-level:xml/processaudit/project-level</report>
+                </reports>
+
+            </configuration>
+          </plugin>
+   </calculator>
+
+    <!-- polarion deploy -->
+    <calculator>
+           <plugin>
+                <groupId>com.polarion.maven.plugins</groupId>
+                <artifactId>deploy</artifactId>
+                <configuration>
+                   <toPolarionProject>false</toPolarionProject>
+                    <reports>
+                        <report>target/site:site</report>
+                   </reports>
+                </configuration>
+           </plugin>
+    </calculator>
+  </custom-descriptor>
+
+  <!-- Reuse Calculator -->
+  <custom-descriptor name="reusecalculator">
+    <description>Reuse Calculator</description>
+    <goals>
+
+        <!-- project level -->
+        <goal>com.polarion.maven.reusecalculator:maven-svndepend-plugin:package-reuse-report</goal>
+        <goal>com.polarion.maven.reusecalculator:maven-svndepend-integration-plugin:package-reuse-deploy</goal>
+
+        <!-- aggregate -->
+        <goal>com.polarion.maven.reusecalculator:maven-svndepend-integration-plugin:package-reuse-aggregate-prepare</goal>
+        <goal>com.polarion.maven.reusecalculator:maven-svndepend-plugin:package-reuse-report-aggregated</goal>
+        <goal>com.polarion.maven.reusecalculator:maven-svndepend-integration-plugin:package-reuse-deploy-aggregated</goal>
+    </goals>
+    <calculator>
+           <plugin>
+                <groupId>com.polarion.maven.reusecalculator</groupId>
+                <artifactId>maven-svndepend-integration-plugin</artifactId>
+
+                <configuration>
+                    <!-- package-reuse-deploy -->
+                    <projectReports>
+                        <projectReports>target/reusecalculator/factbases:xml/reusecalculator</projectReports>
+                        <projectReports>target/site/reusecalculator:html/reusecalculator</projectReports>
+                    </projectReports>
+
+                    <!-- package-reuse-aggregate-prepare -->
+                    <projectGroupReports>
+                        <projectGroupReports>target/reusecalculator/integral-factbases:xml/reusecalculator</projectGroupReports>
+
+                        <!-- html report snippets -->
+                        <projectGroupReports>target/site/integral-reusecalculator:html/reusecalculator</projectGroupReports>
+                    </projectGroupReports>
+
+                </configuration>
+           </plugin>
+    </calculator>
+  </custom-descriptor>
+  <custom-descriptor name="reusecalculation">
+    <description>reusecalculation</description>
+    <extension>reusecalculator</extension>
+  </custom-descriptor>
+  <custom-descriptor name="cmmi-analysis">
+    <description>LiveCMMI</description>
+    <aggregation>true</aggregation>
+    <goals>
+        <goal>com.polarion.maven:maven-livecmmi-plugin:report</goal>
+    </goals>
+  </custom-descriptor>
+
+<!-- this is executed when user click on "run reports" on new build wizard -->
+  <custom-descriptor name="build-reports">
+    <description>together with build</description>
+    <extension>processaudit-source</extension>
+<!--    <extension>site</extension> -->
+  </custom-descriptor>
+
+<!-- this is executed when user click on "run all" on new monitor page -->
+  <custom-descriptor name="all">
+    <description>All</description>
+    <extension>trackeranalysis</extension>
+    <extension>trackeranalysis-projectgroup</extension>
+    <extension>processaudit</extension>
+    <extension>repoanalysis</extension>
+    <extension>reusecalculator</extension>
+    <extension>cmmi-analysis</extension>
+  </custom-descriptor>
+</descriptors>

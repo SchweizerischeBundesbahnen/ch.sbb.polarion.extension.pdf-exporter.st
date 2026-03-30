@@ -1,0 +1,11 @@
+###############################################################################
+##
+##  details.vm - this velocity script is executed to render the widget tooltip
+##
+
+For each status that is configured for the selected Work Item type the widget renders a "<b>Tile</b>". Each Tile contains
+the icon and title of the status and related Work Item count. The Tile also works as a link to the list of Work Items it represents.
+<br/>
+<ul><li>It is possible to further specify the Data Set by constructing a Query that will filter out all unwanted Work Items.</li>
+<li>The Pie Chart displaying the Work Item counts by Status can be turned off in the widget's Parameters.</li>
+<li>All Tiles (and the Pie Chart) can be aligned to the Left or Center in the widget's Parameters</li></ul>

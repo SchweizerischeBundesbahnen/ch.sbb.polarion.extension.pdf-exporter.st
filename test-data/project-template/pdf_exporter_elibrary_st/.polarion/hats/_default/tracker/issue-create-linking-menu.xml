@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<menu>
+	<item copyFields="categories" label="Verifying Test Case" role="verifies" type="testcase"/>
+	<item copyFields="categories" label="Follow-up Issue" role="follow_up" type="issue"/>
+	<item copyFields="categories" label="Follow-up Task" role="follow_up" type="task"/>
+	<separator/>
+	<item label="Dependent" role="depends_on"/>
+	<item label="Related" role="relates_to"/>
+</menu>

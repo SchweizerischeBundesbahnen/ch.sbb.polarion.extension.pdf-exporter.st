@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<work-item>
+    <field id="assignee">sDeveloper</field>
+    <field id="author">rProject</field>
+    <field id="categories">
+        <list>
+            <item>gui</item>
+            <item>objects</item>
+        </list>
+    </field>
+    <field id="created">2010-12-02 10:44:56.878 +0100</field>
+    <field id="description" text-type="text/html">Users must be able to mark a book as a &amp;quot;Favorite&amp;quot;.</field>
+    <field id="initialEstimate">4h</field>
+    <field id="previousStatus">approved</field>
+    <field id="priority">58.0</field>
+    <field id="remainingEstimate">4h</field>
+    <field id="resolvedOn">2010-12-02 10:45:24.407 +0100</field>
+    <field id="severity">nice_to_have</field>
+    <field id="status">accepted</field>
+    <field id="storyPoints" type="integer">1</field>
+    <field id="title">Mark a book as favorite</field>
+    <field id="type">userstory</field>
+</work-item>

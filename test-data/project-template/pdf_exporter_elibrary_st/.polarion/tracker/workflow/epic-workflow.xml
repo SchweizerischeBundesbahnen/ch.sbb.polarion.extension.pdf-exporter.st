@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<workflow initial-action="init" initial-status="draft" prototype="WorkItem">
+    <transitions>
+        <transition action="start_progress" from="accepted" to="inprogress"/>
+        <transition action="mark_done" from="inprogress" to="done"/>
+        <transition action="mark_verified" from="done" to="verified"/>
+        <transition action="stop_progress" from="inprogress" to="accepted"/>
+        <transition action="mark_rejected" from="inprogress" to="rejected"/>
+        <transition action="mark_rejected" from="accepted" to="rejected"/>
+        <transition action="accept" from="draft" to="accepted"/>
+        <transition action="mark_rejected" from="draft" to="rejected"/>
+        <transition action="rework" from="accepted" to="draft"/>
+        <transition action="rework" from="inprogress" to="draft"/>
+        <transition action="reopen" from="done" to="inprogress"/>
+        <transition action="mark_rejected" from="done" to="rejected"/>
+        <transition action="rework" from="done" to="draft"/>
+        <transition action="rework" from="rejected" to="draft"/>
+        <transition action="rework" from="verified" to="draft"/>
+    </transitions>
+    <actions>
+        <action id="init" name="Initialization">
+            <cleared>
+                <field name="resolution"/>
+            </cleared>
+        </action>
+        <action id="start_progress" name="Start Progress">
+            <required>
+                <field name="epicEstimate"/>
+                <field name="assignee"/>
+            </required>
+        </action>
+        <action id="stop_progress" name="Stop Progress"/>
+        <action id="mark_done" name="Mark Done">
+            <required>
+                <field name="assignee"/>
+                <field name="resolution"/>
+            </required>
+        </action>
+        <action id="mark_verified" name="Mark Verified">
+            <required>
+                <field name="assignee"/>
+                <field name="resolution"/>
+            </required>
+        </action>
+        <action id="reopen" name="Reopen">
+            <cleared>
+                <field name="resolution"/>
+            </cleared>
+        </action>
+        <action id="mark_rejected" name="Mark Rejected">
+            <required>
+                <field name="resolution"/>
+            </required>
+        </action>
+        <action id="accept" name="Accept">
+            <required>
+                <field name="epicEstimate"/>
+            </required>
+        </action>
+        <action id="rework" name="Rework">
+            <cleared>
+                <field name="resolution"/>
+            </cleared>
+        </action>
+    </actions>
+</workflow>

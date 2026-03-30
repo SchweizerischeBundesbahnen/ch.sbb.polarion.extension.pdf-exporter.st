@@ -1,0 +1,164 @@
+###############################################################################
+##
+##		render.vm - this velocity script is executed to render the actual widget
+##
+
+###############################################################################
+##
+## Velocity Context - following objects are in the velocity context
+##
+## com.polarion.alm.shared.api.model.rp.parameter.RichPageParameters $parameters
+## com.polarion.alm.shared.api.model.rp.parameter.impl.dataset.DataSetParameterImpl $dataSetParam
+##
+
+###############################################################################
+##
+## Texts
+##
+#set($warnJustWorkItemSubtypes = "Please select a specific <b>Subtype</b> of <b>Data Set - Type</b> parameter.")
+#set($warnSingleProject = "This widget provides statistics for <b>single Projects only</b>. Please select a <b>single Project</b> for the <b>Scope parameter</b>.")
+
+###############################################################################
+##
+## Page Parameters
+##
+#set($allowRendering = true)
+
+#set($dataSetParam = $parameters.dataSet)
+#if(!$dataSetParam.subtype())
+	$widgetContext.renderWarning("$warnJustWorkItemSubtypes")
+	#set($allowRendering = false)
+#end
+#if(!$dataSetParam.scope().projectId())
+	$widgetContext.renderWarning("$warnSingleProject")
+	#set($allowRendering = false)
+#end
+#set($displayChart = $parameters.displayChart.value())
+#if($displayChart)
+	#set($iconsFit = $math.div($math.sub($widgetContext.columnWidth(), 188), 118).intValue())
+#else
+	#set($iconsFit = $math.div($widgetContext.columnWidth(), 118).intValue())
+#end
+#set($align = $parameters.align.singleValue())
+
+###############################################################################
+##
+## CSS
+##
+<style>
+	.cell {
+		padding: 10px;
+		width: 96px;
+	}
+	.cell a:hover {
+		  text-decoration: none !important;
+		}
+	.square {
+		border-radius: 6px;
+		background-repeat: no-repeat;
+		background-image: url("$widgetContext.resourceUrl('resources/tileBackground.png')");
+		width: 96px;
+		height: 96px;
+	}
+	.count {
+		height: 24px;
+		padding-top: 43px;
+		font-size: 44px;
+		text-shadow: 1px 1px 0 white;
+		line-height: 0;
+		font-weight: bold;
+		text-align: center;
+	}
+	.option {
+		text-shadow: 1px 1px 0 white;
+		line-height: 1em;
+		font-size: 11px;
+		text-align: center;
+		text-decoration: none;
+	}
+</style>
+
+###############################################################################
+##
+## Render
+## com.polarion.alm.shared.api.model.rp.parameter.DataSet $dataSet
+## com.polarion.alm.shared.api.Scope $scope
+## com.polarion.alm.shared.api.transaction.ReadOnlyTransaction $transaction
+## com.polarion.alm.shared.api.model.rp.widget.RichPageWidgetRenderingContext $widgetContext
+## com.polarion.alm.shared.api.model.wi.WorkItem $item
+## com.polarion.alm.shared.api.model.rp.RichPage $page
+##
+##
+#if($allowRendering == true)
+#set($projectId = $dataSetParam.scope().projectId())
+#set($workItemType = $dataSetParam.subtype())
+#set($dataSet = $dataSetParam.getFor().revision(""))
+#set($query = $dataSet.queryToShow())
+#set($options = $transaction.enumerations().getEnumeration("status").forType("$workItemType").forProject("$projectId").options())
+#if($align.equals("left"))
+	<table style="width: 100%;">
+#else
+	<table style="margin: 0 auto">
+#end
+	<tr>
+		#if($displayChart)
+			<td style="width: 180px;">
+				<div class="polarion-rp-widget-part" data-widget="com.polarion.separateByPieChart" style="width: 180px;">
+					<span class="polarion-rp-widget-parameters">
+						<sub id="title"></sub>
+						<sub id="dataSet">
+							<sub id="prototype">WorkItem</sub>
+							<sub id="subtype">$workItemType</sub>
+							<sub id="queryType">lucene</sub>
+							<sub id="luceneQuery">$query</sub>
+							<sub id="children">
+								<sub id="separateBy">
+									<sub id="field">status</sub>
+								</sub>
+							</sub>
+						</sub>
+						<sub id="showDataLabels">false</sub>
+						<sub id="showZeroValues">false</sub>
+						<sub id="advanced">
+							<sub id="height">180px</sub>
+							<sub id="width"></sub>
+						</sub>
+					</span>
+				</div>
+			</td>
+		#end
+		<td>
+			<table>
+				<tr>
+					#foreach($option in $options)
+						#set($optionId = $option.getReference().id())
+						#if($option.fields().color().is().empty())
+							#set($optionColor = "#000000")
+						#else
+							#set($optionColor = $option.fields().color().get())
+						#end
+						#set($optionQuery = "$query AND status:$optionId")
+						#set($count = $transaction.workItems().count().query("$optionQuery").result())
+						#set($link = $transaction.context().createPortalLink().project("$projectId").workItems().query("$optionQuery").toEncodedRelativeUrl())
+						<td class="cell">
+							<a href="$link" target="_top">
+								<div class="square">
+									<div class="count" style="color: $optionColor;#if($count > 99999)font-size: 26px;#elseif($count > 9999)font-size: 32px;#elseif($count > 999)font-size: 38px;#end">
+										$count
+									</div>
+									<div class="option" style="color: $optionColor;">
+										$option.render()
+									</div>
+								</div>
+							</a>
+						</td>
+						#if(($math.mod($velocityCount, $iconsFit) == 0) || $iconsFit == 0)
+							</tr><tr>
+						#end
+					#end
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+#end

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<plan>
+    <field id="allowedTypes">
+        <list>
+            <item>userstory</item>
+        </list>
+    </field>
+    <field id="author">rProject</field>
+    <field id="calculationType">customFieldBased</field>
+    <field id="created">2017-03-27 10:52:09.855 +0200</field>
+    <field id="description" text-type="text/plain">The release plan specifies which Work Items are going to be implemented for each system release and dates for those releases. These selected Work Items are then translated into individual tasks to be implemented during the iteration to complete the Work Items.</field>
+    <field id="estimationField">storyPoints</field>
+    <field id="name">Version 1.2</field>
+    <field id="prioritizationField">priority</field>
+    <field id="startDate">2017-07-01</field>
+    <field id="startedOn">2017-04-03 12:50:33.799 +0200</field>
+    <field id="status">open</field>
+    <field id="template">release</field>
+    <field id="useReportFromTemplate">true</field>
+</plan>

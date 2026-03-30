@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<menu>
+	<item copyFields="categories" label="Parent Epic" role="parent" type="epic"/>
+	<item label="Implemented Requirement" role="implements" type="requirement"/>
+	<item label="Blocking" role="depends_on"/>
+	<item label="Related" role="relates_to"/>
+</menu>

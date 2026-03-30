@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+    <field id="allowedWITypes">
+        <list>
+            <item>testcase</item>
+        </list>
+    </field>
+    <field id="author">admin</field>
+    <field id="created">2011-01-27 11:31:47.156 +0000</field>
+    <field id="headingSidebarFields">severity,status</field>
+    <field id="homePageContent" text-type="text/html"><![CDATA[<h1 id="polarion_wiki macro name=module-workitem;params=id=EL-28"></h1>
+<div id="polarion_wiki macro name=toc"></div>
+<h2 id="polarion_wiki macro name=module-workitem;params=id=EL-29"></h2>
+<h3 id="polarion_wiki macro name=module-workitem;params=id=EL-30"></h3>
+<p id="polarion_new_7">Test Case Specification collects the test cases. Each test case specifies inputs, predicted results, and a set of execution conditions for a test item.</p>
+<h3 id="polarion_wiki macro name=module-workitem;params=id=EL-31"></h3>
+<p id="polarion_merged_1">Provide a short description of the software features being tested.</p>
+<h3 id="polarion_wiki macro name=module-workitem;params=id=EL-32"></h3>
+<p id="polarion_1">Specifications:</p>
+<ul id="polarion_2">
+  <li><span class="polarion-rte-link" data-type="document" id="fake" data-item-name="Administration Specification" data-space-name="Specification" data-option-id="default"></span></li>
+  <li><span class="polarion-rte-link" data-type="document" id="fake" data-item-name="Catalog Specification" data-space-name="Specification" data-option-id="default"></span></li>
+  <li><span class="polarion-rte-link" data-type="document" id="fake" data-item-name="Product Specification" data-space-name="Specification" data-option-id="default"></span><br/>
+    </li>
+</ul>
+<h2 id="polarion_wiki macro name=module-workitem;params=id=EL-34"></h2>
+<h3 id="polarion_wiki macro name=module-workitem;params=id=EL-71"></h3>
+<div id="polarion_wiki macro name=module-workitem;params=id=EL-37"></div>
+<div id="polarion_wiki macro name=module-workitem;params=id=EL-38"></div>
+<div id="polarion_wiki macro name=module-workitem;params=id=EL-39"></div>
+<div id="polarion_wiki macro name=module-workitem;params=id=EL-40"></div>
+<div id="polarion_wiki macro name=module-workitem;params=id=EL-41"></div>
+<div id="polarion_wiki macro name=module-workitem;params=id=EL-42"></div>
+<div id="polarion_wiki macro name=module-workitem;params=id=EL-43"></div>
+<h2 id="polarion_wiki macro name=module-workitem;params=id=EL-35"></h2>
+<p id="polarion_merged_2">
+  <span style="font-style: italic;">Define all the terms necessary to properly interpret this document, including acronyms and abbreviations. You may wish to build a separate glossary that spans multiple projects or the entire organization, and just include terms specific to a single project in each document.</span>
+</p>
+]]></field>
+    <field id="renderingLayouts">
+        <list>
+            <struct>
+                <item id="label">Test Case</item>
+                <item id="layouter">titleTestSteps</item>
+                <item id="properties">
+                    <list>
+                        <struct>
+                            <item id="key">fieldsAtStart</item>
+                            <item id="value">id</item>
+                        </struct>
+                        <struct>
+                            <item id="key">fieldsAtEnd</item>
+                            <item id="value">severity, status</item>
+                        </struct>
+                        <struct>
+                            <item id="key">fieldsAtEndAsTable</item>
+                        </struct>
+                        <struct>
+                            <item id="key">hidden</item>
+                        </struct>
+                        <struct>
+                            <item id="key">noPageBreak</item>
+                        </struct>
+                        <struct>
+                            <item id="key">sidebarWorkItemFields</item>
+                            <item id="value">severity,status</item>
+                        </struct>
+                        <struct>
+                            <item id="key">typeNotInProject</item>
+                        </struct>
+                    </list>
+                </item>
+                <item id="type">testcase</item>
+            </struct>
+        </list>
+    </field>
+    <field id="status">active</field>
+    <field id="structureLinkRole">parent</field>
+    <field id="type">testSpecification</field>
+    <field id="usesOutlineNumbering">true</field>
+    <field id="version" type="string">1.0</field>
+</module>

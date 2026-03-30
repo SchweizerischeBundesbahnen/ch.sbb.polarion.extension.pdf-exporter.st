@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+    <field id="author">admin</field>
+    <field id="created">2025-12-18 14:45:55.566 +0100</field>
+    <field id="homePageContent" text-type="text/html"><![CDATA[<h1 id="polarion_wiki macro name=module-workitem;params=id=EL-237"></h1><p id="polarion_1">qwe</p><div id="polarion_editor_html_block2" class="polarion-dle-wiki-block">
+  <div id="polarion_editor_html_block_content" contentEditable="false"></div><pre id="polarion_editor_html_block_source" class="polarion-dle-wiki-block-source" contentEditable="false">&lt;pd4ml:page.break pageFormat=&quot;rotate&quot;&gt;
+{show:wiki}
+Rotate
+{show}</pre>
+</div><p id="polarion_3">qwe</p><div id="polarion_editor_html_block4" class="polarion-dle-wiki-block">
+  <div id="polarion_editor_html_block_content" contentEditable="false"></div><pre id="polarion_editor_html_block_source" class="polarion-dle-wiki-block-source" contentEditable="false">&lt;pd4ml:page.break pageFormat=&quot;rotate&quot;&gt;
+{show:wiki}
+Rotate
+{show}</pre>
+</div><p id="polarion_5">qwe</p><div id="polarion_editor_html_block6" class="polarion-dle-wiki-block">
+  <div id="polarion_editor_html_block_content" contentEditable="false"></div><pre id="polarion_editor_html_block_source" class="polarion-dle-wiki-block-source" contentEditable="false">&lt;pd4ml:page.break pageFormat=&quot;rotate&quot;&gt;
+{show:wiki}
+Rotate
+{show}</pre>
+</div><p id="polarion_7">qwe</p><p id="polarion_template_2"></p>]]></field>
+    <field id="renderingLayouts">
+        <list>
+            <struct>
+                <item id="label">Requirement</item>
+                <item id="layouter">paragraph</item>
+                <item id="properties">
+                    <list>
+                        <struct>
+                            <item id="key">fieldsAtStart</item>
+                            <item id="value">id</item>
+                        </struct>
+                        <struct>
+                            <item id="key">fieldsAtEnd</item>
+                            <item id="value">status</item>
+                        </struct>
+                    </list>
+                </item>
+                <item id="type">requirement</item>
+            </struct>
+        </list>
+    </field>
+    <field id="status">draft</field>
+    <field id="structureLinkRole">parent</field>
+    <field id="title">R R R</field>
+    <field id="type">generic</field>
+    <field id="usesOutlineNumbering">true</field>
+</module>

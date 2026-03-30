@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<work-item>
+    <field id="assignee">sDeveloper</field>
+    <field id="author">rProject</field>
+    <field id="created">2016-03-02 23:57:29.224 +0100</field>
+    <field id="description" text-type="text/html">&lt;b&gt;Test Run:&lt;/b&gt; &lt;span id="link" class="polarion-rte-link" data-type="testRun" data-item-id="build_all-20170211-235702" data-option-id="long"&gt;&lt;/span&gt;&lt;br/&gt;&lt;b&gt;Test Case:&lt;/b&gt; &lt;span id="link" class="polarion-rte-link" data-type="workItem" data-item-id="EL-25" data-option-id="long"&gt;&lt;/span&gt;&lt;br/&gt;&lt;table style="margin-bottom: 15px; ;border-collapse: collapse; width:100%; " class="polarion-no-style-cleanup"&gt;&lt;tr&gt;&lt;th style="width: 80%; text-align: left; background-color: #ffffff;"&gt;Test Case Verdict:&lt;/th&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style="vertical-align: top;"&gt;&lt;span style="font-weight: bold;"&gt;&lt;span style="color: #C30000;"&gt;&lt;span class="polarion-no-style-cleanup" title="Failed"&gt;&lt;span style="white-space:nowrap;"&gt;&lt;img src="/polarion/icons/default/enums/testrun_status_failed.png" style="vertical-align:text-bottom;border:0px;margin-right:2px;" class="polarion-no-style-cleanup"/&gt;&lt;/span&gt;Failed&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span&gt; junit.framework.AssertionFailedError&lt;br/&gt;&lt;br/&gt;Cannot login as Karl Xavier&lt;br/&gt;&lt;br/&gt;junit.framework.AssertionFailedError: Cannot login as Karl Xavier&lt;BR/&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;at junit.framework.Assert.fail(Assert.java:47)&lt;BR/&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;at junit.framework.Assert.assertTrue(Assert.java:20)&lt;BR/&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;at com.polarion.demo.LoginTest.testLogin(LoginTest.java:12)&lt;BR/&gt;&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</field>
+    <field id="initialEstimate">2h</field>
+    <field id="linkedWorkItems">
+        <list>
+            <struct>
+                <item id="role">triggered_by</item>
+                <item id="workItem">EL-25</item>
+            </struct>
+        </list>
+    </field>
+    <field id="occurredInVersion" type="string">20170211-2357</field>
+    <field id="priority">50.0</field>
+    <field id="remainingEstimate">2h</field>
+    <field id="severity">critical</field>
+    <field id="status">open</field>
+    <field id="title">Failed: com.polarion.demo.LoginTest.testLogin</field>
+    <field id="type">issue</field>
+</work-item>

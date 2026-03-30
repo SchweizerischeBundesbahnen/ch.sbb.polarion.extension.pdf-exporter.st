@@ -1,0 +1,23 @@
+###############################################################################
+##
+##  parameters.vm - this velocity script defines the widget parameters
+##
+
+###############################################################################
+##
+##  Velocity Context - following objects are in the velocity context
+##
+## java.util.Map $parameters
+## com.polarion.alm.shared.api.model.rp.parameter.ParameterFactory $factory
+## com.polarion.alm.shared.api.transaction.ReadOnlyTransaction $transaction
+## com.polarion.alm.shared.api.model.rp.widget.RichPageWidgetRenderingContext $widgetContext
+## com.polarion.alm.shared.api.utils.velocity.ObjectFactory $objectFactory
+##
+
+###############################################################################
+##
+##  Add parameters
+
+$parameters.put("dataSet", $factory.dataSet("Data Set").prototype().workItem().subtype("task").allowedPrototypes(["WorkItem"]).build())
+$parameters.put("displayChart", $factory.bool("Display Chart").value(true).build())
+$parameters.put("align", $factory.customEnum("Alignment").addEnumItem("left", "Left").addEnumItem("center", "Center").allowNoValue(false).singleValue("left").build())

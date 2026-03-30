@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<enumeration>
+    <option description="Parent - child relationship used to structure items." id="parent" name="has parent" oppositeName="is parent of" parent="true" sortOrder="1">
+        <rule from="userstory" to="epic"/>
+        <rule sameType="true"/>
+    </option>
+
+    <option description="Used to link implementing Tasks and Issues to User Stories and also User Stories to Requirements." id="implements" name="implements" oppositeName="is implemented by" parent="true" sortOrder="2">
+        <rule from="issue, task" to="userstory"/>
+        <rule from="userstory" to="requirement"/>
+    </option>
+
+    <option description="Used to mark a dependency between items." id="depends_on" name="depends on" oppositeName="blocks" sortOrder="3">
+        <rule from="changerequest" to="changerequest, userstory"/>
+        <rule from="issue" to="task, issue"/>
+        <rule from="epic" to="epic, userstory"/>
+        <rule from="userstory"/>
+    </option>
+
+    <option description="Marks item that is a duplicate of an existing item of the same type." id="duplicates" name="duplicates" oppositeName="is duplicated by" sortOrder="4">
+        <rule sameType="true"/>
+    </option>
+
+    <option description="Marks a follow-up of a done item." id="follow_up" name="has follow-up" oppositeName="follows" sortOrder="5">
+        <rule from="issue, task" to="issue, userstory, task"/>
+        <rule from="userstory" to="changerequest, userstory"/>
+        <rule from="epic" to="epic"/>
+        <rule from="changerequest" to="userstory"/>
+        <rule from="task" to="testcase"/>
+    </option>
+
+    <option description="Used to link verifying Test Cases to Issues, Requirements, and User Stories." id="verifies" name="verifies" oppositeName="is verified by" sortOrder="6">
+        <rule from="testcase" to="userstory, requirement, issue"/>
+    </option>
+
+    <option description="Used to link specifying Requirements to User Stories and Change Requests." id="specifies" name="specifies" oppositeName="is specified by" sortOrder="7">
+        <rule from="requirement" to="userstory, changerequest"/>
+    </option>
+
+    <option description="Used to link an Issue with a Test Case that triggered it." id="triggered_by" name="is triggered by" oppositeName="triggers" sortOrder="8">
+        <rule from="issue" to="testcase"/>
+    </option>
+
+    <option description="Used between Releases." id="uses" name="uses" oppositeName="is used by" sortOrder="9">
+        <rule from="release" sameType="true"/>
+    </option>
+
+    <option description="Indicates that an Issue is affecting a Release or Requirement." id="affects" name="affects" oppositeName="is affected by" sortOrder="10">
+        <rule from="issue" to="release, requirement"/>
+    </option>
+
+    <option description="Implies a relation between a Change Request and a Release or Requirement." id="tracks" name="tracks" oppositeName="is tracked by" sortOrder="11">
+        <rule from="changerequest" to="release, requirement"/>
+    </option>
+
+    <option description="System role that links derived items." id="derived_from" name="is derived from" oppositeName="is derived by" sortOrder="12">
+        <rule from="__other" to="__other"/>
+    </option>
+
+    <option description="System role that links branched items." id="branched_from" name="is branched from" oppositeName="has branch" sortOrder="13">
+        <rule from="__other" to="__other"/>
+    </option>
+
+    <option default="true" description="Generic relation type. A more concrete link should be used where possible." id="relates_to" name="relates to" oppositeName="is related to" sortOrder="14"/>
+</enumeration>

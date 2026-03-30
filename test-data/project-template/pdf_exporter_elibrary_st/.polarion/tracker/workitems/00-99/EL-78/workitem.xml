@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<work-item>
+    <field id="assignee">sDeveloper</field>
+    <field id="author">rProject</field>
+    <field id="categories">
+        <list>
+            <item>querying</item>
+            <item>searching</item>
+        </list>
+    </field>
+    <field id="created">2011-05-26 07:42:20.827 +0200</field>
+    <field id="initialEstimate">1/2d</field>
+    <field id="linkedWorkItems">
+        <list>
+            <struct>
+                <item id="role">implements</item>
+                <item id="workItem">EL-139</item>
+            </struct>
+        </list>
+    </field>
+    <field id="occurredInVersion" type="string">0.9b</field>
+    <field id="previousStatus">open</field>
+    <field id="priority">50.0</field>
+    <field id="resolution">done</field>
+    <field id="resolvedOn">2011-05-26 08:08:18.867 +0200</field>
+    <field id="severity">blocker</field>
+    <field id="status">done</field>
+    <field id="targetVersion" type="enum:@plan[template.id:release]">Version_1_0</field>
+    <field id="timeSpent">1/2d</field>
+    <field id="title">NPE when defining a query and no books are managed in the system yet</field>
+    <field id="type">issue</field>
+</work-item>

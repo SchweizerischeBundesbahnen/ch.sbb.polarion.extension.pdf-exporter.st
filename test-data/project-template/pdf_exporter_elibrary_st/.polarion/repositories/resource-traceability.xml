@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<resource-traceability>
+  <categories>
+    <category id="first_category" name="Codebase">
+      <repositories>
+        <repositoryConfiguration id="default" repository="default">
+          <branches>
+            <branch id="Version 0.9" path="Demo Projects/elibrary/branches/0.9"/>
+            <branch id="Version 1.0" path="Demo Projects/elibrary/branches/1.0"/>
+          </branches>
+          <paths>
+            <path dir=""/>
+          </paths>
+        </repositoryConfiguration>
+      </repositories>
+      <!-- <schedulers>
+        <scheduler cron="0 */10 * * * *"/>
+      </schedulers> -->
+      <fileParsers>
+        <fileParser extensions=".java" id="javaParser" name="com.siemens.polarion.rt.parsers.java">
+        </fileParser>
+        <fileParser extensions=".xml" id="xmlParser" name="com.siemens.polarion.rt.parsers.xml">
+        </fileParser>
+      </fileParsers>
+    </category>
+  </categories>
+</resource-traceability>

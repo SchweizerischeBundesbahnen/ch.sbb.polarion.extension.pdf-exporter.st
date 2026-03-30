@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<work-item>
+    <field id="type">heading</field>
+    <field id="author">rProject</field>
+    <field id="title">References</field>
+    <field id="created">2013-04-25 17:58:03.076 +0200</field>
+    <field id="priority">50.0</field>
+    <field id="status">open</field>
+    <field id="severity">should_have</field>
+</work-item>

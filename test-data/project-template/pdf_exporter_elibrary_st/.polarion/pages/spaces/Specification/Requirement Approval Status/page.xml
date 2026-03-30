@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<rich-page>
+    <field id="author">admin</field>
+    <field id="created">2015-03-02 15:45:38.794 +0100</field>
+    <field id="homePageContent" text-type="text/html"><![CDATA[<div class="polarion-rp-column" style="width: 100%;">
+  <h1 id="polarion_client23">Requirement Approval Status</h1>
+  <p id="polarion_1">
+    <span class="polarion-rp-inline-widget" data-widget="com.polarion.scriptInline">
+      <span class="polarion-rp-widget-parameters" style="display: none;">
+        <sub id="script">
+          <sub id="script" style="white-space:pre;">## Reported By
+#set($infoText = &quot;Reported by $transaction.users().getBy().id($securityService.getCurrentUser()).render()&lt;br/&gt;$date.long&quot;)
+#if($widgetContext.target().isEditor())
+	&lt;div style=&quot;color: grey; text-align: left;&quot;&gt;$infoText&lt;div&gt;
+#elseif($widgetContext.target().isPdf())
+	&lt;div style=&quot;color: grey; text-align: right; position: absolute; top: 22px; right: 10px;&quot;&gt;$infoText&lt;div&gt;
+#elseif($widgetContext.target().isPrint())
+	&lt;div style=&quot;text-align: right; position: absolute; top: 35px; right: 10px;&quot;&gt;$infoText&lt;div&gt;
+#end</sub>
+        </sub>
+      </span>
+    </span>
+  </p>
+</div>
+<div class="polarion-rp-row-separator" page_min_width="1000"></div>
+<div class="polarion-rp-column" style="width: 70%;">
+  <div id="polarion_client20" class="polarion-rp-widget-part" data-widget="com.polarion.scriptBlock">
+    <span class="polarion-rp-widget-parameters">
+      <sub id="script">
+        <sub id="script" style="white-space:pre;">#info(&quot;Displays Requirement approval process statistics. &lt;b&gt;Reviewed&lt;/b&gt; Requirements require stakeholder approval. Once approved by all “Approving User” stakeholders, their status can be changed to &lt;b&gt;Verified&lt;/b&gt; in the workflow.&quot;)</sub>
+      </sub>
+    </span>
+  </div>
+  <div id="polarion_client29" class="polarion-rp-widget-part" data-widget="com.polarion.multiSetPieChart">
+    <span class="polarion-rp-widget-parameters" style="display: none;">
+      <sub id="title"></sub>
+      <sub id="sectors">
+        <sub id="elements">
+          <sub>
+            <sub id="prototype">WorkItem</sub>
+            <sub id="subtype">requirement</sub>
+            <sub id="queryType">lucene</sub>
+            <sub id="luceneQuery" style="white-space:pre;">status:reviewed AND approvalState:approved</sub>
+            <sub id="children">
+              <sub id="sectorName">Approved by All Approvers</sub>
+              <sub id="sectorColor">#95d55c</sub>
+            </sub>
+          </sub>
+          <sub>
+            <sub id="prototype">WorkItem</sub>
+            <sub id="subtype">requirement</sub>
+            <sub id="queryType">lucene</sub>
+            <sub id="luceneQuery" style="white-space:pre;">status:reviewed AND approvalState:disapproved</sub>
+            <sub id="children">
+              <sub id="sectorName">Disapproved by Someone</sub>
+              <sub id="sectorColor">#d43d3d</sub>
+            </sub>
+          </sub>
+          <sub>
+            <sub id="prototype">WorkItem</sub>
+            <sub id="subtype">requirement</sub>
+            <sub id="queryType">lucene</sub>
+            <sub id="luceneQuery" style="white-space:pre;">status:reviewed AND approvalState:waiting</sub>
+            <sub id="children">
+              <sub id="sectorName">Waiting for User Approvals</sub>
+              <sub id="sectorColor">#b566d4</sub>
+            </sub>
+          </sub>
+          <sub>
+            <sub id="prototype">WorkItem</sub>
+            <sub id="subtype">requirement</sub>
+            <sub id="queryType">lucene</sub>
+            <sub id="luceneQuery" style="white-space:pre;">status:reviewed AND NOT HAS_VALUE:approvalState</sub>
+            <sub id="children">
+              <sub id="sectorName">Approvals Not Requested</sub>
+              <sub id="sectorColor">#cfcfcf</sub>
+            </sub>
+          </sub>
+        </sub>
+      </sub>
+      <sub id="showDataLabels">true</sub>
+      <sub id="showZeroValues">false</sub>
+      <sub id="advanced">
+        <sub id="height">300</sub>
+        <sub id="width"></sub>
+      </sub>
+    </span>
+  </div>
+  <div id="polarion_client32" class="polarion-rp-widget-part" data-widget="com.polarion.scriptBlock">
+    <span class="polarion-rp-widget-parameters" style="display: none;">
+      <sub id="script">
+        <sub id="script" style="white-space:pre;">###############################################################################
+##
+## Velocity Context - following objects are in the velocity context
+##
+## com.polarion.alm.shared.api.transaction.ReadOnlyTransaction $transaction
+## com.polarion.alm.shared.api.model.rp.RichPage $page
+##
+
+###############################################################################
+##
+## Macros
+##
+#macro(count $searchQuery)
+	#set($itemCount = $transaction.workItems().count().query(&quot;$searchQuery&quot;).result())
+	#set($itemLink = $transaction.context().createPortalLink().project(&quot;$projectId&quot;).workItems().query(&quot;$searchQuery&quot;).toEncodedRelativeUrl())
+	&lt;a href=&quot;$itemLink&quot; target=&quot;_top&quot; style=&quot;display: block; width: 100%; height: 100%; text-align: center;&quot;&gt;$itemCount&lt;/a&gt;
+#end
+
+#macro(renderArrows $color)
+	&lt;span style=&quot;color:#$color; font-size:18px; font-weight:bold;&quot;&gt;
+		&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;raquo;
+	&lt;/span&gt;
+#end
+
+#macro(showAp $status $q)
+	#set($userQuery = &quot;SELECT DISTINCT A.FK_URI_USER FROM STRUCT_WORKITEM_APPROVALS A, LUCENE_QUERY(&#39;WorkItem&#39;, &#39;$q&#39;, &#39;id&#39;) WI WHERE A.FK_P_WORKITEM = WI.C_PK AND A.C_STATUS=&#39;$status&#39;&quot;)
+	#set($sep = &quot;&lt;a target=&#39;_blank&#39; href=&#39;$transaction.context().createPortalLink().repository().workItems().query($q).sidebarApprovals(false).toEncodedRelativeUrl()&#39;&gt;&lt;img src=&#39;/polarion/icons/default/actions/invite_for_approval.png&#39;/&gt;&lt;/a&gt;&quot;)
+	&lt;span style=&quot;color:gray;&quot;&gt;
+		#foreach($user in $transaction.objects().searchBySql(&quot;$userQuery&quot;))
+			$sep
+			#if($user.isUnresolvable())
+				$user.getReference().id()
+			#else
+				$user.render()
+			#end
+			#set($sep =&quot;,&quot;)
+		#end
+	&lt;/span&gt;
+#end
+
+###############################################################################
+##
+## Styles
+##
+&lt;style&gt;
+	.approval-table {
+		margin: auto;
+		empty-cells: show;
+		border-collapse: collapse;
+		width: 100%;
+		border: 1px solid #CCCCCC;
+	}
+	.approval-table td {
+		text-align: left;
+		vertical-align: top;
+		height: 12px;
+		border: 1px solid #CCCCCC;
+		padding: 5px;
+	}
+&lt;/style&gt;
+
+###############################################################################
+##
+## Render
+##
+#set($projectId = $page.getReference.projectId())
+#set($itemType = &quot;requirement&quot;)
+#set($appStatus = &quot;reviewed&quot;)
+#set($allItemsQuery = &quot;project.id:$projectId AND type:$itemType&quot;)
+#if(!$pageParameters.version.values().isEmpty())
+	#set($allItemsQuery = &quot;$allItemsQuery AND targetVersion.KEY:$pageParameters.version.toLucene()&quot;)
+#end
+#set($appItemsQuery = &quot;$allItemsQuery AND status:$appStatus&quot;)
+#set($statusesForType = $transaction.enumerations().getEnumeration(&quot;status&quot;).forType(&quot;$itemType&quot;).forProject(&quot;$projectId&quot;).options())
+&lt;table class=&quot;approval-table&quot;&gt;
+	&lt;tbody&gt;
+		#foreach($status in $statusesForType)
+			&lt;tr&gt;
+				&lt;td&gt;
+					$status.render()
+				&lt;/td&gt;
+				&lt;td&gt;
+					#count(&quot;$allItemsQuery AND status:$status.getReference().id()&quot;)
+				&lt;/td&gt;
+				&lt;td&gt;
+					&amp;nbsp;
+				&lt;/td&gt;
+			&lt;/tr&gt;
+			#if($status.getReference().id().equals($appStatus))
+				#set($waitingQuery = &quot;$appItemsQuery AND approvalState:waiting&quot;)
+				#set($otherQuery = &quot;$appItemsQuery AND NOT HAS_VALUE:approvalState&quot;)
+				#set($disapprovedQuery = &quot;$appItemsQuery AND approvalState:disapproved&quot;)
+				#set($approvedQuery = &quot;$appItemsQuery AND approvalState:approved&quot;)
+				&lt;tr&gt;
+					&lt;td&gt;
+						#renderArrows(&quot;b566d4&quot;) Waiting for User Approvals
+					&lt;/td&gt;
+					&lt;td&gt;
+						#count($waitingQuery)
+					&lt;/td&gt;
+					&lt;td&gt;
+						#showAp(&quot;waiting&quot; $waitingQuery) &amp;nbsp;
+					&lt;/td&gt;
+				&lt;/tr&gt;
+				&lt;tr&gt;
+					&lt;td&gt;
+						#renderArrows(&quot;cfcfcf&quot;) Approvals Not Requested
+					&lt;/td&gt;
+					&lt;td&gt;
+						#count($otherQuery)
+					&lt;/td&gt;
+					&lt;td&gt;
+						&amp;nbsp;
+					&lt;/td&gt;
+				&lt;/tr&gt;
+				&lt;tr&gt;
+					&lt;td&gt;
+						#renderArrows(&quot;d43d3d&quot;) Disapproved by Someone (to be reviewed)
+					&lt;/td&gt;
+					&lt;td&gt;
+						#count($disapprovedQuery)
+					&lt;/td&gt;
+					&lt;td&gt;
+						#showAp(&quot;disapproved&quot; $disapprovedQuery) &amp;nbsp;
+					&lt;/td&gt;
+				&lt;/tr&gt;
+				&lt;tr&gt;
+					&lt;td&gt;
+						#renderArrows(&quot;95d55c&quot;) Approved by All Approvers (ready to be approved in workflow)
+					&lt;/td&gt;
+					&lt;td&gt;
+						#count($approvedQuery)
+					&lt;/td&gt;
+					&lt;td&gt;
+						#showAp(&quot;approved&quot; $approvedQuery) &amp;nbsp;
+					&lt;/td&gt;
+				&lt;/tr&gt;
+			#end
+		#end
+	&lt;/tbody&gt;
+&lt;/table&gt;
+
+        </sub>
+      </sub>
+    </span>
+  </div>
+  <p id="polarion_client30"></p><p id="polarion_client21"></p><p id="polarion_client33"></p>
+</div>
+<div class="polarion-rp-column" style="width: 30%;">
+  <div id="polarion_client12" class="polarion-rp-widget-part" data-widget="com.polarion.pageParametersForm">
+    <span class="polarion-rp-widget-parameters">
+      <sub id="title"></sub>
+      <sub id="content">
+        <sub>version</sub>
+      </sub>
+      <sub id="width">300</sub>
+    </span>
+  </div>
+  <p id="polarion_2">
+    <span class="polarion-rp-inline-widget" data-widget="com.polarion.scriptInline">
+      <span class="polarion-rp-widget-parameters">
+        <sub id="script">
+          <sub id="script" style="white-space:pre;">&lt;style&gt;
+.polarion-rpe-ParameterEditor-outerPanel {
+	border-radius: 5px 5px 5px 5px;
+}
+.polarion-rp-parameters-form-editor-panel {
+	border: none;
+}
+&lt;/style&gt;</sub>
+        </sub>
+      </span>
+    </span>
+  </p>
+</div>
+<div class="polarion-rp-row-separator"></div>
+<span id="polarion-rp-parameters">
+  <sub id="version" data-label="Version" data-type="Enumeration">
+    <sub id="enumId">@plan[template.id:release]</sub>
+    <sub id="allowNoValue">true</sub>
+    <sub id="allowMultipleValues">false</sub>
+    <sub id="loadForAllTypes">true</sub>
+  </sub>
+</span>]]></field>
+    <field id="title">Requirement Approval Status</field>
+</rich-page>

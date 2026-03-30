@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<workflow initial-action="rework" initial-status="draft" prototype="WorkItem">
+    <transitions>
+        <transition action="reject" from="reviewed" to="rejected"/>
+        <transition action="review" from="draft" to="reviewed"/>
+        <transition action="rework" from="reviewed" to="draft"/>
+        <transition action="reject" from="draft" to="rejected"/>
+        <transition action="rework" from="rejected" to="draft"/>
+        <transition action="rework" from="verified" to="draft"/>
+        <transition action="approve" from="reviewed" to="approved"/>
+        <transition action="rework" from="approved" to="draft"/>
+        <transition action="verify" from="approved" to="verified"/>
+        <transition action="reject" from="approved" to="rejected"/>
+    </transitions>
+    <actions>
+        <action id="rework" name="Rework">
+            <cleared>
+                <field name="resolution"/>
+            </cleared>
+            <functions>
+                <function name="ResetApprovalsState"/>
+            </functions>
+        </action>
+        <action id="review" name="Review">
+            <functions>
+                <function name="AddDefaultApprovals">
+                    <param name="approvals.roles" value="project_approver"/>
+                </function>
+            </functions>
+        </action>
+        <action id="approve" name="Approve">
+            <conditions>
+                <condition name="ApprovalState"/>
+            </conditions>
+        </action>
+        <action id="reject" name="Reject">
+            <required>
+                <field name="resolution"/>
+            </required>
+        </action>
+        <action id="verify" name="Verify">
+            <conditions>
+                <condition name="LinkedWorkItem">
+                    <param name="link.role" value="implements"/>
+                    <param name="backlink" value="true"/>
+                    <param name="target.work.item.type" value="userstory"/>
+                </condition>
+            </conditions>
+        </action>
+    </actions>
+</workflow>

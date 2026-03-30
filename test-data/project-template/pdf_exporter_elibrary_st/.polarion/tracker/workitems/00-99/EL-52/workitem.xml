@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<work-item>
+    <field id="assignee">pGUI</field>
+    <field id="author">rProject</field>
+    <field id="categories">
+        <list>
+            <item>usermanagement</item>
+        </list>
+    </field>
+    <field id="created">2009-05-24 11:33:33.075 +0200</field>
+    <field id="description" text-type="text/html">&lt;div&gt;&lt;ul&gt;&lt;li&gt;user can change his/her contact info&lt;/li&gt;&lt;li&gt;admin can change everything&lt;br&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;</field>
+    <field id="initialEstimate">2d</field>
+    <field id="linkedWorkItems">
+        <list>
+            <struct>
+                <item id="role">depends_on</item>
+                <item id="workItem">EL-50</item>
+            </struct>
+            <struct>
+                <item id="role">implements</item>
+                <item id="workItem">EL-136</item>
+            </struct>
+        </list>
+    </field>
+    <field id="priority">50.0</field>
+    <field id="remainingEstimate">2d</field>
+    <field id="severity">normal</field>
+    <field id="status">open</field>
+    <field id="title">Implement: Permissions to set contact info</field>
+    <field id="type">task</field>
+</work-item>

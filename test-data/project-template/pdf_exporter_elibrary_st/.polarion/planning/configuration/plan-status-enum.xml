@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<enumeration>
+    <option color="#2980B9" default="true" iconURL="/polarion/icons/default/enums/req_status_draft.gif" id="open" name="Open" sortOrder="1"/>
+    <option color="#3498DB" iconURL="/polarion/icons/default/enums/testrun_status_inprogress.png" id="inprogress" name="In Progress" sortOrder="2"/>
+    <option color="#2ECC71" iconURL="/polarion/icons/default/enums/req_status_approved.gif" id="done" name="Done" sortOrder="3" terminal="true"/>
+</enumeration>

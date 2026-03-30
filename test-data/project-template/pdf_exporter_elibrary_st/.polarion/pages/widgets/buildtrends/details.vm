@@ -1,0 +1,6 @@
+###############################################################################
+##
+##  details.vm - this velocity script is executed to render the widget tooltip
+##
+
+Displays information about the Build success rate of a specified Project.

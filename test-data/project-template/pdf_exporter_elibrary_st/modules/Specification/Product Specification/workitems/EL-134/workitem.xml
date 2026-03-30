@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<work-item>
+    <field id="assignee">sDeveloper</field>
+    <field id="author">rProject</field>
+    <field id="categories">
+        <list>
+            <item>searching</item>
+            <item>objects</item>
+        </list>
+    </field>
+    <field id="created">2010-11-25 16:16:29.217 +0100</field>
+    <field id="description" text-type="text/html"><![CDATA[The system should provide a way to return a list of the 20 most frequently borrowed eBooks.<br/>
+<ul>
+  <li>The actual number should be configurable by an administrator.</li>
+  <li>The UI should provide a selectable list of values: 10, 20, 25, 50, 100</li>
+</ul>]]></field>
+    <field id="initialEstimate">6d</field>
+    <field id="previousStatus">implemented</field>
+    <field id="priority">100.0</field>
+    <field id="resolution">done</field>
+    <field id="resolvedOn">2010-12-02 10:36:52.501 +0100</field>
+    <field id="severity">nice_to_have</field>
+    <field id="status">verified</field>
+    <field id="storyPoints" type="integer">8</field>
+    <field id="timeSpent">6d</field>
+    <field id="title">Listing of the 20 most frequently borrowed eBooks.</field>
+    <field id="type">userstory</field>
+</work-item>

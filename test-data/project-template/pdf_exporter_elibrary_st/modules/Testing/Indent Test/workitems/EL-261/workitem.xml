@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<work-item>
+    <field id="author">admin</field>
+    <field id="created">2026-03-06 12:28:18.862 +0000</field>
+    <field id="description" text-type="text/html"><![CDATA[test indent<br/><br/><span style="font-size: 10pt;line-height: 1.5;">[2026-03-06 10:15:02] INFO Application start<br/>    - Initializing modules<br/>         [2026-03-06 10:15:03] DEBUG Loading configuration file<br/>         [2026-03-06 10:15:03] INFO Configuration loaded successfully<br/>    - Connecting to database<br/>         [2026-03-06 10:15:04] DEBUG Opening database connection<br/>         [2026-03-06 10:15:05] INFO Database connection established<br/>with tabs:<br/><br/>[2026-03-06 10:15:06] INFO Processing requests<br/>
+  <div style="margin-left: 40px;">
+    - Request ID: 4821<br/>
+  </div>
+  <div style="margin-left: 40px;">
+    <div style="margin-left: 40px;">
+      [2026-03-06 10:15:06] INFO Validating input<br/>
+    </div>
+    <div style="margin-left: 40px;">
+      [2026-03-06 10:15:07] INFO Processing data<br/>
+    </div>
+  </div>
+  <div style="margin-left: 40px;">
+    <div style="margin-left: 40px;">
+      [2026-03-06 10:15:08] WARN Slow query detected<br/>
+    </div>
+    - Request ID: 4822<br/>
+  </div>
+</span>
+<div style="margin-left: 80px;">
+  <span style="font-size: 10pt;line-height: 1.5;"> [2026-03-06 10:15:09] INFO Valid</span>
+</div>]]></field>
+    <field id="previousStatus">draft</field>
+    <field id="priority">50.0</field>
+    <field id="severity">basic</field>
+    <field id="status">draft</field>
+    <field id="testType" type="enum:testtype">manual</field>
+    <field id="type">testcase</field>
+</work-item>

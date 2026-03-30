@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<formFilter xmlns="http://polarion.com/schema/WorkItems/FormFilter" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://polarion.com/schema/WorkItems/FormFilter">
+<workflow>
+<actions>
+    <action fieldNames="@required,description,linkedWorkItems,reqtype,comments" refId="_create"/>
+    <action fieldNames="@required,status,description,reqtype,comments" refId="_default"/>
+</actions>
+
+<states>
+    <state fieldNames="@required,description,comments,reqtype,targetVersion,initialEstimate,-type,categories" refId="_default"/>
+</states>
+
+
+</workflow>
+</formFilter>

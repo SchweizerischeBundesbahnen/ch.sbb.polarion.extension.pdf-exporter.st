@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<work-item>
+    <field id="assignee">rProject</field>
+    <field id="author">rProject</field>
+    <field id="categories">
+        <list>
+            <item>database</item>
+            <item>objects</item>
+        </list>
+    </field>
+    <field id="created">2017-05-03 16:16:13.761 +0200</field>
+    <field id="description" text-type="text/html">This Epic describes the Author object.</field>
+    <field id="previousStatus">accepted</field>
+    <field id="priority">30.0</field>
+    <field id="severity">should_have</field>
+    <field id="status">inprogress</field>
+    <field id="epicEstimate" type="enum:tshirt-sizes">xs</field>
+    <field id="targetVersion" type="enum:@plan[template.id:release]">Version_1_1</field>
+    <field id="title">Author</field>
+    <field id="type">epic</field>
+</work-item>

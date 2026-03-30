@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<work-item>
+    <field id="assignee">jRequirement</field>
+    <field id="author">rProject</field>
+    <field id="categories">
+        <list>
+            <item>gui</item>
+        </list>
+    </field>
+    <field id="created">2011-01-05 18:24:42.323 +0100</field>
+    <field id="description" text-type="text/html">User may not be told if the password or user name is wrong</field>
+    <field id="previousStatus">reviewed</field>
+    <field id="priority">50.0</field>
+    <field id="reqType" type="enum:reqtype">security</field>
+    <field id="resolution">obsolete</field>
+    <field id="resolvedOn">2017-05-03 13:29:14.074 +0200</field>
+    <field id="severity">should_have</field>
+    <field id="status">rejected</field>
+    <field id="type">requirement</field>
+</work-item>

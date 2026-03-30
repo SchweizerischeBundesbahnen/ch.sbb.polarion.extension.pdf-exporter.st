@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<work-item>
+    <field id="assignee">sDeveloper</field>
+    <field id="author">rProject</field>
+    <field id="categories">
+        <list>
+            <item>gui</item>
+            <item>objects</item>
+        </list>
+    </field>
+    <field id="created">2011-06-01 17:59:11.390 +0200</field>
+    <field id="description" text-type="text/html">&lt;div&gt;&lt;br&gt;&lt;/div&gt;</field>
+    <field id="initialEstimate">3h</field>
+    <field id="linkedWorkItems">
+        <list>
+            <struct>
+                <item id="role">implements</item>
+                <item id="workItem">EL-137</item>
+            </struct>
+        </list>
+    </field>
+    <field id="priority">50.0</field>
+    <field id="remainingEstimate">3h</field>
+    <field id="severity">normal</field>
+    <field id="status">open</field>
+    <field id="title">Implement an action to mark a book as favorite</field>
+    <field id="type">task</field>
+</work-item>

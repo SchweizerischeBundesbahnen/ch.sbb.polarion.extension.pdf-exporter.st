@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<workflow initial-action="init" initial-status="draft" prototype="WorkItem">
+    <transitions>
+        <transition action="start" from="draft" to="inprogress"/>
+        <transition action="feature_freeze" from="inprogress" to="featurefreezed"/>
+        <transition action="code_freeze" from="featurefreezed" to="codefreezed"/>
+        <transition action="complete" from="codefreezed" to="complete"/>
+        <transition action="publish" from="complete" to="published"/>
+        <transition action="reject" from="draft" to="rejected"/>
+        <transition action="reject" from="inprogress" to="rejected"/>
+        <transition action="reject" from="featurefreezed" to="rejected"/>
+        <transition action="reject" from="codefreezed" to="rejected"/>
+        <transition action="reject" from="complete" to="rejected"/>
+        <transition action="rework" from="inprogress" to="draft"/>
+        <transition action="rework" from="featurefreezed" to="draft"/>
+        <transition action="rework" from="codefreezed" to="draft"/>
+        <transition action="rework" from="complete" to="draft"/>
+        <transition action="rework" from="published" to="draft"/>
+        <transition action="rework" from="rejected" to="draft"/>
+    </transitions>
+    <actions>
+        <action id="init" name="Initialization">
+            <cleared>
+                <field name="resolution"/>
+                <field name="resolvedOn"/>
+            </cleared>
+        </action>
+        <action id="start" name="Start">
+            <required>
+                <field name="featureFreezeDate"/>
+                <field name="codeFreezeDate"/>
+                <field name="publicLaunch"/>
+            </required>
+        </action>
+        <action id="feature_freeze" name="Feature Freeze"/>
+        <action id="code_freeze" name="Code Freeze"/>
+        <action id="complete" name="Mark Completed and Verified">
+            <signatures/>
+            <required>
+                <field name="releaseQA"/>
+                <field name="buildId"/>
+                <field name="qaAssessment"/>
+                <field name="releaseTestEvidence"/>
+                <field name="resolution"/>
+            </required>
+        </action>
+        <action id="publish" name="Mark Published and Approved">
+            <signatures/>
+            <required>
+                <field name="releasePM"/>
+                <field name="resolution"/>
+            </required>
+        </action>
+        <action id="reject" name="Reject">
+            <signatures/>
+            <required>
+                <field name="resolution"/>
+            </required>
+        </action>
+        <action id="rework" name="Rework">
+            <cleared>
+                <field name="resolution"/>
+                <field name="resolvedOn"/>
+            </cleared>
+        </action>
+    </actions>
+</workflow>

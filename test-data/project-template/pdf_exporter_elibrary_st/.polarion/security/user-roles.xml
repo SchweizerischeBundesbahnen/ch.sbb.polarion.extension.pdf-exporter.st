@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<user-roles>
+    <user name="admin">
+        <role name="project_admin"/>
+		<role name="project_approver"/>
+    </user>
+    <user name="aSeller">
+        <role name="project_user"/>
+    </user>
+    <user name="cUser">
+        <role name="project_user"/>
+    </user>
+    <user name="jRequirement">
+        <role name="project_assignable"/>
+        <role name="project_user"/>
+    </user>
+    <user name="mTest">
+        <role name="project_assignable"/>
+        <role name="project_user"/>
+    </user>
+    <user name="pGUI">
+        <role name="project_assignable"/>
+        <role name="project_user"/>
+    </user>
+    <user name="rProject">
+        <role name="project_admin"/>
+        <role name="project_assignable"/>
+        <role name="project_approver"/>
+        <role name="project_user"/>
+    </user>
+    <user name="sDeveloper">
+        <role name="project_assignable"/>
+        <role name="project_user"/>
+    </user>
+</user-roles>

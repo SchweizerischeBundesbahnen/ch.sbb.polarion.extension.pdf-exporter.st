@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<work-item>
+    <field id="approvals">
+        <list>
+            <struct>
+                <item id="status">waiting</item>
+                <item id="user">rProject</item>
+            </struct>
+        </list>
+    </field>
+    <field id="assignee">
+        <list>
+            <item>jRequirement</item>
+            <item>mTest</item>
+        </list>
+    </field>
+    <field id="author">rProject</field>
+    <field id="categories">
+        <list>
+            <item>usermanagement</item>
+        </list>
+    </field>
+    <field id="created">2011-01-26 20:18:24.556 +0100</field>
+    <field id="description" text-type="text/html">User role id conditions: &lt;ul&gt;&lt;li&gt;may not contain spaces&lt;/li&gt;&lt;li&gt;may not contain non-ASCII characters&lt;/li&gt;&lt;/ul&gt;</field>
+    <field id="previousStatus">draft</field>
+    <field id="priority">70.0</field>
+    <field id="reqType" type="enum:reqtype">safety</field>
+    <field id="severity">should_have</field>
+    <field id="status">reviewed</field>
+    <field id="targetVersion" type="enum:@plan[template.id:release]">Version_1_0</field>
+    <field id="type">requirement</field>
+</work-item>

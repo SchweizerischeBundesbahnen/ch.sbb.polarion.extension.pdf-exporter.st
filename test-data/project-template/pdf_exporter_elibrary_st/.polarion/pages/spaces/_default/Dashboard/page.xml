@@ -1,0 +1,1229 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<rich-page>
+    <field id="author">admin</field>
+    <field id="created">2017-01-17 10:05:43.640 +0100</field>
+    <field id="homePageContent" text-type="text/html"><![CDATA[<div class="polarion-rp-column" style="width: 100%;">
+  <h1 id="polarion_hardcoded_0">Dashboard</h1>
+  <p id="polarion_1">
+    <span class="polarion-rp-inline-widget" data-widget="com.polarion.scriptInline">
+      <span class="polarion-rp-widget-parameters">
+        <sub id="script">
+          <sub id="script" style="white-space:pre;">## Reported By
+#set($infoText = &quot;Reported by $transaction.users().getBy().id($securityService.getCurrentUser()).render()&lt;br/&gt;$date.long&quot;)
+#if($widgetContext.target().isEditor())
+	&lt;div style=&quot;color: grey; text-align: left;&quot;&gt;$infoText&lt;div&gt;
+#elseif($widgetContext.target().isPdf())
+	&lt;div style=&quot;color: grey; text-align: right; position: absolute; top: 22px; right: 10px;&quot;&gt;$infoText&lt;div&gt;
+#elseif($widgetContext.target().isPrint())
+	&lt;div style=&quot;text-align: right; position: absolute; top: 35px; right: 10px;&quot;&gt;$infoText&lt;div&gt;
+#end</sub>
+        </sub>
+      </span>
+    </span>
+  </p>
+</div>
+<div class="polarion-rp-row-separator" page_min_width="1000"></div>
+<div class="polarion-rp-column" style="width: 100%;">
+  <h2 id="polarion_client9">Project Epics</h2>
+  <div id="polarion_client15" class="polarion-rp-widget-part" data-widget="com.siemens.polarion.kanbanBoard">
+    <span class="polarion-rp-widget-parameters" style="display: none;">
+      <sub id="dataSet">
+        <sub id="prototype">WorkItem</sub>
+        <sub id="subtype">epic</sub>
+        <sub id="queryType">luceneVelocity</sub>
+        <sub id="luceneQuery" style="white-space:pre;"> </sub>
+      </sub>
+      <sub id="columns">
+        <sub id="elements">
+          <sub>
+            <sub id="columnTitle">Draft</sub>
+            <sub id="columnStatuses">
+              <sub id="values">
+                <sub>draft</sub>
+              </sub>
+            </sub>
+            <sub id="sortBy">
+              <sub>
+                <sub id="id">priority</sub>
+                <sub id="descending">true</sub>
+              </sub>
+            </sub>
+          </sub>
+          <sub>
+            <sub id="columnTitle">Accepted</sub>
+            <sub id="columnStatuses">
+              <sub id="values">
+                <sub>accepted</sub>
+              </sub>
+            </sub>
+            <sub id="sortBy">
+              <sub>
+                <sub id="id">priority</sub>
+                <sub id="descending">true</sub>
+              </sub>
+            </sub>
+          </sub>
+          <sub>
+            <sub id="columnTitle">In Progress</sub>
+            <sub id="columnStatuses">
+              <sub id="values">
+                <sub>inprogress</sub>
+              </sub>
+            </sub>
+            <sub id="sortBy">
+              <sub>
+                <sub id="id">priority</sub>
+                <sub id="descending">true</sub>
+              </sub>
+            </sub>
+          </sub>
+          <sub>
+            <sub id="columnTitle">Done</sub>
+            <sub id="columnStatuses">
+              <sub id="values">
+                <sub>done</sub>
+              </sub>
+            </sub>
+            <sub id="sortBy">
+              <sub>
+                <sub id="id">priority</sub>
+                <sub id="descending">true</sub>
+              </sub>
+            </sub>
+          </sub>
+          <sub>
+            <sub id="columnTitle">Resolved</sub>
+            <sub id="columnStatuses">
+              <sub id="values">
+                <sub>verified</sub>
+                <sub>rejected</sub>
+              </sub>
+            </sub>
+            <sub id="sortBy">
+              <sub>
+                <sub id="id">priority</sub>
+                <sub id="descending">true</sub>
+              </sub>
+            </sub>
+          </sub>
+        </sub>
+      </sub>
+      <sub id="propertiesSidebarFields">
+        <sub>
+          <sub id="id">assignee</sub>
+        </sub>
+        <sub>
+          <sub id="id">severity</sub>
+        </sub>
+        <sub>
+          <sub id="id">priority</sub>
+        </sub>
+        <sub>
+          <sub id="id">epicEstimate</sub>
+        </sub>
+        <sub>
+          <sub id="id">targetVersion</sub>
+        </sub>
+        <sub>
+          <sub id="id">status</sub>
+        </sub>
+        <sub>
+          <sub id="id">resolution</sub>
+        </sub>
+        <sub>
+          <sub id="id">childStoryPoints</sub>
+        </sub>
+        <sub>
+          <sub id="id">initialEstimate</sub>
+        </sub>
+        <sub>
+          <sub id="id">remainingEstimate</sub>
+        </sub>
+        <sub>
+          <sub id="id">timeSpent</sub>
+        </sub>
+        <sub>
+          <sub id="id">linkedWorkItems</sub>
+        </sub>
+      </sub>
+      <sub id="advanced">
+        <sub id="topItemsPerColumn">50</sub>
+        <sub id="enableCustomization">true</sub>
+        <sub id="compositeBoardScript">
+          <sub id="boardScript">
+            <sub id="script" style="white-space:pre;">## This is an example on how to customize the appearance of the Kanban Board cards. It approximates the original Java rendering.
+## Below are the styles used in the Card Script.
+
+&lt;style&gt;
+	.kanbanWorkItemDiv {
+		padding: 7px 3px 3px 7px;
+		box-sizing: border-box;
+		border-left: 5px solid;
+		border-right: 1px solid #EEEEEE;
+		border-top: 1px solid #EEEEEE;
+		border-bottom: 1px solid #EEEEEE;
+		border-radius: 5px;
+		position: relative;
+	}
+	.kanbanWorkItemDivSmall {
+		padding: 0px 3px 0px 3px;
+		box-sizing: border-box;
+		border-left: 5px solid;
+		border-right: 1px solid #EEEEEE;
+		border-top: 1px solid #EEEEEE;
+		border-bottom: 1px solid #EEEEEE;
+		border-radius: 5px;
+		position: relative;
+	}
+	.kanbanWorkItemTitleDiv {
+		height: 38px;
+		vertical-align: top;
+		overflow: hidden;
+		font-size: 12px;
+		color: #0E4A90;
+		padding: 2px 4px 0px 2px;
+		position: relative;
+		line-height: 15px;
+		word-break: break-all;
+		word-wrap: break-word;
+		border-collapse: separate;
+	}
+	.kanbanWorkItemTitleGradientDiv {
+		bottom: 0px;
+		height: 12px;
+		left: 0;
+		position: absolute;
+		width: 100%;
+		display: inline-block;
+		background: linear-gradient(to bottom, rgba(255, 255, 255, 0), white) repeat scroll 0 0 rgba(0, 0, 0, 0);
+		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=&#39;#00FFFFFF&#39;, endColorstr=&#39;#FFFFFFFF&#39;, GradientType=0);
+	}
+	.polarion-sidebar-highlight .kanbanWorkItemTitleGradientDiv {
+		background: none;
+	}
+	.kanbanWorkItemTable {
+		border-spacing: 2px;
+		width: 100%;
+		table-layout: fixed;
+		border-collapse: collapse;
+		height: 38px;
+ 	}
+	.kanbanWorkItemStatusIcon {
+		vertical-align: middle;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		word-break: break-all;
+		word-wrap: break-word;
+		width: 18px;
+	}
+	.kanbanWorkItemID {
+		vertical-align: middle;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		word-break: break-all;
+		word-wrap: break-word;
+		width: 100%;
+	}
+	.kanbanWorkItemAssignee {
+		vertical-align: middle;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		word-break: break-all;
+		word-wrap: break-word;
+		width: 38px;
+	}
+	.kanbanWorkItemAssigneeClosed {
+		white-space: nowrap;
+		text-align: right;
+		padding-right: 4px;
+		color: #A2A2A2;
+		font-size: 11px;
+		text-overflow: ellipsis;
+	}
+	.kanbanWorkItemAssigneeDiv {
+		vertical-align: middle;
+		width: 36px;
+		height: 36px;
+		overflow: hidden;
+		position: relative;
+		padding: 2px;
+	}
+	.kanbanWorkItemAssigneeImg {
+		border: none;
+		vertical-align: middle;
+		width: 36px;
+		height: 36px;
+		float: right;
+		border-radius: 18px;
+	}
+	.kanbanWorkItemAssigneeCountDiv {
+		border-radius: 6px;
+		line-height: 12px;
+		font-size: 9px;
+		text-align: center;
+		top: 26px;
+		left: 26px;
+		height: 12px;
+		width: 12px;
+		margin: 0px;
+		padding: 0px;
+		font-weight: bold;
+		color: white;
+		border: solid 1px white;
+		background-color: grey;
+		position: absolute;
+		overflow: hidden;
+	}
+	.kanbanGreyText {
+		color: #A2A2A2;
+	}
+	.kanbanStatusBarDiv {
+		padding: 0px 2px 2px 4px;
+		overflow: hidden;
+		vertical-align: top;
+		margin: auto;
+		border-radius: 5px 5px 5px 5px;
+		width: 80%;
+	}
+	.kanbanStatusBarTable {
+		width: 100%;
+		border-collapse: collapse;
+		height: 11px;
+	}
+	.kanbanStatusBarDone {
+		background-color: #86C142;
+		border-radius: 2px 0px 0px 2px;
+	}
+	.kanbanStatusBarProgress {
+		background-color: #AED77E;
+	}
+	.kanbanStatusBarNotDone {
+		background-color: #F1F1F1;
+		border-radius: 0px 2px 2px 0px;
+	}
+&lt;/style&gt;
+
+            </sub>
+          </sub>
+        </sub>
+        <sub id="compositeCardScript">
+          <sub id="cardScript">
+            <sub id="script" style="white-space:pre;">## This is an example on how to customize the content of Kanban Board cards.
+##
+## The following additional objects are also available when using velocity customization:
+## $workItem - The Work Item rendered in the card.
+## $columnIndex - The column that the card is rendered on.
+
+#set($wiId = $workItem.getReference().id())
+#set($wiProjectId = $workItem.getReference().projectId())
+#set($wiLink = $transaction.context().createPortalLink().project(&quot;$wiProjectId&quot;).workItem(&quot;$wiId&quot;).toEncodedRelativeUrl())
+#set($wiType = &quot;&quot;)
+#set($wiStatusColor = &quot;white&quot;)
+#set($wiType = $workItem.fields().type().optionIdIfCan())
+#if(!$wiType.equals(&quot;&quot;))
+	#set($wiStatusEnum = $transaction.enumerations().getEnumeration(&quot;status&quot;).forType(&quot;$wiType&quot;).forProject(&quot;$wiProjectId&quot;))
+	#set($wiStatus = $workItem.fields().status().optionId())
+	#set($wiStatusColor = $wiStatusEnum.byId(&quot;$wiStatus&quot;).fields().color().get())
+#end
+#if(!$wiStatus.equals(&quot;verified&quot;) &amp;&amp; !$wiStatus.equals(&quot;rejected&quot;))
+	#set($tableClass = &quot;kanbanWorkItemDiv&quot;)
+#else
+	#set($tableClass = &quot;kanbanWorkItemDivSmall&quot;)
+#end
+&lt;div class=&quot;$tableClass&quot; style=&quot;border-left-color: $wiStatusColor;&quot;&gt;
+	#if(!$wiStatus.equals(&quot;verified&quot;) &amp;&amp; !$wiStatus.equals(&quot;rejected&quot;))
+		&lt;div class=&quot;kanbanWorkItemTitleDiv&quot;&gt;
+			&lt;div class=&quot;kanbanWorkItemTitleGradientDiv&quot;&gt;&lt;/div&gt;
+			&lt;table style=&quot;width: 100%;&quot;&gt;
+				&lt;tr&gt;
+					&lt;td&gt;
+						&lt;a href=&quot;$wiLink&quot; target=&quot;_top&quot; title=&quot;$workItem.fields().title().render()&quot;&gt;$workItem.fields().title().render()&lt;/a&gt;
+					&lt;/td&gt;
+					&lt;td style=&quot;vertical-align: top;&quot;&gt;
+						#set($treeLink = $transaction.context().createPortalLink().project(&quot;$wiProjectId&quot;).workItems().query(&quot;id:$wiId&quot;).toEncodedRelativeUrl())
+						#set($suffix = &#39;&amp;tree_depth=2&amp;tab=tree&#39;)
+						&lt;a href=&quot;$treeLink$suffix&quot; target=&quot;_blank&quot;&gt;
+							&lt;img style=&quot;float: right;&quot; alt=&quot;View Item in a Tree Structure&quot; title=&quot;View Item in a Tree Structure&quot; src=&quot;/polarion/ria/images/details/treetable.gif&quot;/&gt;
+						&lt;/a&gt;
+					&lt;/td&gt;
+				&lt;/tr&gt;
+			&lt;/table&gt;
+		&lt;/div&gt;
+		&lt;table&gt;
+			&lt;tbody&gt;
+				&lt;tr&gt;
+					&lt;td&gt;&lt;span class=&quot;kanbanGreyText&quot;&gt;Priority:&lt;/span&gt; $workItem.fields().priority().render()&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;&lt;span class=&quot;kanbanGreyText&quot;&gt;Epic Estimate:&lt;/span&gt; $workItem.fields().get(&quot;epicEstimate&quot;).render()&lt;/td&gt;
+				&lt;tr&gt;
+                #if(!$wiStatus.equals(&quot;draft&quot;))
+                	&lt;tr&gt;
+                    	&lt;td&gt;&lt;span class=&quot;kanbanGreyText&quot;&gt;Target Version:&lt;/span&gt; $workItem.fields().get(&quot;targetVersion&quot;).render()&lt;/td&gt;
+					&lt;tr&gt;
+                #end
+			&lt;/tbody&gt;
+		&lt;/table&gt;
+	#end
+	&lt;table class=&quot;kanbanWorkItemTable&quot;&gt;
+		&lt;tbody&gt;
+			&lt;tr&gt;
+				&lt;td class=&quot;kanbanWorkItemStatusIcon&quot;&gt;
+					$workItem.fields().status().render().withText(false)
+				&lt;/td&gt;
+				&lt;td class=&quot;kanbanWorkItemID&quot;&gt;
+					$workItem.render().withLinks()
+				&lt;/td&gt;
+				#if(!$renderingContext.target.isPdf)
+					#if(!$wiStatus.equals(&quot;verified&quot;) &amp;&amp; !$wiStatus.equals(&quot;rejected&quot;))
+						&lt;td class=&quot;kanbanWorkItemAssignee&quot; rowspan=&quot;2&quot;&gt;
+							#set($wiAssignees = $workItem.fields().assignee())
+							#if(!$wiAssignees.isEmpty())
+								#set($assigneeNames = &quot;&quot;)
+								#foreach($assignee in $wiAssignees)
+									#set($name = &quot;&quot;)
+									#set($name = $assignee.fields().name().getIfCan())
+									#if($name.isEmpty())
+										#set($name = $assignee.getReference().id())
+									#end
+									#if($assigneeNames.isEmpty)
+										#set($assigneeNames = $name)
+									#else
+										#set($assigneeNames = &quot;$assigneeNames, $name&quot;)
+									#end
+								#end
+								#set($firstAssigneeId = $wiAssignees.iterator().next().getReference().id())
+								#set($linkMaker = $transaction.users().getBy().id(&quot;$firstAssigneeId&quot;).fields().avatarFileName().link())
+								#set($assigneeAvatarUrl = $linkMaker.toEncodedRelativeUrl(&quot;$transaction.users().getBy().id(&#39;$firstAssigneeId&#39;).fields().avatarFileName().link()&quot;))
+								&lt;div class=&quot;kanbanWorkItemAssigneeDiv&quot;&gt;
+									&lt;img title=&quot;$assigneeNames&quot; src=&quot;$assigneeAvatarUrl&quot; class=&quot;kanbanWorkItemAssigneeImg&quot;&gt;
+									#if($wiAssignees.size() &gt; 1)
+										&lt;div title=&quot;$assigneeNames&quot; class=&quot;kanbanWorkItemAssigneeCountDiv&quot;&gt;$wiAssignees.size()&lt;/div&gt;
+									#end
+								&lt;/div&gt;
+							#end
+						&lt;/td&gt;
+					#else
+						#set($wiAssignees = $workItem.fields().assignee())
+						#set($width = $math.mul(20, $wiAssignees.size()))
+						&lt;td class=&quot;kanbanWorkItemAssigneeClosed&quot; style=&quot;width: ${width}px&quot;&gt;
+							#if(!$wiAssignees.isEmpty())
+								#foreach($assignee in $wiAssignees)
+									&lt;span title=&quot;$assignee.fields().name().getIfCan()&quot;&gt;$assignee.fields().initials().render()&lt;/span&gt;
+								#end
+							#end
+						&lt;/td&gt;
+					#end
+				#end
+			&lt;/tr&gt;
+			#if(!$wiStatus.equals(&quot;verified&quot;) &amp;&amp; !$wiStatus.equals(&quot;rejected&quot;))
+				&lt;tr&gt;&lt;/tr&gt;
+			#end
+		&lt;/tbody&gt;
+	&lt;/table&gt;
+	#if(!$wiStatus.equals(&quot;draft&quot;) &amp;&amp; !$wiStatus.equals(&quot;verified&quot;) &amp;&amp; !$wiStatus.equals(&quot;rejected&quot;))
+		## Epic&#39;s Story Point Progress START
+		#set($storyPointsTotal = 0)
+		#set($storyPointsCompleted = 0)
+		#set($storyPointsInProgress = 0)
+		#set($unestimatedStoryCount = 0)
+		#set($unestimatedStoryIDs = &quot;&quot;)
+		#set($linkedStoriesQuery = &quot;project.id:$wiProjectId AND type:userstory AND linkedWorkItems:parent=$wiId&quot;)
+		#set($linkedStories = $transaction.workItems().search().query(&quot;$linkedStoriesQuery&quot;))
+		#foreach($linkedStory in $linkedStories)
+			#set($storyPoints = 0)
+			#if(!$linkedStory.isUnresolvable() &amp;&amp; !$linkedStory.fields().get(&quot;storyPoints&quot;).is().empty())
+				#set($storyPoints = $linkedStory.fields().get(&quot;storyPoints&quot;).get())
+				#set($storyPointsTotal = $math.add($storyPointsTotal, $storyPoints))
+				#if($linkedStory.fields().resolution().optionId().equals(&quot;done&quot;))
+					#set($storyPointsCompleted = $math.add($storyPointsCompleted, $storyPoints))
+				#else
+					#set($linkedStoryStatus = $linkedStory.fields().status().optionId())
+					#if($linkedStoryStatus.equals(&quot;inprogress&quot;) || $linkedStoryStatus.equals(&quot;changesneeded&quot;) || $linkedStoryStatus.equals(&quot;implemented&quot;))
+						#set($storyPointsInProgress = $math.add($storyPointsInProgress, $storyPoints))
+					#end
+				#end
+			#else
+				#set($unestimatedStoryCount = $math.add($unestimatedStoryCount, 1))
+				#set($unestimatedStoryIDs = &quot;$unestimatedStoryIDs $linkedStory.getReference().id()&quot;)
+			#end
+		#end
+		## Render Story Point Progress
+		#set($storyPointsToDo = $math.sub($math.sub($storyPointsTotal, $storyPointsCompleted), $storyPointsInProgress))
+		#set($done = $math.mul($math.div(100, $storyPointsTotal), $storyPointsCompleted))
+		#set($progress = $math.mul($math.div(100, $storyPointsTotal), $storyPointsInProgress))
+		#set($notDone = $math.sub($math.sub(100, $done), $progress))
+		## Render Bar
+		#if(($storyPointsTotal &gt; 0 || $unestimatedStoryCount &gt; 0))
+			&lt;hr style=&quot;height: 1px; color: lightgray; background-color: lightgray; border: none;&quot; /&gt;
+			&lt;div class=&quot;kanbanStatusBarDiv&quot;&gt;
+				#if($storyPointsTotal &gt; 0)
+					&lt;table class=&quot;kanbanStatusBarTable&quot;&gt;
+						&lt;tbody&gt;
+							&lt;tr&gt;
+								&lt;td title=&quot;Completed: $storyPointsCompleted Story Points&quot; class=&quot;kanbanStatusBarDone&quot; style=&quot;width:$done%;&quot;&gt;&lt;/td&gt;
+								&lt;td title=&quot;In-Progress: $storyPointsInProgress Story Points&quot; class=&quot;kanbanStatusBarProgress&quot; style=&quot;width:$progress%;&quot;&gt;&lt;/td&gt;
+								&lt;td title=&quot;Not-Yet-Started: $storyPointsToDo Story Points&quot; class=&quot;kanbanStatusBarNotDone&quot; style=&quot;width:$notDone%;&quot;&gt;&lt;/td&gt;
+							&lt;/tr&gt;
+						&lt;/tbody&gt;
+					&lt;/table&gt;
+				#end
+				#if($unestimatedStoryCount &gt; 0)
+					#set($unestimatedItemsLink = $transaction.context().createPortalLink().project(&quot;$wiProjectId&quot;).workItems().query(&quot;id:($unestimatedStoryIDs)&quot;).toEncodedRelativeUrl())
+					&lt;table class=&quot;kanbanStatusBarTable&quot;&gt;
+						&lt;tbody&gt;
+							&lt;tr&gt;
+								&lt;td colspan=&quot;3&quot; style=&quot;line-height: 8px;&quot;&gt;
+									&lt;a href=$unestimatedItemsLink class=&quot;link&quot; target=&quot;_top&quot;&gt;
+										&lt;span style=&quot;color: darkgray !important; font-size: 8px;&quot;&gt;
+											#if($storyPointsTotal &gt; 0)+#end$unestimatedStoryCount Unestimated#if($unestimatedStoryCount == 1) Story#else Stories#end
+										&lt;/span&gt;
+									&lt;/a&gt;
+								&lt;/td&gt;
+							&lt;/tr&gt;
+						&lt;/tbody&gt;
+					&lt;/table&gt;
+				#end
+			&lt;/div&gt;
+		#end
+		## Render WI&#39;s Story Point Progress STOP
+	#end
+&lt;/div&gt;
+
+            </sub>
+          </sub>
+        </sub>
+      </sub>
+    </span>
+  </div>
+  <p id="polarion_client6"></p>
+</div>
+<div class="polarion-rp-row-separator"></div>
+<div class="polarion-rp-column" style="width: 100%;">
+  <div id="polarion_client8" class="polarion-rp-widget-part" data-widget="com.polarion.scriptBlock">
+    <span class="polarion-rp-widget-parameters">
+      <sub id="script">
+        <sub id="script" style="white-space:pre;">## Current Release Info Title
+#set($projectId = $page.getReference().projectId())
+#set($plansInProgress = $transaction.plans().search().query(&quot;project.id:$projectId AND status:inprogress AND template.id:release&quot;))
+#if($plansInProgress.size() &gt; 1)
+	&lt;h2&gt;Current Release&lt;/h2&gt;
+#elseif($plansInProgress.size() == 1)
+	#set($plan = $plansInProgress.iterator().next())
+	&lt;h2&gt;Current Release - $plan.render().withLinks()&lt;/h2&gt;
+#end</sub>
+      </sub>
+    </span>
+  </div>
+</div>
+<div class="polarion-rp-row-separator"></div>
+<div class="polarion-rp-column" style="width: 70%;">
+  <div id="polarion_client34" class="polarion-rp-widget-part" data-widget="com.polarion.scriptBlock">
+    <span class="polarion-rp-widget-parameters">
+      <sub id="script">
+        <sub id="script" style="white-space:pre;">## Current Release Info
+#set($projectId = $page.getReference().projectId())
+#set($plansInProgress = $transaction.plans().search().query(&quot;project.id:$projectId AND status:inprogress AND template.id:release&quot;))
+#if($plansInProgress.size() &gt; 1)
+	$widgetContext.renderWarning(&quot;There are more than one Release &lt;b&gt;In Progress&lt;/b&gt;.&quot;)
+#elseif($plansInProgress.size() == 1)
+	#set($plan = $plansInProgress.iterator().next())
+	&lt;div class=&quot;polarion-rp-widget-part&quot; data-widget=&quot;com.polarion.planProgress&quot;&gt;
+		&lt;span class=&quot;polarion-rp-widget-parameters&quot;&gt;
+			&lt;sub id=&quot;plan&quot;&gt;
+				&lt;sub id=&quot;paths&quot;&gt;
+					&lt;sub&gt;$plan.getReference().id()&lt;/sub&gt;
+				&lt;/sub&gt;
+			&lt;/sub&gt;
+			&lt;sub id=&quot;showIdealProgress&quot;&gt;true&lt;/sub&gt;
+			&lt;sub id=&quot;showLabel&quot;&gt;true&lt;/sub&gt;
+			&lt;sub id=&quot;advanced&quot;&gt;
+				&lt;sub id=&quot;width&quot;&gt;&lt;/sub&gt;
+			&lt;/sub&gt;
+		&lt;/span&gt;
+	&lt;/div&gt;
+	&lt;div class=&quot;polarion-rp-widget-part&quot; data-widget=&quot;com.polarion.scriptedChart&quot;&gt;
+		&lt;span class=&quot;polarion-rp-widget-parameters&quot;&gt;
+			&lt;sub id=&quot;script&quot;&gt;
+				&lt;sub id=&quot;script&quot;&gt;${esc.h}${esc.h} Version 1.0
+					{
+						chart: {},
+						title: {
+							text: &#39;&#39;,
+							useHTML:true
+							},
+						exporting: {
+							enabled: false
+						},
+						credits: {
+							href: null,
+							text: null
+						},
+						xAxis: {
+							maxPadding: 0,
+							type: &#39;datetime&#39;
+						},
+						yAxis: {
+							title: {
+								text: &#39;Story Points&#39;,
+								useHTML:true
+							},
+							gridLineWidth: 0
+						},
+						tooltip: {
+							backgroundColor: &#39;rgba(247, 247, 247, 0.9)&#39;,
+							formatter: function() {
+								return &#39;&amp;lt;i&amp;gt;This is sample content only&amp;lt;/i&amp;gt;&amp;lt;br/&amp;gt;&#39; +
+								&#39;&amp;lt;small&amp;gt;&#39; + Highcharts.dateFormat(&#39;%A, %b %e, %Y&#39;, this.x) + &#39;&amp;lt;/small&amp;gt;&amp;lt;br/&amp;gt;&#39; +
+								this.series.name + &#39;: &amp;lt;b&amp;gt;&#39; + this.y + &#39;&amp;lt;/b&amp;gt;&#39;;
+							}
+						},
+						series: [
+							{
+								name: &#39;Ideal Work Done&#39;,
+								type: &#39;area&#39;,
+								color: &#39;${esc.h}1D9BD6&#39;,
+								marker: {
+									enabled: false
+								},
+								dashStyle: &#39;ShortDot&#39;,
+								fillColor: &#39;rgba(225, 240, 255, 0.5)&#39;,
+								data: [
+									{x: Date.UTC(2017, 0, 1), y: 0.0},
+									{x: Date.UTC(2017, 0, 14), y: 21.0},
+									{x: Date.UTC(2017, 0, 31), y: 55.0},
+									{x: Date.UTC(2017, 1, 14), y: 93.0},
+									{x: Date.UTC(2017, 1, 31), y: 106.0}
+								]
+							},
+							{
+								name: &#39;Work Done&#39;,
+								type: &#39;area&#39;,
+								color: &#39;${esc.h}53CCB1&#39;,
+								marker: {
+									radius: 5,
+									lineWidth: 2,
+									lineColor: &#39;white&#39;,
+									fillColor: &#39;${esc.h}53CCB1&#39;
+								},
+								fillOpacity: 0.3,
+								data: [
+									{x: Date.UTC(2017, 0, 1), y: 0.0},
+									{x: Date.UTC(2017, 0, 7), y: 13.0},
+									{x: Date.UTC(2017, 0, 14), y: 21.0},
+									{x: Date.UTC(2017, 0, 23), y: 29.0},
+									{x: Date.UTC(2017, 0, 27), y: 34.0},
+									{x: Date.UTC(2017, 0, 30), y: 55.0},
+									{x: Date.UTC(2017, 1, 6), y: 58.0},
+									{x: Date.UTC(2017, 1, 12), y: 61.0}
+								]
+							},
+							{
+								name: &#39;Relative Progress&#39;,
+								type: &#39;column&#39;,
+								color: &#39;${esc.h}AED77E&#39;,
+								marker: {
+									enabled: false
+								},
+								data: [
+									{x: Date.UTC(2017, 0, 1), y: 0.0},
+									{x: Date.UTC(2017, 0, 2), y: 0.0},
+									{x: Date.UTC(2017, 0, 3), y: 1.0},
+									{x: Date.UTC(2017, 0, 4), y: 2.0},
+									{x: Date.UTC(2017, 0, 5), y: 2.0},
+									{x: Date.UTC(2017, 0, 6), y: 1.0},
+									{x: Date.UTC(2017, 0, 7), y: 3.0},
+									{x: Date.UTC(2017, 0, 8), y: 2.0},
+									{x: Date.UTC(2017, 0, 9), y: 1.0},
+									{x: Date.UTC(2017, 0, 10), y: 5.0},
+									{x: Date.UTC(2017, 0, 11), y: 0.0},
+									{x: Date.UTC(2017, 0, 12), y: 3.0},
+									{x: Date.UTC(2017, 0, 13), y: 1.0},
+									{x: Date.UTC(2017, 0, 14), y: 0.0},
+									{x: Date.UTC(2017, 0, 15), y: 0.0},
+									{x: Date.UTC(2017, 0, 16), y: 0.0},
+									{x: Date.UTC(2017, 0, 17), y: 1.0},
+									{x: Date.UTC(2017, 0, 18), y: 2.0},
+									{x: Date.UTC(2017, 0, 19), y: 2.0},
+									{x: Date.UTC(2017, 0, 20), y: 1.0},
+									{x: Date.UTC(2017, 0, 21), y: 3.0},
+									{x: Date.UTC(2017, 0, 22), y: 3.0},
+									{x: Date.UTC(2017, 0, 23), y: 4.0},
+									{x: Date.UTC(2017, 0, 24), y: 5.0},
+									{x: Date.UTC(2017, 0, 25), y: 0.0},
+									{x: Date.UTC(2017, 0, 26), y: 4.0},
+									{x: Date.UTC(2017, 0, 27), y: 1.0},
+									{x: Date.UTC(2017, 0, 28), y: 2.0},
+									{x: Date.UTC(2017, 0, 29), y: 2.0},
+									{x: Date.UTC(2017, 0, 30), y: 4.0},
+									{x: Date.UTC(2017, 0, 31), y: 0.0},
+									{x: Date.UTC(2017, 1, 1), y: 0.0},
+									{x: Date.UTC(2017, 1, 2), y: 0.0},
+									{x: Date.UTC(2017, 1, 3), y: 1.0},
+									{x: Date.UTC(2017, 1, 4), y: 2.0},
+									{x: Date.UTC(2017, 1, 5), y: 2.0},
+									{x: Date.UTC(2017, 1, 6), y: 1.0},
+									{x: Date.UTC(2017, 1, 7), y: 3.0},
+									{x: Date.UTC(2017, 1, 8), y: 3.0},
+									{x: Date.UTC(2017, 1, 9), y: 4.0},
+									{x: Date.UTC(2017, 1, 10), y: 5.0},
+									{x: Date.UTC(2017, 1, 11), y: 0.0},
+									{x: Date.UTC(2017, 1, 12), y: 4.0}
+								]
+							},
+							{
+								name: &#39;Total Work&#39;,
+								type: &#39;line&#39;,
+								color: &#39;${esc.h}BADCE5&#39;,
+								marker: {
+									enabled: false
+								},
+								data: [
+									{x: Date.UTC(2017, 0, 1), y: 53.0},
+									{x: Date.UTC(2017, 0, 14), y: 82.0},
+									{x: Date.UTC(2017, 0, 31), y: 93.0},
+									{x: Date.UTC(2017, 1, 14), y: 101.0},
+									{x: Date.UTC(2017, 1, 31), y: 106.0}
+								]
+							}
+						]
+					};
+				&lt;/sub&gt;
+			&lt;/sub&gt;
+			&lt;sub id=&quot;advanced&quot;&gt;
+				&lt;sub id=&quot;height&quot;&gt;300&lt;/sub&gt;
+		        	&lt;sub id=&quot;width&quot;&gt;&lt;/sub&gt;
+			&lt;/sub&gt;
+		&lt;/span&gt;
+	&lt;/div&gt;
+#else
+	&lt;h2&gt;Current Release&lt;/h2&gt;
+	$widgetContext.renderWarning(&quot;There is no Release &lt;b&gt;In Progress&lt;/b&gt;.&quot;)
+#end</sub>
+      </sub>
+    </span>
+  </div>
+</div>
+<div class="polarion-rp-column" style="width: 30%;">
+  <div id="polarion_client57" class="polarion-rp-widget-part" data-widget="com.polarion.scriptBlock">
+    <span class="polarion-rp-widget-parameters">
+      <sub id="script">
+        <sub id="script" style="white-space:pre;">## Current Release Items by Status Chart
+#set($projectId = $page.getReference().projectId())
+#set($plansInProgress = $transaction.plans().search().query(&quot;project.id:$projectId AND status:inprogress AND template.id:release&quot;))
+#if($plansInProgress.size() == 1)
+	#set($plan = $plansInProgress.iterator().next())
+	#if(!$plan.fields().allowedTypes().isEmpty())
+		#set($topLevelWiType = $plan.fields().allowedTypes().iterator().next().id())
+		&lt;div class=&quot;polarion-rp-widget-part&quot; data-widget=&quot;com.polarion.separateByPieChart&quot;&gt;
+			&lt;span class=&quot;polarion-rp-widget-parameters&quot;&gt;
+				&lt;sub id=&quot;title&quot;&gt;Planned Items by Status&lt;/sub&gt;
+				&lt;sub id=&quot;dataSet&quot;&gt;
+					&lt;sub id=&quot;prototype&quot;&gt;WorkItem&lt;/sub&gt;
+					&lt;sub id=&quot;subtype&quot;&gt;$topLevelWiType&lt;/sub&gt;
+					&lt;sub id=&quot;queryType&quot;&gt;lucene&lt;/sub&gt;
+					&lt;sub id=&quot;luceneQuery&quot;&gt;PLAN:($plan.getReference().toPath())&lt;/sub&gt;
+					&lt;sub id=&quot;children&quot;&gt;
+						&lt;sub id=&quot;separateBy&quot;&gt;
+							&lt;sub id=&quot;field&quot;&gt;status&lt;/sub&gt;
+						&lt;/sub&gt;
+					&lt;/sub&gt;
+				&lt;/sub&gt;
+				&lt;sub id=&quot;showDataLabels&quot;&gt;true&lt;/sub&gt;
+				&lt;sub id=&quot;showZeroValues&quot;&gt;false&lt;/sub&gt;
+				&lt;sub id=&quot;advanced&quot;&gt;
+					&lt;sub id=&quot;height&quot;&gt;250px&lt;/sub&gt;
+                    &lt;sub id=&quot;width&quot;&gt;&lt;/sub&gt;
+				&lt;/sub&gt;
+			&lt;/span&gt;
+		&lt;/div&gt;
+	#end
+#end</sub>
+      </sub>
+    </span>
+  </div>
+</div>
+<div class="polarion-rp-row-separator"></div>
+<div class="polarion-rp-column" style="width: 100%;">
+  <div id="polarion_client24" class="polarion-rp-widget-part" data-widget="com.polarion.scriptBlock">
+    <span class="polarion-rp-widget-parameters">
+      <sub id="script">
+        <sub id="script" style="white-space:pre;">## Current Iteration Info Title
+#set($projectId = $page.getReference().projectId())
+#set($plansInProgress = $transaction.plans().search().query(&quot;project.id:$projectId AND status:inprogress AND template.id:iteration&quot;))
+#if($plansInProgress.size() &gt; 1)
+	&lt;h2&gt;Current Iteration&lt;/h2&gt;
+#elseif($plansInProgress.size() == 1)
+	#set($plan = $plansInProgress.iterator().next())
+	&lt;h2&gt;Current Iteration - $plan.render().withLinks()&lt;/h2&gt;
+#end</sub>
+      </sub>
+    </span>
+  </div>
+</div>
+<div class="polarion-rp-row-separator"></div>
+<div class="polarion-rp-column" style="width: 70%;">
+  <div id="polarion_client17" class="polarion-rp-widget-part" data-widget="com.polarion.scriptBlock">
+    <span class="polarion-rp-widget-parameters" style="display: none;">
+      <sub id="script">
+        <sub id="script" style="white-space:pre;">## Current Iteration Info
+#set($projectId = $page.getReference().projectId())
+#set($plansInProgress = $transaction.plans().search().query(&quot;project.id:$projectId AND status:inprogress AND template.id:iteration&quot;))
+#if($plansInProgress.size() &gt; 1)
+	$widgetContext.renderWarning(&quot;There are more than one Iteration &lt;b&gt;In Progress&lt;/b&gt;.&quot;)
+#elseif($plansInProgress.size() == 1)
+	#set($plan = $plansInProgress.iterator().next())
+	&lt;div class=&quot;polarion-rp-widget-part&quot; data-widget=&quot;com.polarion.planProgress&quot;&gt;
+		&lt;span class=&quot;polarion-rp-widget-parameters&quot;&gt;
+			&lt;sub id=&quot;plan&quot;&gt;
+				&lt;sub id=&quot;paths&quot;&gt;
+					&lt;sub&gt;$plan.getReference().id()&lt;/sub&gt;
+				&lt;/sub&gt;
+			&lt;/sub&gt;
+			&lt;sub id=&quot;showIdealProgress&quot;&gt;true&lt;/sub&gt;
+			&lt;sub id=&quot;showLabel&quot;&gt;true&lt;/sub&gt;
+			&lt;sub id=&quot;advanced&quot;&gt;
+				&lt;sub id=&quot;width&quot;&gt;&lt;/sub&gt;
+			&lt;/sub&gt;
+		&lt;/span&gt;
+	&lt;/div&gt;
+	&lt;div class=&quot;polarion-rp-widget-part&quot; data-widget=&quot;com.polarion.scriptedChart&quot;&gt;
+		&lt;span class=&quot;polarion-rp-widget-parameters&quot;&gt;
+			&lt;sub id=&quot;script&quot;&gt;
+				&lt;sub id=&quot;script&quot;&gt;${esc.h}${esc.h} Iteration 3
+					{
+						chart: {},
+						title: {
+							text: &#39;&#39;,
+							useHTML: true
+						},
+						exporting: {
+							enabled: false
+						},
+						credits: {
+							href: null,
+							text: null
+						},
+						xAxis: {
+							maxPadding: 0,
+							type: &#39;datetime&#39;
+						},
+						yAxis: {
+							title: {
+								text: &#39;Story Points&#39;,
+								useHTML:true
+							},
+							gridLineWidth: 0
+						},
+						tooltip: {
+							backgroundColor: &#39;rgba(247, 247, 247, 0.9)&#39;,
+							formatter: function() {
+								return &#39;&amp;lt;i&amp;gt;This is sample content only&amp;lt;/i&amp;gt;&amp;lt;br/&amp;gt;&#39; +
+								&#39;&amp;lt;small&amp;gt;&#39; + Highcharts.dateFormat(&#39;%A, %b %e, %Y&#39;, this.x) + &#39;&amp;lt;/small&amp;gt;&amp;lt;br/&amp;gt;&#39; +
+								this.series.name + &#39;: &amp;lt;b&amp;gt;&#39; + this.y + &#39;&amp;lt;/b&amp;gt;&#39;;
+							}
+						},
+						series: [
+							{
+								name: &#39;Ideal Work To Do&#39;,
+								type: &#39;area&#39;,
+								color: &#39;${esc.h}1D9BD6&#39;,
+								marker: {
+									enabled: false
+								},
+								dashStyle: &#39;ShortDot&#39;,
+								fillColor: &#39;rgba(225, 240, 255, 0.5)&#39;,
+								data: [
+									{x: Date.UTC(2017, 1, 1), y: 37.0},
+									{x: Date.UTC(2017, 1, 5), y: 25.0},
+									{x: Date.UTC(2017, 1, 10), y: 12.0},
+									{x: Date.UTC(2017, 1, 14), y: 0.0}
+								]
+							},
+							{
+								name: &#39;Work To Do&#39;,
+								type: &#39;area&#39;,
+								color: &#39;${esc.h}53CCB1&#39;,
+								marker: {
+									radius: 5,
+									lineWidth: 2,
+									lineColor: &#39;white&#39;,
+									fillColor: &#39;${esc.h}53CCB1&#39;
+								},
+								fillOpacity: 0.3,
+								data: [
+									{x: Date.UTC(2017, 1, 1), y: 37.0},
+									{x: Date.UTC(2017, 1, 6), y: 34.0},
+									{x: Date.UTC(2017, 1, 12), y: 31.0}
+								]
+							},
+							{
+								name: &#39;Relative Progress&#39;,
+								type: &#39;column&#39;,
+								color: &#39;${esc.h}AED77E&#39;,
+								marker: {
+									enabled: false
+								},
+								data: [
+									{x: Date.UTC(2017, 1, 1), y: 0.0},
+									{x: Date.UTC(2017, 1, 2), y: 0.0},
+									{x: Date.UTC(2017, 1, 3), y: 1.0},
+									{x: Date.UTC(2017, 1, 4), y: 2.0},
+									{x: Date.UTC(2017, 1, 5), y: 2.0},
+									{x: Date.UTC(2017, 1, 6), y: 1.0},
+									{x: Date.UTC(2017, 1, 7), y: 3.0},
+									{x: Date.UTC(2017, 1, 8), y: 3.0},
+									{x: Date.UTC(2017, 1, 9), y: 4.0},
+									{x: Date.UTC(2017, 1, 10), y: 5.0},
+									{x: Date.UTC(2017, 1, 11), y: 0.0},
+									{x: Date.UTC(2017, 1, 12), y: 4.0}
+								]
+							}
+						]
+					};
+				&lt;/sub&gt;
+			&lt;/sub&gt;
+			&lt;sub id=&quot;advanced&quot;&gt;
+				&lt;sub id=&quot;height&quot;&gt;300&lt;/sub&gt;
+				&lt;sub id=&quot;width&quot;&gt;&lt;/sub&gt;
+			&lt;/sub&gt;
+		&lt;/span&gt;
+	&lt;/div&gt;
+#else
+	&lt;h2&gt;Current Iteration&lt;/h2&gt;
+	$widgetContext.renderWarning(&quot;There is no Iteration &lt;b&gt;In Progress&lt;/b&gt;.&quot;)
+#end</sub>
+      </sub>
+    </span>
+  </div>
+</div>
+<div class="polarion-rp-column" style="width: 30%;">
+  <div id="polarion_client5" class="polarion-rp-widget-part" data-widget="com.polarion.scriptBlock">
+    <span class="polarion-rp-widget-parameters">
+      <sub id="script">
+        <sub id="script" style="white-space:pre;">## Current Iteration Items by Status Chart
+#set($projectId = $page.getReference().projectId())
+#set($plansInProgress = $transaction.plans().search().query(&quot;project.id:$projectId AND status:inprogress AND template.id:iteration&quot;))
+#if($plansInProgress.size() == 1)
+	#set($plan = $plansInProgress.iterator().next())
+	#if(!$plan.fields().allowedTypes().isEmpty())
+		#set($topLevelWiType = $plan.fields().allowedTypes().iterator().next().id())
+		&lt;div class=&quot;polarion-rp-widget-part&quot; data-widget=&quot;com.polarion.separateByPieChart&quot;&gt;
+			&lt;span class=&quot;polarion-rp-widget-parameters&quot;&gt;
+				&lt;sub id=&quot;title&quot;&gt;Planned Items by Status&lt;/sub&gt;
+				&lt;sub id=&quot;dataSet&quot;&gt;
+					&lt;sub id=&quot;prototype&quot;&gt;WorkItem&lt;/sub&gt;
+					&lt;sub id=&quot;subtype&quot;&gt;$topLevelWiType&lt;/sub&gt;
+					&lt;sub id=&quot;queryType&quot;&gt;lucene&lt;/sub&gt;
+					&lt;sub id=&quot;luceneQuery&quot;&gt;PLAN:($plan.getReference().toPath())&lt;/sub&gt;
+					&lt;sub id=&quot;children&quot;&gt;
+						&lt;sub id=&quot;separateBy&quot;&gt;
+							&lt;sub id=&quot;field&quot;&gt;status&lt;/sub&gt;
+						&lt;/sub&gt;
+					&lt;/sub&gt;
+				&lt;/sub&gt;
+				&lt;sub id=&quot;showDataLabels&quot;&gt;true&lt;/sub&gt;
+				&lt;sub id=&quot;showZeroValues&quot;&gt;false&lt;/sub&gt;
+				&lt;sub id=&quot;advanced&quot;&gt;
+					&lt;sub id=&quot;height&quot;&gt;250px&lt;/sub&gt;
+                    &lt;sub id=&quot;width&quot;&gt;&lt;/sub&gt;
+				&lt;/sub&gt;
+			&lt;/span&gt;
+		&lt;/div&gt;
+	#end
+#end</sub>
+      </sub>
+    </span>
+  </div>
+</div>
+<div class="polarion-rp-row-separator"></div>
+<div class="polarion-rp-column" style="width: 100%;">
+  <h2 id="polarion_client35">Issue Activity (1 year)</h2>
+  <p id="polarion_client1"></p>
+</div>
+<div class="polarion-rp-row-separator"></div>
+<div class="polarion-rp-column" style="width: 70%;">
+  <div id="polarion_client21" class="polarion-rp-widget-part" data-widget="com.polarion.intervalFieldChart">
+    <span class="polarion-rp-widget-parameters" style="display: none;">
+      <sub id="title"></sub>
+      <sub id="data">
+        <sub id="elements">
+          <sub>
+            <sub id="prototype">WorkItem</sub>
+            <sub id="subtype">issue</sub>
+            <sub id="queryType">lucene</sub>
+            <sub id="luceneQuery" style="white-space:pre;"></sub>
+            <sub id="children">
+              <sub id="intervalField">
+                <sub id="field">created</sub>
+              </sub>
+              <sub id="name">New Issues</sub>
+              <sub id="color">rgb(155, 89, 182)</sub>
+            </sub>
+          </sub>
+          <sub>
+            <sub id="prototype">WorkItem</sub>
+            <sub id="subtype">issue</sub>
+            <sub id="queryType">lucene</sub>
+            <sub id="luceneQuery" style="white-space:pre;">status:verified</sub>
+            <sub id="children">
+              <sub id="intervalField">
+                <sub id="field">created</sub>
+              </sub>
+              <sub id="name">New Verified Issues</sub>
+              <sub id="color">rgb(0, 128, 0)</sub>
+            </sub>
+          </sub>
+        </sub>
+      </sub>
+      <sub id="timeAxis">
+        <sub id="from">
+          <sub id="relative">-365</sub>
+        </sub>
+        <sub id="to">
+          <sub id="relative">0</sub>
+        </sub>
+        <sub id="scaleType">month</sub>
+        <sub id="baseDate">31</sub>
+      </sub>
+      <sub id="advanced">
+        <sub id="height">250px</sub>
+        <sub id="width"></sub>
+      </sub>
+    </span>
+  </div>
+</div>
+<div class="polarion-rp-column" style="width: 30%;">
+  <div id="polarion_client4" class="polarion-rp-widget-part" data-widget="com.polarion.scriptBlock">
+    <span class="polarion-rp-widget-parameters" style="display: none;">
+      <sub id="script">
+        <sub id="script" style="white-space:pre;">#info(&quot;Issues that are In Progress, Reopened or Done.&quot;)</sub>
+      </sub>
+    </span>
+  </div>
+  <div id="polarion_client22" class="polarion-rp-widget-part" data-widget="com.polarion.multiSetTrendChart">
+    <span class="polarion-rp-widget-parameters" style="display: none;">
+      <sub id="title">Issues in Process</sub>
+      <sub id="data">
+        <sub id="elements">
+          <sub>
+            <sub id="prototype">WorkItem</sub>
+            <sub id="subtype">issue</sub>
+            <sub id="queryType">lucene</sub>
+            <sub id="luceneQuery" style="white-space:pre;">status:(inprogress reopened done)</sub>
+            <sub id="children">
+              <sub id="name">Total Issues in Process</sub>
+              <sub id="color">rgb(163, 0, 0)</sub>
+            </sub>
+          </sub>
+        </sub>
+      </sub>
+      <sub id="timeAxis">
+        <sub id="from">
+          <sub id="relative">-365</sub>
+        </sub>
+        <sub id="to">
+          <sub id="relative">0</sub>
+        </sub>
+        <sub id="scaleType">month</sub>
+        <sub id="baseDate">31</sub>
+      </sub>
+      <sub id="advanced">
+        <sub id="height">200px</sub>
+        <sub id="width"></sub>
+      </sub>
+    </span>
+  </div>
+</div>
+<div class="polarion-rp-row-separator"></div>
+<div class="polarion-rp-column" style="width: 100%;">
+  <h2 id="polarion_client45">Change Requests Activity (1 year)</h2>
+  <p id="polarion_client2"></p>
+</div>
+<div class="polarion-rp-row-separator"></div>
+<div class="polarion-rp-column" style="width: 70%;">
+  <div id="polarion_client31" class="polarion-rp-widget-part" data-widget="com.polarion.intervalFieldChart">
+    <span class="polarion-rp-widget-parameters" style="display: none;">
+      <sub id="title"></sub>
+      <sub id="data">
+        <sub id="elements">
+          <sub>
+            <sub id="prototype">WorkItem</sub>
+            <sub id="subtype">changerequest</sub>
+            <sub id="queryType">lucene</sub>
+            <sub id="luceneQuery" style="white-space:pre;"></sub>
+            <sub id="children">
+              <sub id="intervalField">
+                <sub id="field">created</sub>
+              </sub>
+              <sub id="name">New Change Requests</sub>
+              <sub id="color">rgb(155, 89, 182)</sub>
+            </sub>
+          </sub>
+          <sub>
+            <sub id="prototype">WorkItem</sub>
+            <sub id="subtype">changerequest</sub>
+            <sub id="queryType">lucene</sub>
+            <sub id="luceneQuery" style="white-space:pre;">status:verified\-done</sub>
+            <sub id="children">
+              <sub id="intervalField">
+                <sub id="field">created</sub>
+              </sub>
+              <sub id="name">New Verified Change Requests</sub>
+              <sub id="color">rgb(0, 128, 0)</sub>
+            </sub>
+          </sub>
+        </sub>
+      </sub>
+      <sub id="timeAxis">
+        <sub id="from">
+          <sub id="relative">-365</sub>
+        </sub>
+        <sub id="to">
+          <sub id="relative">0</sub>
+        </sub>
+        <sub id="scaleType">month</sub>
+        <sub id="baseDate">31</sub>
+      </sub>
+      <sub id="advanced">
+        <sub id="height">250px</sub>
+        <sub id="width"></sub>
+      </sub>
+    </span>
+  </div>
+</div>
+<div class="polarion-rp-column" style="width: 30%;">
+  <div id="polarion_client19" class="polarion-rp-widget-part" data-widget="com.polarion.scriptBlock">
+    <span class="polarion-rp-widget-parameters" style="display: none;">
+      <sub id="script">
+        <sub id="script" style="white-space:pre;">#info(&quot;Change Requests that are either Reviewed or Approved.&quot;)</sub>
+      </sub>
+    </span>
+  </div>
+  <div id="polarion_client30" class="polarion-rp-widget-part" data-widget="com.polarion.multiSetTrendChart">
+    <span class="polarion-rp-widget-parameters" style="display: none;">
+      <sub id="title">Change Requests in Process</sub>
+      <sub id="data">
+        <sub id="elements">
+          <sub>
+            <sub id="prototype">WorkItem</sub>
+            <sub id="subtype">changerequest</sub>
+            <sub id="queryType">lucene</sub>
+            <sub id="luceneQuery" style="white-space:pre;">status:(reviewed approved)</sub>
+            <sub id="children">
+              <sub id="name">Total Change Requests in Process</sub>
+              <sub id="color">rgb(163, 0, 0)</sub>
+            </sub>
+          </sub>
+        </sub>
+      </sub>
+      <sub id="timeAxis">
+        <sub id="from">
+          <sub id="relative">-365</sub>
+        </sub>
+        <sub id="to">
+          <sub id="relative">0</sub>
+        </sub>
+        <sub id="scaleType">month</sub>
+        <sub id="baseDate">31</sub>
+      </sub>
+      <sub id="advanced">
+        <sub id="height">200px</sub>
+        <sub id="width"></sub>
+      </sub>
+    </span>
+  </div>
+  <p id="polarion_client28"></p>
+</div>
+<div class="polarion-rp-row-separator"></div>
+<div class="polarion-rp-column" style="width: 100%;">
+  <h2 id="polarion_client49">Project Activity (60 days)</h2>
+  <p id="polarion_client3"></p>
+</div>
+<div class="polarion-rp-row-separator"></div>
+<div class="polarion-rp-column" style="width: 70%;">
+  <div id="polarion_client37" class="polarion-rp-widget-part" data-widget="com.polarion.scriptBlock">
+    <span class="polarion-rp-widget-parameters" style="display: none;">
+      <sub id="script">
+        <sub id="script" style="white-space:pre;">#info(&quot;Daily trend of all created and updated Work Items.&quot;)</sub>
+      </sub>
+    </span>
+  </div>
+  <div id="polarion_client39" class="polarion-rp-widget-part" data-widget="com.polarion.intervalFieldChart">
+    <span class="polarion-rp-widget-parameters" style="display: none;">
+      <sub id="title"></sub>
+      <sub id="data">
+        <sub id="elements">
+          <sub>
+            <sub id="prototype">WorkItem</sub>
+            <sub id="queryType">lucene</sub>
+            <sub id="luceneQuery" style="white-space:pre;"></sub>
+            <sub id="children">
+              <sub id="intervalField">
+                <sub id="field">updated</sub>
+              </sub>
+              <sub id="name">Updated Work Items</sub>
+              <sub id="color">orange</sub>
+            </sub>
+          </sub>
+          <sub>
+            <sub id="prototype">WorkItem</sub>
+            <sub id="queryType">lucene</sub>
+            <sub id="luceneQuery" style="white-space:pre;"></sub>
+            <sub id="children">
+              <sub id="intervalField">
+                <sub id="field">created</sub>
+              </sub>
+              <sub id="name">Created Work Items</sub>
+              <sub id="color">green</sub>
+            </sub>
+          </sub>
+        </sub>
+      </sub>
+      <sub id="timeAxis">
+        <sub id="from">
+          <sub id="relative">-60</sub>
+        </sub>
+        <sub id="to">
+          <sub id="relative">0</sub>
+        </sub>
+        <sub id="scaleType">day</sub>
+        <sub id="baseDate">1</sub>
+      </sub>
+      <sub id="advanced">
+        <sub id="height">250px</sub>
+        <sub id="width"></sub>
+      </sub>
+    </span>
+  </div>
+  <p id="polarion_client12"></p><p id="polarion_client40"></p><p id="polarion_client41"></p>
+</div>
+<div class="polarion-rp-column" style="width: 30%;">
+  <div id="polarion_client38" class="polarion-rp-widget-part" data-widget="com.polarion.separateByPieChart">
+    <span class="polarion-rp-widget-parameters">
+      <sub id="title">Work Items by Type</sub>
+      <sub id="dataSet">
+        <sub id="prototype">WorkItem</sub>
+        <sub id="queryType">lucene</sub>
+        <sub id="luceneQuery" style="white-space:pre;"></sub>
+        <sub id="children">
+          <sub id="separateBy">
+            <sub id="field">type</sub>
+          </sub>
+        </sub>
+      </sub>
+      <sub id="showDataLabels">true</sub>
+      <sub id="showZeroValues">false</sub>
+      <sub id="advanced">
+        <sub id="height">250px</sub>
+        <sub id="width"></sub>
+      </sub>
+    </span>
+  </div>
+</div>
+<div class="polarion-rp-row-separator"></div>]]></field>
+    <field id="title">Dashboard</field>
+</rich-page>

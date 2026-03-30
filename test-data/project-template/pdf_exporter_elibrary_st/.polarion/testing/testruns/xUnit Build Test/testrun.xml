@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<test-run>
+    <field id="author">rProject</field>
+    <field id="created">2016-01-20 09:33:41.294 +0100</field>
+    <field id="homePageContent" text-type="text/html"><![CDATA[<div class="polarion-rp-column" style="width: 100%;">
+  <div id="polarion_client78" class="polarion-rp-widget-part" data-widget="com.polarion.testRunLabel">
+    <span class="polarion-rp-widget-parameters" style="display: none;">
+      <sub id="testRun">
+        <sub id="paths">
+          <sub>@current</sub>
+        </sub>
+      </sub>
+      <sub id="showTemplateName">true</sub>
+    </span>
+  </div>
+  <div id="polarion_client1" class="polarion-rp-widget-part" data-widget="com.polarion.scriptBlock">
+    <span class="polarion-rp-widget-parameters">
+      <sub id="script">
+        <sub id="script" style="white-space:pre;">#if($testRun.fields().isTemplate().get())
+	$widgetContext.renderWarning(&quot;&lt;b&gt;This is a Test Run template&lt;/b&gt;, you cannot execute this test. Please create a Test Run first using this template&quot;)
+#end
+#if($testRun.fields().records().is().empty() &amp;&amp; $testRun.fields().selectTestCasesBy().optionId().equals(&quot;manualSelection&quot;))
+	$widgetContext.renderInfo(&quot;Select the test cases you want to plan for execution by clicking Operations &gt; Select Test Cases.&quot;)
+#end</sub>
+      </sub>
+    </span>
+  </div>
+</div>
+<div class="polarion-rp-row-separator" page_min_width="1000"></div>
+<div class="polarion-rp-column" style="width: 68.22983%;">
+  <div id="polarion_client62" class="polarion-rp-widget-part" data-widget="com.polarion.scriptBlock">
+    <span class="polarion-rp-widget-parameters" style="display: none;">
+      <sub id="script">
+        <sub id="script" style="white-space:pre;">&lt;h2&gt;Test Run Status - $testRun.fields().status().render().withIcon(false)&lt;/h2&gt;</sub>
+      </sub>
+    </span>
+  </div>
+  <div id="polarion_client64" class="polarion-rp-widget-part" data-widget="com.polarion.testRunOverview">
+    <span class="polarion-rp-widget-parameters" style="display: none;">
+      <sub id="testRun">
+        <sub id="paths">
+          <sub>@current</sub>
+        </sub>
+      </sub>
+      <sub id="showChart">true</sub>
+      <sub id="showStatusButtons">true</sub>
+      <sub id="showOverallButtons">true</sub>
+    </span>
+  </div>
+  <h2 id="polarion_client71">Test Environment</h2>
+  <table id="polarion_wiki macro name=table;params=header=no|bold=2|width=79.85%|uid=client4" class="polarion-Document-table" style="width: 79.85%;margin-left: auto;margin-right: auto;border: 1px solid #CCCCCC;empty-cells: show;border-collapse: collapse;">
+    <tbody>
+      <tr>
+        <td style="text-align: left;vertical-align: top;width: 75px;height: 21px;border: 1px solid #CCCCCC;padding: 5px;">Build ID:</td>
+        <td style="font-weight: bold;text-align: left;vertical-align: top;width: 448px;height: 21px;border: 1px solid #CCCCCC;padding: 5px;"><span class="polarion-rp-inline-widget" data-widget="com.polarion.scriptInline">
+            <span class="polarion-rp-widget-parameters">
+              <sub id="script">
+                <sub id="script" style="white-space:pre;">$testRun.fields().groupId().render()</sub>
+              </sub>
+            </span>
+          </span></td>
+      </tr>
+      <tr>
+        <td style="text-align: left;vertical-align: top;width: 75px;height: 21px;border: 1px solid #CCCCCC;padding: 5px;"><span style="font-weight: normal;">Platform:</span></td>
+        <td style="font-weight: bold;text-align: left;vertical-align: top;width: 448px;height: 21px;border: 1px solid #CCCCCC;padding: 5px;"><span class="polarion-rp-inline-widget" data-widget="com.polarion.scriptInline">
+            <span class="polarion-rp-widget-parameters">
+              <sub id="script">
+                <sub id="script" style="white-space:pre;">$testRun.fields().get(&quot;platform&quot;).render()</sub>
+              </sub>
+            </span>
+          </span></td>
+      </tr>
+      <tr>
+        <td style="text-align: left;vertical-align: top;width: 75px;height: 36px;border: 1px solid #CCCCCC;padding: 5px;">Other:</td>
+        <td style="font-weight: bold;text-align: left;vertical-align: top;width: 448px;height: 36px;border: 1px solid #CCCCCC;padding: 5px;"><span class="polarion-rp-inline-widget" data-widget="com.polarion.scriptInline">
+            <span class="polarion-rp-widget-parameters">
+              <sub id="script">
+                <sub id="script" style="white-space:pre;">$testRun.fields().get(&quot;environmentDescription&quot;).render()</sub>
+              </sub>
+            </span>
+          </span></td>
+      </tr>
+    </tbody>
+  </table>
+  <h2 id="polarion_client74">Problems Reported</h2>
+  <p id="polarion_client3">
+     <span class="polarion-rp-inline-widget" data-widget="com.polarion.scriptInline">
+      <span class="polarion-rp-widget-parameters">
+        <sub id="script">
+          <sub id="script" style="white-space:pre;">&lt;a target=&quot;_top&quot; href=&quot;/polarion/#/project/$testRun.getReference().projectId()/testrun?id=$testRun.getReference().id()&amp;tab=records&quot;&gt;
+	&lt;img src=&quot;/polarion/wiki/skins/sidecar/chart_bar.png&quot;/&gt;&amp;nbsp;&lt;b&gt;Browse All Test Run Records&lt;/b&gt;
+&lt;/a&gt;</sub>
+        </sub>
+      </span>
+    </span>
+  </p>
+  <div id="polarion_client6" class="polarion-rp-widget-part" data-widget="com.polarion.scriptBlock">
+    <span class="polarion-rp-widget-parameters">
+      <sub id="script">
+        <sub id="script" style="white-space:pre;">#if(!$testRun.fields().summaryDefect().is().empty())
+	&lt;h3&gt;Summary Issue&lt;/h3&gt;
+	There were too many failures so only summary issue is created: &lt;b&gt;$testRun.fields().summaryDefect().render().withLinks()&lt;/b&gt;
+	&lt;/br&gt;&lt;/br&gt;
+#end</sub>
+      </sub>
+    </span>
+  </div>
+  <div id="polarion_client76" class="polarion-rp-widget-part" data-widget="com.polarion.testRunTestRecords">
+    <span class="polarion-rp-widget-parameters" style="display: none;">
+      <sub id="testRun">
+        <sub id="paths">
+          <sub>@current</sub>
+        </sub>
+      </sub>
+      <sub id="filterBy">
+        <sub id="values">
+          <sub>failed</sub>
+          <sub>blocked</sub>
+        </sub>
+      </sub>
+      <sub id="columns">
+        <sub>
+          <sub id="id">result</sub>
+        </sub>
+        <sub>
+          <sub id="id">testCase</sub>
+        </sub>
+        <sub>
+          <sub id="id">defect</sub>
+        </sub>
+      </sub>
+      <sub id="advanced">
+        <sub id="top">50</sub>
+        <sub id="expandInView">false</sub>
+        <sub id="expandInPdfAndPrint">true</sub>
+      </sub>
+    </span>
+  </div>
+  <p id="polarion_client8"></p><p id="polarion_client2"></p><p id="polarion_client4"></p>
+</div>
+<div class="polarion-rp-column" style="width: 31.770168%;" data-print="0" data-pdf="0">
+  <p id="polarion_client81" style="text-align: center;">
+    <span style="color: #999999;">Test Run Status: <span style="font-size: 8pt;line-height: 1.5;">(click to modify)</span></span>
+  </p>
+  <p id="polarion_client83" style="text-align: center;">
+    <span class="polarion-rp-inline-widget" data-widget="com.polarion.testRunStatusButton"><span class="polarion-rp-widget-parameters"></span></span>
+  </p>
+  <p id="polarion_client87"></p>
+  <h3 id="polarion_client90">Test Run Activities</h3>
+  <div id="polarion_client92" class="polarion-rp-widget-part" data-widget="com.polarion.testRunActivityStream">
+    <span class="polarion-rp-widget-parameters" style="display: none;">
+      <sub id="testRun">
+        <sub id="paths">
+          <sub>@current</sub>
+        </sub>
+      </sub>
+      <sub id="advanced">
+        <sub id="top">8</sub>
+      </sub>
+    </span>
+  </div>
+  <p id="polarion_client79"></p>
+</div>
+<div class="polarion-rp-row-separator"></div>]]></field>
+    <field id="isTemplate">true</field>
+    <field id="selectTestCasesBy">automatedProcess</field>
+    <field id="status">open</field>
+    <field id="type">automated</field>
+    <field id="useReportFromTemplate">true</field>
+</test-run>

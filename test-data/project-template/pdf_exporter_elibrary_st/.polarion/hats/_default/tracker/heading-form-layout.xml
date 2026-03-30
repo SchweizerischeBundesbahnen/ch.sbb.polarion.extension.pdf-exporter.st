@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<formLayout xmlns="http://polarion.com/schema/WorkItems/FormLayout" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://polarion.com/schema/WorkItems/FormLayout">
+    <horizontal>
+        <vertical>
+            <section>
+                <field id="type"/>
+                <field id="author"/>
+            </section>
+        </vertical>
+        <vertical>
+            <section>
+                <field id="status"/>
+                <field id="resolution"/>
+            </section>
+        </vertical>
+    </horizontal>
+
+    <!-- heading has no fields
+
+    <panel description="Custom Fields">
+        <field id="@allCustomFields" />
+    </panel>
+
+    <field id="comments" />
+    <field id="approvals" />
+    <field id="linkedWorkItems" />
+    <field id="hyperlinks" />
+    <field id="attachments" />
+
+    -->
+
+</formLayout>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<work-item>
+    <field id="author">rProject</field>
+    <field id="categories">
+        <list>
+            <item>security</item>
+            <item>ui</item>
+        </list>
+    </field>
+    <field id="created">2010-12-06 14:46:33.317 +0100</field>
+    <field id="initialEstimate"/>
+    <field id="linkedWorkItems">
+        <list>
+            <struct>
+                <item id="role">verifies</item>
+                <item id="workItem">EL-105</item>
+            </struct>
+        </list>
+    </field>
+    <field id="priority">50.0</field>
+    <field id="remainingEstimate"/>
+    <field id="severity">smoke</field>
+    <field id="status">active</field>
+    <field id="testSteps" type="struct:TestSteps">
+        <struct>
+            <item id="keys">
+                <list>
+                    <item>step</item>
+                    <item>description</item>
+                    <item>expectedResult</item>
+                </list>
+            </item>
+            <item id="steps">
+                <list>
+                    <struct>
+                        <item id="values">
+                            <list>
+                                <item text-type="text/html">Open Login Screen.</item>
+                                <item text-type="text/html">Go to the E-Library Portal welcome page and click login on the right hand corner. </item>
+                                <item text-type="text/html">Login screen with user name and password text fields is displayed.</item>
+                            </list>
+                        </item>
+                    </struct>
+                    <struct>
+                        <item id="values">
+                            <list>
+                                <item text-type="text/html">Enter incorrect User Details.</item>
+                                <item text-type="text/html">Incorrect details: admin/wrong</item>
+                                <item text-type="text/html">The login button is disabled until both user name and password is entered.</item>
+                            </list>
+                        </item>
+                    </struct>
+                    <struct>
+                        <item id="values">
+                            <list>
+                                <item text-type="text/html">Click &amp;quot;Login&amp;quot;.</item>
+                                <item text-type="text/html"/>
+                                <item text-type="text/html">Login failed message is shown.</item>
+                            </list>
+                        </item>
+                    </struct>
+                </list>
+            </item>
+        </struct>
+    </field>
+    <field id="testType" type="enum:testtype">user</field>
+    <field id="timeSpent"/>
+    <field id="title">Login to the portal</field>
+    <field id="type">testcase</field>
+</work-item>

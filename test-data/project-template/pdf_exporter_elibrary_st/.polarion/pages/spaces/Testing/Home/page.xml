@@ -1,0 +1,822 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<rich-page>
+    <field id="author">admin</field>
+    <field id="created">2016-06-27 13:15:59.005 +0200</field>
+    <field id="homePageContent" text-type="text/html"><![CDATA[<div class="polarion-rp-column" style="width: 100%;">
+  <div id="polarion_client2" class="polarion-rp-widget-part" data-widget="com.polarion.scriptBlock">
+    <span class="polarion-rp-widget-parameters">
+      <sub id="script">
+        <sub id="script" style="white-space:pre;">&lt;h1&gt;$esc.html($page.label)&lt;/h1&gt;</sub>
+      </sub>
+    </span>
+  </div>
+</div>
+<div class="polarion-rp-row-separator" page_min_width="1000"></div>
+<div class="polarion-rp-column" style="width: 75.86667%;">
+  <table id="polarion_wiki macro name=table;params=header=no|border=no|valign=middle|width=99.86%|uid=client5" class="polarion-Document-table" style="width: 99.86%;margin-left: auto;margin-right: auto;empty-cells: show;border-collapse: collapse;">
+    <tbody>
+      <tr>
+        <td style="vertical-align: middle;width: 167px;height: 143px;padding: 2px;"><span class="polarion-rp-inline-widget" data-widget="com.polarion.scriptInline">
+            <span class="polarion-rp-widget-parameters" style="display: none;">
+              <sub id="script">
+                <sub id="script" style="white-space:pre;">&lt;img src=&quot;/polarion/page-attachment/$page.getReference().projectId()/_default/Home/testing.png&quot; style=&quot;width: 140px;&quot;/&gt;</sub>
+              </sub>
+            </span>
+          </span></td>
+        <td style="vertical-align: middle;width: 585px;height: 143px;padding: 2px;">Welcome to the <span class="polarion-rp-inline-widget" data-widget="com.polarion.scriptInline">
+            <span style="display: none;" class="polarion-rp-widget-parameters">
+              <sub id="script">
+                <sub style="white-space:pre;" id="script">&lt;i class:&quot;italic&quot;&gt;$esc.html($page.fields().spaceId().spaceLabel())&lt;/i&gt;</sub>
+              </sub>
+            </span>
+          </span> space Home Page. </td>
+      </tr>
+    </tbody>
+  </table>
+  <h2 id="polarion_client15">Input</h2>
+  <ul id="polarion_client27">
+    <li><span class="polarion-rp-inline-widget" data-widget="enumerationrenderer">
+        <span class="polarion-rp-widget-parameters">
+          <sub id="scope"></sub><sub id="type"></sub>
+          <sub id="enum">
+            <sub id="values">
+              <sub>documents/document-type</sub>
+            </sub>
+          </sub>
+          <sub id="enumOpt">
+            <sub id="values">
+              <sub>testSpecification</sub>
+            </sub>
+          </sub>
+          <sub id="render">
+            <sub id="renderModelObject">false</sub>
+            <sub id="withBaselineIcon">true</sub>
+            <sub id="withColor">false</sub>
+            <sub id="withIcon">true</sub>
+            <sub id="withLinks">true</sub>
+            <sub id="withRevisionIcon">true</sub>
+            <sub id="withText">true</sub>
+          </sub>
+          <sub id="customization">
+            <sub id="textBefore"></sub><sub id="textAfter"></sub>
+            <sub id="customLinkTarget">
+              <sub id="values">
+                <sub>_top</sub>
+              </sub>
+            </sub>
+            <sub id="customLink">
+              <sub id="script" style="white-space:pre;"></sub>
+            </sub>
+          </sub>
+        </span>
+      </span> <span style="font-size: 10pt;font-family: Arial, Helvetica, sans-serif;line-height: 1.5;">describes the <span class="polarion-rp-inline-widget" data-widget="enumerationrenderer">
+          <span class="polarion-rp-widget-parameters">
+            <sub id="scope"></sub><sub id="type"></sub>
+            <sub id="enum">
+              <sub id="values">
+                <sub>workitem-type</sub>
+              </sub>
+            </sub>
+            <sub id="enumOpt">
+              <sub id="values">
+                <sub>testcase</sub>
+              </sub>
+            </sub>
+            <sub id="render">
+              <sub id="renderModelObject">false</sub>
+              <sub id="withBaselineIcon">true</sub>
+              <sub id="withColor">false</sub>
+              <sub id="withIcon">true</sub>
+              <sub id="withLinks">true</sub>
+              <sub id="withRevisionIcon">true</sub>
+              <sub id="withText">true</sub>
+            </sub>
+            <sub id="customization">
+              <sub id="textBefore"></sub>
+              <sub id="textAfter">s</sub>
+              <sub id="customLinkTarget">
+                <sub id="values">
+                  <sub>_top</sub>
+                </sub>
+              </sub>
+              <sub id="customLink">
+                <sub id="script" style="white-space:pre;"></sub>
+              </sub>
+            </sub>
+          </span>
+        </span> that need to be executed to verify that the <span class="polarion-rp-inline-widget" data-widget="enumerationrenderer">
+          <span class="polarion-rp-widget-parameters">
+            <sub id="scope"></sub><sub id="type"></sub>
+            <sub id="enum">
+              <sub id="values">
+                <sub>documents/document-type</sub>
+              </sub>
+            </sub>
+            <sub id="enumOpt">
+              <sub id="values">
+                <sub>productSpecification</sub>
+              </sub>
+            </sub>
+            <sub id="render">
+              <sub id="renderModelObject">false</sub>
+              <sub id="withBaselineIcon">true</sub>
+              <sub id="withColor">false</sub>
+              <sub id="withIcon">true</sub>
+              <sub id="withLinks">true</sub>
+              <sub id="withRevisionIcon">true</sub>
+              <sub id="withText">true</sub>
+            </sub>
+            <sub id="customization">
+              <sub id="textBefore"></sub><sub id="textAfter"></sub>
+              <sub id="customLinkTarget">
+                <sub id="values">
+                  <sub>_top</sub>
+                </sub>
+              </sub>
+              <sub id="customLink">
+                <sub id="script" style="white-space:pre;"></sub>
+              </sub>
+            </sub>
+          </span>
+        </span> has been implemented.</span></li>
+  </ul>
+  <div id="polarion_client30" class="polarion-rp-widget-part" data-widget="com.polarion.table">
+    <span class="polarion-rp-widget-parameters" style="display: none;">
+      <sub id="dataSet">
+        <sub id="prototype">Document</sub>
+        <sub id="subtype">testSpecification</sub>
+        <sub id="queryType">lucene</sub>
+        <sub id="luceneQuery" style="white-space:pre;"></sub>
+        <sub id="children">
+          <sub id="columns">
+            <sub>
+              <sub id="id">title</sub>
+            </sub>
+            <sub>
+              <sub id="id">status</sub>
+            </sub>
+            <sub>
+              <sub id="id">updated</sub>
+            </sub>
+            <sub>
+              <sub id="id">updatedBy</sub>
+            </sub>
+          </sub>
+          <sub id="sortBy">
+            <sub>
+              <sub id="id">title</sub>
+              <sub id="descending">false</sub>
+            </sub>
+          </sub>
+        </sub>
+      </sub>
+      <sub id="advanced">
+        <sub id="top">50</sub>
+      </sub>
+    </span>
+  </div>
+  <p id="polarion_client28"></p>
+  <h2 id="polarion_client20">Output</h2>
+  <h3 id="polarion_client85">Validation and Verification Plan</h3>
+  <h4 id="polarion_client5">Recent Test Runs (30d)</h4>
+  <div id="polarion_client6" class="polarion-rp-widget-part" data-widget="com.polarion.table">
+    <span class="polarion-rp-widget-parameters">
+      <sub id="dataSet">
+        <sub id="prototype">TestRun</sub>
+        <sub id="queryType">lucene</sub>
+        <sub id="luceneQuery" style="white-space:pre;">finishedOn:[$today-30d$ TO $today$]</sub>
+        <sub id="children">
+          <sub id="columns">
+            <sub>
+              <sub id="id">id</sub>
+            </sub>
+            <sub>
+              <sub id="id">status</sub>
+            </sub>
+            <sub>
+              <sub id="id">template</sub>
+            </sub>
+            <sub>
+              <sub id="id">workflowSignatures</sub>
+            </sub>
+            <sub>
+              <sub id="id">finishedOn</sub>
+            </sub>
+            <sub>
+              <sub id="id">author</sub>
+            </sub>
+          </sub>
+          <sub id="sortBy">
+            <sub>
+              <sub id="id">finishedOn</sub>
+              <sub id="descending">true</sub>
+            </sub>
+          </sub>
+        </sub>
+      </sub>
+      <sub id="advanced">
+        <sub id="top">10</sub>
+      </sub>
+    </span>
+  </div>
+  <h4 id="polarion_client3">Test Runs for current Iteration</h4>
+  <div id="polarion_client11" class="polarion-rp-widget-part" data-widget="com.polarion.scriptBlock">
+    <span class="polarion-rp-widget-parameters">
+      <sub id="script">
+        <sub id="script" style="white-space:pre;">## Test Runs for current Iteration
+#set($quo = &#39;&quot;&#39;)
+#set($projectId = $page.getReference().projectId())
+#set($currentIterationQuery = &quot;project.id:$projectId AND template.id:iteration AND status:inprogress&quot;)
+#set($currentIterations = $transaction.plans().search().query(&quot;$currentIterationQuery&quot;))
+#if($currentIterations.size() &gt; 1)
+	$widgetContext.renderWarning(&quot;More than one Iteration is currently &lt;b&gt;In Progress&lt;/b&gt;.&quot;)
+#elseif($currentIterations.iterator().hasNext())
+	#set($currentIteration = $currentIterations.iterator().next())
+	#set($testRunIDsForIteration = &quot;&quot;)
+	#set($testRunsForIterationQuery = &quot;project.id:$projectId AND planScope.KEY:($currentIteration.getReference().id())&quot;)
+	#set($testRunsForIteration = $transaction.testRuns().search().query(&quot;$testRunsForIterationQuery&quot;))
+	#foreach($testRun in $testRunsForIteration)
+		#set($testRunIDsForIteration = &quot;$testRunIDsForIteration$quo$testRun.getReference().id()$quo &quot;)
+	#end
+	#if(!$testRunIDsForIteration.equals(&quot;&quot;))
+		#set($query = &quot;id:($testRunIDsForIteration.trim())&quot;)
+	#else
+		#set($query = &quot;NOT *:*&quot;)
+	#end
+	&lt;div class=&quot;polarion-rp-widget-part&quot; data-widget=&quot;com.polarion.table&quot;&gt;
+		&lt;span class=&quot;polarion-rp-widget-parameters&quot;&gt;
+			&lt;sub id=&quot;dataSet&quot;&gt;
+				&lt;sub id=&quot;prototype&quot;&gt;TestRun&lt;/sub&gt;
+				&lt;sub id=&quot;queryType&quot;&gt;luceneVelocity&lt;/sub&gt;
+				&lt;sub id=&quot;luceneQuery&quot;&gt;$query&lt;/sub&gt;
+				&lt;sub id=&quot;children&quot;&gt;
+					&lt;sub id=&quot;columns&quot;&gt;
+						&lt;sub&gt;
+							&lt;sub id=&quot;id&quot;&gt;id&lt;/sub&gt;
+						&lt;/sub&gt;
+						&lt;sub&gt;
+							&lt;sub id=&quot;id&quot;&gt;status&lt;/sub&gt;
+						&lt;/sub&gt;
+						&lt;sub&gt;
+							&lt;sub id=&quot;id&quot;&gt;template&lt;/sub&gt;
+						&lt;/sub&gt;
+						&lt;sub&gt;
+							&lt;sub id=&quot;id&quot;&gt;finishedOn&lt;/sub&gt;
+						&lt;/sub&gt;
+						&lt;sub&gt;
+							&lt;sub id=&quot;id&quot;&gt;author&lt;/sub&gt;
+						&lt;/sub&gt;
+					&lt;/sub&gt;
+					&lt;sub id=&quot;sortBy&quot;&gt;
+						&lt;sub&gt;
+							&lt;sub id=&quot;id&quot;&gt;finishedOn&lt;/sub&gt;
+							&lt;sub id=&quot;descending&quot;&gt;true&lt;/sub&gt;
+						&lt;/sub&gt;
+					&lt;/sub&gt;
+				&lt;/sub&gt;
+			&lt;/sub&gt;
+			&lt;sub id=&quot;advanced&quot;&gt;
+				&lt;sub id=&quot;top&quot;&gt;10&lt;/sub&gt;
+			&lt;/sub&gt;
+		&lt;/span&gt;
+	&lt;/div&gt;
+#else
+	$widgetContext.renderWarning(&quot;No Iteration is currently &lt;b&gt;In Progress&lt;/b&gt;.&quot;)
+#end</sub>
+      </sub>
+    </span>
+  </div>
+  <h4 id="polarion_client88">Test Runs for current Release</h4>
+  <div id="polarion_client16" class="polarion-rp-widget-part" data-widget="com.polarion.scriptBlock">
+    <span class="polarion-rp-widget-parameters">
+      <sub id="script">
+        <sub id="script" style="white-space:pre;">## Test Runs for current Release
+#set($quo = &#39;&quot;&#39;)
+#set($projectId = $page.getReference().projectId())
+#set($currentReleaseQuery = &quot;project.id:$projectId AND template.id:release AND status:inprogress&quot;)
+#set($currentReleases = $transaction.plans().search().query(&quot;$currentReleaseQuery&quot;))
+#if($currentReleases.size() &gt; 1)
+	$widgetContext.renderWarning(&quot;More than one Release is currently &lt;b&gt;In Progress&lt;/b&gt;.&quot;)
+#elseif($currentReleases.iterator().hasNext())
+	#set($currentRelease = $currentReleases.iterator().next())
+	#set($testRunIDsForRelease = &quot;&quot;)
+	#set($testRunsForReleaseQuery = &quot;project.id:$projectId AND planScope.KEY:($currentRelease.getReference().id())&quot;)
+	#set($testRunsForRelease = $transaction.testRuns().search().query(&quot;$testRunsForReleaseQuery&quot;))
+	#foreach($testRun in $testRunsForRelease)
+		#set($testRunIDsForRelease = &quot;$testRunIDsForRelease$quo$testRun.getReference().id()$quo &quot;)
+	#end
+	#if(!$testRunIDsForRelease.equals(&quot;&quot;))
+		#set($query = &quot;id:($testRunIDsForRelease.trim())&quot;)
+	#else
+		#set($query = &quot;NOT *:*&quot;)
+	#end
+	&lt;div class=&quot;polarion-rp-widget-part&quot; data-widget=&quot;com.polarion.table&quot;&gt;
+		&lt;span class=&quot;polarion-rp-widget-parameters&quot;&gt;
+			&lt;sub id=&quot;dataSet&quot;&gt;
+				&lt;sub id=&quot;prototype&quot;&gt;TestRun&lt;/sub&gt;
+				&lt;sub id=&quot;queryType&quot;&gt;luceneVelocity&lt;/sub&gt;
+				&lt;sub id=&quot;luceneQuery&quot;&gt;$query&lt;/sub&gt;
+				&lt;sub id=&quot;children&quot;&gt;
+					&lt;sub id=&quot;columns&quot;&gt;
+						&lt;sub&gt;
+							&lt;sub id=&quot;id&quot;&gt;id&lt;/sub&gt;
+						&lt;/sub&gt;
+						&lt;sub&gt;
+							&lt;sub id=&quot;id&quot;&gt;status&lt;/sub&gt;
+						&lt;/sub&gt;
+						&lt;sub&gt;
+							&lt;sub id=&quot;id&quot;&gt;template&lt;/sub&gt;
+						&lt;/sub&gt;
+						&lt;sub&gt;
+							&lt;sub id=&quot;id&quot;&gt;finishedOn&lt;/sub&gt;
+						&lt;/sub&gt;
+						&lt;sub&gt;
+							&lt;sub id=&quot;id&quot;&gt;author&lt;/sub&gt;
+						&lt;/sub&gt;
+					&lt;/sub&gt;
+					&lt;sub id=&quot;sortBy&quot;&gt;
+						&lt;sub&gt;
+							&lt;sub id=&quot;id&quot;&gt;finishedOn&lt;/sub&gt;
+							&lt;sub id=&quot;descending&quot;&gt;true&lt;/sub&gt;
+						&lt;/sub&gt;
+					&lt;/sub&gt;
+				&lt;/sub&gt;
+			&lt;/sub&gt;
+			&lt;sub id=&quot;advanced&quot;&gt;
+				&lt;sub id=&quot;top&quot;&gt;10&lt;/sub&gt;
+			&lt;/sub&gt;
+		&lt;/span&gt;
+	&lt;/div&gt;
+#else
+	$widgetContext.renderWarning(&quot;No Release is currently &lt;b&gt;In Progress&lt;/b&gt;.&quot;)
+#end</sub>
+      </sub>
+    </span>
+  </div>
+  <p id="polarion_client17"></p>
+  <h2 id="polarion_client23">Review</h2>
+  <ul id="polarion_client32">
+    <li><span class="polarion-rte-link" data-type="richPage" id="fake" data-item-name="Test Run Statistics" data-space-name="Testing" data-option-id="default"></span> - Basic statistics about Test Runs.</li>
+    <li><span class="polarion-rte-link" data-type="richPage" id="fake" data-item-name="Requirement Test Case Coverage" data-space-name="Testing" data-option-id="default"></span> - Report documenting the coverage of <span class="polarion-rp-inline-widget" data-widget="enumerationrenderer">
+        <span class="polarion-rp-widget-parameters" style="display: none;">
+          <sub id="scope"></sub><sub id="type"></sub>
+          <sub id="enum">
+            <sub id="values">
+              <sub>workitem-type</sub>
+            </sub>
+          </sub>
+          <sub id="enumOpt">
+            <sub id="values">
+              <sub>requirement</sub>
+            </sub>
+          </sub>
+          <sub id="render">
+            <sub id="renderModelObject">false</sub>
+            <sub id="withBaselineIcon">true</sub>
+            <sub id="withColor">false</sub>
+            <sub id="withIcon">true</sub>
+            <sub id="withLinks">true</sub>
+            <sub id="withRevisionIcon">true</sub>
+            <sub id="withText">true</sub>
+          </sub>
+          <sub id="customization">
+            <sub id="textBefore"></sub>
+            <sub id="textAfter">s</sub>
+            <sub id="customLinkTarget">
+              <sub id="values">
+                <sub>_top</sub>
+              </sub>
+            </sub>
+            <sub id="customLink">
+              <sub id="script" style="white-space:pre;"></sub>
+            </sub>
+          </sub>
+        </span>
+      </span> with <span class="polarion-rp-inline-widget" data-widget="enumerationrenderer">
+        <span class="polarion-rp-widget-parameters" style="display: none;">
+          <sub id="scope"></sub><sub id="type"></sub>
+          <sub id="enum">
+            <sub id="values">
+              <sub>workitem-type</sub>
+            </sub>
+          </sub>
+          <sub id="enumOpt">
+            <sub id="values">
+              <sub>testcase</sub>
+            </sub>
+          </sub>
+          <sub id="render">
+            <sub id="renderModelObject">false</sub>
+            <sub id="withBaselineIcon">true</sub>
+            <sub id="withColor">false</sub>
+            <sub id="withIcon">true</sub>
+            <sub id="withLinks">true</sub>
+            <sub id="withRevisionIcon">true</sub>
+            <sub id="withText">true</sub>
+          </sub>
+          <sub id="customization">
+            <sub id="textBefore"></sub>
+            <sub id="textAfter">s</sub>
+            <sub id="customLinkTarget">
+              <sub id="values">
+                <sub>_top</sub>
+              </sub>
+            </sub>
+            <sub id="customLink">
+              <sub id="script" style="white-space:pre;"></sub>
+            </sub>
+          </sub>
+        </span>
+      </span>.</li>
+    <li><span class="polarion-rte-link" data-type="richPage" id="fake" data-item-name="User Story Test Case Coverage" data-space-name="Testing" data-option-id="default"></span> - Report documenting the coverage of <span class="polarion-rp-inline-widget" data-widget="enumerationrenderer">
+        <span class="polarion-rp-widget-parameters" style="display: none;">
+          <sub id="scope"> </sub>
+          <sub id="type"> </sub>
+          <sub id="enum">
+            <sub id="values">
+              <sub>workitem-type</sub>
+            </sub>
+          </sub>
+          <sub id="enumOpt">
+            <sub id="values">
+              <sub>userstory</sub>
+            </sub>
+          </sub>
+          <sub id="render">
+            <sub id="renderModelObject">false</sub>
+            <sub id="withBaselineIcon">true</sub>
+            <sub id="withColor">false</sub>
+            <sub id="withIcon">true</sub>
+            <sub id="withLinks">true</sub>
+            <sub id="withRevisionIcon">true</sub>
+            <sub id="withText">false</sub>
+          </sub>
+          <sub id="customization">
+            <sub id="textBefore"> </sub>
+            <sub id="textAfter">User Stories</sub>
+            <sub id="customLinkTarget">
+              <sub id="values">
+                <sub>_top</sub>
+              </sub>
+            </sub>
+            <sub id="customLink">
+              <sub id="script" style="white-space:pre;"></sub>
+            </sub>
+          </sub>
+        </span>
+      </span> with <span class="polarion-rp-inline-widget" data-widget="enumerationrenderer">
+        <span class="polarion-rp-widget-parameters" style="display: none;">
+          <sub id="scope"> </sub>
+          <sub id="type"> </sub>
+          <sub id="enum">
+            <sub id="values">
+              <sub>workitem-type</sub>
+            </sub>
+          </sub>
+          <sub id="enumOpt">
+            <sub id="values">
+              <sub>testcase</sub>
+            </sub>
+          </sub>
+          <sub id="render">
+            <sub id="renderModelObject">false</sub>
+            <sub id="withBaselineIcon">true</sub>
+            <sub id="withColor">false</sub>
+            <sub id="withIcon">true</sub>
+            <sub id="withLinks">true</sub>
+            <sub id="withRevisionIcon">true</sub>
+            <sub id="withText">true</sub>
+          </sub>
+          <sub id="customization">
+            <sub id="textBefore"> </sub>
+            <sub id="textAfter">s</sub>
+            <sub id="customLinkTarget">
+              <sub id="values">
+                <sub>_top</sub>
+              </sub>
+            </sub>
+            <sub id="customLink">
+              <sub id="script" style="white-space:pre;"></sub>
+            </sub>
+          </sub>
+        </span>
+      </span>.</li>
+  </ul>
+  <p id="polarion_client67"></p><p id="polarion_client68"></p><p id="polarion_client7"></p>
+</div>
+<div class="polarion-rp-column" style="width: 24.133333%;">
+  <h2 id="polarion_client60">Quick Actions</h2>
+  <p id="polarion_client55" style="text-align: center;">
+    <span class="polarion-rp-inline-widget" data-widget="com.polarion.genericButton">
+      <span class="polarion-rp-widget-parameters">
+        <sub id="label">Create New...</sub>
+        <sub id="sublabel">
+          <sub id="script" style="white-space:pre;">Test Run</sub>
+        </sub>
+        <sub id="action">
+          <sub id="script" style="white-space:pre;">$renderingContext.createJsActionsBuilder().createTestRun()</sub>
+        </sub>
+        <sub id="url"></sub>
+        <sub id="advanced">
+          <sub id="labelColor"></sub>
+          <sub id="disabled">
+            <sub id="script" style="white-space:pre;"></sub>
+          </sub>
+        </sub>
+      </span>
+    </span>
+  </p>
+  <ul id="polarion_client65">
+    <li><span class="polarion-rp-inline-widget" data-widget="com.polarion.scriptInline">
+        <span class="polarion-rp-widget-parameters">
+          <sub id="script">
+            <sub id="script" style="white-space:pre;">&lt;a href=&quot;javascript:top.createNewArtifact(&#39;$page.getReference().projectId()&#39;, &#39;Testing&#39;, true, false, false, false, true, false, false, false);&quot; target=&quot;_top&quot;&gt;Create New Document&lt;/a&gt;</sub>
+          </sub>
+        </span>
+      </span></li>
+    <li><span class="polarion-rp-inline-widget" data-widget="com.polarion.scriptInline">
+        <span class="polarion-rp-widget-parameters">
+          <sub id="script">
+            <sub id="script" style="white-space:pre;">&lt;a href=&quot;$transaction.context().createPortalLink().project(&quot;$page.getReference().projectId()&quot;).testRuns().toEncodedRelativeUrl()?istemplate=true&quot; target=&quot;_top&quot;&gt;Manage Test Run Templates&lt;/a&gt;</sub>
+          </sub>
+        </span>
+      </span></li>
+  </ul>
+  <p id="polarion_client4"></p>
+  <h2 id="polarion_client70">Workflow</h2>
+  <ol id="polarion_client29">
+    <li>Edit the <span class="polarion-rte-link" data-type="document" id="fake" data-item-name="Test Specification" data-space-name="Testing" data-option-id="default"></span> - check/add the <span class="polarion-rp-inline-widget" data-widget="enumerationrenderer">
+        <span class="polarion-rp-widget-parameters" style="display: none;">
+          <sub id="scope"></sub><sub id="type"></sub>
+          <sub id="enum">
+            <sub id="values">
+              <sub>workitem-type</sub>
+            </sub>
+          </sub>
+          <sub id="enumOpt">
+            <sub id="values">
+              <sub>testcase</sub>
+            </sub>
+          </sub>
+          <sub id="render">
+            <sub id="renderModelObject">false</sub>
+            <sub id="withBaselineIcon">true</sub>
+            <sub id="withColor">false</sub>
+            <sub id="withIcon">true</sub>
+            <sub id="withLinks">true</sub>
+            <sub id="withRevisionIcon">true</sub>
+            <sub id="withText">true</sub>
+          </sub>
+          <sub id="customization">
+            <sub id="textBefore"></sub>
+            <sub id="textAfter">s</sub>
+            <sub id="customLinkTarget">
+              <sub id="values">
+                <sub>_top</sub>
+              </sub>
+            </sub>
+            <sub id="customLink">
+              <sub id="script" style="white-space:pre;"></sub>
+            </sub>
+          </sub>
+        </span>
+      </span> for all unresolved:</li>
+    <ol>
+      <li><span class="polarion-rp-inline-widget" data-widget="enumerationrenderer">
+          <span class="polarion-rp-widget-parameters" style="display: none;">
+            <sub id="scope"></sub><sub id="type"></sub>
+            <sub id="enum">
+              <sub id="values">
+                <sub>workitem-type</sub>
+              </sub>
+            </sub>
+            <sub id="enumOpt">
+              <sub id="values">
+                <sub>requirement</sub>
+              </sub>
+            </sub>
+            <sub id="render">
+              <sub id="renderModelObject">false</sub>
+              <sub id="withBaselineIcon">true</sub>
+              <sub id="withColor">false</sub>
+              <sub id="withIcon">true</sub>
+              <sub id="withLinks">true</sub>
+              <sub id="withRevisionIcon">true</sub>
+              <sub id="withText">true</sub>
+            </sub>
+            <sub id="customization">
+              <sub id="textBefore"></sub>
+              <sub id="textAfter">s</sub>
+              <sub id="customLinkTarget">
+                <sub id="values">
+                  <sub>_top</sub>
+                </sub>
+              </sub>
+              <sub id="customLink">
+                <sub id="script" style="white-space:pre;"></sub>
+              </sub>
+            </sub>
+          </span>
+        </span>, </li>
+      <li><span class="polarion-rp-inline-widget" data-widget="enumerationrenderer">
+          <span class="polarion-rp-widget-parameters" style="display: none;">
+            <sub id="scope"></sub><sub id="type"></sub>
+            <sub id="enum">
+              <sub id="values">
+                <sub>workitem-type</sub>
+              </sub>
+            </sub>
+            <sub id="enumOpt">
+              <sub id="values">
+                <sub>userstory</sub>
+              </sub>
+            </sub>
+            <sub id="render">
+              <sub id="renderModelObject">false</sub>
+              <sub id="withBaselineIcon">true</sub>
+              <sub id="withColor">false</sub>
+              <sub id="withIcon">true</sub>
+              <sub id="withLinks">true</sub>
+              <sub id="withRevisionIcon">true</sub>
+              <sub id="withText">false</sub>
+            </sub>
+            <sub id="customization">
+              <sub id="textBefore"></sub>
+              <sub id="textAfter">User Stories</sub>
+              <sub id="customLinkTarget">
+                <sub id="values">
+                  <sub>_top</sub>
+                </sub>
+              </sub>
+              <sub id="customLink">
+                <sub id="script" style="white-space:pre;"></sub>
+              </sub>
+            </sub>
+          </span>
+        </span>.</li>
+    </ol>
+    <li>Link the <span class="polarion-rp-inline-widget" data-widget="enumerationrenderer">
+        <span class="polarion-rp-widget-parameters" style="display: none;">
+          <sub id="scope"> </sub>
+          <sub id="type"> </sub>
+          <sub id="enum">
+            <sub id="values">
+              <sub>workitem-type</sub>
+            </sub>
+          </sub>
+          <sub id="enumOpt">
+            <sub id="values">
+              <sub>testcase</sub>
+            </sub>
+          </sub>
+          <sub id="render">
+            <sub id="renderModelObject">false</sub>
+            <sub id="withBaselineIcon">true</sub>
+            <sub id="withColor">false</sub>
+            <sub id="withIcon">true</sub>
+            <sub id="withLinks">true</sub>
+            <sub id="withRevisionIcon">true</sub>
+            <sub id="withText">true</sub>
+          </sub>
+          <sub id="customization">
+            <sub id="textBefore"> </sub>
+            <sub id="textAfter">s</sub>
+            <sub id="customLinkTarget">
+              <sub id="values">
+                <sub>_top</sub>
+              </sub>
+            </sub>
+            <sub id="customLink">
+              <sub id="script" style="white-space:pre;"></sub>
+            </sub>
+          </sub>
+        </span>
+      </span> to the <span class="polarion-rp-inline-widget" data-widget="enumerationrenderer">
+        <span class="polarion-rp-widget-parameters" style="display: none;">
+          <sub id="scope"> </sub>
+          <sub id="type"> </sub>
+          <sub id="enum">
+            <sub id="values">
+              <sub>workitem-type</sub>
+            </sub>
+          </sub>
+          <sub id="enumOpt">
+            <sub id="values">
+              <sub>requirement</sub>
+            </sub>
+          </sub>
+          <sub id="render">
+            <sub id="renderModelObject">false</sub>
+            <sub id="withBaselineIcon">true</sub>
+            <sub id="withColor">false</sub>
+            <sub id="withIcon">true</sub>
+            <sub id="withLinks">true</sub>
+            <sub id="withRevisionIcon">true</sub>
+            <sub id="withText">true</sub>
+          </sub>
+          <sub id="customization">
+            <sub id="textBefore"> </sub>
+            <sub id="textAfter">s</sub>
+            <sub id="customLinkTarget">
+              <sub id="values">
+                <sub>_top</sub>
+              </sub>
+            </sub>
+            <sub id="customLink">
+              <sub id="script" style="white-space:pre;"></sub>
+            </sub>
+          </sub>
+        </span>
+      </span> and the <span class="polarion-rp-inline-widget" data-widget="enumerationrenderer">
+        <span class="polarion-rp-widget-parameters" style="display: none;">
+          <sub id="scope"> </sub>
+          <sub id="type"> </sub>
+          <sub id="enum">
+            <sub id="values">
+              <sub>workitem-type</sub>
+            </sub>
+          </sub>
+          <sub id="enumOpt">
+            <sub id="values">
+              <sub>userstory</sub>
+            </sub>
+          </sub>
+          <sub id="render">
+            <sub id="renderModelObject">false</sub>
+            <sub id="withBaselineIcon">true</sub>
+            <sub id="withColor">false</sub>
+            <sub id="withIcon">true</sub>
+            <sub id="withLinks">true</sub>
+            <sub id="withRevisionIcon">true</sub>
+            <sub id="withText">false</sub>
+          </sub>
+          <sub id="customization">
+            <sub id="textBefore"> </sub>
+            <sub id="textAfter">User Stories</sub>
+            <sub id="customLinkTarget">
+              <sub id="values">
+                <sub>_top</sub>
+              </sub>
+            </sub>
+            <sub id="customLink">
+              <sub id="script" style="white-space:pre;"></sub>
+            </sub>
+          </sub>
+        </span>
+      </span>.</li>
+    <li>Check the coverage using:</li>
+    <ol>
+      <li><span class="polarion-rte-link" data-type="richPage" id="fake" data-item-name="Requirement Test Case Coverage" data-space-name="Testing" data-option-id="default"></span>, </li>
+      <li> <span class="polarion-rte-link" data-type="richPage" id="fake" data-item-name="User Story Test Case Coverage" data-space-name="Testing" data-option-id="default"></span>.</li>
+    </ol>
+    <li><span class="polarion-rp-inline-widget" data-widget="com.polarion.scriptInline">
+        <span class="polarion-rp-widget-parameters" style="display: none;">
+          <sub id="script">
+            <sub id="script" style="white-space:pre;">&lt;a href=&quot;javascript:top.createTestRun(&#39;$page.getReference().projectId()&#39;, null);&quot; target=&quot;_top&quot;&gt;Create new Test Runs&lt;/a&gt;
+          </sub>
+          </sub>
+        </span>
+      </span> and plan the correct <span class="polarion-rp-inline-widget" data-widget="enumerationrenderer">
+        <span class="polarion-rp-widget-parameters" style="display: none;">
+          <sub id="scope"> </sub>
+          <sub id="type"> </sub>
+          <sub id="enum">
+            <sub id="values">
+              <sub>workitem-type</sub>
+            </sub>
+          </sub>
+          <sub id="enumOpt">
+            <sub id="values">
+              <sub>testcase</sub>
+            </sub>
+          </sub>
+          <sub id="render">
+            <sub id="renderModelObject">false</sub>
+            <sub id="withBaselineIcon">true</sub>
+            <sub id="withColor">false</sub>
+            <sub id="withIcon">true</sub>
+            <sub id="withLinks">true</sub>
+            <sub id="withRevisionIcon">true</sub>
+            <sub id="withText">true</sub>
+          </sub>
+          <sub id="customization">
+            <sub id="textBefore"> </sub>
+            <sub id="textAfter">s</sub>
+            <sub id="customLinkTarget">
+              <sub id="values">
+                <sub>_top</sub>
+              </sub>
+            </sub>
+            <sub id="customLink">
+              <sub id="script" style="white-space:pre;"></sub>
+            </sub>
+          </sub>
+        </span>
+      </span>.</li>
+    <li>Run all required Test Runs.</li>
+    <li>Continue in the <span class="polarion-rte-link" data-type="richPage" id="fake" data-item-name="Home" data-space-name="Maintenance" data-option-id="default"></span> space.</li>
+  </ol>
+</div>
+<div class="polarion-rp-row-separator"></div>]]></field>
+    <field id="title">Testing</field>
+</rich-page>

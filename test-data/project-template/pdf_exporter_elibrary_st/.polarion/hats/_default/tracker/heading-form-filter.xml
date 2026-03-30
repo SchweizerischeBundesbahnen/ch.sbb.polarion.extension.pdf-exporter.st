@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<formFilter xmlns="http://polarion.com/schema/WorkItems/FormFilter" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://polarion.com/schema/WorkItems/FormFilter">
+<workflow>
+<actions>
+    <action fieldNames="@required" refId="_default"/>
+</actions>
+
+<states>
+    <state fieldNames="-@all,title" refId="_default"/>
+</states>
+
+
+</workflow>
+</formFilter>

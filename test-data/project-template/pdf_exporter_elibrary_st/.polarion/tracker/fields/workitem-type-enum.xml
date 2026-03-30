@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<enumeration>
+    <option color="#F1ED92" default="true" description="A functional requirement." iconURL="/polarion/icons/default/enums/type_userstory.gif" id="userstory" name="User Story" sortOrder="1"/>
+    <option color="#A280A9" description="A nonfunctional requirement." iconURL="/polarion/icons/default/enums/type_requirement.gif" id="requirement" name="Requirement" sortOrder="2"/>
+    <option color="#98989B" description="A functional set of what will be worked on." iconURL="/polarion/icons/default/enums/type_businesscase.gif" id="epic" name="Epic" sortOrder="3"/>
+    <option color="#909B9F" description="A task that needs to be done." iconURL="/polarion/icons/default/enums/type_task.gif" id="task" name="Task" sortOrder="6"/>
+    <option color="#B3B661" description="A description of what needs to be tested." iconURL="/polarion/icons/default/enums/type_test.gif" id="testcase" name="Test Case" sortOrder="7"/>
+    <option color="#B9888A" description="A problem that impairs or prevents the product from functioning correctly." iconURL="/polarion/icons/default/enums/type_bug.gif" id="issue" name="Issue" sortOrder="8"/>
+    <option color="#89B68C" description="A request for a change." iconURL="/polarion/icons/default/enums/type_changerequest.gif" id="changerequest" name="Change Request" sortOrder="9"/>
+    <option color="#D9B141" description="A set of completed efforts that will be shipped to customers." iconURL="/polarion/icons/default/enums/type_work_package.png" id="release" name="Release" sortOrder="10"/>
+</enumeration>

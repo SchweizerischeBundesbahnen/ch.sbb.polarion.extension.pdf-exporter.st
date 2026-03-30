@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<rich-page>
+    <field id="author">admin</field>
+    <field id="created">2017-02-05 15:19:28.424 +0100</field>
+    <field id="homePageContent" text-type="text/html"><![CDATA[<div class="polarion-rp-column" style="width: 100%;">
+  <h1 id="polarion_client16">Items by Category</h1>
+  <p id="polarion_1">
+    <span class="polarion-rp-inline-widget" data-widget="com.polarion.scriptInline">
+      <span class="polarion-rp-widget-parameters" style="display: none;">
+        <sub id="script">
+          <sub id="script" style="white-space:pre;">## Reported By
+#set($infoText = &quot;Reported by $transaction.users().getBy().id($securityService.getCurrentUser()).render()&lt;br/&gt;$date.long&quot;)
+#if($widgetContext.target().isEditor())
+	&lt;div style=&quot;color: grey; text-align: left;&quot;&gt;$infoText&lt;div&gt;
+#elseif($widgetContext.target().isPdf())
+	&lt;div style=&quot;color: grey; text-align: right; position: absolute; top: 22px; right: 10px;&quot;&gt;$infoText&lt;div&gt;
+#elseif($widgetContext.target().isPrint())
+	&lt;div style=&quot;text-align: right; position: absolute; top: 35px; right: 10px;&quot;&gt;$infoText&lt;div&gt;
+#end</sub>
+        </sub>
+      </span>
+    </span>
+  </p>
+</div>
+<div class="polarion-rp-row-separator" page_min_width="1000"></div>
+<div class="polarion-rp-column" style="width: 70%;">
+  <div id="polarion_client24" class="polarion-rp-widget-part" data-widget="com.polarion.scriptBlock">
+    <span class="polarion-rp-widget-parameters">
+      <sub id="script">
+        <sub id="script" style="white-space:pre;">#info(&quot;Displays a chart of the number of Work Items in each Work Item Category, filtered by Type and Resolution status.&quot;)</sub>
+      </sub>
+    </span>
+  </div>
+  <p id="polarion_client2"></p>
+  <div id="polarion_client10" class="polarion-rp-widget-part" data-widget="com.polarion.scriptBlock">
+    <span class="polarion-rp-widget-parameters">
+      <sub id="script">
+        <sub id="script" style="white-space:pre;">## Categories Chart
+#set($projectId = $page.getReference().projectId())
+#set($baseQuery = &quot;project.id:$projectId AND type:($pageParameters.wiTypes.toLucene())&quot;)
+#if($pageParameters.resolved.value())
+	#set($baseQuery = &quot;$baseQuery AND HAS_VALUE:resolution&quot;)
+#end
+#if(!$pageParameters.query.value().equals(&quot;&quot;))
+	#set($baseQuery = &quot;$baseQuery AND $pageParameters.query.value()&quot;)
+#end
+#set($restQuery = &quot;$baseQuery AND NOT HAS_VALUE:categories.id&quot;)
+&lt;div class=&quot;polarion-rp-widget-part&quot; data-widget=&quot;com.polarion.multiSetPieChart&quot;&gt;
+	&lt;span class=&quot;polarion-rp-widget-parameters&quot;&gt;
+		&lt;sub id=&quot;title&quot;&gt;&lt;/sub&gt;
+		&lt;sub id=&quot;sectors&quot;&gt;
+			&lt;sub id=&quot;elements&quot;&gt;
+				#foreach($category in $transaction.categories().search().query(&quot;project.id:$projectId&quot;).sort(&quot;id&quot;))
+					#set($categoryId = $category.getReference().id())
+					#set($query = &quot;$baseQuery AND categories.id:$categoryId&quot;)
+					&lt;sub&gt;
+						&lt;sub id=&quot;prototype&quot;&gt;WorkItem&lt;/sub&gt;
+						&lt;sub id=&quot;queryType&quot;&gt;luceneVelocity&lt;/sub&gt;
+						&lt;sub id=&quot;luceneQuery&quot;&gt;$query&lt;/sub&gt;
+						&lt;sub id=&quot;children&quot;&gt;
+							&lt;sub id=&quot;sectorName&quot;&gt;$category.fields().name().get()&lt;/sub&gt;
+							&lt;sub id=&quot;sectorColor&quot;&gt;&lt;/sub&gt;
+						&lt;/sub&gt;
+					&lt;/sub&gt;
+				#end
+				&lt;sub&gt;
+					&lt;sub id=&quot;prototype&quot;&gt;WorkItem&lt;/sub&gt;
+					&lt;sub id=&quot;queryType&quot;&gt;luceneVelocity&lt;/sub&gt;
+					&lt;sub id=&quot;luceneQuery&quot;&gt;$restQuery&lt;/sub&gt;
+					&lt;sub id=&quot;children&quot;&gt;
+						&lt;sub id=&quot;sectorName&quot;&gt;Un-categorized&lt;/sub&gt;
+						&lt;sub id=&quot;sectorColor&quot;&gt;&lt;/sub&gt;
+					&lt;/sub&gt;
+				&lt;/sub&gt;
+			&lt;/sub&gt;
+		&lt;/sub&gt;
+		&lt;sub id=&quot;showDataLabels&quot;&gt;true&lt;/sub&gt;
+		&lt;sub id=&quot;showZeroValues&quot;&gt;false&lt;/sub&gt;
+		&lt;sub id=&quot;advanced&quot;&gt;
+			&lt;sub id=&quot;height&quot;&gt;300px&lt;/sub&gt;
+		&lt;/sub&gt;
+	&lt;/span&gt;
+&lt;/div&gt;</sub>
+      </sub>
+    </span>
+  </div>
+  <div id="polarion_client17" class="polarion-rp-widget-part" data-widget="com.polarion.scriptBlock">
+    <span class="polarion-rp-widget-parameters">
+      <sub id="script">
+        <sub id="script" style="white-space:pre;">## Categories Table
+#set($projectId = $page.getReference().projectId())
+#set($baseQuery = &quot;project.id:$projectId AND type:($pageParameters.wiTypes.toLucene())&quot;)
+#if($pageParameters.resolved.value())
+	#set($baseQuery=&quot;$baseQuery AND HAS_VALUE:resolution&quot;)
+#end
+#if(!$pageParameters.query.value().equals(&quot;&quot;))
+	#set($baseQuery = &quot;$baseQuery AND $pageParameters.query.value()&quot;)
+#end
+#set($restQuery = &quot;$baseQuery AND NOT HAS_VALUE:categories.id&quot;)
+&lt;table class=&quot;polarion-rpw-table-content&quot;&gt;
+	&lt;thead&gt;
+		&lt;tr class=&quot;polarion-rpw-table-header-row&quot;&gt;
+			&lt;th&gt;Category&lt;/th&gt;
+			&lt;th style=&quot;text-align: center;&quot;&gt;Count&lt;/th&gt;
+		&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;/tbody&gt;
+		#foreach($category in $transaction.categories().search().query(&quot;project.id:$projectId&quot;).sort(&quot;id&quot;))
+			#set($categoryId = $category.getReference().id())
+			#set($query = &quot;$baseQuery AND categories.id:$categoryId&quot;)
+			#set($count = $transaction.workItems().count().query(&quot;$query&quot;).result())
+			#set($link = $transaction.context().createPortalLink().project(&quot;$projectId&quot;).workItems().query(&quot;$query&quot;).toEncodedRelativeUrl())
+			&lt;tr class=&quot;polarion-rpw-table-content-row&quot;&gt;
+				#if($count == 0)
+					&lt;td&gt;&lt;span style=&quot;color:lightgray !important;&quot;&gt;$category.render()&lt;/span&gt;&lt;/td&gt;
+				#else
+					&lt;td&gt;$category.render()&lt;/td&gt;
+				#end
+				&lt;td&gt;&lt;a href=&quot;$link&quot; target=&quot;_top&quot; style=&quot;display: block; width: 100%; height: 100%; text-align: center;&quot;&gt;$count&lt;/a&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+		#end
+		#set($count = $transaction.workItems().count().query(&quot;$restQuery&quot;).result())
+		#set($link = $transaction.context().createPortalLink().project(&quot;$projectId&quot;).workItems().query(&quot;$restQuery&quot;).toEncodedRelativeUrl())
+		&lt;tr class=&quot;polarion-rpw-table-content-row&quot;&gt;
+			&lt;td&gt;&lt;b&gt;Un-categorized&lt;/b&gt;&lt;/td&gt;
+			&lt;td&gt;&lt;a href=&quot;$link&quot; target=&quot;_top&quot; style=&quot;display: block; width: 100%; height: 100%; text-align: center;&quot;&gt;$count&lt;/a&gt;&lt;/td&gt;
+		&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;</sub>
+      </sub>
+    </span>
+  </div>
+  <p id="polarion_client14"></p>
+  <div id="polarion_client12" class="polarion-rp-widget-part" data-widget="com.polarion.scriptBlock">
+    <span class="polarion-rp-widget-parameters">
+      <sub id="script">
+        <sub id="script" style="white-space:pre;">## Items by Category
+#set($projectId = $page.getReference().projectId())
+#set($baseQuery = &quot;project.id:$projectId AND type:($pageParameters.wiTypes.toLucene())&quot;)
+#if($pageParameters.resolved.value())
+	#set($baseQuery=&quot;$baseQuery AND HAS_VALUE:resolution&quot;)
+#end
+#if(!$pageParameters.query.value().equals(&quot;&quot;))
+	#set($baseQuery = &quot;$baseQuery AND $pageParameters.query.value()&quot;)
+#end
+#set($restQuery = &quot;$baseQuery AND NOT HAS_VALUE:categories.id&quot;)
+#foreach($category in $transaction.categories().search().query(&quot;project.id:$projectId&quot;).sort(&quot;id&quot;))
+	#set($categoryId = $category.getReference().id())
+	#set($query = &quot;$baseQuery AND categories.id:$categoryId&quot;)
+	#set($count = $transaction.workItems().count().query(&quot;$query&quot;).result())
+	#if($count &gt; 0)
+		&lt;h3&gt;$category.render()&lt;/h3&gt;
+		&lt;div id=&quot;wiSidebar$categoryId&quot; class=&quot;polarion-rp-widget-part&quot; data-widget=&quot;com.polarion.table&quot;&gt;
+			&lt;span class=&quot;polarion-rp-widget-parameters&quot;&gt;
+				&lt;sub id=&quot;dataSet&quot;&gt;
+					&lt;sub id=&quot;prototype&quot;&gt;WorkItem&lt;/sub&gt;
+					&lt;sub id=&quot;queryType&quot;&gt;luceneVelocity&lt;/sub&gt;
+					&lt;sub id=&quot;luceneQuery&quot;&gt;$query&lt;/sub&gt;
+					&lt;sub id=&quot;children&quot;&gt;
+						&lt;sub id=&quot;columns&quot;&gt;
+							#foreach($column in $pageParameters.columns.value().split(&quot;,&quot;))
+								&lt;sub&gt;
+									&lt;sub id=&quot;id&quot;&gt;$column&lt;/sub&gt;
+								&lt;/sub&gt;
+							#end
+						&lt;/sub&gt;
+						&lt;sub id=&quot;sortBy&quot;&gt;
+							&lt;sub&gt;
+								&lt;sub id=&quot;id&quot;&gt;$pageParameters.sortby.value()&lt;/sub&gt;
+								&lt;sub id=&quot;descending&quot;&gt;true&lt;/sub&gt;
+							&lt;/sub&gt;
+						&lt;/sub&gt;
+					&lt;/sub&gt;
+				&lt;/sub&gt;
+				&lt;sub id=&quot;propertiesSidebarFields&quot;&gt;
+					&lt;sub&gt;
+						&lt;sub id=&quot;id&quot;&gt;assignee&lt;/sub&gt;
+					&lt;/sub&gt;
+					&lt;sub&gt;
+						&lt;sub id=&quot;id&quot;&gt;severity&lt;/sub&gt;
+					&lt;/sub&gt;
+					&lt;sub&gt;
+						&lt;sub id=&quot;id&quot;&gt;status&lt;/sub&gt;
+					&lt;/sub&gt;
+					&lt;sub&gt;
+						&lt;sub id=&quot;id&quot;&gt;resolution&lt;/sub&gt;
+					&lt;/sub&gt;
+					&lt;sub&gt;
+						&lt;sub id=&quot;id&quot;&gt;linkedWorkItems&lt;/sub&gt;
+					&lt;/sub&gt;
+				&lt;/sub&gt;
+				&lt;sub id=&quot;advanced&quot;&gt;
+					&lt;sub id=&quot;top&quot;&gt;$pageParameters.top.value()&lt;/sub&gt;
+				&lt;/sub&gt;
+			&lt;/span&gt;
+		&lt;/div&gt;
+	#end
+#end
+#set($count = $transaction.workItems().count().query(&quot;$restQuery&quot;).result())
+#if($count &gt; 0)
+	&lt;h3&gt;Un-categorized&lt;/h3&gt;
+	&lt;div id=&quot;wiSidebarUnCategorized&quot; class=&quot;polarion-rp-widget-part&quot; data-widget=&quot;com.polarion.table&quot;&gt;
+		&lt;span class=&quot;polarion-rp-widget-parameters&quot;&gt;
+			&lt;sub id=&quot;dataSet&quot;&gt;
+				&lt;sub id=&quot;prototype&quot;&gt;WorkItem&lt;/sub&gt;
+				&lt;sub id=&quot;queryType&quot;&gt;luceneVelocity&lt;/sub&gt;
+				&lt;sub id=&quot;luceneQuery&quot;&gt;$restQuery&lt;/sub&gt;
+				&lt;sub id=&quot;children&quot;&gt;
+					&lt;sub id=&quot;columns&quot;&gt;
+						#foreach($column in $pageParameters.columns.value().split(&quot;,&quot;))
+							#if(!$column.equals(&quot;categories&quot;))
+								&lt;sub&gt;
+									&lt;sub id=&quot;id&quot;&gt;$column&lt;/sub&gt;
+								&lt;/sub&gt;
+							#end
+						#end
+					&lt;/sub&gt;
+					&lt;sub id=&quot;sortBy&quot;&gt;
+						&lt;sub&gt;
+							&lt;sub id=&quot;id&quot;&gt;$pageParameters.sortby.value()&lt;/sub&gt;
+							&lt;sub id=&quot;descending&quot;&gt;true&lt;/sub&gt;
+						&lt;/sub&gt;
+					&lt;/sub&gt;
+				&lt;/sub&gt;
+			&lt;/sub&gt;
+			&lt;sub id=&quot;propertiesSidebarFields&quot;&gt;
+				&lt;sub&gt;
+					&lt;sub id=&quot;id&quot;&gt;assignee&lt;/sub&gt;
+				&lt;/sub&gt;
+				&lt;sub&gt;
+					&lt;sub id=&quot;id&quot;&gt;severity&lt;/sub&gt;
+				&lt;/sub&gt;
+				&lt;sub&gt;
+					&lt;sub id=&quot;id&quot;&gt;status&lt;/sub&gt;
+				&lt;/sub&gt;
+				&lt;sub&gt;
+					&lt;sub id=&quot;id&quot;&gt;resolution&lt;/sub&gt;
+				&lt;/sub&gt;
+				&lt;sub&gt;
+					&lt;sub id=&quot;id&quot;&gt;linkedWorkItems&lt;/sub&gt;
+				&lt;/sub&gt;
+			&lt;/sub&gt;
+			&lt;sub id=&quot;advanced&quot;&gt;
+				&lt;sub id=&quot;top&quot;&gt;$pageParameters.top.value()&lt;/sub&gt;
+			&lt;/sub&gt;
+		&lt;/span&gt;
+	&lt;/div&gt;
+#end</sub>
+      </sub>
+    </span>
+  </div>
+  <p id="polarion_client4"></p><p id="polarion_client18"></p><p id="polarion_client19"></p>
+</div>
+<div class="polarion-rp-column" style="width: 30%;">
+  <div id="polarion_client23" class="polarion-rp-widget-part" data-widget="com.polarion.pageParametersForm">
+    <span class="polarion-rp-widget-parameters">
+      <sub id="title"></sub>
+      <sub id="content">
+        <sub>query</sub>
+        <sub>wiTypes</sub>
+        <sub>resolved</sub>
+        <sub>columns</sub>
+        <sub>sortby</sub>
+        <sub>top</sub>
+      </sub>
+      <sub id="width">300</sub>
+    </span>
+  </div>
+  <p id="polarion_2">
+    <span class="polarion-rp-inline-widget" data-widget="com.polarion.scriptInline">
+      <span class="polarion-rp-widget-parameters" style="display: none;">
+        <sub id="script">
+          <sub id="script" style="white-space:pre;">&lt;style&gt;
+.polarion-rpe-ParameterEditor-outerPanel {
+	border-radius: 5px 5px 5px 5px;
+}
+.polarion-rp-parameters-form-editor-panel {
+	border: none;
+}
+&lt;/style&gt;</sub>
+        </sub>
+      </span>
+    </span>
+  </p>
+</div>
+<div class="polarion-rp-row-separator"></div>
+<span id="polarion-rp-parameters">
+  <sub id="columns" data-label="Columns" data-type="String">id,title,categories,type,status</sub>
+  <sub id="query" data-label="Query" data-type="String"></sub>
+  <sub id="resolved" data-label="Resolved Only" data-type="Boolean">false</sub>
+  <sub id="top" data-label="Show top" data-type="Integer">10</sub>
+  <sub id="sortby" data-label="Sort By" data-type="String">id</sub>
+  <sub id="wiTypes" data-label="Types" data-type="Enumeration">
+    <sub id="values">
+      <sub>changerequest</sub>
+      <sub>epic</sub>
+      <sub>issue</sub>
+      <sub>release</sub>
+      <sub>requirement</sub>
+      <sub>task</sub>
+      <sub>testcase</sub>
+      <sub>userstory</sub>
+    </sub>
+    <sub id="enumId">workitem-type</sub>
+    <sub id="allowNoValue">false</sub>
+    <sub id="allowMultipleValues">true</sub>
+    <sub id="loadForAllTypes">true</sub>
+  </sub>
+</span>]]></field>
+    <field id="title">Items by Category</field>
+</rich-page>

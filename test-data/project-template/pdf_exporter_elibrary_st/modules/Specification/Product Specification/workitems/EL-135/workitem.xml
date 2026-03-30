@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<work-item>
+    <field id="assignee">pGUI</field>
+    <field id="author">rProject</field>
+    <field id="categories">
+        <list>
+            <item>searching</item>
+            <item>objects</item>
+        </list>
+    </field>
+    <field id="created">2010-11-25 16:16:29.297 +0100</field>
+    <field id="description" text-type="text/html">The system should provide an easy way to get the listing of the 10-50 (configurable) most recently checked-in eBooks.</field>
+    <field id="initialEstimate">9d 6h</field>
+    <field id="previousStatus">implemented</field>
+    <field id="priority">90.0</field>
+    <field id="resolution">done</field>
+    <field id="resolvedOn">2010-12-02 10:36:52.471 +0100</field>
+    <field id="severity">nice_to_have</field>
+    <field id="status">verified</field>
+    <field id="storyPoints" type="integer">13</field>
+    <field id="timeSpent">9d 4h</field>
+    <field id="title">The listing of 10-50 recently checked books.</field>
+    <field id="type">userstory</field>
+</work-item>

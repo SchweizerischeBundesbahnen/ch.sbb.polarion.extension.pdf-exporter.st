@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<workflow initial-action="rework" initial-status="draft" prototype="Module">
+    <transitions>
+        <transition action="mark_active" from="draft" to="active"/>
+        <transition action="mark_obsolete" from="draft" to="obsolete"/>
+        <transition action="mark_obsolete" from="active" to="obsolete"/>
+        <transition action="rework" from="obsolete" to="draft"/>
+        <transition action="rework" from="active" to="draft"/>
+    </transitions>
+    <actions>
+        <action id="rework" name="Rework">
+            <cleared>
+                <field name="version"/>
+            </cleared>
+        </action>
+        <action id="mark_active" name="Mark Active">
+            <required>
+                <field name="version"/>
+            </required>
+        </action>
+        <action id="mark_obsolete" name="Mark Obsolete"/>
+    </actions>
+</workflow>

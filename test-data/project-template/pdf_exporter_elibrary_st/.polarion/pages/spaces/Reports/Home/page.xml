@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<rich-page>
+    <field id="author">admin</field>
+    <field id="created">2017-06-27 13:15:59.005 +0200</field>
+    <field id="homePageContent" text-type="text/html"><![CDATA[<div class="polarion-rp-column" style="width: 100%;">
+  <div id="polarion_client2" class="polarion-rp-widget-part" data-widget="com.polarion.scriptBlock">
+    <span class="polarion-rp-widget-parameters">
+      <sub id="script">
+        <sub id="script" style="white-space:pre;">&lt;h1&gt;$esc.html($page.label)&lt;/h1&gt;</sub>
+      </sub>
+    </span>
+  </div>
+</div>
+<div class="polarion-rp-row-separator" page_min_width="1000"></div>
+<div class="polarion-rp-column" style="width: 75.86667%;">
+  <table id="polarion_wiki macro name=table;params=header=no|border=no|valign=middle|width=99.86%|uid=client5" class="polarion-Document-table" style="width: 99.86%;margin-left: auto;margin-right: auto;empty-cells: show;border-collapse: collapse;">
+    <tbody>
+      <tr>
+        <td style="vertical-align: middle;width: 191px;height: 140px;padding: 2px;"><span class="polarion-rp-inline-widget" data-widget="com.polarion.scriptInline">
+            <span class="polarion-rp-widget-parameters" style="display: none;">
+              <sub id="script">
+                <sub id="script" style="white-space:pre;">&lt;img src=&quot;/polarion/page-attachment/$page.getReference().projectId()/_default/Home/reports.png&quot; style=&quot;width: 140px;&quot;/&gt;</sub>
+              </sub>
+            </span>
+          </span></td>
+        <td style="vertical-align: middle;width: 669px;height: 140px;padding: 2px;">Welcome to the Home page of the <span class="polarion-rp-inline-widget" data-widget="com.polarion.scriptInline">
+            <span style="display: none;" class="polarion-rp-widget-parameters">
+              <sub id="script">
+                <sub style="white-space:pre;" id="script">&lt;i class:&quot;italic&quot;&gt;$esc.html($page.fields().spaceId().spaceLabel())&lt;/i&gt;</sub>
+              </sub>
+            </span>
+          </span> space. </td>
+      </tr>
+    </tbody>
+  </table>
+  <h2 id="polarion_client15">Reports</h2>
+  <ul id="polarion_client3">
+    <li><span class="polarion-rte-link" data-type="richPage" id="fake" data-item-name="Item Approval Statistics" data-space-name="Reports" data-option-id="default"></span> - Displays statistics about the approval process for selected Work Item types. Items that have a status specified by user, are awaiting for stakeholder approval. Once approved by all stakeholders designated as an Approving User, the item&#39;s status can be changed to verified status in the workflow.</li>
+    <li><span class="polarion-rte-link" data-type="richPage" id="fake" data-item-name="Items By Category" data-space-name="Reports" data-option-id="default"></span> - Displays a chart of the number of Work Items in each Work Item Category, filtered by Type and Resolution status.</li>
+    <li><span class="polarion-rte-link" data-type="richPage" id="fake" data-item-name="Items By Status" data-space-name="Reports" data-option-id="default"></span> - Displays Work Items (filtered by Work Item type) grouped by Status.</li>
+  </ul>
+  <p id="polarion_client4"></p><p id="polarion_client5"></p><p id="polarion_client6"></p>
+</div>
+<div class="polarion-rp-column" style="width: 24.133333%;">
+  <h2 id="polarion_client60">Quick Actions</h2>
+  <p id="polarion_client55" style="text-align: center;">
+    <span class="polarion-rp-inline-widget" data-widget="com.polarion.genericButton">
+      <span class="polarion-rp-widget-parameters" style="display: none;">
+        <sub id="label">Create New...</sub>
+        <sub id="sublabel">
+          <sub id="script" style="white-space:pre;">LiveReport</sub>
+        </sub>
+        <sub id="action">
+          <sub id="script" style="white-space:pre;">javascript:top.createNewArtifact(&#39;$page.getReference().projectId()&#39;, &#39;Reports&#39;, false, true, false, false, false, true, false, false);</sub>
+        </sub>
+        <sub id="url"></sub>
+        <sub id="advanced">
+          <sub id="labelColor"></sub>
+          <sub id="disabled">
+            <sub id="script" style="white-space:pre;"></sub>
+          </sub>
+        </sub>
+      </span>
+    </span>
+  </p>
+</div>
+<div class="polarion-rp-row-separator"></div>]]></field>
+    <field id="title">Reports</field>
+</rich-page>

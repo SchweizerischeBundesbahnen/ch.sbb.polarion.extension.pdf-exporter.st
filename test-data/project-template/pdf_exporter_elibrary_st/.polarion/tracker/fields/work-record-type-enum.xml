@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<enumeration>
+    <option id="analysis" name="Analysis" sortOrder="1"/>
+    <option id="implementation" name="Implementation" sortOrder="2"/>
+    <option id="documentation" name="Documentation" sortOrder="3"/>
+    <option id="testing" name="Testing" sortOrder="4"/>
+</enumeration>

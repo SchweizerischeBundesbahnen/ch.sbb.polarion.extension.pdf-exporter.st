@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<calculated-fields>
+    <calculated-field id="timeSpent">
+        <sum>
+            <childField>timeSpent</childField>
+        </sum>
+
+    </calculated-field>
+
+    <calculated-field id="initialEstimate">
+        <sum>
+            <childField>initialEstimate</childField>
+        </sum>
+
+    </calculated-field>
+
+    <calculated-field id="remainingEstimate">
+        <sum>
+            <childField>remainingEstimate</childField>
+        </sum>
+
+    </calculated-field>
+
+    <calculated-field id="childStoryPoints">
+        <sum>
+            <childField>storyPoints</childField>
+        </sum>
+
+    </calculated-field>
+
+</calculated-fields>

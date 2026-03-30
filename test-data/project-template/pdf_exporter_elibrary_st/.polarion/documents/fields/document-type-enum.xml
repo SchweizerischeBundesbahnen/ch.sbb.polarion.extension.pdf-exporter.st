@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<enumeration>
+    <option iconURL="/polarion/icons/default/enums/document_package.png" id="productSpecification" name="Product Specification" sortOrder="2"/>
+    <option iconURL="/polarion/icons/default/enums/document_test_specification.png" id="testSpecification" name="Test Specification" sortOrder="3"/>
+    <option default="true" iconURL="/polarion/icons/default/enums/document_generic.png" id="generic" name="Generic" sortOrder="4"/>
+</enumeration>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Same field cannot be shown in form twice!  --><formLayout xmlns="http://polarion.com/schema/WorkItems/FormLayout" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://polarion.com/schema/WorkItems/FormLayout">
+     <!-- horizontal layout element add components on horizontal row, each component is in a new column. -->
+     <horizontal>
+        <!-- vertical layout element add components into one vertical columnm, each component is in a new row  -->
+        <vertical>
+            <section>
+                <field id="type"/>
+                <field id="releasePlan"/>
+                <field id="releaseQA"/>
+                <field id="releasePM"/>
+            </section>
+        </vertical>
+        <vertical>
+            <section>
+                <field id="featureFreezeDate"/>
+                <field id="codeFreezeDate"/>
+                <field id="publicLaunch"/>
+		<field id="buildId"/>
+                <field id="build"/>
+            </section>
+        </vertical>
+        <vertical>
+            <section>
+                <field id="status"/>
+                <field id="resolution"/>
+                <field id="releaseTestEvidence"/>
+            </section>
+        </vertical>
+     </horizontal>
+
+     <field id="qaAssessment"/>
+     <field id="description"/>
+
+    <panel description="Custom Fields">
+            <field id="@allCustomFields,-releasePlan,-releaseQA,-releasePM,-featureFreezeDate,-codeFreezeDate,-publicLaunch,-buildId,-build,-qaAssessment,-releaseTestEvidence"/>
+     </panel>
+     <!-- Complex fields should avoid sections or panel - there is no space for them-->
+     <field id="comments"/>
+     <field id="approvals"/>
+     <field id="workflowSignatures"/>
+     <field id="linkedWorkItems"/>
+     <field id="hyperlinks"/>
+     <field id="attachments"/>
+</formLayout>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<work-item>
+    <field id="author">rProject</field>
+    <field id="categories">
+        <list>
+            <item>security</item>
+        </list>
+    </field>
+    <field id="created">2017-05-03 12:32:17.710 +0200</field>
+    <field id="description" text-type="text/html">The password must fit the specified Requirements.</field>
+    <field id="linkedWorkItems">
+        <list>
+            <struct>
+                <item id="role">implements</item>
+                <item id="workItem">EL-150</item>
+            </struct>
+            <struct>
+                <item id="role">implements</item>
+                <item id="workItem">EL-149</item>
+            </struct>
+            <struct>
+                <item id="role">implements</item>
+                <item id="workItem">EL-148</item>
+            </struct>
+        </list>
+    </field>
+    <field id="priority">50.0</field>
+    <field id="severity">should_have</field>
+    <field id="status">draft</field>
+    <field id="title">Password Regex</field>
+    <field id="type">userstory</field>
+</work-item>

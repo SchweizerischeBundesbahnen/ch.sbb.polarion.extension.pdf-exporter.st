@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<rich-page>
+    <field id="author">admin</field>
+    <field id="created">2017-02-03 11:38:53.515 +0100</field>
+    <field id="homePageContent" text-type="text/html"><![CDATA[<div class="polarion-rp-column" style="width: 100%;">
+  <h1 id="polarion_hardcoded_0">User Story Test Case Coverage</h1>
+  <p id="polarion_2">
+    <span class="polarion-rp-inline-widget" data-widget="com.polarion.scriptInline">
+      <span class="polarion-rp-widget-parameters" style="display: none;">
+        <sub id="script">
+          <sub id="script" style="white-space:pre;">## Reported By
+#set($infoText = &quot;Reported by $transaction.users().getBy().id($securityService.getCurrentUser()).render()&lt;br/&gt;$date.long&quot;)
+#if($widgetContext.target().isEditor())
+	&lt;div style=&quot;color: grey; text-align: left;&quot;&gt;$infoText&lt;div&gt;
+#elseif($widgetContext.target().isPdf())
+	&lt;div style=&quot;color: grey; text-align: right; position: absolute; top: 22px; right: 10px;&quot;&gt;$infoText&lt;div&gt;
+#elseif($widgetContext.target().isPrint())
+	&lt;div style=&quot;text-align: right; position: absolute; top: 35px; right: 10px;&quot;&gt;$infoText&lt;div&gt;
+#end</sub>
+        </sub>
+      </span>
+    </span>
+  </p>
+</div>
+<div class="polarion-rp-row-separator" page_min_width="1000"></div>
+<div class="polarion-rp-column" style="width: 70%;">
+  <div id="polarion_client9" class="polarion-rp-widget-part" data-widget="traceabilitytable">
+    <span class="polarion-rp-widget-parameters">
+      <sub id="dataSet">
+        <sub id="prototype">WorkItem</sub>
+        <sub id="subtype">userstory</sub>
+        <sub id="queryType">luceneVelocity</sub>
+        <sub id="luceneQuery" style="white-space:pre;">#if(!$pageParameters.query.value().isEmpty())$pageParameters.query.value()#end
+#if(!$pageParameters.query.value().isEmpty() &amp;&amp; $pageParameters.plannedIn.singleValue()) AND #end
+#if($pageParameters.plannedIn.singleValue())PLAN:($pageParameters.plannedIn.singleValue().getModelObject().getReference().toPath())#end</sub>
+        <sub id="children">
+          <sub id="sortBy"></sub>
+        </sub>
+      </sub>
+      <sub id="settings">
+        <sub id="linkedItemTypes">
+          <sub id="values">
+            <sub>testcase</sub>
+          </sub>
+        </sub>
+        <sub id="linkedRoles">
+          <sub id="values">
+            <sub>verifies</sub>
+          </sub>
+        </sub>
+        <sub id="filterByCoverage" data-inherit="filter_by"></sub>
+        <sub id="defectItemTypes">
+          <sub id="values">
+            <sub>issue</sub>
+          </sub>
+        </sub>
+        <sub id="defectRoles">
+          <sub id="values">
+            <sub>triggered_by</sub>
+          </sub>
+        </sub>
+      </sub>
+      <sub id="advanced">
+        <sub id="collapseLimit" data-inherit="collapse_count"></sub>
+        <sub id="sourceItemColumnTitle">User Story</sub>
+        <sub id="linkedItemColumnTitle">Test Case</sub>
+        <sub id="defectItemColumnTitle">Issue</sub>
+      </sub>
+    </span>
+  </div>
+  <p id="polarion_1"></p><p id="polarion_client13"></p><p id="polarion_client15"></p>
+</div>
+<div class="polarion-rp-column" style="width: 30%;">
+  <div id="polarion_client11" class="polarion-rp-widget-part" data-widget="com.polarion.pageParametersForm">
+    <span class="polarion-rp-widget-parameters">
+      <sub id="title"></sub>
+      <sub id="content">
+        <sub>plannedIn</sub>
+        <sub>query</sub>
+        <sub>filter_by</sub>
+        <sub>collapse_count</sub>
+      </sub>
+      <sub id="width">300</sub>
+    </span>
+  </div>
+  <p id="polarion_client2" style="text-align: left;">
+    <span class="polarion-rp-inline-widget" data-widget="com.polarion.scriptInline">
+      <span class="polarion-rp-widget-parameters">
+        <sub id="script">
+          <sub id="script" style="white-space:pre;">&lt;style&gt;
+.polarion-rpe-ParameterEditor-outerPanel {
+	border-radius: 5px 5px 5px 5px;
+}
+.polarion-rp-parameters-form-editor-panel {
+	border: none;
+}
+&lt;/style&gt;
+
+&lt;hr style=&quot;height: 1px; color: lightgray; background-color: lightgray; border: none; width: 300px; float: left;&quot; /&gt;
+&lt;br/&gt;</sub>
+        </sub>
+      </span>
+    </span>
+  </p>
+  <div id="polarion_client8" class="polarion-rp-widget-part" data-widget="com.polarion.multiSetPieChart">
+    <span class="polarion-rp-widget-parameters" style="display: none;">
+      <sub id="title"></sub>
+      <sub id="sectors">
+        <sub id="elements">
+          <sub>
+            <sub id="prototype">WorkItem</sub>
+            <sub id="subtype">userstory</sub>
+            <sub id="queryType">luceneVelocity</sub>
+            <sub id="luceneQuery" style="white-space:pre;">## Covered
+#if(!$pageContext.coveredIds.equals(&quot;&quot;))
+	id:($pageContext.coveredIds)
+#else
+	NOT *:*
+#end</sub>
+            <sub id="children">
+              <sub id="sectorName">Covered</sub>
+              <sub id="sectorColor">#27AE60</sub>
+            </sub>
+          </sub>
+          <sub>
+            <sub id="prototype">WorkItem</sub>
+            <sub id="subtype">userstory</sub>
+            <sub id="queryType">luceneVelocity</sub>
+            <sub id="luceneQuery" style="white-space:pre;">## Uncovered
+#if(!$pageContext.uncoveredIds.equals(&quot;&quot;))
+	id:($pageContext.uncoveredIds)
+#else
+	NOT *:*
+#end</sub>
+            <sub id="children">
+              <sub id="sectorName">Uncovered</sub>
+              <sub id="sectorColor">#C0392B</sub>
+            </sub>
+          </sub>
+        </sub>
+      </sub>
+      <sub id="showDataLabels">true</sub>
+      <sub id="showZeroValues">false</sub>
+      <sub id="advanced">
+        <sub id="height"></sub>
+        <sub id="width">300</sub>
+      </sub>
+    </span>
+  </div>
+  <p id="polarion_client5"></p>
+</div>
+<div class="polarion-rp-row-separator"></div>
+<span id="polarion-rp-parameters">
+  <sub id="collapse_count" data-label="Collapse from number of Test Cases" data-type="Integer">5</sub>
+  <sub id="filter_by" data-label="Filter Linked Items By Coverage" data-type="CustomEnumeration">
+    <sub id="enumerations">
+      <sub>
+        <sub id="itemValue">hideCovered</sub>
+        <sub id="itemName">Hide Covered Work Items</sub>
+      </sub>
+      <sub>
+        <sub id="itemValue">hideNotCovered</sub>
+        <sub id="itemName">Hide Not Covered Work Items</sub>
+      </sub>
+      <sub>
+        <sub id="itemValue">displayOnlyProblematic</sub>
+        <sub id="itemName">Show Only Problematic Work Items</sub>
+      </sub>
+    </sub>
+    <sub id="allowNoValue">true</sub>
+    <sub id="allowMultipleValues">false</sub>
+  </sub>
+  <sub id="plannedIn" data-label="Planned In" data-type="Enumeration">
+    <sub id="enumId">@plan</sub>
+    <sub id="allowNoValue">true</sub>
+    <sub id="allowMultipleValues">false</sub>
+    <sub id="loadForAllTypes">true</sub>
+  </sub>
+  <sub id="query" data-label="User Story Query" data-type="String"></sub>
+</span>
+<pre id="polarion-rp-page-script">###############################################################################
+##
+## Page Script
+##
+## com.polarion.alm.shared.api.transaction.ReadOnlyTransaction $transaction
+## com.polarion.alm.shared.api.model.rp.RichPage $page
+##
+
+#set($query = &quot;project.id:($page.getReference().projectId()) AND type:userstory&quot;)
+#if(!$pageParameters.query.value().isEmpty())
+	#set($query = &quot;$query AND $pageParameters.query.value()&quot;)
+#end
+#if($pageParameters.plannedIn.singleValue())
+	#set($query = &quot;$query AND PLAN:($pageParameters.plannedIn.singleValue().getModelObject().getReference().toPath())&quot;)
+#end
+#set($userStories = $transaction.workItems().search().query(&quot;$query&quot;))
+#set($coveredIds = &quot;&quot;)
+#set($uncoveredIds = &quot;&quot;)
+#foreach($userStory in $userStories)
+	#set($isCovered = false)
+	#foreach($linkedWi in $userStory.fields().linkedWorkItems().back())
+		#if($linkedWi.fields().role().optionId().equals(&quot;verifies&quot;))
+			#if($linkedWi.fields().workItem().get().fields().type().get().id().equals(&quot;testcase&quot;))
+				#set($isCovered = true)
+			#end
+		#end
+	#end
+	#if($isCovered)
+		#set($coveredIds = &quot;$!coveredIds $userStory.getReference().id()&quot;)
+	#else
+		#set($uncoveredIds = &quot;$!uncoveredIds $userStory.getReference().id()&quot;)
+	#end
+#end
+
+$!pageContext.put(&quot;coveredIds&quot;, $coveredIds)
+$!pageContext.put(&quot;uncoveredIds&quot;, $uncoveredIds)
+
+Covered IDs: $coveredIds &lt;br/&gt;
+Uncovered IDs: $uncoveredIds
+</pre>]]></field>
+    <field id="title">User Story Test Case Coverage</field>
+</rich-page>

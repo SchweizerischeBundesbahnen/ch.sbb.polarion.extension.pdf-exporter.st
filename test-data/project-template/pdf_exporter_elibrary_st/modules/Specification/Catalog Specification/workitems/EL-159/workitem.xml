@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<work-item>
+    <field id="approvals">
+        <list>
+            <struct>
+                <item id="status">approved</item>
+                <item id="user">rProject</item>
+            </struct>
+        </list>
+    </field>
+    <field id="assignee">jRequirement</field>
+    <field id="author">rProject</field>
+    <field id="categories">
+        <list>
+            <item>ui</item>
+            <item>objects</item>
+            <item>searching</item>
+        </list>
+    </field>
+    <field id="created">2011-01-05 18:28:10.222 +0100</field>
+    <field id="description" text-type="text/html">System should meet the following acceptance criteria&lt;br/&gt; &lt;table style="width: 80%;margin-left: auto;margin-right: auto;border: 1px solid #CCCCCC;empty-cells: show;border-collapse: collapse;" class="polarion-Document-table" id="polarion_wiki macro name=table"&gt;&lt;tbody&gt;&lt;tr&gt;&lt;th style="font-weight: bold;font-size: 12px;text-align: left;vertical-align: top;height: 12px;border: 1px solid #CCCCCC;padding: 5px;"&gt;Use Case&lt;/th&gt;&lt;th style="font-weight: bold;font-size: 12px;text-align: left;vertical-align: top;height: 12px;border: 1px solid #CCCCCC;padding: 5px;"&gt;Acceptable Response Time&lt;/th&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style="font-size: 12px;line-height: 18px;text-align: left;vertical-align: top;height: 12px;border: 1px solid #CCCCCC;padding: 5px;"&gt;Open Application Portal&lt;/td&gt;&lt;td style="font-size: 12px;line-height: 18px;text-align: left;vertical-align: top;height: 12px;border: 1px solid #CCCCCC;padding: 5px;"&gt;2 sec&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style="font-size: 12px;line-height: 18px;text-align: left;vertical-align: top;height: 12px;border: 1px solid #CCCCCC;padding: 5px;"&gt;Render Search Result&lt;/td&gt;&lt;td style="font-size: 12px;line-height: 18px;text-align: left;vertical-align: top;height: 12px;border: 1px solid #CCCCCC;padding: 5px;"&gt;1 sec&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style="font-size: 12px;line-height: 18px;text-align: left;vertical-align: top;height: 12px;border: 1px solid #CCCCCC;padding: 5px;"&gt;Open Book Detail&lt;/td&gt;&lt;td style="font-size: 12px;line-height: 18px;text-align: left;vertical-align: top;height: 12px;border: 1px solid #CCCCCC;padding: 5px;"&gt;0.5 sec&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style="font-size: 12px;line-height: 18px;text-align: left;vertical-align: top;height: 12px;border: 1px solid #CCCCCC;padding: 5px;"&gt;Open Author Detail&lt;/td&gt;&lt;td style="font-size: 12px;line-height: 18px;text-align: left;vertical-align: top;height: 12px;border: 1px solid #CCCCCC;padding: 5px;"&gt;0.5 sec&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;</field>
+    <field id="previousStatus">draft</field>
+    <field id="priority">70.0</field>
+    <field id="reqType" type="enum:reqtype">performance</field>
+    <field id="severity">should_have</field>
+    <field id="status">reviewed</field>
+    <field id="targetVersion" type="enum:@plan[template.id:release]">Version_1_0</field>
+    <field id="type">requirement</field>
+</work-item>

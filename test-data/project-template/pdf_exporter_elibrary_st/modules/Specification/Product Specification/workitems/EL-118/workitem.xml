@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<work-item>
+    <field id="assignee">sDeveloper</field>
+    <field id="author">rProject</field>
+    <field id="categories">
+        <list>
+            <item>objects</item>
+        </list>
+    </field>
+    <field id="created">2010-11-20 13:14:25.727 +0100</field>
+    <field id="description" text-type="text/html"><![CDATA[Users want to view additional information about a book:<br/>
+
+<ul>
+  <li>Number of pages</li>
+  <li>Who illustrated the book<br/>
+    </li>
+  <li>Price</li>
+</ul>]]></field>
+    <field id="initialEstimate">3d 7h</field>
+    <field id="previousStatus">closed</field>
+    <field id="priority">77.0</field>
+    <field id="resolution">done</field>
+    <field id="resolvedOn">2010-11-25 16:34:20.958 +0100</field>
+    <field id="severity">must_have</field>
+    <field id="status">verified</field>
+    <field id="storyPoints" type="integer">5</field>
+    <field id="timeSpent">3d 1h</field>
+    <field id="title">Detailed book information</field>
+    <field id="type">userstory</field>
+</work-item>

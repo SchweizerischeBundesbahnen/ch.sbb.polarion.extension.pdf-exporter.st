@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<work-item>
+    <field id="assignee">sDeveloper</field>
+    <field id="author">mTest</field>
+    <field id="categories">
+        <list>
+            <item>security</item>
+        </list>
+    </field>
+    <field id="created">2016-02-20 23:00:53.465 +0100</field>
+    <field id="description" text-type="text/html"><![CDATA[<span style="font-weight: bold;">Test Run:</span> <span class="polarion-rte-link" data-type="testRun" id="fake" data-item-id="0_9b UAT" data-option-id="long"></span><br/>
+<span style="font-weight: bold;">Test Case:</span> <span class="polarion-rte-link" data-type="workItem" id="fake" data-item-id="EL-36" data-option-id="long"></span><br/>
+<table style="border-collapse: collapse;">
+  <tbody>
+    <tr style="color: #757575;">
+      <th style="background-color: #FFFFFF;text-align: left;vertical-align: top;padding: 10px;"></th>
+      <th style="background-color: #FFFFFF;text-align: left;vertical-align: top;padding: 10px;">#</th>
+      <th style="background-color: #FFFFFF;text-align: left;vertical-align: top;padding: 10px;">Step</th>
+      <th style="background-color: #FFFFFF;text-align: left;vertical-align: top;padding: 10px;">Step Description</th>
+      <th style="background-color: #FFFFFF;text-align: left;vertical-align: top;padding: 10px;">Expected Result</th>
+      <th style="background-color: #FFFFFF;text-align: left;vertical-align: top;padding: 10px;">Actual Result</th>
+    </tr>
+    <tr>
+      <td style="background-color: #FFFFFF;text-align: left;vertical-align: top;padding: 10px;"><img src="/polarion/icons/default/enums/testrun_status_passed.png" style="margin-right: 2px;border: 0px;"/></td>
+      <td style="font-weight: bold;background-color: #FFFFFF;text-align: left;vertical-align: top;padding: 10px;">1</td>
+      <td style="font-weight: bold;background-color: #FFFFFF;text-align: left;vertical-align: top;padding: 10px;">Open Login Screen</td>
+      <td style="background-color: #FFFFFF;text-align: left;vertical-align: top;padding: 10px;">Go to E-Library Portal welcome page, right corner, click login</td>
+      <td style="background-color: #FFFFFF;text-align: left;vertical-align: top;padding: 10px;">Login screen with user name and password text fields is displayed</td>
+      <td style="background-color: #FFFFFF;text-align: left;vertical-align: top;padding: 10px;"></td>
+    </tr>
+    <tr>
+      <td style="background-color: #FFFFFF;text-align: left;vertical-align: top;padding: 10px;"><img src="/polarion/icons/default/enums/testrun_status_passed.png" style="margin-right: 2px;border: 0px;"/></td>
+      <td style="font-weight: bold;background-color: #FFFFFF;text-align: left;vertical-align: top;padding: 10px;">2</td>
+      <td style="font-weight: bold;background-color: #FFFFFF;text-align: left;vertical-align: top;padding: 10px;">Enter False User Details</td>
+      <td style="background-color: #FFFFFF;text-align: left;vertical-align: top;padding: 10px;">False details: admin/wrong</td>
+      <td style="background-color: #FFFFFF;text-align: left;vertical-align: top;padding: 10px;">The login button is disabled until both user name and password is entered</td>
+      <td style="background-color: #FFFFFF;text-align: left;vertical-align: top;padding: 10px;"></td>
+    </tr>
+    <tr>
+      <td style="background-color: #FFFFFF;text-align: left;vertical-align: top;padding: 10px;"><img src="/polarion/icons/default/enums/testrun_status_failed.png" style="margin-right: 2px;border: 0px;"/></td>
+      <td style="font-weight: bold;background-color: #FFFFFF;text-align: left;vertical-align: top;padding: 10px;">3</td>
+      <td style="font-weight: bold;background-color: #FFFFFF;text-align: left;vertical-align: top;padding: 10px;">Click &quot;Login&quot;</td>
+      <td style="background-color: #FFFFFF;text-align: left;vertical-align: top;padding: 10px;"></td>
+      <td style="background-color: #FFFFFF;text-align: left;vertical-align: top;padding: 10px;">Login failed message is shown.</td>
+      <td style="background-color: #FFFFFF;text-align: left;vertical-align: top;padding: 10px;">Null pointer exception when logging to the portal</td>
+    </tr>
+  </tbody>
+</table>
+<table style="width: 100%;border-collapse: collapse;">
+  <tbody>
+    <tr>
+      <th style="background-color: #FFFFFF;text-align: left;width: 80%;">Test Case Verdict:</th>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><span style="font-weight: bold;color: #C30000;"><img src="/polarion/icons/default/enums/testrun_status_failed.png" style="margin-right: 2px;border: 0px;"/>Failed</span></td>
+    </tr>
+  </tbody>
+</table>]]></field>
+    <field id="initialEstimate">1/2d</field>
+    <field id="linkedWorkItems">
+        <list>
+            <struct>
+                <item id="role">triggered_by</item>
+                <item id="workItem">EL-36</item>
+            </struct>
+            <struct>
+                <item id="role">relates_to</item>
+                <item id="workItem">EL-16</item>
+            </struct>
+            <struct>
+                <item id="role">implements</item>
+                <item id="workItem">EL-105</item>
+            </struct>
+        </list>
+    </field>
+    <field id="occurredInVersion" type="string">1.0.0.20160221-1200</field>
+    <field id="previousStatus">open</field>
+    <field id="priority">50.0</field>
+    <field id="resolution">done</field>
+    <field id="resolvedOn">2016-02-24 09:57:20.310 +0100</field>
+    <field id="severity">critical</field>
+    <field id="status">verified</field>
+    <field id="targetVersion" type="enum:@plan[template.id:release]">Version_0_9b</field>
+    <field id="timeSpent">1/2d</field>
+    <field id="title">Failed: Login to the portal</field>
+    <field id="type">issue</field>
+</work-item>

@@ -1,0 +1,543 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<rich-page>
+    <field id="author">admin</field>
+    <field id="created">2017-01-31 12:03:42.717 +0100</field>
+    <field id="homePageContent" text-type="text/html"><![CDATA[<div class="polarion-rp-column" style="width: 100%;">
+  <h1 id="polarion_hardcoded_0">Plans and Releases</h1>
+  <div id="polarion_wiki macro name=toc"></div>
+  <p id="polarion_1">
+    <span class="polarion-rp-inline-widget" data-widget="com.polarion.scriptInline">
+      <span class="polarion-rp-widget-parameters" style="display: none;">
+        <sub id="script">
+          <sub id="script" style="white-space:pre;">## Reported By
+#set($infoText = &quot;Reported by $transaction.users().getBy().id($securityService.getCurrentUser()).render()&lt;br/&gt;$date.long&quot;)
+#if($widgetContext.target().isEditor())
+	&lt;div style=&quot;color: grey; text-align: left;&quot;&gt;$infoText&lt;div&gt;
+#elseif($widgetContext.target().isPdf())
+	&lt;div style=&quot;color: grey; text-align: right; position: absolute; top: 22px; right: 10px;&quot;&gt;$infoText&lt;div&gt;
+#elseif($widgetContext.target().isPrint())
+	&lt;div style=&quot;text-align: right; position: absolute; top: 35px; right: 10px;&quot;&gt;$infoText&lt;div&gt;
+#end</sub>
+        </sub>
+      </span>
+    </span>
+  </p>
+  <p id="polarion_client4"></p>
+</div>
+<div class="polarion-rp-row-separator" page_min_width="1000"></div>
+<div class="polarion-rp-column" style="width: 70%;">
+  <div id="polarion_client14" class="polarion-rp-widget-part" data-widget="com.polarion.scriptBlock">
+    <span class="polarion-rp-widget-parameters" style="display: none;">
+      <sub id="script">
+        <sub id="script" style="white-space:pre;">## List of Releases
+&lt;style&gt;
+	.polarion-rpw-table-header-wiki th {
+		vertical-align: top;
+		text-align: left;
+		padding: 0px 4px;
+		height: 28px;
+		color: #757575;
+		font-weight: normal;
+		border-bottom: 1px solid #D2D7DA;
+		background-color: #FFF;
+	}
+&lt;/style&gt;
+
+#set($projectId = $page.getReference().projectId())
+#set($query = &quot;template.id:release AND project.id:$projectId&quot;)
+#set($sortBy = &quot;status dueDate&quot;)
+#set($link = $transaction.context().createPortalLink().project(&quot;$projectId&quot;).plans().query(&quot;$query&quot;).sorting(&quot;$sortBy&quot;).toEncodedRelativeUrl())
+#set($plans = $transaction.plans().search().query(&quot;$query&quot;).sort(&quot;$sortBy&quot;))
+#set($planCount = $plans.size())
+#set($main = $transaction.context().createPortalLink().project(&quot;$projectId&quot;).document(&quot;Planning&quot;, &quot;Release Report&quot;).toEncodedRelativeUrl())
+&lt;div id=&quot;polarion-rp-widget-content&quot;&gt;
+
+	## Sidebar Preparation START
+	#set($builderWithSidebar = $transaction.context().createHtmlFragmentBuilderFor().rpeView())
+	## Sidebar: Configure displayed fields - #set($displayedFields = [&quot;field1&quot;, &quot;field2&quot;, ...]
+	#set($displayedFields = [&quot;releasePlan&quot;, &quot;status&quot;, &quot;resolution&quot;, &quot;releasePM&quot;, &quot;releaseQA&quot;, &quot;featureFreezeDate&quot;, &quot;codeFreezeDate&quot;, &quot;publicLaunch&quot;, &quot;build&quot;, &quot;buildId&quot;, &quot;releaseTestEvidence&quot;, &quot;linkedWorkItems&quot;])
+	## Sidebar: Choose unique ID - #set($myContainerId = &quot;myUniqueId&quot;)
+	#set($myContainerId = &quot;listOfReleasesWithSidebar&quot;)
+	#set($sidebarConfiguration = $renderingContext.propertiesSidebarConfiguration().containerId(&quot;$myContainerId&quot;).fieldIds($displayedFields).addTo($builderWithSidebar))
+	#set($pathAttr = $sidebarConfiguration.attributes().referencePath())
+	#set($clickClass = $sidebarConfiguration.attributes().clickableCssClass())
+	## Sidebar Configuration END
+
+	## Sidebar: Assign a unique ID to the table that contains lines that should be clickable - &lt;table id=&quot;$myContainerId&quot;&gt;
+	&lt;table class=&quot;polarion-rpw-table-main&quot; id=&quot;$myContainerId&quot;&gt;
+		&lt;tbody&gt;
+			&lt;tr&gt;
+				&lt;td&gt;
+					&lt;table class=&quot;polarion-rpw-table-content&quot;&gt;
+						&lt;tbody&gt;
+							&lt;tr class=&quot;polarion-rpw-table-header-wiki&quot;&gt;
+								&lt;th&gt;Release Plan&lt;/th&gt;
+								&lt;th&gt;Status&lt;/th&gt;
+								&lt;th&gt;Progress&lt;/th&gt;
+								&lt;th&gt;Capacity&lt;/th&gt;
+								&lt;th title=&quot;Total - To Do - Done&quot;&gt;
+									&lt;span&gt;
+										Work&lt;br/&gt;
+										&lt;small&gt;Total - To Do - Done&lt;/small&gt;
+									&lt;/span&gt;
+								&lt;/th&gt;
+								&lt;th&gt;
+									&lt;span&gt;
+										Release&lt;br/&gt;
+										&lt;small&gt;Status - Build ID - Public Launch - Build&lt;/small&gt;
+									&lt;/span&gt;
+								&lt;/th&gt;
+							&lt;/tr&gt;
+							#foreach($plan in $plans)
+								&lt;tr class=&quot;polarion-rpw-table-content-row&quot;&gt;
+									&lt;td&gt;$plan.render().withLinks()&lt;/td&gt;
+									&lt;td&gt;$plan.fields().status().render()&lt;/td&gt;
+									&lt;td&gt;$plan.fields().get(&quot;_progress&quot;).render()&lt;/td&gt;
+									&lt;td&gt;$plan.fields().capacity().render()&lt;/td&gt;
+									&lt;td&gt;$plan.fields().get(&quot;_totalWork&quot;).render() - $plan.fields().get(&quot;_remainingWork&quot;).render() - $plan.fields().get(&quot;_doneWork&quot;).render()&lt;/td&gt;
+									#set($wiReleaseQuery = &quot;type:release AND releasePlan:$plan.getReference().id() AND project.id:$projectId&quot;)
+									#set($wiReleaseResult = $transaction.workItems().search().query(&quot;$wiReleaseQuery&quot;))
+									#if($wiReleaseResult.size() == 1)
+										#set($item = $wiReleaseResult.iterator().next())
+										#set($suffix = &quot;?item=$item.getReference().id()&quot;)
+										#set($itemLink = &quot;$main$suffix&quot;)
+										## Sidebar: Add click class to each row - &lt;tr class=&quot;$clickClass&quot;&gt;
+										## Sidebar: Add path to the Work Item for each row - &lt;tr $pathAttr=&quot;$workItem.getReference().toPath()&quot;&gt;
+										&lt;td class=&quot;polarion-rpw-table-content-row $clickClass&quot; $pathAttr=&quot;$item.getReference().toPath()&quot;&gt;
+											&lt;span&gt;
+												&lt;a style=&quot;font-size:1em;&quot; target=&quot;_top&quot; href=&quot;$itemLink&quot;&gt;$item.render().withTitle()&lt;/a&gt;&lt;br/&gt;
+												&lt;small&gt;
+													&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; $item.fields().status().render()
+													#if(!$item.fields().get(&quot;buildId&quot;).is().empty())
+														- $item.fields().get(&quot;buildId&quot;).render()
+													#end
+													#if(!$item.fields().get(&quot;publicLaunch&quot;).is().empty())
+														 - $item.fields().get(&quot;publicLaunch&quot;).render()
+													#end
+													#if(!$item.fields().get(&quot;build&quot;).is().empty())
+														#set($buildId = &quot;$item.fields().get(&#39;build&#39;).get().fields().id().get()&quot;)
+														#set($buildLink = $transaction.context().createPortalLink().project(&quot;$projectId&quot;).build(&quot;$buildId&quot;).toEncodedRelativeUrl())
+														 - &lt;a href=&quot;$buildLink&quot; target=&quot;_top&quot;&gt;Build&lt;/a&gt;
+													#end
+												&lt;/small&gt;
+											&lt;/span&gt;
+										&lt;/td&gt;
+									#else
+										&lt;td&gt;&lt;/td&gt;
+									#end
+								&lt;/tr&gt;
+							#end
+						&lt;/tbody&gt;
+					&lt;/table&gt;
+				&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+				&lt;td class=&quot;polarion-rpw-table-footer&quot;&gt;
+					&lt;div class=&quot;polarion-rpw-table-counts&quot;&gt;
+						&lt;a href=&quot;$link&quot; target=&quot;_top&quot;&gt;$planCount items found&lt;/a&gt;
+					&lt;/div&gt;
+					&lt;div class=&quot;polarion-rpw-table-open-in-table&quot;&gt;
+						&lt;a href=&quot;$link&quot; target=&quot;_blank&quot;&gt;
+							&lt;img src=&quot;/polarion/ria/images/portlet/portletOpenInTable.png&quot; title=&quot;Open in table&quot;&gt;
+						&lt;/a&gt;
+					&lt;/div&gt;
+					&lt;div class=&quot;polarion-rpw-table-show-query&quot;&gt;
+						&lt;img src=&quot;/polarion/ria/images/portlet/info.png&quot; title=&quot;Show query&quot; onclick=&quot;var style = getElementById(&#39;polarion_query&#39;).style; style.display = (style.display == &#39;block&#39;) ? &#39;none&#39; : &#39;block&#39;;&quot;&gt;
+					&lt;/div&gt;
+					&lt;div id=&quot;polarion_query&quot; class=&quot;polarion-rpw-table-query&quot;&gt;$query&lt;/div&gt;
+				&lt;/td&gt;
+			&lt;/tr&gt;
+		&lt;/tbody&gt;
+	&lt;/table&gt;
+	## Sidebar: Render helper HTML fragment
+	$builderWithSidebar
+&lt;/div&gt;</sub>
+      </sub>
+    </span>
+  </div>
+</div>
+<div class="polarion-rp-column" style="width: 30%;">
+  <div id="polarion_client1" class="polarion-rp-widget-part" data-widget="com.polarion.separateByPieChart">
+    <span class="polarion-rp-widget-parameters">
+      <sub id="title">Releases by Status</sub>
+      <sub id="dataSet">
+        <sub id="prototype">Plan</sub>
+        <sub id="queryType">lucene</sub>
+        <sub id="luceneQuery" style="white-space:pre;">template.id:release</sub>
+        <sub id="children">
+          <sub id="separateBy">
+            <sub id="field">status</sub>
+          </sub>
+        </sub>
+      </sub>
+      <sub id="showDataLabels">true</sub>
+      <sub id="showZeroValues">false</sub>
+      <sub id="advanced">
+        <sub id="height">250px</sub>
+        <sub id="width"></sub>
+      </sub>
+    </span>
+  </div>
+</div>
+<div class="polarion-rp-row-separator"></div>
+<div class="polarion-rp-column" style="width: 100%;">
+  <h2 id="polarion_client3">Deliveries per Release</h2>
+  <p id="polarion_client2"></p>
+</div>
+<div class="polarion-rp-row-separator"></div>
+<div class="polarion-rp-column" style="width: 70%;">
+  <div id="polarion_client28" class="polarion-rp-widget-part" data-widget="com.polarion.scriptBlock">
+    <span class="polarion-rp-widget-parameters" style="display: none;">
+      <sub id="script">
+        <sub id="script" style="white-space:pre;">## Deliveries Per Release
+#set($projectId = $page.getReference().projectId())
+#set($main = $transaction.context().createPortalLink().project(&quot;$projectId&quot;).document(&quot;Planning&quot;, &quot;Release Report&quot;).toEncodedRelativeUrl())
+
+## Sidebar Preparation START
+#set($builderWithSidebar = $transaction.context().createHtmlFragmentBuilderFor().rpeView())
+#set($displayedFieldsMap = $objectFactory.newMap())
+## Sidebar: Configure displayed fields for each group (i.e. Work Item type) - #set($displayedFieldsGroupID = [&quot;field1&quot;, &quot;field2&quot;, ...]
+## Sidebar: Add each group to the Displayed Fields Map - #set($void = $displayedFieldsMap.put(&quot;groupid&quot;, $displayedFieldsGroupID))
+#set($displayedFieldsRelease = [&quot;releasePlan&quot;, &quot;status&quot;, &quot;resolution&quot;, &quot;releasePM&quot;, &quot;releaseQA&quot;, &quot;featureFreezeDate&quot;, &quot;codeFreezeDate&quot;, &quot;publicLaunch&quot;, &quot;build&quot;, &quot;buildId&quot;, &quot;releaseTestEvidence&quot;, &quot;linkedWorkItems&quot;])
+#set($void = $displayedFieldsMap.put(&quot;release&quot;, $displayedFieldsRelease))
+#set($displayedFieldsEpic = [&quot;assignee&quot;, &quot;severity&quot;, &quot;priority&quot;, &quot;epicEstimate&quot;, &quot;targetVersion&quot;, &quot;status&quot;, &quot;resolution&quot;, &quot;childStoryPoints&quot;, &quot;linkedWorkItems&quot;])
+#set($void = $displayedFieldsMap.put(&quot;epic&quot;, $displayedFieldsEpic))
+#set($displayedFieldsUserStory = [&quot;assignee&quot;, &quot;severity&quot;, &quot;priority&quot;, &quot;status&quot;, &quot;resolution&quot;, &quot;plannedIn&quot;, &quot;storyPoints&quot;, &quot;initialEstimate&quot;, &quot;timeSpent&quot;, &quot;remainingEstimate&quot;, &quot;linkedWorkItems&quot;])
+#set($void = $displayedFieldsMap.put(&quot;userstory&quot;, $displayedFieldsUserStory))
+#set($displayedFieldsIssue = [&quot;assignee&quot;, &quot;severity&quot;, &quot;priority&quot;, &quot;occurredInVersion&quot;, &quot;status&quot;, &quot;resolution&quot;, &quot;targetVersion&quot;, &quot;linkedWorkItems&quot;])
+#set($void = $displayedFieldsMap.put(&quot;issue&quot;, $displayedFieldsIssue))
+## Sidebar: Choose unique ID - #set($myContainerId = &quot;myUniqueId&quot;)
+#set($myContainerId = &quot;deliveriesPerReleaseWithSidebar&quot;)
+#set($sidebarConfiguration = $renderingContext.propertiesSidebarConfiguration().containerId(&quot;$myContainerId&quot;).fieldsConfiguration($displayedFieldsMap).addTo($builderWithSidebar))
+#set($pathAttr = $sidebarConfiguration.attributes().referencePath())
+#set($clickClass = $sidebarConfiguration.attributes().clickableCssClass())
+#set($wiFieldsKey = $sidebarConfiguration.attributes().fieldsConfigurationKey())
+## Sidebar Configuration END
+
+## Sidebar: Assign a unique ID to the table that contains lines that should be clickable - &lt;table id=&quot;$myContainerId&quot;&gt;
+&lt;table class=&quot;polarion-rpw-table-content&quot; id=&quot;$myContainerId&quot;&gt;
+	&lt;thead&gt;
+		&lt;tr class=&quot;polarion-rpw-table-header-row&quot;&gt;
+			&lt;th&gt;Release&lt;/th&gt;
+			&lt;th&gt;Delivered&lt;/th&gt;
+			&lt;th&gt;Status&lt;/th&gt;
+			&lt;th&gt;Priority&lt;/th&gt;
+			&lt;th&gt;Severity&lt;/th&gt;
+			&lt;th title=&quot;Release: Release Plan | Epic: Epic Estimate | User Story: Estimate in Story Points | Issue: Occured in Version&quot;&gt;Details&lt;/th&gt;
+		&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+		#set($releases = $transaction.workItems().search().query(&quot;project.id:$projectId AND type:release&quot;).sort(&quot;status ~publicLaunch&quot;))
+		#foreach($release in $releases)
+			#set($releasePlan = $release.fields().get(&quot;releasePlan&quot;).get().getModelObject())
+			#set($suffix = &quot;?item=$release.getReference().id()&quot;)
+			#set($itemLink = &quot;$main$suffix&quot;)
+			#if($velocityCount &lt; $releases.size())
+				#set($isLastRelease = false)
+			#else
+				#set($isLastRelease = true)
+			#end
+			## Sidebar: Add click class to each row - &lt;tr class=&quot;$clickClass&quot;&gt;
+			## Sidebar: Add path to the Work Item for each row - &lt;tr $pathAttr=&quot;$workItem.getReference().toPath()&quot;&gt;
+			## Sidebar: Add wi fields key to each row to load proper group&#39;s configuration of displayed fields - &lt;tr $wiFieldsKey=&quot;groupid&quot;&gt;
+			&lt;tr class=&quot;polarion-rpw-table-content-row $clickClass&quot; $pathAttr=&quot;$release.getReference().toPath()&quot; $wiFieldsKey=&quot;release&quot;&gt;
+				&lt;td colspan=&quot;2&quot;&gt;&lt;b&gt;&lt;a style=&quot;font-size:1em;&quot; target=&quot;_top&quot; href=&quot;$itemLink&quot;&gt;$release.render().withTitle()&lt;/a&gt;&lt;/b&gt;&lt;/td&gt;
+				&lt;td colspan=&quot;3&quot;&gt;$release.fields().status().render()&lt;/td&gt;
+				&lt;td&gt;&lt;span style=&quot;color: #757575;&quot;&gt;Release Plan:&lt;/span&gt; $releasePlan.render()&lt;/td&gt;
+			&lt;/tr&gt;
+			#set($epicsQuery = &quot;project.id:$projectId AND type:epic AND status:verified AND targetVersion.KEY:$releasePlan.fields().id().get()&quot;)
+			#set($epics = $transaction.workItems().search().query(&quot;$epicsQuery&quot;).sort(&quot;status ~priority&quot;))
+			#set($storiesQuery = &quot;project.id:$projectId AND type:userstory AND status:verified AND PLAN:($releasePlan.getReference().toPath())&quot;)
+			#set($stories = $transaction.workItems().search().query(&quot;$storiesQuery&quot;).sort(&quot;status ~priority&quot;))
+			#set($issuesQuery = &quot;project.id:$projectId AND type:issue AND status:verified AND targetVersion.KEY:$releasePlan.fields().id().get()&quot;)
+			#set($issues = $transaction.workItems().search().query(&quot;$issuesQuery&quot;).sort(&quot;~priority&quot;))
+			#foreach($epic in $epics)
+				## Sidebar: Add click class to each row - &lt;tr class=&quot;$clickClass&quot;&gt;
+				## Sidebar: Add path to the Work Item for each row - &lt;tr $pathAttr=&quot;$workItem.getReference().toPath()&quot;&gt;
+				## Sidebar: Add wi fields key to each row to load proper group&#39;s configuration of displayed fields - &lt;tr $wiFieldsKey=&quot;groupid&quot;&gt;
+				&lt;tr class=&quot;polarion-rpw-table-content-row $clickClass&quot; $pathAttr=&quot;$epic.getReference().toPath()&quot; $wiFieldsKey=&quot;epic&quot;&gt;
+					&lt;td&gt;&lt;/td&gt;
+					&lt;td colspan=&quot;2&quot;&gt;$epic.render().withLinks().withTitle()&lt;/td&gt;
+					&lt;td&gt;$epic.fields().priority().render()&lt;/td&gt;
+					&lt;td&gt;$epic.fields().severity().render()&lt;/td&gt;
+					&lt;td&gt;&lt;span style=&quot;color: #757575;&quot;&gt;Epic Estimate:&lt;/span&gt; $epic.fields().get(&quot;epicEstimate&quot;).render()&lt;/td&gt;
+				&lt;/tr&gt;
+			#end
+			#foreach($story in $stories)
+				## Sidebar: Add click class to each row - &lt;tr class=&quot;$clickClass&quot;&gt;
+				## Sidebar: Add path to the Work Item for each row - &lt;tr $pathAttr=&quot;$workItem.getReference().toPath()&quot;&gt;
+				## Sidebar: Add wi fields key to each row to load proper group&#39;s configuration of displayed fields - &lt;tr $wiFieldsKey=&quot;groupid&quot;&gt;
+				&lt;tr class=&quot;polarion-rpw-table-content-row $clickClass&quot; $pathAttr=&quot;$story.getReference().toPath()&quot; $wiFieldsKey=&quot;userstory&quot;&gt;
+					&lt;td&gt;&lt;/td&gt;
+					&lt;td colspan=&quot;2&quot;&gt;$story.render().withLinks().withTitle()&lt;/td&gt;
+					&lt;td&gt;$story.fields().priority().render()&lt;/td&gt;
+					&lt;td&gt;$story.fields().severity().render()&lt;/td&gt;
+					&lt;td&gt;&lt;span style=&quot;color: #757575;&quot;&gt;Estimate in Story Points:&lt;/span&gt; $story.fields().get(&quot;storyPoints&quot;).render()&lt;/td&gt;
+				&lt;/tr&gt;
+			#end
+			#foreach($issue in $issues)
+				#if($velocityCount &lt; $issues.size())
+					#set($isLastIssue = false)
+				#else
+					#set($isLastIssue = true)
+				#end
+				## Sidebar: Add click class to each row - &lt;tr class=&quot;$clickClass&quot;&gt;
+				## Sidebar: Add path to the Work Item for each row - &lt;tr $pathAttr=&quot;$workItem.getReference().toPath()&quot;&gt;
+				## Sidebar: Add wi fields key to each row to load proper group&#39;s configuration of displayed fields - &lt;tr $wiFieldsKey=&quot;groupid&quot;&gt;
+				&lt;tr class=&quot;polarion-rpw-table-content-row $clickClass&quot; $pathAttr=&quot;$issue.getReference().toPath()&quot; $wiFieldsKey=&quot;issue&quot; #if($isLastIssue &amp;&amp; !$isLastRelease)style=&quot;border-bottom: 3px solid #F0F0F0;&quot;#end&gt;
+					&lt;td&gt;&lt;/td&gt;
+					&lt;td colspan=&quot;2&quot;&gt;$issue.render().withLinks().withTitle()&lt;/td&gt;
+					&lt;td&gt;$issue.fields().priority().render()&lt;/td&gt;
+					&lt;td&gt;$issue.fields().severity().render()&lt;/td&gt;
+					&lt;td&gt;&lt;span style=&quot;color: #757575;&quot;&gt;Occured in Version:&lt;/span&gt; $issue.fields().get(&quot;occurredInVersion&quot;).render()&lt;/td&gt;
+				&lt;/tr&gt;
+			#end
+		#end
+	&lt;/tbody&gt;
+&lt;/table&gt;
+## Sidebar: Render helper HTML fragment
+$builderWithSidebar</sub>
+      </sub>
+    </span>
+  </div>
+  <p id="polarion_5"></p><p id="polarion_client55"></p>
+</div>
+<div class="polarion-rp-column" style="width: 30%;">
+  <div id="polarion_client31" class="polarion-rp-widget-part" data-widget="com.polarion.separateByPieChart">
+    <span class="polarion-rp-widget-parameters" style="display: none;">
+      <sub id="title">Delivered by Type</sub>
+      <sub id="dataSet">
+        <sub id="prototype">WorkItem</sub>
+        <sub id="queryType">luceneVelocity</sub>
+        <sub id="luceneQuery" style="white-space:pre;">(HAS_VALUE:targetVersion.KEY OR PLAN:(*)) AND status:verified AND type:(userstory epic issue)</sub>
+        <sub id="children">
+          <sub id="separateBy">
+            <sub id="field">type</sub>
+          </sub>
+        </sub>
+      </sub>
+      <sub id="showDataLabels">true</sub>
+      <sub id="showZeroValues">false</sub>
+      <sub id="advanced">
+        <sub id="height">250px</sub>
+        <sub id="width"></sub>
+      </sub>
+    </span>
+  </div>
+  <p id="polarion_client29"></p>
+</div>
+<div class="polarion-rp-row-separator"></div>
+<div class="polarion-rp-column" style="width: 100%;">
+  <h2 id="polarion_client7">Not Delivered per Release Plan</h2>
+  <p id="polarion_client6"></p>
+</div>
+<div class="polarion-rp-row-separator"></div>
+<div class="polarion-rp-column" style="width: 70%;">
+  <div id="polarion_client43" class="polarion-rp-widget-part" data-widget="com.polarion.scriptBlock">
+    <span class="polarion-rp-widget-parameters" style="display: none;">
+      <sub id="script">
+        <sub id="script" style="white-space:pre;">## Not Delivered Per Release Plan
+#set($projectId = $page.getReference().projectId())
+#set($main = $transaction.context().createPortalLink().project(&quot;$projectId&quot;).document(&quot;Planning&quot;, &quot;Release Report&quot;).toEncodedRelativeUrl())
+
+## Sidebar Preparation START
+#set($builderWithSidebar = $transaction.context().createHtmlFragmentBuilderFor().rpeView())
+#set($displayedFieldsMap = $objectFactory.newMap())
+## Sidebar: Configure displayed fields for each group (i.e. Work Item type) - #set($displayedFieldsGroupID = [&quot;field1&quot;, &quot;field2&quot;, ...]
+## Sidebar: Add each group to the Displayed Fields Map - #set($void = $displayedFieldsMap.put(&quot;groupid&quot;, $displayedFieldsGroupID))
+#set($displayedFieldsEpic = [&quot;assignee&quot;, &quot;severity&quot;, &quot;priority&quot;, &quot;epicEstimate&quot;, &quot;targetVersion&quot;, &quot;status&quot;, &quot;resolution&quot;, &quot;childStoryPoints&quot;, &quot;linkedWorkItems&quot;])
+#set($void = $displayedFieldsMap.put(&quot;epic&quot;, $displayedFieldsEpic))
+#set($displayedFieldsUserStory = [&quot;assignee&quot;, &quot;severity&quot;, &quot;priority&quot;, &quot;status&quot;, &quot;resolution&quot;, &quot;plannedIn&quot;, &quot;storyPoints&quot;, &quot;initialEstimate&quot;, &quot;timeSpent&quot;, &quot;remainingEstimate&quot;, &quot;linkedWorkItems&quot;])
+#set($void = $displayedFieldsMap.put(&quot;userstory&quot;, $displayedFieldsUserStory))
+#set($displayedFieldsIssue = [&quot;assignee&quot;, &quot;severity&quot;, &quot;priority&quot;, &quot;occurredInVersion&quot;, &quot;status&quot;, &quot;resolution&quot;, &quot;targetVersion&quot;, &quot;linkedWorkItems&quot;])
+#set($void = $displayedFieldsMap.put(&quot;issue&quot;, $displayedFieldsIssue))
+## Sidebar: Choose unique ID - #set($myContainerId = &quot;myUniqueId&quot;)
+#set($myContainerId = &quot;notDeliveredPerReleasePlanWithSidebar&quot;)
+#set($sidebarConfiguration = $renderingContext.propertiesSidebarConfiguration().containerId(&quot;$myContainerId&quot;).fieldsConfiguration($displayedFieldsMap).addTo($builderWithSidebar))
+#set($pathAttr = $sidebarConfiguration.attributes().referencePath())
+#set($clickClass = $sidebarConfiguration.attributes().clickableCssClass())
+#set($wiFieldsKey = $sidebarConfiguration.attributes().fieldsConfigurationKey())
+## Sidebar Configuration END
+
+## Sidebar: Assign a unique ID to the table that contains lines that should be clickable - &lt;table id=&quot;$myContainerId&quot;&gt;
+&lt;table class=&quot;polarion-rpw-table-content&quot; id=&quot;$myContainerId&quot;&gt;
+	&lt;thead&gt;
+		&lt;tr class=&quot;polarion-rpw-table-header-row&quot;&gt;
+			&lt;th&gt;Release&lt;/th&gt;
+			&lt;th&gt;Work Item&lt;/th&gt;
+			&lt;th&gt;Status&lt;/th&gt;
+			&lt;th&gt;Priority&lt;/th&gt;
+			&lt;th&gt;Severity&lt;/th&gt;
+			&lt;th title=&quot;Release Plan: Release | Epic: Epic Estimate | User Story: Estimate in Story Points | Issue: Occured in Version&quot;&gt;Details&lt;/th&gt;
+		&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+		#set($releases = $transaction.plans().search().query(&quot;project.id:$projectId AND template.id:release&quot;).sort(&quot;~startDate&quot;))
+		#foreach($release in $releases)
+			## com.polarion.alm.shared.api.model.plan.Plan $release
+			#if($release.utils().isFinished())
+				#set($release = $release.utils().getFinishedPlan())
+			#end
+			#if($velocityCount &lt; $releases.size())
+				#set($isLastRelease = false)
+			#else
+				#set($isLastRelease = true)
+			#end
+			&lt;tr class=&quot;polarion-rpw-table-content-row&quot;&gt;
+				&lt;td colspan=&quot;2&quot;&gt;&lt;b&gt;$release.render().withLinks()&lt;/b&gt;&lt;/td&gt;
+				&lt;td colspan=&quot;3&quot;&gt;$release.fields().status().render().withText(false)&lt;/td&gt;
+				#set($releaseWIs = $transaction.workItems().search().query(&quot;project.id:$projectId AND releasePlan.KEY:$release.fields().id().get()&quot;))
+				#if($releaseWIs.size() == 1)
+					#set($releasePlan = $releaseWIs.iterator().next())
+					#set($suffix = &quot;?item=$releasePlan.getReference().id()&quot;)
+					#set($itemLink = &quot;$main$suffix&quot;)
+					&lt;td&gt;&lt;span style=&quot;color: #757575;&quot;&gt;Release Work Item:&lt;/span&gt; &lt;a style=&quot;font-size:1em;&quot; target=&quot;_top&quot; href=&quot;$itemLink&quot;&gt;$releasePlan.render()&lt;/a&gt;&lt;/td&gt;
+				#else
+					&lt;td&gt;&lt;/td&gt;
+				#end
+			&lt;/tr&gt;
+			#set($epicsQuery = &quot;project.id:$projectId AND type:epic AND NOT status: verified AND targetVersion.KEY:$release.fields().id().get()&quot;)
+			#set($epics = $transaction.workItems().search().query(&quot;$epicsQuery&quot;).sort(&quot;status ~priority&quot;))
+			#set($storiesQuery = &quot;project.id:$projectId AND type:userstory AND NOT status: verified AND PLAN:($release.getReference().toPath())&quot;)
+			#set($stories = $transaction.workItems().search().query(&quot;$storiesQuery&quot;).sort(&quot;status ~priority&quot;))
+			#set($issuesQuery = &quot;project.id:$projectId AND type:issue AND NOT status: verified AND targetVersion.KEY:$release.fields().id().get()&quot;)
+			#set($issues = $transaction.workItems().search().query(&quot;$issuesQuery&quot;).sort(&quot;~priority&quot;))
+			#foreach($epic in $epics)
+				## Sidebar: Add click class to each row - &lt;tr class=&quot;$clickClass&quot;&gt;
+				## Sidebar: Add path to the Work Item for each row - &lt;tr $pathAttr=&quot;$workItem.getReference().toPath()&quot;&gt;
+				## Sidebar: Add wi fields key to each row to load proper group&#39;s configuration of displayed fields - &lt;tr $wiFieldsKey=&quot;groupid&quot;&gt;
+				&lt;tr class=&quot;polarion-rpw-table-content-row $clickClass&quot; $pathAttr=&quot;$epic.getReference().toPath()&quot; $wiFieldsKey=&quot;epic&quot;&gt;
+					&lt;td&gt;&lt;/td&gt;
+					&lt;td&gt;$epic.render().withLinks().withTitle()&lt;/td&gt;
+					&lt;td&gt;$epic.fields().status().render().withText(false)&lt;/td&gt;
+					&lt;td&gt;$epic.fields().priority().render()&lt;/td&gt;
+					&lt;td&gt;$epic.fields().severity().render()&lt;/td&gt;
+					&lt;td&gt;&lt;span style=&quot;color: #757575;&quot;&gt;Epic Estimate:&lt;/span&gt; $epic.fields().get(&quot;epicEstimate&quot;).render()&lt;/td&gt;
+				&lt;/tr&gt;
+			#end
+			#foreach($story in $stories)
+				## Sidebar: Add click class to each row - &lt;tr class=&quot;$clickClass&quot;&gt;
+				## Sidebar: Add path to the Work Item for each row - &lt;tr $pathAttr=&quot;$workItem.getReference().toPath()&quot;&gt;
+				## Sidebar: Add wi fields key to each row to load proper group&#39;s configuration of displayed fields - &lt;tr $wiFieldsKey=&quot;groupid&quot;&gt;
+				&lt;tr class=&quot;polarion-rpw-table-content-row $clickClass&quot; $pathAttr=&quot;$story.getReference().toPath()&quot; $wiFieldsKey=&quot;userstory&quot;&gt;
+					&lt;td&gt;&lt;/td&gt;
+					&lt;td&gt;$story.render().withLinks().withTitle()&lt;/td&gt;
+					&lt;td&gt;$story.fields().status().render().withText(false)&lt;/td&gt;
+					&lt;td&gt;$story.fields().priority().render()&lt;/td&gt;
+					&lt;td&gt;$story.fields().severity().render()&lt;/td&gt;
+					&lt;td&gt;&lt;span style=&quot;color: #757575;&quot;&gt;Estimate in Story Points:&lt;/span&gt; $story.fields().get(&quot;storyPoints&quot;).render()&lt;/td&gt;
+				&lt;/tr&gt;
+			#end
+			#foreach($issue in $issues)
+				#if($velocityCount &lt; $issues.size())
+					#set($isLastIssue = false)
+				#else
+					#set($isLastIssue = true)
+				#end
+				## Sidebar: Add click class to each row - &lt;tr class=&quot;$clickClass&quot;&gt;
+				## Sidebar: Add path to the Work Item for each row - &lt;tr $pathAttr=&quot;$workItem.getReference().toPath()&quot;&gt;
+				## Sidebar: Add wi fields key to each row to load proper group&#39;s configuration of displayed fields - &lt;tr $wiFieldsKey=&quot;groupid&quot;&gt;
+				&lt;tr class=&quot;polarion-rpw-table-content-row $clickClass&quot; $pathAttr=&quot;$issue.getReference().toPath()&quot; $wiFieldsKey=&quot;issue&quot; #if($isLastIssue &amp;&amp; !$isLastRelease)style=&quot;border-bottom: 3px solid #F0F0F0;&quot;#end&gt;
+					&lt;td&gt;&lt;/td&gt;
+					&lt;td&gt;$issue.render().withLinks().withTitle()&lt;/td&gt;
+					&lt;td&gt;$issue.fields().status().render().withText(false)&lt;/td&gt;
+					&lt;td&gt;$issue.fields().priority().render()&lt;/td&gt;
+					&lt;td&gt;$issue.fields().severity().render()&lt;/td&gt;
+					&lt;td&gt;&lt;span style=&quot;color: #757575;&quot;&gt;Occured in Version:&lt;/span&gt; $issue.fields().get(&quot;occurredInVersion&quot;).render()&lt;/td&gt;
+				&lt;/tr&gt;
+			#end
+		#end
+	&lt;/tbody&gt;
+&lt;/table&gt;
+## Sidebar: Render helper HTML fragment
+$builderWithSidebar</sub>
+      </sub>
+    </span>
+  </div>
+  <p id="polarion_client46"></p>
+</div>
+<div class="polarion-rp-column" style="width: 30%;">
+  <div id="polarion_client52" class="polarion-rp-widget-part" data-widget="com.polarion.separateByPieChart">
+    <span class="polarion-rp-widget-parameters" style="display: none;">
+      <sub id="title">Not Delivered by Type</sub>
+      <sub id="dataSet">
+        <sub id="prototype">WorkItem</sub>
+        <sub id="queryType">luceneVelocity</sub>
+        <sub id="luceneQuery" style="white-space:pre;">(PLAN:(*) OR HAS_VALUE:targetVersion.KEY) AND NOT status:verified AND type:(epic userstory issue)</sub>
+        <sub id="children">
+          <sub id="separateBy">
+            <sub id="field">type</sub>
+          </sub>
+        </sub>
+      </sub>
+      <sub id="showDataLabels">true</sub>
+      <sub id="showZeroValues">false</sub>
+      <sub id="advanced">
+        <sub id="height">250px</sub>
+        <sub id="width"> </sub>
+      </sub>
+    </span>
+  </div>
+  <p id="polarion_client54"></p><p id="polarion_client23"></p>
+</div>
+<div class="polarion-rp-row-separator"></div>
+<div class="polarion-rp-column" style="width: 100%;">
+  <h2 id="polarion_client9">Found vs Fixed Issues per Release Plan</h2>
+  <p id="polarion_client8"></p>
+</div>
+<div class="polarion-rp-row-separator"></div>
+<div class="polarion-rp-column" style="width: 70%;">
+  <div id="polarion_client35" class="polarion-rp-widget-part" data-widget="com.polarion.scriptBlock">
+    <span class="polarion-rp-widget-parameters" style="display: none;">
+      <sub id="script">
+        <sub id="script" style="white-space:pre;">## Found vs Fixed Issues
+#set($projectId = $page.getReference().projectId())
+&lt;table class=&quot;polarion-rpw-table-content&quot;&gt;
+	&lt;thead&gt;
+		&lt;tr class=&quot;polarion-rpw-table-header-row&quot;&gt;
+			&lt;th&gt;Release&lt;/th&gt;
+			&lt;th&gt;Status&lt;/th&gt;
+			&lt;th style=&quot;text-align: center;&quot;&gt;Issues Found&lt;/th&gt;
+			&lt;th style=&quot;text-align: center;&quot;&gt;Issues Fixed&lt;/th&gt;
+		&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;/tbody&gt;
+		#set($releases = $transaction.plans().search().query(&quot;project.id:$projectId AND template.id:release&quot;).sort(&quot;~startDate&quot;))
+		#foreach($release in $releases)
+			#set($startDateMissing = $release.fields().startDate().is().empty())
+			#set($dueDateMissing = $release.fields().dueDate().is().empty())
+			#if(!$startDateMissing &amp;&amp; !$dueDateMissing)
+				#set($startDate = $release.fields().startDate().asString().replace(&quot;-&quot;, &quot;&quot;))
+				#set($dueDate = $release.fields().dueDate().asString().replace(&quot;-&quot;, &quot;&quot;))
+				#set($foundQuery = &quot;project.id:$projectId AND type:issue AND created:[$startDate TO $dueDate]&quot;)
+				#set($foundLink = $transaction.context().createPortalLink().project(&quot;$projectId&quot;).workItems().query(&quot;$foundQuery&quot;).toEncodedRelativeUrl())
+				#set($foundIssuesCount = $transaction.workItems().count().query(&quot;$foundQuery&quot;).result())
+				#set($fixedQuery = &quot;project.id:$projectId AND type:issue AND targetVersion.KEY:$release.getReference().id() AND status:verified&quot;)
+				#set($fixedLink = $transaction.context().createPortalLink().project(&quot;$projectId&quot;).workItems().query(&quot;$fixedQuery&quot;).toEncodedRelativeUrl())
+				#set($fixedIssuesCount = $transaction.workItems().count().query(&quot;$fixedQuery&quot;).result())
+			#end
+			&lt;tr class=&quot;polarion-rpw-table-content-row&quot;&gt;
+				&lt;td&gt;&lt;b&gt;$release.render().withLinks()&lt;/b&gt;&lt;/td&gt;
+				&lt;td&gt;$release.fields().status().render()&lt;/td&gt;
+				#if($startDateMissing || $dueDateMissing)
+					#set($planProperties = $transaction.context().createPortalLink().project(&quot;$projectId&quot;).plan(&quot;$release.getReference().id()&quot;).tabProperties().toEncodedRelativeUrl())
+					&lt;td colspan=&quot;2&quot;&gt;&lt;a href=&quot;$planProperties&quot; target=&quot;_blank&quot; style=&quot;display: block; width: 100%; height: 100%; text-align: center;&quot;&gt;Enter plan&#39;s Start and Due Date first&lt;/a&gt;&lt;/td&gt;
+				#else
+					&lt;td&gt;&lt;a href=&quot;$foundLink&quot; target=&quot;_blank&quot; style=&quot;display: block; width: 100%; height: 100%; text-align: center;&quot;&gt;$foundIssuesCount&lt;/a&gt;&lt;/td&gt;
+					&lt;td&gt;&lt;a href=&quot;$fixedLink&quot; target=&quot;_blank&quot; style=&quot;display: block; width: 100%; height: 100%; text-align: center;&quot;&gt;$fixedIssuesCount&lt;/a&gt;&lt;/td&gt;
+				#end
+			&lt;/tr&gt;
+		#end
+	&lt;/tbody&gt;
+&lt;/table&gt;</sub>
+      </sub>
+    </span>
+  </div>
+  <p id="polarion_client37"></p><p id="polarion_client21"></p><p id="polarion_client22"></p>
+</div>
+<div class="polarion-rp-column" style="width: 30%;">
+  <p id="polarion_client10"></p>
+</div>
+<div class="polarion-rp-row-separator"></div>]]></field>
+    <field id="title">Plans and Releases</field>
+</rich-page>

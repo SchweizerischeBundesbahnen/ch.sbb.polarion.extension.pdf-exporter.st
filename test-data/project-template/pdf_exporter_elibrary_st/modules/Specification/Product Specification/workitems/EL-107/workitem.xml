@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<work-item>
+    <field id="assignee">sDeveloper</field>
+    <field id="author">rProject</field>
+    <field id="categories">
+        <list>
+            <item>usermanagement</item>
+            <item>reporting</item>
+        </list>
+    </field>
+    <field id="created">2010-11-20 12:33:18.500 +0100</field>
+    <field id="description" text-type="text/html">Users should easily access information on what books they have borrowed.</field>
+    <field id="initialEstimate">6d</field>
+    <field id="previousStatus">closed</field>
+    <field id="priority">72.0</field>
+    <field id="resolution">done</field>
+    <field id="resolvedOn">2010-11-25 16:34:20.898 +0100</field>
+    <field id="severity">must_have</field>
+    <field id="status">verified</field>
+    <field id="storyPoints" type="integer">8</field>
+    <field id="timeSpent">6d</field>
+    <field id="title">User Statistics</field>
+    <field id="type">userstory</field>
+</work-item>
