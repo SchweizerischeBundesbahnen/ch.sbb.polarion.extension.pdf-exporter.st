@@ -1,6 +1,6 @@
 [project]
 name = "polarion-pdf-exporter-st"
-version = "0.0.0"
+version = "1.0.0"
 description = "System Tests for Polarion PDF Exporter extension"
 authors = [
     {name = "SBB Polarion Team", email = "polarion-opensource@sbb.ch"},
@@ -15,8 +15,7 @@ dependencies = [
     "ruff==0.15.8",
     "mypy==1.19.1",
     "types-requests==2.32.4.20250913",
-    "tox>=4.40",
-    "tox-uv>=1.33.4",
+    "tox==4.32.0",
     "PyPDF2==3.0.1",
     "PyMuPDF>=1.26.6",
     "opencv-python-headless>=4.12.0",
