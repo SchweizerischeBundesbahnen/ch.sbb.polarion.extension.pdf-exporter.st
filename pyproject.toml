@@ -32,8 +32,8 @@ test = [
 ]
 
 [tool.uv]
-# Set to true because this project is a library, not an application
-package = true
+# Set to false because this project contains only tests, not a distributable package
+package = false
 
 [build-system]
 requires = ["hatchling"]

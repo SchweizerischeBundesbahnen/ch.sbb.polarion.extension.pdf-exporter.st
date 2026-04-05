@@ -247,7 +247,7 @@ wheels = [
 [[package]]
 name = "open-source-polarion-python-repo-template"
 version = "0.0.0"
-source = { editable = "." }
+source = { virtual = "." }
 dependencies = [
     { name = "httpx" },
 ]
