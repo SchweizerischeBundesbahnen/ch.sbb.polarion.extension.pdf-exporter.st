@@ -27,7 +27,7 @@ In this mode, the tests will be executed against running Polarion server specifi
 
 ### Command line example
 ```
-python tests/run.py --app_url BASE_POLARION_URL --app_token AUTH_TOKEN
+uv run python tests/run.py --app_url BASE_POLARION_URL --app_token AUTH_TOKEN
 ```
 ## 2. Run tests against local Polarion Test Container
 In this mode Polarion and Weasyprint containers will be created on the fly from the Docker image and tests will be executed against it.
@@ -38,7 +38,7 @@ Both containers will be bound to common network and Weasyprint service endpoint 
 - Weasyprint Docker image with specified name should exist either locally or in remote registry
 ### Command line example
 ```
-python tests/run.py --tc_polarion_image_name=polarion:2310 --tc_weasyprint_service_image_name=weasyprint-service:61.2.0
+uv run python tests/run.py --tc_polarion_image_name=polarion:2512 --tc_weasyprint_service_image_name=weasyprint-service:68.1.0
 ```
 ### Parameters
 | Parameter                        | Default value | Mandatory for test containers | Description                                                                                                                                    |

@@ -6,7 +6,7 @@ authors = [
     {name = "SBB Polarion Team", email = "polarion-opensource@sbb.ch"},
 ]
 license = "Apache-2.0"
-readme = "README.md"
+readme = "readme.md"
 requires-python = ">=3.14,<3.15"
 
 dependencies = [
