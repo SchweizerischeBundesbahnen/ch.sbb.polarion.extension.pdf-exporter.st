@@ -20,7 +20,7 @@ pipeline {
             steps {
                 sh '''
                     export PATH="$HOME/.local/bin:$PATH"
-                    uv sync --locked
+                    uv sync --all-groups --locked
                 '''
             }
         }
