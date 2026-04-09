@@ -1,7 +1,7 @@
 [project]
-name = "open-source-polarion-python-repo-template"
-version = "0.0.0"  # the version is controlled by the pipeline
-description = ""
+name = "polarion-pdf-exporter-st"
+version = "1.0.0"
+description = "System Tests for Polarion PDF Exporter extension"
 authors = [
     {name = "SBB Polarion Team", email = "polarion-opensource@sbb.ch"},
 ]
@@ -10,76 +10,271 @@ readme = "readme.md"
 requires-python = ">=3.14,<3.15"
 
 dependencies = [
-    "httpx==0.28.1",
+    "python-sbb-polarion",
+    "unittest-xml-reporting==3.2.0",
+    "pre-commit==4.5.0",
+    "ruff==0.15.8",
+    "mypy==1.19.1",
+    "types-requests==2.32.4.20250913",
+    "tox==4.32.0",
+    "PyPDF2==3.0.1",
+    "PyMuPDF>=1.26.6",
+    "opencv-python-headless>=4.12.0",
+    "parameterized==0.9.0",
+    "testcontainers>=4.13.3",
 ]
-
-[project.urls]
-Homepage = "https://github.com/SchweizerischeBundesbahnen/open-source-polarion-python-repo-template"
-Repository = "https://github.com/SchweizerischeBundesbahnen/open-source-polarion-python-repo-template"
-
-[dependency-groups]
-dev = [
-    "pre-commit==4.5.1",
-    "ruff==0.15.9",
-    "mypy==1.20.0",
-]
-
-test = [
-    "tox==4.52.0",
-    "tox-uv==1.34.0",
-    "pytest==9.0.2",
-    "coverage==7.13.5",
-]
-
-[tool.uv]
-# Set to false because this project contains only tests, not a distributable package
-package = false
 
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
+[tool.uv]
+
+# Pin python-sbb-polarion to use GitHub release
+[tool.uv.sources]
+python-sbb-polarion = { git = "https://github.com/SchweizerischeBundesbahnen/python-sbb-polarion", tag = "v2.0.2" }
+
+[tool.hatch.build.targets.wheel]
+packages = ["tests"]
+
+
+
+# =============================================================================
+# Ruff Configuration (2025 Best Practices)
+# =============================================================================
+# Philosophy: Start strict with ALL rules, then relax intentionally with clear justification
+# Reference: r/Python community consensus + Ruff official formatter conflicts
+
 [tool.ruff]
-line-length = 240
-fix = true
-show-fixes = true
-
-[tool.ruff.lint]
-extend-select = [
-    # --- Recommended ---
-    "E", "W", # pycodestyle errors and warnings
-    "F",      # Pyflakes
-    "I",      # isort
-    "C4",     # flake8-comprehensions
-    "C90",    # mccabe
-    "B",      # flake8-bugbear
-    "UP",     # pyupgrade
-    "S",      # flake8-bandit
-    "PL",     # Pylint
-    "PTH",    # flake8-pathlib
-    "TCH",    # type-checking imports
-    "SIM",    # flake8-simplify
-    "T20",    # flake8-print
-    "ERA",    # eradicate
-]
-
-[tool.ruff.lint.per-file-ignores]
-"tests/*" = [
-    "S101" # No assert rule (bandit)
+line-length = 240  # Match python-sbb-polarion standard
+indent-width = 4
+target-version = "py313"  # Minimum supported Python version
+exclude = [
+    ".venv",
+    ".tox",
+    "build",
+    "dist",
 ]
 
 [tool.ruff.format]
+# Black-compatible formatting
+indent-style = "space"
 line-ending = "lf"
+quote-style = "double"
+docstring-code-format = true
+docstring-code-line-length = 120  # Slightly shorter for code in docstrings
+
+[tool.ruff.lint]
+# Enable ALL rules (2025 community best practice - start strict, relax intentionally)
+select = ["ALL"]
+preview = true  # Get new rules early for better code quality
+
+# Ignore rules with clear justification
+ignore = [
+    # =========================================================================
+    # Formatter Conflicts (REQUIRED - prevents conflicts with ruff format)
+    # =========================================================================
+    "W191",    # tab-indentation (formatter handles this)
+    "E111",    # indentation-with-invalid-multiple (formatter handles this)
+    "E114",    # indentation-with-invalid-multiple-comment (formatter handles this)
+    "E117",    # over-indented (formatter handles this)
+    "D206",    # indent-with-spaces (formatter handles this)
+    "D300",    # triple-single-quotes (formatter handles this)
+    "Q000",    # bad-quotes-inline-string (formatter handles this)
+    "Q001",    # bad-quotes-multiline-string (formatter handles this)
+    "Q002",    # bad-quotes-docstring (formatter handles this)
+    "Q003",    # avoidable-escaped-quote (formatter handles this)
+    "COM812",  # missing-trailing-comma (formatter handles this)
+    "COM819",  # prohibited-trailing-comma (formatter handles this)
+    "ISC001",  # single-line-implicit-string-concatenation (formatter conflicts)
+
+    # =========================================================================
+    # Documentation Rules (Too verbose for system tests)
+    # =========================================================================
+    "D100",    # undocumented-public-module
+    "D102",    # undocumented-public-method
+    "D103",    # undocumented-public-function
+    "D104",    # undocumented-public-package
+    "D107",    # undocumented-public-init
+    "D200",    # fits-on-one-line
+    "D203",    # one-blank-line-before-class (conflicts with D211)
+    "D205",    # blank-line-after-summary
+    "D212",    # multi-line-summary-first-line (conflicts with D213 - using D213)
+    "D400",    # ends-in-period
+    "D401",    # non-imperative-mood
+    "D415",    # ends-in-punctuation
+
+    # =========================================================================
+    # Comments and TODOs (Managed manually, not through linter)
+    # =========================================================================
+    "TD002",   # missing-todo-author
+    "TD003",   # missing-todo-link
+    "FIX002",  # line-contains-todo
+    "ERA001",  # commented-out-code (sometimes intentional for documentation)
+
+    # =========================================================================
+    # Exception Handling (Simple is better than complex)
+    # =========================================================================
+    "EM101",   # raw-string-in-exception
+    "EM102",   # f-string-in-exception
+    "TRY003",  # raise-vanilla-args
+    "TRY301",  # raise-within-try
+    "BLE001",  # blind-except (handle case-by-case with inline noqa)
+
+    # =========================================================================
+    # Complexity Metrics (Handle per-module with inline noqa if needed)
+    # =========================================================================
+    "C901",    # complex-structure (keep max-complexity = 10 below, use inline noqa for exceptions)
+    "PLR0904", # too-many-public-methods (case-by-case)
+    "PLR0912", # too-many-branches (case-by-case)
+    "PLR0913", # too-many-arguments (case-by-case, consider refactoring)
+    "PLR0915", # too-many-statements (case-by-case)
+    "PLR2004", # magic-value-comparison (case-by-case, consider constants)
+
+    # =========================================================================
+    # Other Common Ignores
+    # =========================================================================
+    "CPY001",  # missing-copyright-notice (not required for internal tools)
+    "FBT001",  # boolean-type-hint-positional-argument (sometimes necessary for APIs)
+    "FBT002",  # boolean-default-value-positional-argument (sometimes necessary for APIs)
+    "FBT003",  # boolean-positional-value-in-call (case-by-case)
+    "G004",    # logging-f-string (f-strings are fine in modern Python)
+    "DTZ005",  # datetime-now-without-tzinfo (many internal uses don't need timezone)
+    "PGH003",  # blanket-type-ignore (use specific ignores, but sometimes needed)
+    "PERF401", # manual-list-comprehension (readability over micro-optimization)
+    "S324",    # hashlib-insecure-hash-function (MD5/SHA1 acceptable for non-crypto use)
+    "SIM108",  # if-else-block-instead-of-ternary (explicit if-else preferred for readability)
+
+    # =========================================================================
+    # Pylint Migration (equivalents of old disabled rules)
+    # =========================================================================
+    "N802",    # invalid-function-name (equivalent to pylint C0103 - allow flexible naming)
+    "N803",    # invalid-argument-name (equivalent to pylint C0103)
+    "N806",    # non-lowercase-variable-in-function (equivalent to pylint C0103)
+    "N815",    # mixed-case-variable-in-class-scope (equivalent to pylint C0103)
+    "N816",    # mixed-case-variable-in-global-scope (equivalent to pylint C0103)
+]
+
+# McCabe complexity threshold
+mccabe = { max-complexity = 10 }
+
+# Per-file ignores (context-specific relaxation)
+[tool.ruff.lint.per-file-ignores]
+# Test files - allow test-specific patterns
+"tests/**/*.py" = [
+    "S101",    # assert (asserts are standard in unittest)
+    "S105",    # hardcoded-password-string (test credentials are not real)
+    "S106",    # hardcoded-password-func-arg (test data often has dummy passwords)
+    "S108",    # hardcoded-temp-file (test paths like /tmp/ are acceptable)
+    "S404",    # subprocess-without-shell-equals-true (test code may need subprocess)
+    "ANN",     # flake8-annotations (type hints enforced but relaxed for tests)
+    "ARG",     # flake8-unused-arguments (fixtures may appear unused)
+    "DOC",     # pydoclint (docstrings less critical in tests)
+    "E402",    # module-import-not-at-top-of-file (test mocking may require this)
+    "F405",    # undefined-local-with-import-star (conftest.py patterns)
+    "F403",    # undefined-local-with-import-star-usage
+    "F841",    # unused-variable (test setup may have intentionally unused variables)
+    "FBT",     # flake8-boolean-trap (parametrize often uses booleans)
+    "FURB113", # repeated-append (test setup code readability over optimization)
+    "PLC0415", # import-outside-top-level (test mocking may require this)
+    "PLC2801", # unnecessary-dunder-call (tests may need to test __del__ directly)
+    "PLR0914", # too-many-locals (test functions may need many variables)
+    "PLR2004", # magic-value-comparison (magic values acceptable in test data)
+    "PLR0913", # too-many-arguments (test functions can have many fixtures)
+    "PLR6201", # literal-membership (test readability over micro-optimization)
+    "PLR6301", # no-self-use (test methods often don't use self)
+    "PLW2901", # redefined-loop-name (test code readability pattern)
+    "PT009",   # unittest-assertion (allow unittest-style assertions)
+    "PT027",   # unittest-raises-assertion (allow unittest-style assertRaises)
+    "RET504",  # unnecessary-assign-before-return (test code readability)
+    "RUF005",  # collection-literal-concatenation (test code readability)
+    "S607",    # start-process-with-partial-path (test code may use executables in PATH)
+    "SIM118",  # in-dict-keys (test code readability)
+    "SLF001",  # private-member-access (tests need to verify internal state)
+    "TRY300",  # try-consider-else (test code readability)
+]
+
+# __init__.py files - allow re-exports
+"**/__init__.py" = [
+    "F401",    # unused-import (re-exports are intentional)
+    "D104",    # undocumented-public-package (already globally ignored, but explicit here)
+]
+
+[tool.ruff.lint.isort]
+# Import sorting configuration (replaces isort)
+force-single-line = false
+force-sort-within-sections = false
+lines-after-imports = 2
+known-first-party = ["tests"]
+section-order = [
+    "future",
+    "standard-library",
+    "third-party",
+    "first-party",
+    "local-folder",
+]
+
+[tool.ruff.lint.pydocstyle]
+# Use Google-style docstrings (common in Python community)
+convention = "google"
+
+[tool.ruff.lint.pylint]
+# Additional Pylint-equivalent settings
+max-args = 10  # Increased from default 5 - APIs often need many parameters
+max-branches = 12  # Same as max-complexity
+max-returns = 6  # Allow multiple return points for clarity
+max-statements = 50  # Per function
+
+
+# =============================================================================
+# MyPy Configuration (Strict Type Checking)
+# =============================================================================
 
 [tool.mypy]
-explicit_package_bases = true
-disallow_untyped_defs = true
-exclude = "tests/.*"
-install_types = true
-non_interactive = true
+python_version = "3.14"                  # Tells mypy to check against Python 3.14 features
+warn_return_any = true                   # Warns if function returns 'Any' type
+warn_unused_configs = true               # Warns about unused mypy settings
+disallow_untyped_defs = true             # Disallows functions without type hints
+disallow_incomplete_defs = true          # Disallows partially typed functions
+check_untyped_defs = true                # Type checks bodies of functions without type annotations
+disallow_untyped_calls = false           # Allow calling untyped functions (too strict for third-party libs)
+warn_redundant_casts = true              # Warns about unnecessary type casts
+warn_unused_ignores = true               # Warns about unused '# type: ignore' comments
+warn_no_return = true                    # Warns about functions that don't return a value
+warn_unreachable = true                  # Warns about unreachable code
+strict_equality = true                   # Strict checking of equality operations
+extra_checks = true                      # Enable additional checks
+no_implicit_optional = true              # Disallows implicit Optional types (e.g., x: str = None)
 
-[tool.pytest.ini_options]
-testpaths = ["tests"]
-python_files = ["test_*.py"]
-python_classes = ["Test*"]
-python_functions = ["test_*"]
+# Strict Any checks - prevent untyped variables
+disallow_any_unimported = true           # Disallows Any from unfollowed imports (stricter typing)
+disallow_any_generics = true             # Requires type parameters for generic types (e.g., list[str] not list)
+disallow_subclassing_any = true          # Disallows subclassing Any types
+
+# Testing module: testcontainers library has no type stubs
+[[tool.mypy.overrides]]
+module = ["testcontainers.*"]
+ignore_missing_imports = true
+
+# xmlrunner has no type stubs
+[[tool.mypy.overrides]]
+module = ["xmlrunner"]
+ignore_missing_imports = true
+
+# fitz (PyMuPDF) has no type stubs
+[[tool.mypy.overrides]]
+module = ["fitz"]
+ignore_missing_imports = true
+
+# parameterized has no type stubs
+[[tool.mypy.overrides]]
+module = ["parameterized"]
+ignore_missing_imports = true
+
+# =============================================================================
+# SBB Polarion Linter Configuration
+# =============================================================================
+[tool.python-sbb-polarion-lint]
+# Cache enabled for performance (skip unchanged files)
+cache = true
+# PSP014-017 are skipped for test files automatically
