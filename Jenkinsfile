@@ -10,34 +10,40 @@ pipeline {
     options {
         ansiColor('xterm')
         disableConcurrentBuilds(abortPrevious: true)  // Abort running build when new commit arrives on the same branch
-        lock('polarion-system-tests')  // Serialize across repos/branches — concurrent runs against the shared Polarion instance cause flaky visual diffs
         timestamps()
     }
     stages {
-        stage('Install uv') {
-            steps {
-                sh "curl -LsSf https://astral.sh/uv/install.sh | sh"
-                sh "export PATH=\"\$HOME/.local/bin:\$PATH\" && uv --version"
+        stage('System Tests') {
+            options {
+                lock resource: 'polarion-system-tests'  // Serialize across repos/branches — concurrent runs against the shared Polarion instance cause flaky visual diffs
             }
-        }
-        stage('Install Python requirements') {
-            steps {
-                sh '''
-                    export PATH="$HOME/.local/bin:$PATH"
-                    uv sync --frozen
-                '''
-            }
-        }
-        stage('Run system tests with tox') {
-            steps {
-                withCredentials([
-                    string(credentialsId: 'POLARION-system-test-url', variable: 'POLARION_BASE_URL'),
-                    string(credentialsId: 'POLARION-system-test-token', variable: 'AUTH_TOKEN')
-                ]) {
-                    sh '''
-                        export PATH="$HOME/.local/bin:$PATH"
-                        uv run tox -- --app_url ${POLARION_BASE_URL} --app_token ${AUTH_TOKEN}
-                    '''
+            stages {
+                stage('Install uv') {
+                    steps {
+                        sh "curl -LsSf https://astral.sh/uv/install.sh | sh"
+                        sh "export PATH=\"\$HOME/.local/bin:\$PATH\" && uv --version"
+                    }
+                }
+                stage('Install Python requirements') {
+                    steps {
+                        sh '''
+                            export PATH="$HOME/.local/bin:$PATH"
+                            uv sync --frozen
+                        '''
+                    }
+                }
+                stage('Run system tests with tox') {
+                    steps {
+                        withCredentials([
+                            string(credentialsId: 'POLARION-system-test-url', variable: 'POLARION_BASE_URL'),
+                            string(credentialsId: 'POLARION-system-test-token', variable: 'AUTH_TOKEN')
+                        ]) {
+                            sh '''
+                                export PATH="$HOME/.local/bin:$PATH"
+                                uv run tox -- --app_url ${POLARION_BASE_URL} --app_token ${AUTH_TOKEN}
+                            '''
+                        }
+                    }
                 }
             }
         }
