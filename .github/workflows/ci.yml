@@ -28,7 +28,7 @@ jobs:
         with:
           enable-cache: true
       - name: 🧱 Install dependencies
-        run: uv sync --all-groups --locked
+        run: uv sync --all-groups --frozen
       - name: 🧪 Run tests
         run: uv run tox --notest # tests should be run on Jenkins; other checks may also need to be moved there
       - name: SonarCloud scan for PR
