@@ -2,7 +2,7 @@
 
 pipeline {
     agent {
-        label 'testing-latest'
+        label 'polarion-testing-latest'
     }
     options {
         ansiColor('xterm')
