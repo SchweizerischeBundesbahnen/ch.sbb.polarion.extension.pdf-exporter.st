@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<work-item>
+    <field id="assignee">sDeveloper</field>
+    <field id="author">rProject</field>
+    <field id="categories">
+        <list>
+            <item>objects</item>
+            <item>ui</item>
+        </list>
+    </field>
+    <field id="created">2010-11-25 16:16:28.806 +0100</field>
+    <field id="description" text-type="text/html"><![CDATA[Users also want to easily get a list of online resources, with links to Amazon, ReviewMyBook and other online services.<br/>
+This list of services needs to be configurable.]]></field>
+    <field id="initialEstimate">6d</field>
+    <field id="previousStatus">approved</field>
+    <field id="priority">20.0</field>
+    <field id="remainingEstimate">6d</field>
+    <field id="resolvedOn">2010-12-02 10:36:52.592 +0100</field>
+    <field id="severity">nice_to_have</field>
+    <field id="status">accepted</field>
+    <field id="storyPoints" type="integer">8</field>
+    <field id="title">Online services</field>
+    <field id="type">userstory</field>
+</work-item>

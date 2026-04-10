@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<enumeration>
+    <option color="#2980B9" iconURL="/polarion/icons/default/enums/req_status_draft.gif" id="draft" name="Draft" sortOrder="1"/>
+    <option color="#2ECC71" iconURL="/polarion/icons/default/enums/req_status_reviewed.gif" id="active" name="Active" sortOrder="2"/>
+    <option color="#E67E22" iconURL="/polarion/icons/default/enums/testcase_failed.gif" id="inactive" name="Inactive" sortOrder="3"/>
+</enumeration>

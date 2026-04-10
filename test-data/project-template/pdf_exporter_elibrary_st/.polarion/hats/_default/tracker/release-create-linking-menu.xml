@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<menu>
+	<item label="Dependent User Story" role="depends_on" type="userstory"/>
+	<item label="Related" role="relates_to"/>
+</menu>

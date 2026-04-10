@@ -1,0 +1,44 @@
+###############################################################################
+##
+##  dependencies.vm - this velocity script is executed on changing relevant widget settings
+##  com.polarion.alm.shared.api.model.rp.parameter.impl.enumeration.CustomEnumParameterImpl $enum
+##  com.polarion.alm.shared.api.transaction.ReadOnlyTransaction $transaction
+##
+
+###############################################################################
+##
+##  Dependencies
+##
+
+#set($scope = $parameters.scope.scope())
+#set($scopeProjectId = $scope.projectId())
+#set($typeId = $parameters.type.singleValue().id())
+
+## Check if scope is a project
+#if($scopeProjectId)
+	## Set scope for For Type param so we can select work item types from correct project
+	$parameters.type.set().scope($scope)
+
+	## Clear list of enum options from Enumeration parameter - will be rebuilt later (already selected enum remains active)
+	$parameters.enum.set().clear()
+
+	## If type parameter is selected and the selected enumeration is type-specific, specify type for Enumeration Option Parameter, otherwise reset
+	#if($typeId && !$transaction.enumerations().getEnumeration("$parameters.enum.singleValue()").forType("$typeId").forProject("$scopeProjectId").isUnresolvable())
+		$parameters.enumOpt.set().type("$typeId")
+	#else
+		$parameters.enumOpt.set().type("")
+	#end
+
+	## Set correct scope also for Enumeration Option paramater
+	## Also propagate selected Enumeration to Enumeration Option parameter so specific value can be selected for rendering
+	$parameters.enumOpt.set().scope($scope).enumId("$parameters.enum.singleValue()")
+
+	#set($enumerations = $transaction.enumerations().definedEnumerations().forType("$typeId").forProject("$scopeProjectId"))
+	#foreach($enum in $enumerations)
+		$parameters.enum.set().addEnumItem("$enum.getReference().id()", "$enum.label()")
+	#end
+#else
+	$parameters.type.set().singleValue("")
+	$parameters.enum.set().singleValue("Scope must be a single project")
+	$parameters.enumOpt.set().singleValue("")
+#end

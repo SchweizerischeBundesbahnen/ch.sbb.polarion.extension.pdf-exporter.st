@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<work-item>
+    <field id="author">rProject</field>
+    <field id="categories">
+        <list>
+            <item>security</item>
+        </list>
+    </field>
+    <field id="created">2012-02-01 18:04:43.995 +0100</field>
+    <field id="initialEstimate"/>
+    <field id="linkedWorkItems">
+        <list>
+            <struct>
+                <item id="role">verifies</item>
+                <item id="workItem">EL-150</item>
+            </struct>
+        </list>
+    </field>
+    <field id="previousStatus">draft</field>
+    <field id="priority">50.0</field>
+    <field id="remainingEstimate"/>
+    <field id="severity">basic</field>
+    <field id="status">active</field>
+    <field id="testSteps" type="struct:TestSteps">
+        <struct>
+            <item id="keys">
+                <list>
+                    <item>step</item>
+                    <item>description</item>
+                    <item>expectedResult</item>
+                </list>
+            </item>
+            <item id="steps">
+                <list>
+                    <struct>
+                        <item id="values">
+                            <list>
+                                <item text-type="text/html">Open User Account page</item>
+                                <item text-type="text/html">Login to E-Library Portal, and click user account in top left corner</item>
+                                <item text-type="text/html">User Account page is displayed</item>
+                            </list>
+                        </item>
+                    </struct>
+                    <struct>
+                        <item id="values">
+                            <list>
+                                <item text-type="text/html">Select existing user account</item>
+                                <item text-type="text/html">Click on current user name in a users table</item>
+                                <item text-type="text/html">Selected user's account dialog is opened</item>
+                            </list>
+                        </item>
+                    </struct>
+                    <struct>
+                        <item id="values">
+                            <list>
+                                <item text-type="text/html">Save with password shorter than 8 characters</item>
+                                <item text-type="text/html">Type new password:"test" and hit save.</item>
+                                <item text-type="text/html">System reports that the password should contain at least 8 characters</item>
+                            </list>
+                        </item>
+                    </struct>
+                </list>
+            </item>
+        </struct>
+    </field>
+    <field id="testType" type="enum:testtype">manual</field>
+    <field id="timeSpent"/>
+    <field id="title">Test: user name must contain at least 8 characters</field>
+    <field id="type">testcase</field>
+</work-item>

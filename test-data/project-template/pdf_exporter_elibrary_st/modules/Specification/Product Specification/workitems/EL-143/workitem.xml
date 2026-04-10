@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<work-item>
+    <field id="assignee">
+        <list>
+            <item>sDeveloper</item>
+            <item>pGUI</item>
+        </list>
+    </field>
+    <field id="author">rProject</field>
+    <field id="categories">
+        <list>
+            <item>usermanagement</item>
+            <item>administration</item>
+            <item>projectadmin</item>
+        </list>
+    </field>
+    <field id="created">2010-12-03 13:40:40.968 +0100</field>
+    <field id="description" text-type="text/html">System Administrator must be able to set the user roles.</field>
+    <field id="initialEstimate">3d 6h</field>
+    <field id="previousStatus">implemented</field>
+    <field id="priority">67.0</field>
+    <field id="resolution">done</field>
+    <field id="resolvedOn">2010-12-03 13:41:21.696 +0100</field>
+    <field id="severity">should_have</field>
+    <field id="status">verified</field>
+    <field id="storyPoints" type="integer">5</field>
+    <field id="timeSpent">4d 1h</field>
+    <field id="type">userstory</field>
+</work-item>

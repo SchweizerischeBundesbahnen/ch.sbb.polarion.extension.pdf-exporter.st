@@ -1,0 +1,1155 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<rich-page>
+    <field id="author">admin</field>
+    <field id="created">2017-02-09 11:45:04.413 +0100</field>
+    <field id="homePageContent" text-type="text/html"><![CDATA[<div class="polarion-rp-column" style="width: 100%;">
+  <h1 id="polarion_hardcoded_0">Test Run Statistics</h1>
+  <p id="polarion_1">
+    <span class="polarion-rp-inline-widget" data-widget="com.polarion.scriptInline">
+      <span class="polarion-rp-widget-parameters" style="display: none;">
+        <sub id="script">
+          <sub id="script" style="white-space:pre;">## Reported By
+#set($infoText = &quot;Reported by $transaction.users().getBy().id($securityService.getCurrentUser()).render()&lt;br/&gt;$date.long&quot;)
+#if($widgetContext.target().isEditor())
+	&lt;div style=&quot;color: grey; text-align: left;&quot;&gt;$infoText&lt;div&gt;
+#elseif($widgetContext.target().isPdf())
+	&lt;div style=&quot;color: grey; text-align: right; position: absolute; top: 22px; right: 10px;&quot;&gt;$infoText&lt;div&gt;
+#elseif($widgetContext.target().isPrint())
+	&lt;div style=&quot;text-align: right; position: absolute; top: 35px; right: 10px;&quot;&gt;$infoText&lt;div&gt;
+#end</sub>
+        </sub>
+      </span>
+    </span>
+  </p>
+</div>
+<div class="polarion-rp-row-separator" page_min_width="1000"></div>
+<div class="polarion-rp-column" style="width: 70%;">
+  <div id="polarion_client7" class="polarion-rp-widget-part" data-widget="com.polarion.scriptBlock">
+    <span class="polarion-rp-widget-parameters">
+      <sub id="script">
+        <sub id="script" style="white-space:pre;">#info(&quot;Displays statistics about selected Test Runs, filtered by Test Run Template, Query, Group ID (i.e. build number), Status and Execution Date.&lt;br/&gt;Note: &lt;b&gt;Passed&lt;/b&gt; Test Cases have passed in all the selected Test Runs. &lt;b&gt;Failed&lt;/b&gt; or &lt;b&gt;Blocked&lt;/b&gt; Test Cases have failed or been blocked at least once in any of the selected Test Runs.&quot;)</sub>
+      </sub>
+    </span>
+  </div>
+  <h2 id="polarion_client13">Test Run Summary</h2>
+  <div id="polarion_client37" class="polarion-rp-widget-part" data-widget="com.polarion.scriptBlock">
+    <span class="polarion-rp-widget-parameters">
+      <sub id="script">
+        <sub id="script" style="white-space:pre;">###############################################################################
+##
+## Velocity Context - following objects are in the velocity context
+##
+## com.polarion.alm.shared.api.transaction.ReadOnlyTransaction $transaction
+## com.polarion.alm.shared.api.model.rp.RichPage $page
+## com.polarion.alm.shared.api.utils.collections.ReadOnlyStrictMap&lt;String, String&gt; $urlParameters
+## org.apache.velocity.tools.generic.DateTool $date
+##
+
+###############################################################################
+##
+## Macros
+##
+#macro(showBigNumber $number $label $color)
+	&lt;span #if(!$isPDF)style=&quot;color: $color; font-weight: bold; font-size: 14px; padding: 3px 16px 3px 3px; line-height: 200%; white-space: nowrap; display: inline-block;&quot;#end&gt;
+		&lt;span #if(!$isPDF)style=&quot;font-size: 36px;&quot;#end&gt;
+			&lt;b&gt;$number&lt;/b&gt;
+		&lt;/span&gt;$label
+	&lt;/span&gt;
+#end
+
+###############################################################################
+##
+## Parameters
+##
+#set($projectId = $page.getReference().projectId())
+#set($groupId = $pageParameters.groupId.value())
+#set($onlyFinished = $pageParameters.onlyFinished.value())
+#set($fromDate = $pageParameters.fromDate.toLucene())
+#set($toDate = $pageParameters.toDate.toLucene())
+#set($passedResultId = $pageParameters.passedTestResult.singleValue().id())
+#set($blockedResultId = $pageParameters.blockedTestResult.singleValue().id())
+#set($failedResultId = $pageParameters.failedTestResult.singleValue().id())
+
+
+###############################################################################
+##
+## Render
+##
+#set($testRunIds = &quot;&quot;)
+#set($app = &quot;&#39;&quot;)
+#set($quo = &#39;&quot;&#39;)
+#set($testRunsLuceneQuery = &quot;project.id:$projectId&quot;)
+#if($pageParameters.template.values().size() &gt; 0)
+	#set($templateQuery = &quot;template.id:(&quot;)
+	#foreach($template in $pageParameters.template.values())
+		#set($templateQuery = &quot;$templateQuery$quo$template$quo &quot;)
+	#end
+	#set($templateQuery = &quot;$templateQuery.trim())&quot;)
+	#set($testRunsLuceneQuery = &quot;$testRunsLuceneQuery AND $templateQuery&quot;)
+#end
+#if(!$pageParameters.query.value().equals(&quot;&quot;))
+	#set($testRunsLuceneQuery = &quot;$testRunsLuceneQuery AND $pageParameters.query.value()&quot;)
+#end
+#if(!$groupId.equals(&quot;&quot;))
+	#set($testRunsLuceneQuery = &quot;$testRunsLuceneQuery AND groupId:($groupId)&quot;)
+#end
+#if($onlyFinished)
+	#set($testRunsLuceneQuery = &quot;$testRunsLuceneQuery AND finishedOn:[$fromDate TO $toDate]&quot;)
+#end
+#set($testRuns = $transaction.testRuns().search().query(&quot;$testRunsLuceneQuery&quot;))
+#if($testRuns.size() &gt; 0)
+	&lt;table&gt;
+		&lt;tr&gt;
+			&lt;td colspan=&quot;2&quot;&gt;
+				#### TEST RUNS #############
+				#foreach($testRun in $testRuns)
+					#set($testRunIds = &quot;#if(!$testRunIds.isEmpty())$testRunIds, #end$app$testRun.getReference().id()$app&quot;)
+				#end
+				#set($testRunIds = $testRunIds.trim())
+				&lt;table&gt;
+					&lt;tr&gt;
+						&lt;td style=&quot;width: 125px;&quot; rowspan=&quot;2&quot;&gt;
+							&lt;div class=&quot;polarion-rp-widget-part&quot; data-widget=&quot;com.polarion.separateByPieChart&quot;&gt;
+								&lt;span class=&quot;polarion-rp-widget-parameters&quot;&gt;
+									&lt;sub id=&quot;title&quot;&gt;&lt;/sub&gt;
+									&lt;sub id=&quot;dataSet&quot;&gt;
+										&lt;sub id=&quot;prototype&quot;&gt;TestRun&lt;/sub&gt;
+										&lt;sub id=&quot;queryType&quot;&gt;lucene&lt;/sub&gt;
+										&lt;sub id=&quot;luceneQuery&quot;&gt;$testRunsLuceneQuery&lt;/sub&gt;
+										&lt;sub id=&quot;children&quot;&gt;
+											&lt;sub id=&quot;separateBy&quot;&gt;
+												&lt;sub id=&quot;field&quot;&gt;status&lt;/sub&gt;
+											&lt;/sub&gt;
+										&lt;/sub&gt;
+									&lt;/sub&gt;
+									&lt;sub id=&quot;showDataLabels&quot;&gt;false&lt;/sub&gt;
+									&lt;sub id=&quot;showZeroValues&quot;&gt;false&lt;/sub&gt;
+									&lt;sub id=&quot;advanced&quot;&gt;
+										&lt;sub id=&quot;height&quot;&gt;120&lt;/sub&gt;
+										&lt;sub id=&quot;width&quot;&gt;120&lt;/sub&gt;
+									&lt;/sub&gt;
+								&lt;/span&gt;
+							&lt;/div&gt;
+						&lt;/td&gt;
+						&lt;td&gt;
+							#showBigNumber($testRuns.size() &quot;Test Runs#if($onlyFinished) Executed#end&quot; &quot;Black&quot;)
+						&lt;/td&gt;
+					&lt;/tr&gt;
+					&lt;tr&gt;
+						&lt;td&gt;
+							#foreach($enum in $testManagementService.getTestRunStatusEnum(&quot;$projectId&quot;).getAllOptions())
+								#set($testRunCount = $transaction.testRuns().search().query(&quot;$testRunsLuceneQuery AND status:$enum.getId()&quot;).size())
+								#showBigNumber($testRunCount &quot;$enum.getName()&quot; $enum.getProperty(&#39;color&#39;))
+							#end
+						&lt;/td&gt;
+					&lt;/tr&gt;
+				&lt;/table&gt;
+			&lt;/td&gt;
+		&lt;/tr&gt;
+		&lt;tr&gt;
+			&lt;td colspan=&quot;2&quot;&gt;
+				&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+			&lt;/td&gt;
+		&lt;/tr&gt;
+		&lt;tr&gt;
+			&lt;td&gt;
+				######## ISSUES ###################################
+				#set($issuesQuery = &quot;select distinct C_URI from WORKITEM D where C_URI in (select TRR.FK_URI_DEFECT from STRUCT_TESTRUN_RECORDS TRR where TRR.FK_URI_P_TESTRUN in (select C_URI from TESTRUN TR where TR.C_ID in ($testRunIds) AND TR.FK_PROJECT in (select C_PK from PROJECT PR where PR.C_ID IN (&#39;$projectId&#39;)))) and D.FK_PROJECT in (select C_PK from PROJECT PR where PR.C_ID IN (&#39;$projectId&#39;))&quot;)
+				#set($allIssuesCount = $transaction.workItems().count().query(&quot;SQL:($issuesQuery)&quot;).result())
+				#set($unresolvedIssuesCount = $transaction.workItems().count().query(&quot;SQL:($issuesQuery and D.C_RESOLUTION IS NULL)&quot;).result())
+				#set($resolvedIssuesCount = $transaction.workItems().count().query(&quot;SQL:($issuesQuery and D.C_RESOLUTION IS NOT NULL)&quot;).result())
+				&lt;table&gt;
+					&lt;tr&gt;
+						&lt;td style=&quot;width: 125px;&quot; rowspan=&quot;2&quot;&gt;
+							&lt;div class=&quot;polarion-rp-widget-part&quot; data-widget=&quot;com.polarion.multiSetPieChart&quot;&gt;
+								&lt;span class=&quot;polarion-rp-widget-parameters&quot;&gt;
+									&lt;sub id=&quot;title&quot;&gt;&lt;/sub&gt;
+									&lt;sub id=&quot;sectors&quot;&gt;
+										&lt;sub id=&quot;elements&quot;&gt;
+											&lt;sub&gt;
+												&lt;sub id=&quot;prototype&quot;&gt;WorkItem&lt;/sub&gt;
+												&lt;sub id=&quot;queryType&quot;&gt;lucene&lt;/sub&gt;
+												&lt;sub id=&quot;luceneQuery&quot;&gt;SQL:($issuesQuery and D.C_RESOLUTION IS NOT NULL)&lt;/sub&gt;
+												&lt;sub id=&quot;children&quot;&gt;
+													&lt;sub id=&quot;sectorName&quot;&gt;Resolved&lt;/sub&gt;
+													&lt;sub id=&quot;sectorColor&quot;&gt;#2ECC71&lt;/sub&gt;
+												&lt;/sub&gt;
+											&lt;/sub&gt;
+											&lt;sub&gt;
+												&lt;sub id=&quot;prototype&quot;&gt;WorkItem&lt;/sub&gt;
+												&lt;sub id=&quot;queryType&quot;&gt;lucene&lt;/sub&gt;
+												&lt;sub id=&quot;luceneQuery&quot;&gt;SQL:($issuesQuery and D.C_RESOLUTION IS NULL)&lt;/sub&gt;
+												&lt;sub id=&quot;children&quot;&gt;
+													&lt;sub id=&quot;sectorName&quot;&gt;Unresolved&lt;/sub&gt;
+													&lt;sub id=&quot;sectorColor&quot;&gt;#E74C3C&lt;/sub&gt;
+												&lt;/sub&gt;
+											&lt;/sub&gt;
+										&lt;/sub&gt;
+									&lt;/sub&gt;
+									&lt;sub id=&quot;showDataLabels&quot;&gt;false&lt;/sub&gt;
+									&lt;sub id=&quot;showZeroValues&quot;&gt;false&lt;/sub&gt;
+									&lt;sub id=&quot;advanced&quot;&gt;
+										&lt;sub id=&quot;height&quot;&gt;120&lt;/sub&gt;
+										&lt;sub id=&quot;width&quot;&gt;120&lt;/sub&gt;
+									&lt;/sub&gt;
+								&lt;/span&gt;
+							&lt;/div&gt;
+						&lt;/td&gt;
+						&lt;td&gt;
+							#showBigNumber($allIssuesCount &quot;Issues Reported&quot; &quot;Black&quot;)
+						&lt;/td&gt;
+					&lt;/tr&gt;
+					&lt;tr&gt;
+						&lt;td&gt;
+							#showBigNumber($resolvedIssuesCount &quot;Resolved&quot; &#39;#2ECC71&#39;)
+							#showBigNumber($unresolvedIssuesCount &quot;Unresolved&quot; &#39;#E74C3C&#39;)
+						&lt;/td&gt;
+					&lt;/tr&gt;
+				&lt;/table&gt;
+			&lt;/td&gt;
+			&lt;td&gt;
+				####### TEST CASES ###################################
+				#set($testCaseQuery = &quot;select distinct TRR.FK_URI_TESTCASE from STRUCT_TESTRUN_RECORDS TRR where TRR.FK_URI_P_TESTRUN in (select C_URI from TESTRUN TR where TR.C_ID in ($testRunIds) and TR.FK_PROJECT in (select C_PK from PROJECT PR where PR.C_ID IN (&#39;$projectId&#39;)))&quot;)
+				#set($executedTestCasesQuery = &quot;$testCaseQuery and TRR.C_RESULT IS NOT NULL&quot;)
+				#set($failedTestCasesQuery = &quot;$testCaseQuery and TRR.C_RESULT=&#39;$failedResultId&#39;&quot;)
+				#set($blockedTestCasesQuery = &quot;$testCaseQuery and TRR.C_RESULT=&#39;$blockedResultId&#39;&quot;)
+				#set($notPassedTestCasesQuery = &quot;$testCaseQuery and TRR.C_RESULT is not null and not TRR.C_RESULT=&#39;$passedResultId&#39;&quot;)
+				#set($executedTestCasesCount = $transaction.workItems().count().query(&quot;SQL:($executedTestCasesQuery)&quot;).result())
+				#set($failedTestCasesCount = $transaction.workItems().count().query(&quot;SQL:($failedTestCasesQuery)&quot;).result())
+				#set($blockedTestCasesCount = $transaction.workItems().count().query(&quot;SQL:($blockedTestCasesQuery)&quot;).result())
+				#set($notPassedTestCaseSet = $transaction.workItems().search().query(&quot;SQL:($notPassedTestCasesQuery)&quot;))
+				#set($notPassedTestCaseIds = &quot;&quot;)
+				#foreach($notPassedTestCase in $notPassedTestCaseSet)
+					#if($velocityCount == 1)
+						#set($notPassedTestCaseIds = &quot;&#39;$notPassedTestCase.getReference().id()&#39;&quot;)
+					#else
+						#set($notPassedTestCaseIds = &quot;$notPassedTestCaseIds, &#39;$notPassedTestCase.getReference().id()&#39;&quot;)
+					#end
+				#end
+				#set($passedTestCasesQuery = &quot;$testCaseQuery and TRR.C_RESULT=&#39;$passedResultId&#39;&quot;)
+				#if(!$notPassedTestCaseIds.equals(&quot;&quot;))
+					#set($passedTestCasesQuery = &quot;$passedTestCasesQuery and TRR.FK_URI_TESTCASE not in (select C_URI from WORKITEM WI where WI.C_ID in ($notPassedTestCaseIds))&quot;)
+				#end
+				#set($passedTestCasesCount = $transaction.workItems().count().query(&quot;SQL:($passedTestCasesQuery)&quot;).result())
+				#set($rEnum = $testManagementService.getTestRecordResultEnum(&quot;$projectId&quot;))
+				#set($passedColor = $rEnum.wrapOption($passedResultId).getProperty(&#39;color&#39;))
+				#set($failedColor = $rEnum.wrapOption($failedResultId).getProperty(&#39;color&#39;))
+				#set($blockedColor = $rEnum.wrapOption($blockedResultId).getProperty(&#39;color&#39;))
+				&lt;table&gt;
+					&lt;tr&gt;
+						&lt;td style=&quot;width: 125px;&quot; rowspan=&quot;2&quot;&gt;
+							&lt;div class=&quot;polarion-rp-widget-part&quot; data-widget=&quot;com.polarion.multiSetPieChart&quot;&gt;
+								&lt;span class=&quot;polarion-rp-widget-parameters&quot;&gt;
+									&lt;sub id=&quot;title&quot;&gt;&lt;/sub&gt;
+									&lt;sub id=&quot;sectors&quot;&gt;
+										&lt;sub id=&quot;elements&quot;&gt;
+											&lt;sub&gt;
+												&lt;sub id=&quot;prototype&quot;&gt;WorkItem&lt;/sub&gt;
+												&lt;sub id=&quot;queryType&quot;&gt;lucene&lt;/sub&gt;
+												&lt;sub id=&quot;luceneQuery&quot;&gt;SQL:($passedTestCasesQuery)&lt;/sub&gt;
+												&lt;sub id=&quot;children&quot;&gt;
+													&lt;sub id=&quot;sectorName&quot;&gt;$rEnum.wrapOption($passedResultId).getName()&lt;/sub&gt;
+													&lt;sub id=&quot;sectorColor&quot;&gt;$passedColor&lt;/sub&gt;
+												&lt;/sub&gt;
+											&lt;/sub&gt;
+											&lt;sub&gt;
+												&lt;sub id=&quot;prototype&quot;&gt;WorkItem&lt;/sub&gt;
+												&lt;sub id=&quot;queryType&quot;&gt;lucene&lt;/sub&gt;
+												&lt;sub id=&quot;luceneQuery&quot;&gt;SQL:($failedTestCasesQuery)&lt;/sub&gt;
+												&lt;sub id=&quot;children&quot;&gt;
+													&lt;sub id=&quot;sectorName&quot;&gt;$rEnum.wrapOption($failedResultId).getName()&lt;/sub&gt;
+													&lt;sub id=&quot;sectorColor&quot;&gt;$failedColor&lt;/sub&gt;
+												&lt;/sub&gt;
+											&lt;/sub&gt;
+											&lt;sub&gt;
+												&lt;sub id=&quot;prototype&quot;&gt;WorkItem&lt;/sub&gt;
+												&lt;sub id=&quot;queryType&quot;&gt;lucene&lt;/sub&gt;
+												&lt;sub id=&quot;luceneQuery&quot;&gt;SQL:($blockedTestCasesQuery)&lt;/sub&gt;
+												&lt;sub id=&quot;children&quot;&gt;
+													&lt;sub id=&quot;sectorName&quot;&gt;$rEnum.wrapOption($blockedResultId).getName()&lt;/sub&gt;
+													&lt;sub id=&quot;sectorColor&quot;&gt;$blockedColor&lt;/sub&gt;
+												&lt;/sub&gt;
+											&lt;/sub&gt;
+										&lt;/sub&gt;
+									&lt;/sub&gt;
+									&lt;sub id=&quot;showDataLabels&quot;&gt;false&lt;/sub&gt;
+									&lt;sub id=&quot;showZeroValues&quot;&gt;false&lt;/sub&gt;
+									&lt;sub id=&quot;advanced&quot;&gt;
+										&lt;sub id=&quot;height&quot;&gt;120&lt;/sub&gt;
+										&lt;sub id=&quot;width&quot;&gt;120&lt;/sub&gt;
+									&lt;/sub&gt;
+								&lt;/span&gt;
+							&lt;/div&gt;
+						&lt;/td&gt;
+						&lt;td&gt;
+							#showBigNumber($executedTestCasesCount &quot;Executed Test Cases&quot; &quot;Black&quot;)
+						&lt;/td&gt;
+					&lt;/tr&gt;
+					&lt;tr&gt;
+						&lt;td&gt;
+							#showBigNumber($passedTestCasesCount &quot;Passed&quot; &quot;$passedColor&quot;)
+							#showBigNumber($failedTestCasesCount &quot;Failed&quot; &quot;$failedColor&quot;)
+							#showBigNumber($blockedTestCasesCount &quot;Blocked&quot; &quot;$blockedColor&quot;)
+						&lt;/td&gt;
+					&lt;/tr&gt;
+				&lt;/table&gt;
+			&lt;/td&gt;
+		&lt;/tr&gt;
+	&lt;/table&gt;
+#end</sub>
+      </sub>
+    </span>
+  </div>
+  <p id="polarion_client38"></p>
+  <h2 id="polarion_client33">Test Runs</h2>
+  <div id="polarion_client39" class="polarion-rp-widget-part" data-widget="com.polarion.table">
+    <span class="polarion-rp-widget-parameters">
+      <sub id="dataSet">
+        <sub id="prototype">TestRun</sub>
+        <sub id="queryType">luceneVelocity</sub>
+        <sub id="luceneQuery" style="white-space:pre;">## Test Runs Table
+project.id:$page.getReference().projectId()
+#set($quo = &#39;&quot;&#39;)
+#if($pageParameters.template.values().size() &gt; 0)
+	#set($templateQuery = &quot;template.id:(&quot;)
+	#foreach($template in $pageParameters.template.values())
+		#set($templateQuery = &quot;$templateQuery$quo$template$quo &quot;)
+	#end
+	#set($templateQuery = &quot;$templateQuery.trim())&quot;)
+	 AND $templateQuery
+#end
+#if(!$pageParameters.query.value().equals(&quot;&quot;))
+	AND $pageParameters.query.value()
+#end
+#if(!$pageParameters.groupId.value().equals(&quot;&quot;))
+	AND groupId:($pageParameters.groupId.value())
+#end
+#if($pageParameters.onlyFinished.value())
+	AND finishedOn:[$pageParameters.fromDate.toLucene() TO $pageParameters.toDate.toLucene()]
+#end</sub>
+        <sub id="children">
+          <sub id="columns">
+            <sub>
+              <sub id="id">id</sub>
+            </sub>
+            <sub>
+              <sub id="id">status</sub>
+            </sub>
+            <sub>
+              <sub id="id">created</sub>
+            </sub>
+            <sub>
+              <sub id="id">records</sub>
+            </sub>
+            <sub>
+              <sub id="id">author</sub>
+            </sub>
+          </sub>
+          <sub id="sortBy">
+            <sub>
+              <sub id="id">created</sub>
+              <sub id="descending">true</sub>
+            </sub>
+          </sub>
+        </sub>
+      </sub>
+      <sub id="propertiesSidebarFields">
+        <sub>
+          <sub id="id">severity</sub>
+        </sub>
+        <sub>
+          <sub id="id">status</sub>
+        </sub>
+        <sub>
+          <sub id="id">linkedWorkItems</sub>
+        </sub>
+      </sub>
+      <sub id="advanced">
+        <sub id="top">50</sub>
+      </sub>
+    </span>
+  </div>
+  <p id="polarion_3"></p>
+  <h2 id="polarion_client48">Failed Test Cases</h2>
+  <div id="polarion_client49" class="polarion-rp-widget-part" data-widget="com.polarion.scriptBlock">
+    <span class="polarion-rp-widget-parameters">
+      <sub id="script">
+        <sub id="script" style="white-space:pre;">#info(&quot;Test Cases that were executed and have failed at least once.&quot;)</sub>
+      </sub>
+    </span>
+  </div>
+  <div id="polarion_client62" class="polarion-rp-widget-part" data-widget="com.polarion.table">
+    <span class="polarion-rp-widget-parameters">
+      <sub id="dataSet">
+        <sub id="prototype">WorkItem</sub>
+        <sub id="queryType">luceneVelocity</sub>
+        <sub id="luceneQuery" style="white-space:pre;">## Failed Test Cases Table
+## PREPARE QUERY
+#set($quo = &#39;&quot;&#39;)
+#set($projectId = $page.getReference().projectId())
+#set($groupId = $pageParameters.groupId.value())
+#set($onlyFinished = $pageParameters.onlyFinished.value())
+#set($fromDate = $pageParameters.fromDate.toLucene())
+#set($toDate = $pageParameters.toDate.toLucene())
+#set($failedResultId = $pageParameters.failedTestResult.singleValue().id())
+#set($testRunsLuceneQuery = &quot;project.id:$projectId&quot;)
+#if($pageParameters.template.values().size() &gt; 0)
+	#set($templateQuery = &quot;template.id:(&quot;)
+	#foreach($template in $pageParameters.template.values())
+		#set($templateQuery = &quot;$templateQuery$quo$template$quo &quot;)
+	#end
+	#set($templateQuery = &quot;$templateQuery.trim())&quot;)
+	#set($testRunsLuceneQuery = &quot;$testRunsLuceneQuery AND $templateQuery&quot;)
+#end
+#if(!$pageParameters.query.value().equals(&quot;&quot;))
+	#set($testRunsLuceneQuery = &quot;$testRunsLuceneQuery AND $pageParameters.query.value()&quot;)
+#end
+#if(!$groupId.equals(&quot;&quot;))
+	#set($testRunsLuceneQuery = &quot;$testRunsLuceneQuery AND groupId:($groupId)&quot;)
+#end
+#if($onlyFinished)
+	#set($testRunsLuceneQuery = &quot;$testRunsLuceneQuery AND finishedOn:[$fromDate TO $toDate]&quot;)
+#end
+#set($testRunIds = &quot;&quot;)
+#set($app = &quot;&#39;&quot;)
+#set($testRuns = $transaction.testRuns().search().query(&quot;$testRunsLuceneQuery&quot;))
+#if($testRuns.size() &gt; 0)
+	#foreach($testRun in $testRuns)
+		#set($testRunIds = &quot;#if(!$testRunIds.isEmpty())$testRunIds, #end$app$testRun.getReference().id()$app&quot;)
+	#end
+	#set($testRunIds = $testRunIds.trim())
+	#set($testCaseQuery = &quot;select distinct TRR.FK_URI_TESTCASE from STRUCT_TESTRUN_RECORDS TRR where TRR.FK_URI_P_TESTRUN in (select C_URI from TESTRUN TR where TR.C_ID in ($testRunIds) and TR.FK_PROJECT in (select C_PK from PROJECT PR where PR.C_ID IN (&#39;$projectId&#39;)))&quot;)
+	#set($failedTestCasesQuery = &quot;$testCaseQuery and TRR.C_RESULT=&#39;$failedResultId&#39;&quot;)
+	## RENDER QUERY
+	SQL:($failedTestCasesQuery)
+#else
+	NOT *:*
+#end</sub>
+        <sub id="children">
+          <sub id="columns">
+            <sub>
+              <sub id="id">id</sub>
+            </sub>
+            <sub>
+              <sub id="id">title</sub>
+            </sub>
+            <sub>
+              <sub id="id">status</sub>
+            </sub>
+            <sub>
+              <sub id="id">severity</sub>
+            </sub>
+          </sub>
+          <sub id="sortBy">
+            <sub>
+              <sub id="id">id</sub>
+              <sub id="descending">false</sub>
+            </sub>
+          </sub>
+        </sub>
+      </sub>
+      <sub id="propertiesSidebarFields">
+        <sub>
+          <sub id="id">assignee</sub>
+        </sub>
+        <sub>
+          <sub id="id">severity</sub>
+        </sub>
+        <sub>
+          <sub id="id">testType</sub>
+        </sub>
+        <sub>
+          <sub id="id">status</sub>
+        </sub>
+        <sub>
+          <sub id="id">resolution</sub>
+        </sub>
+        <sub>
+          <sub id="id">linkedWorkItems</sub>
+        </sub>
+      </sub>
+      <sub id="advanced">
+        <sub id="top">50</sub>
+      </sub>
+    </span>
+  </div>
+  <p id="polarion_4"></p>
+  <h2 id="polarion_client28">Blocked Test Cases</h2>
+  <div id="polarion_client27" class="polarion-rp-widget-part" data-widget="com.polarion.scriptBlock">
+    <span class="polarion-rp-widget-parameters" style="display: none;">
+      <sub id="script">
+        <sub id="script" style="white-space:pre;">#info(&quot;Test Cases that were executed and have been blocked at least once.&quot;)</sub>
+      </sub>
+    </span>
+  </div>
+  <div id="polarion_client32" class="polarion-rp-widget-part" data-widget="com.polarion.table">
+    <span class="polarion-rp-widget-parameters" style="display: none;">
+      <sub id="dataSet">
+        <sub id="prototype">WorkItem</sub>
+        <sub id="queryType">luceneVelocity</sub>
+        <sub id="luceneQuery" style="white-space:pre;">## Blocked Test Cases Table
+## PREPARE QUERY
+#set($quo = &#39;&quot;&#39;)
+#set($projectId = $page.getReference().projectId())
+#set($groupId = $pageParameters.groupId.value())
+#set($onlyFinished = $pageParameters.onlyFinished.value())
+#set($fromDate = $pageParameters.fromDate.toLucene())
+#set($toDate = $pageParameters.toDate.toLucene())
+#set($blockedResultId = $pageParameters.blockedTestResult.singleValue().id())
+#set($testRunsLuceneQuery = &quot;project.id:$projectId&quot;)
+#if($pageParameters.template.values().size() &gt; 0)
+	#set($templateQuery = &quot;template.id:(&quot;)
+	#foreach($template in $pageParameters.template.values())
+		#set($templateQuery = &quot;$templateQuery$quo$template$quo &quot;)
+	#end
+	#set($templateQuery = &quot;$templateQuery.trim())&quot;)
+	#set($testRunsLuceneQuery = &quot;$testRunsLuceneQuery AND $templateQuery&quot;)
+#end
+#if(!$pageParameters.query.value().equals(&quot;&quot;))
+	#set($testRunsLuceneQuery = &quot;$testRunsLuceneQuery AND $pageParameters.query.value()&quot;)
+#end
+#if(!$groupId.equals(&quot;&quot;))
+	#set($testRunsLuceneQuery = &quot;$testRunsLuceneQuery AND groupId:($groupId)&quot;)
+#end
+#if($onlyFinished)
+	#set($testRunsLuceneQuery = &quot;$testRunsLuceneQuery AND finishedOn:[$fromDate TO $toDate]&quot;)
+#end
+#set($testRunIds = &quot;&quot;)
+#set($app = &quot;&#39;&quot;)
+#set($testRuns = $transaction.testRuns().search().query(&quot;$testRunsLuceneQuery&quot;))
+#if($testRuns.size() &gt; 0)
+	#foreach($testRun in $testRuns)
+		#set($testRunIds = &quot;#if(!$testRunIds.isEmpty())$testRunIds, #end$app$testRun.getReference().id()$app&quot;)
+	#end
+	#set($testRunIds = $testRunIds.trim())
+	#set($testCaseQuery = &quot;select distinct TRR.FK_URI_TESTCASE from STRUCT_TESTRUN_RECORDS TRR where TRR.FK_URI_P_TESTRUN in (select C_URI from TESTRUN TR where TR.C_ID in ($testRunIds) and TR.FK_PROJECT in (select C_PK from PROJECT PR where PR.C_ID IN (&#39;$projectId&#39;)))&quot;)
+	#set($blockedTestCasesQuery = &quot;$testCaseQuery and TRR.C_RESULT=&#39;$blockedResultId&#39;&quot;)
+
+	## RENDER QUERY
+	SQL:($blockedTestCasesQuery)
+#else
+	NOT *:*
+#end</sub>
+        <sub id="children">
+          <sub id="columns">
+            <sub>
+              <sub id="id">id</sub>
+            </sub>
+            <sub>
+              <sub id="id">title</sub>
+            </sub>
+            <sub>
+              <sub id="id">status</sub>
+            </sub>
+            <sub>
+              <sub id="id">severity</sub>
+            </sub>
+          </sub>
+          <sub id="sortBy">
+            <sub>
+              <sub id="id">id</sub>
+              <sub id="descending">false</sub>
+            </sub>
+          </sub>
+        </sub>
+      </sub>
+      <sub id="propertiesSidebarFields">
+        <sub>
+          <sub id="id">assignee</sub>
+        </sub>
+        <sub>
+          <sub id="id">severity</sub>
+        </sub>
+        <sub>
+          <sub id="id">testType</sub>
+        </sub>
+        <sub>
+          <sub id="id">status</sub>
+        </sub>
+        <sub>
+          <sub id="id">resolution</sub>
+        </sub>
+        <sub>
+          <sub id="id">linkedWorkItems</sub>
+        </sub>
+      </sub>
+      <sub id="advanced">
+        <sub id="top">50</sub>
+      </sub>
+    </span>
+  </div>
+  <p id="polarion_client22"></p>
+  <h2 id="polarion_client57">Issues Reported</h2>
+  <div id="polarion_client59" class="polarion-rp-widget-part" data-widget="com.polarion.scriptBlock">
+    <span class="polarion-rp-widget-parameters" style="display: none;">
+      <sub id="script">
+        <sub id="script" style="white-space:pre;">#info(&quot;Issues reported and linked with the Test Cases that have failed in the selected Test Runs.&quot;)</sub>
+      </sub>
+    </span>
+  </div>
+  <div id="polarion_client61" class="polarion-rp-widget-part" data-widget="com.polarion.table">
+    <span class="polarion-rp-widget-parameters" style="display: none;">
+      <sub id="dataSet">
+        <sub id="prototype">WorkItem</sub>
+        <sub id="queryType">luceneVelocity</sub>
+        <sub id="luceneQuery" style="white-space:pre;">## Issues Reported Table
+## PREPARE QUERY
+#set($quo = &#39;&quot;&#39;)
+#set($projectId = $page.getReference().projectId())
+#set($groupId = $pageParameters.groupId.value())
+#set($onlyFinished = $pageParameters.onlyFinished.value())
+#set($fromDate = $pageParameters.fromDate.toLucene())
+#set($toDate = $pageParameters.toDate.toLucene())
+#set($testRunsLuceneQuery = &quot;project.id:$projectId&quot;)
+#if($pageParameters.template.values().size() &gt; 0)
+	#set($templateQuery = &quot;template.id:(&quot;)
+	#foreach($template in $pageParameters.template.values())
+		#set($templateQuery = &quot;$templateQuery$quo$template$quo &quot;)
+	#end
+	#set($templateQuery = &quot;$templateQuery.trim())&quot;)
+	#set($testRunsLuceneQuery = &quot;$testRunsLuceneQuery AND $templateQuery&quot;)
+#end
+#if(!$pageParameters.query.value().equals(&quot;&quot;))
+	#set($testRunsLuceneQuery = &quot;$testRunsLuceneQuery AND $pageParameters.query.value()&quot;)
+#end
+#if(!$groupId.equals(&quot;&quot;))
+	#set($testRunsLuceneQuery = &quot;$testRunsLuceneQuery AND groupId:($groupId)&quot;)
+#end
+#if($onlyFinished)
+	#set($testRunsLuceneQuery = &quot;$testRunsLuceneQuery AND finishedOn:[$fromDate TO $toDate]&quot;)
+#end
+#set($testRunIds = &quot;&quot;)
+#set($app = &quot;&#39;&quot;)
+#set($testRuns = $transaction.testRuns().search().query(&quot;$testRunsLuceneQuery&quot;))
+#if($testRuns.size() &gt; 0)
+	#foreach($testRun in $testRuns)
+		#set($testRunIds = &quot;#if(!$testRunIds.isEmpty())$testRunIds, #end$app$testRun.getReference().id()$app&quot;)
+	#end
+	#set($testRunIds = $testRunIds.trim())
+	#set($issuesQuery = &quot;select distinct C_URI from WORKITEM D where C_URI in (select TRR.FK_URI_DEFECT from STRUCT_TESTRUN_RECORDS TRR where TRR.FK_URI_P_TESTRUN in (select C_URI from TESTRUN TR where TR.C_ID in ($testRunIds) AND TR.FK_PROJECT in (select C_PK from PROJECT PR where PR.C_ID IN (&#39;$projectId&#39;)))) and D.FK_PROJECT in (select C_PK from PROJECT PR where PR.C_ID IN (&#39;$projectId&#39;))&quot;)
+	## RENDER QUERY
+	SQL:($issuesQuery)
+#else
+	NOT *:*
+#end</sub>
+        <sub id="children">
+          <sub id="columns">
+            <sub>
+              <sub id="id">id</sub>
+            </sub>
+            <sub>
+              <sub id="id">title</sub>
+            </sub>
+            <sub>
+              <sub id="id">status</sub>
+            </sub>
+            <sub>
+              <sub id="id">severity</sub>
+            </sub>
+          </sub>
+          <sub id="sortBy">
+            <sub>
+              <sub id="id">id</sub>
+              <sub id="descending">false</sub>
+            </sub>
+          </sub>
+        </sub>
+      </sub>
+      <sub id="propertiesSidebarFields">
+        <sub>
+          <sub id="id">assignee</sub>
+        </sub>
+        <sub>
+          <sub id="id">severity</sub>
+        </sub>
+        <sub>
+          <sub id="id">occurredInVersion</sub>
+        </sub>
+        <sub>
+          <sub id="id">targetVersion</sub>
+        </sub>
+        <sub>
+          <sub id="id">status</sub>
+        </sub>
+        <sub>
+          <sub id="id">resolution</sub>
+        </sub>
+        <sub>
+          <sub id="id">linkedWorkItems</sub>
+        </sub>
+      </sub>
+      <sub id="advanced">
+        <sub id="top">50</sub>
+      </sub>
+    </span>
+  </div>
+  <p id="polarion_client56"></p>
+  <h2 id="polarion_client67">Test Items with Failed or Blocked Test Cases</h2>
+  <div id="polarion_client71" class="polarion-rp-widget-part" data-widget="com.polarion.scriptBlock">
+    <span class="polarion-rp-widget-parameters" style="display: none;">
+      <sub id="script">
+        <sub id="script" style="white-space:pre;">#info(&quot;Work Items that are linked to Failed or Blocked Test Cases by the Verification link role.&quot;)</sub>
+      </sub>
+    </span>
+  </div>
+  <div id="polarion_client73" class="polarion-rp-widget-part" data-widget="com.polarion.table">
+    <span class="polarion-rp-widget-parameters" style="display: none;">
+      <sub id="dataSet">
+        <sub id="prototype">WorkItem</sub>
+        <sub id="queryType">luceneVelocity</sub>
+        <sub id="luceneQuery" style="white-space:pre;">## Test Items with Failed or Blocked Test Cases Table
+## PREPARE QUERY
+#set($quo = &#39;&quot;&#39;)
+#set($projectId = $page.getReference().projectId())
+#set($groupId = $pageParameters.groupId.value())
+#set($onlyFinished = $pageParameters.onlyFinished.value())
+#set($fromDate = $pageParameters.fromDate.toLucene())
+#set($toDate = $pageParameters.toDate.toLucene())
+#set($passedResultId = $pageParameters.passedTestResult.singleValue().id())
+#set($testRunsLuceneQuery = &quot;project.id:$projectId&quot;)
+#if($pageParameters.template.values().size() &gt; 0)
+	#set($templateQuery = &quot;template.id:(&quot;)
+	#foreach($template in $pageParameters.template.values())
+		#set($templateQuery = &quot;$templateQuery$quo$template$quo &quot;)
+	#end
+	#set($templateQuery = &quot;$templateQuery.trim())&quot;)
+	#set($testRunsLuceneQuery = &quot;$testRunsLuceneQuery AND $templateQuery&quot;)
+#end
+#if(!$pageParameters.query.value().equals(&quot;&quot;))
+	#set($testRunsLuceneQuery = &quot;$testRunsLuceneQuery AND $pageParameters.query.value()&quot;)
+#end
+#if(!$groupId.equals(&quot;&quot;))
+	#set($testRunsLuceneQuery = &quot;$testRunsLuceneQuery AND groupId:($groupId)&quot;)
+#end
+#if($onlyFinished)
+	#set($testRunsLuceneQuery = &quot;$testRunsLuceneQuery AND finishedOn:[$fromDate TO $toDate]&quot;)
+#end
+#set($testRunIds = &quot;&quot;)
+#set($app = &quot;&#39;&quot;)
+#set($testRuns = $transaction.testRuns().search().query(&quot;$testRunsLuceneQuery&quot;))
+#if($testRuns.size() &gt; 0)
+	#foreach($testRun in $testRuns)
+		#set($testRunIds = &quot;#if(!$testRunIds.isEmpty())$testRunIds, #end$app$testRun.getReference().id()$app&quot;)
+	#end
+	#set($testRunIds = $testRunIds.trim())
+	#set($verifiesLinkRoleSQLCheck = &quot;&quot;)
+	#set($op =&quot;LINK.C_ROLE in (&quot;)
+	#foreach($l in $pageParameters.verifiesLinkRoles.values())
+		#set($verifiesLinkRoleSQLCheck = &quot;$verifiesLinkRoleSQLCheck${op}&#39;$l.id()&#39;&quot;)
+		#set($op =&quot;, &quot;)
+	#end
+	#if($verifiesLinkRoleSQLCheck.trim().length()&gt;0)
+		#set($verifiesLinkRoleSQLCheck = &quot;and ${verifiesLinkRoleSQLCheck})&quot;)
+	#end
+	#set($testItemsQuery = &quot;select distinct LINK.FK_URI_WORKITEM from STRUCT_WORKITEM_LINKEDWORKITEMS LINK inner join STRUCT_TESTRUN_RECORDS TRR on LINK.FK_URI_P_WORKITEM = TRR.FK_URI_TESTCASE where TRR.FK_URI_P_TESTRUN in (select C_URI from TESTRUN TR where TR.C_ID in ($testRunIds) and TR.FK_PROJECT in (select C_PK from PROJECT PR where PR.C_ID IN (&#39;$projectId&#39;))) and TRR.C_RESULT is not null $verifiesLinkRoleSQLCheck&quot;)
+	## RENDER QUERY
+	SQL:($testItemsQuery and not TRR.C_RESULT=&#39;$passedResultId&#39;)
+#else
+	NOT *:*
+#end</sub>
+        <sub id="children">
+          <sub id="columns">
+            <sub>
+              <sub id="id">id</sub>
+            </sub>
+            <sub>
+              <sub id="id">title</sub>
+            </sub>
+            <sub>
+              <sub id="id">type</sub>
+            </sub>
+            <sub>
+              <sub id="id">status</sub>
+            </sub>
+            <sub>
+              <sub id="id">priority</sub>
+            </sub>
+            <sub>
+              <sub id="id">severity</sub>
+            </sub>
+          </sub>
+          <sub id="sortBy">
+            <sub>
+              <sub id="id">priority</sub>
+              <sub id="descending">true</sub>
+            </sub>
+          </sub>
+        </sub>
+      </sub>
+      <sub id="propertiesSidebarFields">
+        <sub>
+          <sub id="id">assignee</sub>
+        </sub>
+        <sub>
+          <sub id="id">severity</sub>
+        </sub>
+        <sub>
+          <sub id="id">storyPoints</sub>
+        </sub>
+        <sub>
+          <sub id="id">plannedIn</sub>
+        </sub>
+        <sub>
+          <sub id="id">status</sub>
+        </sub>
+        <sub>
+          <sub id="id">resolution</sub>
+        </sub>
+        <sub>
+          <sub id="id">linkedWorkItems</sub>
+        </sub>
+      </sub>
+      <sub id="advanced">
+        <sub id="top">50</sub>
+      </sub>
+    </span>
+  </div>
+  <p id="polarion_client65"></p>
+  <h2 id="polarion_client85">Executed Test Cases</h2>
+  <div id="polarion_client87" class="polarion-rp-widget-part" data-widget="com.polarion.scriptBlock">
+    <span class="polarion-rp-widget-parameters" style="display: none;">
+      <sub id="script">
+        <sub id="script" style="white-space:pre;">#info(&quot;All the Test Cases that were executed at least once.&quot;)</sub>
+      </sub>
+    </span>
+  </div>
+  <div id="polarion_client89" class="polarion-rp-widget-part" data-widget="com.polarion.table">
+    <span class="polarion-rp-widget-parameters" style="display: none;">
+      <sub id="dataSet">
+        <sub id="prototype">WorkItem</sub>
+        <sub id="queryType">luceneVelocity</sub>
+        <sub id="luceneQuery" style="white-space:pre;">## Executed Test Cases Table
+## PREPARE QUERY
+#set($quo = &#39;&quot;&#39;)
+#set($projectId = $page.getReference().projectId())
+#set($groupId = $pageParameters.groupId.value())
+#set($onlyFinished = $pageParameters.onlyFinished.value())
+#set($fromDate = $pageParameters.fromDate.toLucene())
+#set($toDate = $pageParameters.toDate.toLucene())
+#set($testRunsLuceneQuery = &quot;project.id:$projectId&quot;)
+#if($pageParameters.template.values().size() &gt; 0)
+	#set($templateQuery = &quot;template.id:(&quot;)
+	#foreach($template in $pageParameters.template.values())
+		#set($templateQuery = &quot;$templateQuery$quo$template$quo &quot;)
+	#end
+	#set($templateQuery = &quot;$templateQuery.trim())&quot;)
+	#set($testRunsLuceneQuery = &quot;$testRunsLuceneQuery AND $templateQuery&quot;)
+#end
+#if(!$pageParameters.query.value().equals(&quot;&quot;))
+	#set($testRunsLuceneQuery = &quot;$testRunsLuceneQuery AND $pageParameters.query.value()&quot;)
+#end
+#if(!$groupId.equals(&quot;&quot;))
+	#set($testRunsLuceneQuery = &quot;$testRunsLuceneQuery AND groupId:($groupId)&quot;)
+#end
+#if($onlyFinished)
+	#set($testRunsLuceneQuery = &quot;$testRunsLuceneQuery AND finishedOn:[$fromDate TO $toDate]&quot;)
+#end
+#set($testRunIds = &quot;&quot;)
+#set($app = &quot;&#39;&quot;)
+#set($testRuns = $transaction.testRuns().search().query(&quot;$testRunsLuceneQuery&quot;))
+#if($testRuns.size() &gt; 0)
+	#foreach($testRun in $testRuns)
+		#set($testRunIds = &quot;#if(!$testRunIds.isEmpty())$testRunIds, #end$app$testRun.getReference().id()$app&quot;)
+	#end
+	#set($testRunIds = $testRunIds.trim())
+	#set($testCaseQuery = &quot;select distinct TRR.FK_URI_TESTCASE from STRUCT_TESTRUN_RECORDS TRR where TRR.FK_URI_P_TESTRUN in (select C_URI from TESTRUN TR where TR.C_ID in ($testRunIds) and TR.FK_PROJECT in (select C_PK from PROJECT PR where PR.C_ID IN (&#39;$projectId&#39;)))&quot;)
+	#set($executedTestCasesQuery = &quot;$testCaseQuery and TRR.C_RESULT IS NOT NULL&quot;)
+	## RENDER QUERY
+	SQL:($executedTestCasesQuery)
+#else
+	NOT *:*
+#end</sub>
+        <sub id="children">
+          <sub id="columns">
+            <sub>
+              <sub id="id">id</sub>
+            </sub>
+            <sub>
+              <sub id="id">title</sub>
+            </sub>
+            <sub>
+              <sub id="id">status</sub>
+            </sub>
+            <sub>
+              <sub id="id">severity</sub>
+            </sub>
+          </sub>
+          <sub id="sortBy">
+            <sub>
+              <sub id="id">id</sub>
+              <sub id="descending">false</sub>
+            </sub>
+          </sub>
+        </sub>
+      </sub>
+      <sub id="propertiesSidebarFields">
+        <sub>
+          <sub id="id">assignee</sub>
+        </sub>
+        <sub>
+          <sub id="id">severity</sub>
+        </sub>
+        <sub>
+          <sub id="id">testType</sub>
+        </sub>
+        <sub>
+          <sub id="id">status</sub>
+        </sub>
+        <sub>
+          <sub id="id">resolution</sub>
+        </sub>
+        <sub>
+          <sub id="id">linkedWorkItems</sub>
+        </sub>
+      </sub>
+      <sub id="advanced">
+        <sub id="top">50</sub>
+      </sub>
+    </span>
+  </div>
+  <p id="polarion_client84"></p>
+  <h2 id="polarion_client93">All Tested Items</h2>
+  <div id="polarion_client95" class="polarion-rp-widget-part" data-widget="com.polarion.scriptBlock">
+    <span class="polarion-rp-widget-parameters" style="display: none;">
+      <sub id="script">
+        <sub id="script" style="white-space:pre;">#info(&quot;Work Items that are linked to the executed Test Cases by the Verification link role.&quot;)</sub>
+      </sub>
+    </span>
+  </div>
+  <div id="polarion_client97" class="polarion-rp-widget-part" data-widget="com.polarion.table">
+    <span class="polarion-rp-widget-parameters" style="display: none;">
+      <sub id="dataSet">
+        <sub id="prototype">WorkItem</sub>
+        <sub id="queryType">luceneVelocity</sub>
+        <sub id="luceneQuery" style="white-space:pre;">## All Tested Items Table
+## PREPARE QUERY
+#set($quo = &#39;&quot;&#39;)
+#set($projectId = $page.getReference().projectId())
+#set($groupId = $pageParameters.groupId.value())
+#set($onlyFinished = $pageParameters.onlyFinished.value())
+#set($fromDate = $pageParameters.fromDate.toLucene())
+#set($toDate = $pageParameters.toDate.toLucene())
+#set($testRunsLuceneQuery = &quot;project.id:$projectId&quot;)
+#if($pageParameters.template.values().size() &gt; 0)
+	#set($templateQuery = &quot;template.id:(&quot;)
+	#foreach($template in $pageParameters.template.values())
+		#set($templateQuery = &quot;$templateQuery$quo$template$quo &quot;)
+	#end
+	#set($templateQuery = &quot;$templateQuery.trim())&quot;)
+	#set($testRunsLuceneQuery = &quot;$testRunsLuceneQuery AND $templateQuery&quot;)
+#end
+#if(!$pageParameters.query.value().equals(&quot;&quot;))
+	#set($testRunsLuceneQuery = &quot;$testRunsLuceneQuery AND $pageParameters.query.value()&quot;)
+#end
+#if(!$groupId.equals(&quot;&quot;))
+	#set($testRunsLuceneQuery = &quot;$testRunsLuceneQuery AND groupId:($groupId)&quot;)
+#end
+#if($onlyFinished)
+	#set($testRunsLuceneQuery = &quot;$testRunsLuceneQuery AND finishedOn:[$fromDate TO $toDate]&quot;)
+#end
+#set($testRunIds = &quot;&quot;)
+#set($app = &quot;&#39;&quot;)
+#set($testRuns = $transaction.testRuns().search().query(&quot;$testRunsLuceneQuery&quot;))
+#if($testRuns.size() &gt; 0)
+	#foreach($testRun in $testRuns)
+		#set($testRunIds = &quot;#if(!$testRunIds.isEmpty())$testRunIds, #end$app$testRun.getReference().id()$app&quot;)
+	#end
+	#set($testRunIds = $testRunIds.trim())
+	#set($verifiesLinkRoleSQLCheck = &quot;&quot;)
+	#set($op =&quot;LINK.C_ROLE in (&quot;)
+	#foreach($l in $pageParameters.verifiesLinkRoles.values())
+		#set($verifiesLinkRoleSQLCheck = &quot;$verifiesLinkRoleSQLCheck${op}&#39;$l.id()&#39;&quot;)
+		#set($op =&quot;, &quot;)
+	#end
+	#if($verifiesLinkRoleSQLCheck.trim().length()&gt;0)
+		#set($verifiesLinkRoleSQLCheck = &quot;and ${verifiesLinkRoleSQLCheck})&quot;)
+	#end
+	#set($testItemsQuery = &quot;select distinct LINK.FK_URI_WORKITEM from STRUCT_WORKITEM_LINKEDWORKITEMS LINK inner join STRUCT_TESTRUN_RECORDS TRR on LINK.FK_URI_P_WORKITEM = TRR.FK_URI_TESTCASE where TRR.FK_URI_P_TESTRUN in (select C_URI from TESTRUN TR where TR.C_ID in ($testRunIds) and TR.FK_PROJECT in (select C_PK from PROJECT PR where PR.C_ID IN (&#39;$projectId&#39;))) and TRR.C_RESULT is not null $verifiesLinkRoleSQLCheck&quot;)
+	## RENDER QUERY
+	SQL:($testItemsQuery)
+#else
+	NOT *:*
+#end</sub>
+        <sub id="children">
+          <sub id="columns">
+            <sub>
+              <sub id="id">id</sub>
+            </sub>
+            <sub>
+              <sub id="id">title</sub>
+            </sub>
+            <sub>
+              <sub id="id">type</sub>
+            </sub>
+            <sub>
+              <sub id="id">status</sub>
+            </sub>
+            <sub>
+              <sub id="id">priority</sub>
+            </sub>
+            <sub>
+              <sub id="id">severity</sub>
+            </sub>
+          </sub>
+          <sub id="sortBy">
+            <sub>
+              <sub id="id">priority</sub>
+              <sub id="descending">true</sub>
+            </sub>
+          </sub>
+        </sub>
+      </sub>
+      <sub id="propertiesSidebarFields">
+        <sub>
+          <sub id="id">assignee</sub>
+        </sub>
+        <sub>
+          <sub id="id">severity</sub>
+        </sub>
+        <sub>
+          <sub id="id">plannedIn</sub>
+        </sub>
+        <sub>
+          <sub id="id">targetVersion</sub>
+        </sub>
+        <sub>
+          <sub id="id">status</sub>
+        </sub>
+        <sub>
+          <sub id="id">resolution</sub>
+        </sub>
+        <sub>
+          <sub id="id">linkedWorkItems</sub>
+        </sub>
+      </sub>
+      <sub id="advanced">
+        <sub id="top">50</sub>
+      </sub>
+    </span>
+  </div>
+  <p id="polarion_client92"></p><p id="polarion_client90"></p><p id="polarion_client98"></p>
+</div>
+<div class="polarion-rp-column" style="width: 30%;">
+  <div id="polarion_client6" class="polarion-rp-widget-part" data-widget="com.polarion.pageParametersForm">
+    <span class="polarion-rp-widget-parameters">
+      <sub id="title"></sub>
+      <sub id="content">
+        <sub>template</sub>
+        <sub>query</sub>
+        <sub>groupId</sub>
+        <sub>onlyFinished</sub>
+        <sub>fromDate</sub>
+        <sub>toDate</sub>
+        <sub>verifiesLinkRoles</sub>
+        <sub>passedTestResult</sub>
+        <sub>blockedTestResult</sub>
+        <sub>failedTestResult</sub>
+      </sub>
+      <sub id="width">300</sub>
+    </span>
+  </div>
+  <p id="polarion_2">
+    <span class="polarion-rp-inline-widget" data-widget="com.polarion.scriptInline">
+      <span class="polarion-rp-widget-parameters" style="display: none;">
+        <sub id="script">
+          <sub id="script" style="white-space:pre;">&lt;style&gt;
+.polarion-rpe-ParameterEditor-outerPanel {
+	border-radius: 5px 5px 5px 5px;
+}
+.polarion-rp-parameters-form-editor-panel {
+	border: none;
+}
+&lt;/style&gt;</sub>
+        </sub>
+      </span>
+    </span>
+  </p>
+</div>
+<div class="polarion-rp-row-separator"></div>
+<span id="polarion-rp-parameters">
+  <sub id="verifiesLinkRoles" data-label="&quot;Verifies&quot; Link Roles" data-type="Enumeration">
+    <sub id="values">
+      <sub>verifies</sub>
+    </sub>
+    <sub id="enumId">workitem-link-role</sub>
+    <sub id="allowNoValue">false</sub>
+    <sub id="allowMultipleValues">true</sub>
+    <sub id="loadForAllTypes">true</sub>
+  </sub>
+  <sub id="fromDate" data-label="Finished From" data-type="Date">
+    <sub id="relative">-180</sub>
+  </sub>
+  <sub id="toDate" data-label="Finished To" data-type="Date">
+    <sub id="relative">0</sub>
+  </sub>
+  <sub id="groupId" data-label="Group ID" data-type="String"></sub>
+  <sub id="onlyFinished" data-label="Only Finished" data-type="Boolean">true</sub>
+  <sub id="query" data-label="Query" data-type="String"></sub>
+  <sub id="blockedTestResult" data-label="Test Result - Blocked" data-type="Enumeration">
+    <sub id="values">
+      <sub>blocked</sub>
+    </sub>
+    <sub id="enumId">testing/test-result</sub>
+    <sub id="allowNoValue">false</sub>
+    <sub id="allowMultipleValues">false</sub>
+    <sub id="loadForAllTypes">true</sub>
+  </sub>
+  <sub id="failedTestResult" data-label="Test Result - Failed" data-type="Enumeration">
+    <sub id="values">
+      <sub>failed</sub>
+    </sub>
+    <sub id="enumId">testing/test-result</sub>
+    <sub id="allowNoValue">false</sub>
+    <sub id="allowMultipleValues">false</sub>
+    <sub id="loadForAllTypes">true</sub>
+  </sub>
+  <sub id="passedTestResult" data-label="Test Result - Passed" data-type="Enumeration">
+    <sub id="values">
+      <sub>passed</sub>
+    </sub>
+    <sub id="enumId">testing/test-result</sub>
+    <sub id="allowNoValue">false</sub>
+    <sub id="allowMultipleValues">false</sub>
+    <sub id="loadForAllTypes">true</sub>
+  </sub>
+  <sub id="template" data-label="Test Run Template" data-type="CustomEnumeration">
+    <sub id="values">
+      <sub>Full Manual System Test</sub>
+      <sub>User Acceptance Test</sub>
+      <sub>Release Test</sub>
+      <sub>Smoke Test</sub>
+      <sub>xUnit Build Test</sub>
+      <sub>xUnit Test Manual Upload</sub>
+    </sub>
+    <sub id="enumerations">
+      <sub>
+        <sub id="itemValue">Full Manual System Test</sub>
+        <sub id="itemName">Full Manual System Test</sub>
+      </sub>
+      <sub>
+        <sub id="itemValue">User Acceptance Test</sub>
+        <sub id="itemName">User Acceptance Test</sub>
+      </sub>
+      <sub>
+        <sub id="itemValue">Release Test</sub>
+        <sub id="itemName">Release Test</sub>
+      </sub>
+      <sub>
+        <sub id="itemValue">Smoke Test</sub>
+        <sub id="itemName">Smoke Test</sub>
+      </sub>
+      <sub>
+        <sub id="itemValue">xUnit Build Test</sub>
+        <sub id="itemName">xUnit Build Test</sub>
+      </sub>
+      <sub>
+        <sub id="itemValue">xUnit Test Manual Upload</sub>
+        <sub id="itemName">xUnit Test Manual Upload</sub>
+      </sub>
+    </sub>
+    <sub id="allowNoValue">true</sub>
+    <sub id="allowMultipleValues">true</sub>
+  </sub>
+</span>]]></field>
+    <field id="title">Test Run Statistics</field>
+</rich-page>

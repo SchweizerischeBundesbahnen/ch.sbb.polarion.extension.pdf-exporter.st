@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<work-item>
+    <field id="assignee">sDeveloper</field>
+    <field id="author">rProject</field>
+    <field id="categories">
+        <list>
+            <item>searching</item>
+            <item>objects</item>
+        </list>
+    </field>
+    <field id="created">2017-05-03 16:35:14.223 +0200</field>
+    <field id="description" text-type="text/html">change the number of rendered books from 20 to 50</field>
+    <field id="initialEstimate">3h</field>
+    <field id="linkedWorkItems">
+        <list>
+            <struct>
+                <item id="role">follow_up</item>
+                <item id="workItem">EL-203</item>
+            </struct>
+        </list>
+    </field>
+    <field id="previousStatus">draft</field>
+    <field id="priority">50.0</field>
+    <field id="remainingEstimate">3h</field>
+    <field id="severity">should_have</field>
+    <field id="status">accepted</field>
+    <field id="storyPoints" type="integer">1</field>
+    <field id="title">Listing of the 50 most frequently borrowed eBooks.</field>
+    <field id="type">userstory</field>
+</work-item>

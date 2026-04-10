@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<work-item>
+    <field id="assignee">sDeveloper</field>
+    <field id="author">rProject</field>
+    <field id="categories">
+        <list>
+            <item>administration</item>
+            <item>projectadmin</item>
+        </list>
+    </field>
+    <field id="created">2010-12-02 12:48:54.413 +0100</field>
+    <field id="description" text-type="text/html">Basic users may not be allowed to administer the elibrary system.</field>
+    <field id="initialEstimate">15d 5h</field>
+    <field id="previousStatus">implemented</field>
+    <field id="priority">80.0</field>
+    <field id="remainingEstimate">15d 5h</field>
+    <field id="resolution">done</field>
+    <field id="resolvedOn">2010-12-02 12:49:15.693 +0100</field>
+    <field id="severity">should_have</field>
+    <field id="status">verified</field>
+    <field id="storyPoints" type="integer">21</field>
+    <field id="timeSpent">16d</field>
+    <field id="title">Administration</field>
+    <field id="type">userstory</field>
+</work-item>

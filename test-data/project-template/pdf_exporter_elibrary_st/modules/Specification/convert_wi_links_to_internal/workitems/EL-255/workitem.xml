@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<work-item>
+    <field id="author">admin</field>
+    <field id="created">2026-01-05 07:31:49.849 +0000</field>
+    <field id="description" text-type="text/html">&lt;span class="polarion-rte-link" data-type="crossReference" id="fake" data-item-id="EL-253" data-option-id="long"&gt;&lt;/span&gt; </field>
+    <field id="previousStatus">draft</field>
+    <field id="priority">50.0</field>
+    <field id="reqType" type="enum:reqtype">other</field>
+    <field id="severity">should_have</field>
+    <field id="status">draft</field>
+    <field id="type">requirement</field>
+</work-item>

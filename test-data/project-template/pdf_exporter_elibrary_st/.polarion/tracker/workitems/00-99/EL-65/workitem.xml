@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<work-item>
+    <field id="assignee">sDeveloper</field>
+    <field id="author">rProject</field>
+    <field id="categories">
+        <list>
+            <item>persistence</item>
+        </list>
+    </field>
+    <field id="created">2009-05-25 09:48:21.036 +0200</field>
+    <field id="description" text-type="text/html"><![CDATA[<div>
+            <p>Should be easy, db is fast enough.<br/>
+            </p>
+        </div>]]></field>
+    <field id="initialEstimate">3h</field>
+    <field id="linkedWorkItems">
+        <list>
+            <struct>
+                <item id="role">implements</item>
+                <item id="workItem">EL-135</item>
+            </struct>
+        </list>
+    </field>
+    <field id="previousStatus">done</field>
+    <field id="priority">50.0</field>
+    <field id="resolution">done</field>
+    <field id="resolvedOn">2009-05-25 10:08:03.953 +0200</field>
+    <field id="severity">normal</field>
+    <field id="status">verified</field>
+    <field id="timeSpent">3h</field>
+    <field id="title">Write some basic performance tests</field>
+    <field id="type">task</field>
+</work-item>

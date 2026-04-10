@@ -1,0 +1,26 @@
+###############################################################################
+##
+##  parameters.vm - this velocity script defines the widget parameters
+##
+
+###############################################################################
+##
+##  Velocity Context - following objects are in the velocity context
+##
+## java.util.Map $parameters
+## com.polarion.alm.shared.api.model.rp.parameter.ParameterFactory $factory
+## com.polarion.alm.shared.api.transaction.ReadOnlyTransaction $transaction
+## com.polarion.alm.shared.api.model.rp.widget.RichPageWidgetRenderingContext $widgetContext
+## com.polarion.alm.shared.api.utils.velocity.ObjectFactory $objectFactory
+##
+
+###############################################################################
+##
+##  Add parameters
+$parameters.put("project", $factory.objectSelector("Project").allowedPrototypes(["Project"]).build())
+$parameters.put("months", $factory.integer("Render Info for last # months").value(12).build())
+$parameters.put("displayNumber", $factory.bool("Display Builds by #").value(true).build())
+$parameters.put("displayPercentage", $factory.bool("Display Builds by %").value(true).build())
+#set($colorPassed = $factory.string("Passed").value("#27AE60").build())
+#set($colorFailed = $factory.string("Failed").value("#C0392B").build())
+$parameters.put("colors", $factory.composite("Build Status Colors").add("colorPassed", $colorPassed).add("colorFailed", $colorFailed).build())

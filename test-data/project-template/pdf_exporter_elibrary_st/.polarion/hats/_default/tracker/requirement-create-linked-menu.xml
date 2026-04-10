@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<menu>
+	<item label="Specified User Story" role="specifies" type="userstory"/>
+	<item label="Specified Change Request" role="specifies" type="changerequest"/>
+	<item label="Related" role="relates_to"/>
+</menu>

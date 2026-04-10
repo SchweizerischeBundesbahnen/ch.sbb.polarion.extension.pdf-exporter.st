@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<work-item>
+    <field id="assignee">pGUI</field>
+    <field id="author">rProject</field>
+    <field id="categories">
+        <list>
+            <item>ui</item>
+        </list>
+    </field>
+    <field id="created">2009-05-25 09:46:24.439 +0200</field>
+    <field id="initialEstimate">6h</field>
+    <field id="linkedWorkItems">
+        <list>
+            <struct>
+                <item id="role">implements</item>
+                <item id="workItem">EL-135</item>
+            </struct>
+        </list>
+    </field>
+    <field id="previousStatus">done</field>
+    <field id="priority">50.0</field>
+    <field id="resolution">done</field>
+    <field id="resolvedOn">2009-05-25 10:08:03.781 +0200</field>
+    <field id="severity">normal</field>
+    <field id="status">verified</field>
+    <field id="timeSpent">6h</field>
+    <field id="title">Implement basic  framework to render the list of books</field>
+    <field id="type">task</field>
+</work-item>

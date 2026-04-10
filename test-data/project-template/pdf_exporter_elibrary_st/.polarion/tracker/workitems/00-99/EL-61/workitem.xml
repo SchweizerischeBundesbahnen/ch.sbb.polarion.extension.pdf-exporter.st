@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<work-item>
+    <field id="assignee">sDeveloper</field>
+    <field id="author">rProject</field>
+    <field id="categories">
+        <list>
+            <item>searching</item>
+        </list>
+    </field>
+    <field id="created">2009-05-24 13:20:28.883 +0200</field>
+    <field id="initialEstimate">2d</field>
+    <field id="linkedWorkItems">
+        <list>
+            <struct>
+                <item id="role">implements</item>
+                <item id="workItem">EL-134</item>
+            </struct>
+        </list>
+    </field>
+    <field id="previousStatus">open</field>
+    <field id="priority">50.0</field>
+    <field id="resolution">done</field>
+    <field id="resolvedOn">2009-05-24 13:21:24.881 +0200</field>
+    <field id="severity">normal</field>
+    <field id="status">verified</field>
+    <field id="timeSpent">2d</field>
+    <field id="title">Implement list of  most frequently borrowed  books</field>
+    <field id="type">task</field>
+</work-item>

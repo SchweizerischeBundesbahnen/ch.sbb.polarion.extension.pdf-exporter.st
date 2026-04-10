@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<work-item>
+    <field id="assignee">sDeveloper</field>
+    <field id="author">rProject</field>
+    <field id="categories">
+        <list>
+            <item>searching</item>
+        </list>
+    </field>
+    <field id="created">2011-09-19 12:47:35.909 +0200</field>
+    <field id="description" text-type="text/html">&lt;div&gt;Too many books found&lt;/div&gt;</field>
+    <field id="linkedWorkItems">
+        <list>
+            <struct>
+                <item id="role">triggered_by</item>
+                <item id="workItem">EL-38</item>
+            </struct>
+        </list>
+    </field>
+    <field id="occurredInVersion" type="string">0.9b</field>
+    <field id="priority">50.0</field>
+    <field id="severity">major</field>
+    <field id="status">open</field>
+    <field id="title">Failed: Search for book using ISBN</field>
+    <field id="type">issue</field>
+</work-item>

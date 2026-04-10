@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<topics xmlns="http://polarion.com/schema/Portal/Topics" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://polarion.com/schema/Portal/Topics">
+    <topic id="workitems"/>
+    <topic id="wiki"/>
+    <topic id="plans"/>
+    <topic id="testruns"/>
+    <topic id="collections"/>
+    <topic id="baselines"/>
+    <topic id="builds"/>
+    <topic id="reports"/>
+    <topic id="monitor"/>
+    <topic id="global_shortcuts"/>
+    <topic id="project_shortcuts"/>
+    <topic id="user_shortcuts"/>
+</topics>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workitems-table-settings>
+    <columns>
+        <column id="id" width="105"/>
+        <column id="title" width="260"/>
+        <column id="status" width="60"/>
+        <column id="priority" width="60"/>
+        <column id="assignee" width="90"/>
+        <column id="plannedIn" width="90"/>
+        <column id="initialEstimate" width="90"/>
+        <column id="remainingEstimate" width="90"/>
+        <column id="created" width="90"/>
+    </columns>
+    <sort-by>
+        <column descending="true" id="priority"/>
+        <column descending="true" id="created"/>
+        <column descending="true" id="id"/>
+    </sort-by>
+</workitems-table-settings>

@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workitem-metrics>
+
+    <!--
+        Every entry element defines a fact that may be either shown directly on dasbhoard
+        (factbase workitems-data) or may be used in the definition of a trend chart.
+
+        entry
+          - has to contain exactly one child key and one child value
+        key
+          - key of the value
+        value
+          type
+            - 'distribution', 'int', 'items-traceability', 'commits-traceability', 'field-sum', 'field-average'
+
+        * The value of type 'int' just specifies a query - the query result size is the value itself.
+        * The value of type 'distribution' specifies a series of integers,
+          that may be calculated in two ways
+          - if there is enumeration attribute specified; the values are obtained as query results sizes,
+            where each query is created based one one option from the enumeration
+            and using other attributes of the value element. Descriptions of the attributes follows:
+            a) enumeration: defines the set of options in one of three ways:
+                 enum:ENUM_ID - all options from an enumeration with given id, including the type specific ones
+                 WI_TYPE:enum:ENUM_ID - those options from an enumeration with given id, that are valid for given workitem type
+                 enumeration="FIELD" - (DEPRECATED) options from an enumeration that can be value of this field
+                 (the field can be a custom one, but may not be type specific)
+            b) query: defines the query that will be used for each option; substrings "$option$" will be replaced by the option id
+            c) reverseOrder: if set to 'true', values in the distribution will be sorted in reversed order with regards to the order
+                 of options in the enumeration (this is important only for the purpose of visualization as a colored bar)
+            d) unresolvedOnly: (DEPRECATED) count only unresolved items (the same can be achieved using the query attribute)
+            e) resolvedOnly: (DEPRECATED) count only resolved items (the same can be achieved using the query attribute)
+
+            Examples: <value type="distribution" enumeration="enum:release" query="targetVersion.KEY:$option$ AND NOT HAS_VALUE:resolution"/>
+                      <value type="distribution" enumeration="issue:enum:risk" query="type:issue AND risk:$option$" reverseOrder="true"/>
+
+          - if enumeration attribute is not specified, there has to be one or more query subelement
+            and the distribution values are calculated as query result sizes.
+        * 'items-traceability' defines a notion of traceability of Work Items; the value is
+            a distribution of traceable and not-traceable items that satisfy 'itemsQuery',
+            where traceable items are those, from which one can follow the specified
+            links ('link' elements) in specified directions and find at least one item that
+            satisfies the 'coverageQuery'; items that satisfy both 'itemsQuery' and 'coverageQuery'
+            are automatically considered traceable without checking links
+        * 'commits-traceability' defines a notion of traceability of repository commits; the value is
+            a distribution of traceable and not-traceable commits,
+            where traceable commits are those, that are linked to at least one item from which one can follow
+            the specified links ('link' elements) in specified directions and find at least one item that
+            satisfies the 'coverageQuery'
+		* 'field-sum' and 'field-average' calculate the sum/average of values stored in a custom field (configured as attribute 'field')
+		    of Work Items returned by a query (specified as attribute 'query'). Calculation is only possible for number type fields (integer, float, currency).
+			Example: <value type="field-average" query="type:testcase" field="passRatio"/>
+    -->
+    <metrics>
+
+        <!-- system defined metrics -->
+        <entry>
+            <key>RESOLVED-UNRESOLVED</key>
+        </entry>
+        <entry>
+            <key>UNRESOLVED-BY-ASSIGNEE</key>
+        </entry>
+        <entry>
+            <key>UNRESOLVED-BY-CATEGORY</key>
+        </entry>
+        <entry>
+            <key>UNRESOLVED-BY-TIMEPOINT</key>
+        </entry>
+        <entry>
+            <key>MAI</key>
+        </entry>
+        <entry>
+            <key>MEI</key>
+        </entry>
+        <entry>
+            <key>MSI</key>
+        </entry>
+        <entry>
+            <key>ESTIMATE-ACCURACY</key>
+        </entry>
+        <entry>
+            <key>PROJECT-PLAN-ACCURACY</key>
+        </entry>
+        <entry>
+            <key>PLANNING-ACCURACY</key>
+        </entry>
+        <entry>
+            <key>PLANNING-COVERAGE</key>
+        </entry>
+        <entry>
+            <key>WORKITEMS-PLANNING-ACCURACY</key>
+        </entry>
+
+        <!-- user defined metrics -->
+        <entry>
+            <key>RESOLVED-RATIO</key>
+            <label>Resolved vs. Unresolved</label>
+            <description>
+                    Rate of Work Items that have resolution set.
+            </description>
+            <value type="distribution">
+                <query id="resolved" label="Resolved">HAS_VALUE:resolution</query>
+                <query id="not-resolved" label="Unresolved">NOT HAS_VALUE:resolution</query>
+            </value>
+        </entry>
+
+        <entry>
+            <key>ASSIGNMENT-RATIO</key>
+            <label>Assigned vs. Unassigned</label>
+            <description>
+            Rate of Work Items that have assignee set.
+            </description>
+            <value type="distribution">
+                <query id="assigned" label="Assigned">NOT HAS_VALUE:resolution AND HAS_VALUE:assignee.id</query>
+                <query id="not-assigned" label="Unassigned">NOT HAS_VALUE:resolution AND NOT HAS_VALUE:assignee.id</query>
+            </value>
+        </entry>
+
+        <entry>
+            <key>PLANNING-RATIO</key>
+            <label>Scheduled vs. Unscheduled</label>
+            <description>
+            Rate of unresolved Work Items that are assigned to a plan.
+            </description>
+            <value type="distribution" >
+                <query id="planned" label="Scheduled">NOT HAS_VALUE:resolution AND PLAN:(*)</query>
+                <query id="not-planned" label="Unscheduled">NOT HAS_VALUE:resolution AND NOT PLAN:(*)</query>
+            </value>
+        </entry>
+
+        <entry>
+            <key>SEVERITY</key>
+            <label>Work Items by Severity</label>
+            <value type="distribution" enumeration="enum:severity" query="severity:$option$" reverseOrder="true"/>
+        </entry>
+
+        <entry>
+            <key>OPEN-BY-SEVERITY</key>
+            <label>Unresolved by Severity</label>
+            <value type="distribution" enumeration="enum:severity" query="severity:$option$ AND NOT HAS_VALUE:resolution" reverseOrder="true"/>
+        </entry>
+
+        <entry>
+            <key>RESOLVED-BY-SEVERITY</key>
+            <label>Resolved by Severity</label>
+            <value type="distribution" enumeration="enum:severity" query="severity:$option$ AND HAS_VALUE:resolution" reverseOrder="true"/>
+        </entry>
+
+        <entry>
+            <key>PRIORITY</key>
+            <label>Work Items by Priority</label>
+            <value type="distribution" enumeration="enum:priority" query="priority:$option$" reverseOrder="true"/>
+        </entry>
+
+        <entry>
+            <key>OPEN-BY-PRIORITY</key>
+            <label>Unresolved by Priority</label>
+            <value type="distribution" enumeration="enum:priority" query="priority:$option$ AND NOT HAS_VALUE:resolution" reverseOrder="true"/>
+        </entry>
+
+        <entry>
+            <key>RESOLUTION</key>
+            <label>Work Items by Resolution</label>
+            <value type="distribution" enumeration="enum:resolution" query="resolution:$option$"/>
+        </entry>
+
+        <entry>
+            <key>STATUS</key>
+            <label>Work Items by Status</label>
+            <value type="distribution" enumeration="enum:status" query="status:$option$"/>
+        </entry>
+
+        <entry>
+            <key>ALL</key>
+            <label>All Work Items</label>
+            <value type="int">
+                <query></query>
+            </value>
+        </entry>
+
+        <entry>
+            <key>OPEN</key>
+            <label>Open Work Items</label>
+            <value type="int">
+                <query>HAS_VALUE:assignee.id AND PLAN:(*) AND NOT HAS_VALUE:resolution</query>
+            </value>
+        </entry>
+
+        <entry>
+            <key>UNRESOLVED-VERSION-1</key>
+            <label>Unresolved Work Items Planned for Version 1.0</label>
+            <value type="int">
+                <query>targetVersion.KEY:Version_1_0 AND NOT HAS_VALUE:resolution</query>
+            </value>
+        </entry>
+
+        <entry>
+            <key>NOT-VERIFIED-REQUIREMENTS-VERSION-1</key>
+            <label>Not Verified Requirements Planned for Version 1.0</label>
+            <value type="int">
+                <query>targetVersion.KEY:Version_1_0 AND type:requirement AND status:implemented</query>
+            </value>
+        </entry>
+
+        <entry>
+            <key>NEW</key>
+            <label>New Work Items</label>
+            <value type="int">
+                <query>NOT HAS_VALUE:resolution AND (NOT HAS_VALUE:assignee.id OR (NOT PLAN:(*)))</query>
+            </value>
+        </entry>
+
+        <entry>
+            <key>SUSPECT-RATIO</key>
+            <label>Not Suspect vs. Suspect Work Items</label>
+            <description>
+            Rate of unresolved Work Items that have suspected link to other Work Item.
+            </description>
+            <value type="distribution">
+                <query id="not-suspect" label="Not suspect">NOT HAS_VALUE:resolution AND NOT suspect:true</query>
+                <query id="suspect" label="Suspect">NOT HAS_VALUE:resolution AND suspect:true</query>
+            </value>
+        </entry>
+
+        <entry>
+            <key>TRACEABILITY-REQUIREMENTS-COMMITS</key>
+            <label>Tracebility Work Items to Commits</label>
+            <description>
+                    Rate of Work Items that are linked to commits.
+            </description>
+            <value type="items-traceability">
+                <itemsQuery>HAS_VALUE:resolution</itemsQuery>
+                <links>
+                    <link id=".*" backLink="true"/>
+                    <link id=".*" backLink="false"/>
+                </links>
+                <coverageQuery>has-linked-revisions</coverageQuery>
+            </value>
+        </entry>
+
+       <entry>
+            <key>TRACEABILITY-COMMITS-REQUIREMENTS</key>
+            <label>Tracebility Commits to Work Items</label>
+            <description>
+                    Rate of Commits that are linked to Work Items.
+            </description>
+
+            <value type="commits-traceability">
+                <links>
+                    <link id=".*" backLink="false"/>
+                    <link id=".*" backLink="true"/>
+                </links>
+                <coverageQuery></coverageQuery>
+            </value>
+        </entry>
+
+        <entry>
+            <key>ITEMS-BY-TYPE</key>
+            <label>Work Items by Type</label>
+            <value type="distribution" enumeration="enum:type" query="type:$option$" reverseOrder="true"/>
+        </entry>
+
+        <entry>
+            <key>ITEMS-UNRESOLVED-BY-TYPE</key>
+            <label>Unresolved Work Items by Type</label>
+            <value type="distribution" enumeration="enum:type" query="type:$option$ AND NOT HAS_VALUE:resolution" reverseOrder="true"/>
+        </entry>
+
+        <entry>
+            <key>ITEMS-UNRESOLVED-ASSIGNED-BY-TYPE</key>
+            <label>Assigned (Unresolved) Work Items by Type</label>
+            <value type="distribution" enumeration="enum:type" query="type:$option$ AND NOT HAS_VALUE:resolution AND HAS_VALUE:assignee.id" reverseOrder="true"/>
+        </entry>
+
+        <entry>
+            <key>ITEMS-UNRESOLVED-SCHEDULED-BY-TYPE</key>
+            <label>Scheduled (Unresolved) Work Items by Type</label>
+            <value type="distribution" enumeration="enum:type" query="type:$option$ AND NOT HAS_VALUE:resolution AND PLAN:(*)" reverseOrder="true"/>
+        </entry>
+
+    </metrics>
+
+</workitem-metrics>

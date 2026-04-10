@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<work-item>
+    <field id="assignee">pGUI</field>
+    <field id="author">rProject</field>
+    <field id="categories">
+        <list>
+            <item>ui</item>
+            <item>usermanagement</item>
+        </list>
+    </field>
+    <field id="created">2011-06-01 18:00:11.375 +0200</field>
+    <field id="initialEstimate">2d</field>
+    <field id="linkedWorkItems">
+        <list>
+            <struct>
+                <item id="role">implements</item>
+                <item id="workItem">EL-139</item>
+            </struct>
+        </list>
+    </field>
+    <field id="previousStatus">open</field>
+    <field id="priority">50.0</field>
+    <field id="remainingEstimate">1d</field>
+    <field id="severity">normal</field>
+    <field id="status">inprogress</field>
+    <field id="timeSpent">1d</field>
+    <field id="title">Administration section to manage user defined shortcuts</field>
+    <field id="type">task</field>
+</work-item>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<work-item>
+    <field id="assignee">pGUI</field>
+    <field id="author">rProject</field>
+    <field id="categories">
+        <list>
+            <item>usermanagement</item>
+            <item>administration</item>
+            <item>projectadmin</item>
+        </list>
+    </field>
+    <field id="created">2009-05-25 10:06:52.915 +0200</field>
+    <field id="initialEstimate">3d 2h</field>
+    <field id="linkedWorkItems">
+        <list>
+            <struct>
+                <item id="role">implements</item>
+                <item id="workItem">EL-143</item>
+            </struct>
+        </list>
+    </field>
+    <field id="previousStatus">done</field>
+    <field id="priority">50.0</field>
+    <field id="resolution">done</field>
+    <field id="resolvedOn">2009-05-25 10:08:04.097 +0200</field>
+    <field id="severity">normal</field>
+    <field id="status">verified</field>
+    <field id="timeSpent">3d 2h</field>
+    <field id="title">Implement UI to manage the user roles (admin and normal user)</field>
+    <field id="type">task</field>
+</work-item>

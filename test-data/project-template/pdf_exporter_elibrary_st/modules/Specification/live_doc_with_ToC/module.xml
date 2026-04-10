@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+    <field id="author">admin</field>
+    <field id="created">2025-12-15 06:48:27.846 +0000</field>
+    <field id="homePageContent" text-type="text/html">&lt;h1 id="polarion_wiki macro name=module-workitem;params=id=EL-213"&gt;&lt;/h1&gt;&lt;div id="polarion_wiki macro name=toc"&gt;&lt;/div&gt;&lt;p id="polarion_1"&gt;&lt;/p&gt;&lt;h2 id="polarion_wiki macro name=module-workitem;params=id=EL-217"&gt;&lt;/h2&gt;&lt;div id="polarion_wiki macro name=module-workitem;params=id=EL-212"&gt;&lt;/div&gt;&lt;div id="polarion_wiki macro name=page_break;params=uid=1" contentEditable="false" data-is-landscape="false"&gt;&lt;/div&gt;&lt;h3 id="polarion_wiki macro name=module-workitem;params=id=EL-214"&gt;&lt;/h3&gt;&lt;div id="polarion_wiki macro name=page_break;params=uid=2" contentEditable="false" data-is-landscape="false"&gt;&lt;/div&gt;&lt;h4 id="polarion_wiki macro name=module-workitem;params=id=EL-218"&gt;&lt;/h4&gt;&lt;p id="polarion_2"&gt;&lt;/p&gt;</field>
+    <field id="renderingLayouts">
+        <list>
+            <struct>
+                <item id="label">Requirement</item>
+                <item id="layouter">paragraph</item>
+                <item id="properties">
+                    <list>
+                        <struct>
+                            <item id="key">fieldsAtStart</item>
+                            <item id="value">id</item>
+                        </struct>
+                        <struct>
+                            <item id="key">fieldsAtEnd</item>
+                            <item id="value">status</item>
+                        </struct>
+                    </list>
+                </item>
+                <item id="type">requirement</item>
+            </struct>
+        </list>
+    </field>
+    <field id="status">draft</field>
+    <field id="structureLinkRole">parent</field>
+    <field id="title">live_doc_with_ToC</field>
+    <field id="type">generic</field>
+    <field id="usesOutlineNumbering">true</field>
+</module>

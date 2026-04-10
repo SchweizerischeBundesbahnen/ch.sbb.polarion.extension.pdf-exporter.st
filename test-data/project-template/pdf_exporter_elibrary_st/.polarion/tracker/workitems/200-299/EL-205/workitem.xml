@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<work-item>
+    <field id="assignee">sDeveloper</field>
+    <field id="author">rProject</field>
+    <field id="categories">
+        <list>
+            <item>ui</item>
+            <item>objects</item>
+            <item>searching</item>
+        </list>
+    </field>
+    <field id="created">2017-05-03 16:39:26.800 +0200</field>
+    <field id="description" text-type="text/html">See Requirement definition</field>
+    <field id="initialEstimate">3d</field>
+    <field id="linkedWorkItems">
+        <list>
+            <struct>
+                <item id="role">implements</item>
+                <item id="workItem">EL-159</item>
+            </struct>
+        </list>
+    </field>
+    <field id="previousStatus">reviewed</field>
+    <field id="priority">50.0</field>
+    <field id="remainingEstimate">3d</field>
+    <field id="severity">should_have</field>
+    <field id="status">accepted</field>
+    <field id="storyPoints" type="integer">4</field>
+    <field id="title">System Speed</field>
+    <field id="type">userstory</field>
+</work-item>

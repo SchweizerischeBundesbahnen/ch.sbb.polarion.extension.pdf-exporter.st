@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<work-item>
+    <field id="author">rProject</field>
+    <field id="categories">
+        <list>
+            <item>gui</item>
+            <item>ui</item>
+        </list>
+    </field>
+    <field id="created">2011-01-24 10:54:25.779 +0100</field>
+    <field id="initialEstimate"/>
+    <field id="linkedWorkItems">
+        <list>
+            <struct>
+                <item id="role">verifies</item>
+                <item id="workItem">EL-138</item>
+            </struct>
+        </list>
+    </field>
+    <field id="previousStatus">draft</field>
+    <field id="priority">50.0</field>
+    <field id="remainingEstimate"/>
+    <field id="severity">smoke</field>
+    <field id="status">active</field>
+    <field id="testSteps" type="struct:TestSteps">
+        <struct>
+            <item id="keys">
+                <list>
+                    <item>step</item>
+                    <item>description</item>
+                    <item>expectedResult</item>
+                </list>
+            </item>
+            <item id="steps">
+                <list>
+                    <struct>
+                        <item id="values">
+                            <list>
+                                <item text-type="text/html">Open the portal view.</item>
+                                <item text-type="text/html">Login to the E-Library Portal. </item>
+                                <item text-type="text/html">Portal view is opened and different portlets are rendered there.</item>
+                            </list>
+                        </item>
+                    </struct>
+                    <struct>
+                        <item id="values">
+                            <list>
+                                <item text-type="text/html">Check &amp;quot;Top 10 favorite books&amp;quot;</item>
+                                <item text-type="text/html">The portal view page shoud display the &amp;quot;Top 10 favorite books&amp;quot; portlet by default.</item>
+                                <item text-type="text/html">The portlet is displayed and it 10 books are listed.</item>
+                            </list>
+                        </item>
+                    </struct>
+                </list>
+            </item>
+        </struct>
+    </field>
+    <field id="testType" type="enum:testtype">user</field>
+    <field id="timeSpent"/>
+    <field id="title">Favorite Books</field>
+    <field id="type">testcase</field>
+</work-item>

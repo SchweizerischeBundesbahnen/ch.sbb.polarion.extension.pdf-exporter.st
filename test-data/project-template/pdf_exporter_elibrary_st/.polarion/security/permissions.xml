@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<permissions>
+    <permission name="com.polarion">
+        <role name="user">
+            <grant permission="persistence.object.Project.read"/>
+            <grant permission="persistence.object.WorkItem.read"/>
+            <grant permission="tracker.WorkItem.watch"/>
+            <grant permission="persistence.object.Module.read"/>
+            <grant permission="persistence.object.RichPage.read"/>
+            <grant permission="persistence.object.WikiPage.read"/>
+            <grant permission="persistence.object.Plan.read"/>
+            <grant permission="persistence.object.TestRun.read"/>
+            <grant permission="persistence.object.Baseline.read"/>
+            <grant permission="persistence.object.BaselineCollection.read"/>
+            <grant permission="reports.read"/>
+            <grant permission="persistence.object.Build.read"/>
+            <grant permission="builds.download"/>
+            <grant permission="space.read"/>
+            <grant permission="persistence.object.WatchList.create"/>
+            <grant permission="persistence.object.WatchList.modify"/>
+            <grant permission="persistence.object.WatchList.read"/>
+            <grant permission="persistence.object.WatchList.delete"/>
+        </role>
+    </permission>
+</permissions>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<menu>
+	<item copyFields="categories" label="Implementing Task" role="implements" titlePrefix="Implement: " type="task"/>
+	<item copyFields="categories" label="Implementing Issue" role="implements" type="issue"/>
+	<item copyFields="categories" label="Specifying Requirement" role="specifies" type="requirement"/>
+	<item copyFields="categories" label="Verifying Test Case" role="verifies" type="testcase"/>
+	<item copyFields="categories" label="Follow-up User Story" role="follow_up" type="userstory"/>
+	<item copyFields="categories" label="Follow-up Task" role="follow_up" type="task"/>
+	<item copyFields="categories" label="Follow-up Issue" role="follow_up" type="issue"/>
+	<item copyFields="categories" label="Follow-up Change Request" role="follow_up" type="changerequest"/>
+	<separator/>
+	<item label="Dependent" role="depends_on"/>
+	<item label="Related" role="relates_to"/>
+</menu>

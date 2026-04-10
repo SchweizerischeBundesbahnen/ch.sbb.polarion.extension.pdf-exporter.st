@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<rich-page>
+    <field id="author">admin</field>
+    <field id="created">2017-01-31 12:04:25.296 +0100</field>
+    <field id="homePageContent" text-type="text/html"><![CDATA[<div class="polarion-rp-column" style="width: 100%;">
+  <h1 id="polarion_hardcoded_0">Unplanned User Stories</h1>
+  <p id="polarion_1">
+    <span class="polarion-rp-inline-widget" data-widget="com.polarion.scriptInline">
+      <span class="polarion-rp-widget-parameters" style="display: none;">
+        <sub id="script">
+          <sub id="script" style="white-space:pre;">## Reported By
+#set($infoText = &quot;Reported by $transaction.users().getBy().id($securityService.getCurrentUser()).render()&lt;br/&gt;$date.long&quot;)
+#if($widgetContext.target().isEditor())
+	&lt;div style=&quot;color: grey; text-align: left;&quot;&gt;$infoText&lt;div&gt;
+#elseif($widgetContext.target().isPdf())
+	&lt;div style=&quot;color: grey; text-align: right; position: absolute; top: 22px; right: 10px;&quot;&gt;$infoText&lt;div&gt;
+#elseif($widgetContext.target().isPrint())
+	&lt;div style=&quot;text-align: right; position: absolute; top: 35px; right: 10px;&quot;&gt;$infoText&lt;div&gt;
+#end</sub>
+        </sub>
+      </span>
+    </span>
+  </p>
+</div>
+<div class="polarion-rp-row-separator" page_min_width="1000"></div>
+<div class="polarion-rp-column" style="width: 100%;">
+  <p id="polarion_client13">
+    <span style="font-weight: bold;">There are currently <span class="polarion-rp-inline-widget" data-widget="com.polarion.countOfObjects">
+        <span class="polarion-rp-widget-parameters" style="display: none;">
+          <sub id="dataSet">
+            <sub id="prototype">WorkItem</sub>
+            <sub id="subtype">userstory</sub>
+            <sub id="queryType">lucene</sub>
+            <sub id="luceneQuery" style="white-space:pre;">status:(accepted inprogress changesneeded implemented) AND NOT PLAN:(*)</sub>
+          </sub>
+          <sub id="before"></sub><sub id="after"></sub>
+        </span>
+      </span> already <span class="polarion-rp-inline-widget" data-widget="enumerationrenderer">
+        <span class="polarion-rp-widget-parameters" style="display: none;">
+          <sub id="scope"></sub><sub id="type"></sub>
+          <sub id="enum">
+            <sub id="values">
+              <sub>status</sub>
+            </sub>
+          </sub>
+          <sub id="enumOpt">
+            <sub id="values">
+              <sub>accepted</sub>
+            </sub>
+          </sub>
+          <sub id="render">
+            <sub id="renderModelObject">false</sub>
+            <sub id="withBaselineIcon">true</sub>
+            <sub id="withColor">false</sub>
+            <sub id="withIcon">true</sub>
+            <sub id="withLinks">true</sub>
+            <sub id="withRevisionIcon">true</sub>
+            <sub id="withText">true</sub>
+          </sub>
+          <sub id="customization">
+            <sub id="textBefore"></sub><sub id="textAfter"></sub>
+            <sub id="customLinkTarget">
+              <sub id="values">
+                <sub>_top</sub>
+              </sub>
+            </sub>
+            <sub id="customLink">
+              <sub id="script" style="white-space:pre;"></sub>
+            </sub>
+          </sub>
+        </span>
+      </span> but not yet planned <span class="polarion-rp-inline-widget" data-widget="enumerationrenderer">
+        <span class="polarion-rp-widget-parameters" style="display: none;">
+          <sub id="scope"></sub><sub id="type"></sub>
+          <sub id="enum">
+            <sub id="values">
+              <sub>workitem-type</sub>
+            </sub>
+          </sub>
+          <sub id="enumOpt">
+            <sub id="values">
+              <sub>userstory</sub>
+            </sub>
+          </sub>
+          <sub id="render">
+            <sub id="renderModelObject">false</sub>
+            <sub id="withBaselineIcon">true</sub>
+            <sub id="withColor">false</sub>
+            <sub id="withIcon">true</sub>
+            <sub id="withLinks">true</sub>
+            <sub id="withRevisionIcon">true</sub>
+            <sub id="withText">false</sub>
+          </sub>
+          <sub id="customization">
+            <sub id="textBefore"></sub>
+            <sub id="textAfter">User Stories</sub>
+            <sub id="customLinkTarget">
+              <sub id="values">
+                <sub>_top</sub>
+              </sub>
+            </sub>
+            <sub id="customLink">
+              <sub id="script" style="white-space:pre;"></sub>
+            </sub>
+          </sub>
+        </span>
+      </span>.</span>
+  </p>
+  <div id="polarion_client4" class="polarion-rp-widget-part" data-widget="com.polarion.scriptBlock">
+    <span class="polarion-rp-widget-parameters" style="display: none;">
+      <sub id="script">
+        <sub id="script" style="white-space:pre;">#info(&quot;To plan a User Story for a Release open the Plan and add the Work Item to the list of planned items.&quot;)</sub>
+      </sub>
+    </span>
+  </div>
+  <div id="polarion_client9" class="polarion-rp-widget-part" data-widget="com.polarion.table">
+    <span class="polarion-rp-widget-parameters">
+      <sub id="dataSet">
+        <sub id="prototype">WorkItem</sub>
+        <sub id="subtype">userstory</sub>
+        <sub id="queryType">lucene</sub>
+        <sub id="luceneQuery" style="white-space:pre;">status:(accepted inprogress changesneeded implemented) AND NOT PLAN:(*)</sub>
+        <sub id="children">
+          <sub id="columns">
+            <sub>
+              <sub id="id">id</sub>
+            </sub>
+            <sub>
+              <sub id="id">title</sub>
+            </sub>
+            <sub>
+              <sub id="id">status</sub>
+            </sub>
+            <sub>
+              <sub id="id">priority</sub>
+            </sub>
+            <sub>
+              <sub id="id">severity</sub>
+            </sub>
+          </sub>
+          <sub id="sortBy">
+            <sub>
+              <sub id="id">priority</sub>
+              <sub id="descending">true</sub>
+            </sub>
+          </sub>
+        </sub>
+      </sub>
+      <sub id="propertiesSidebarFields">
+        <sub>
+          <sub id="id">assignee</sub>
+        </sub>
+        <sub>
+          <sub id="id">priority</sub>
+        </sub>
+        <sub>
+          <sub id="id">severity</sub>
+        </sub>
+        <sub>
+          <sub id="id">storyPoints</sub>
+        </sub>
+        <sub>
+          <sub id="id">plannedIn</sub>
+        </sub>
+        <sub>
+          <sub id="id">status</sub>
+        </sub>
+        <sub>
+          <sub id="id">resolution</sub>
+        </sub>
+        <sub>
+          <sub id="id">linkedWorkItems</sub>
+        </sub>
+      </sub>
+      <sub id="advanced">
+        <sub id="top">50</sub>
+      </sub>
+    </span>
+  </div>
+  <p id="polarion_client10"></p><p id="polarion_client11"></p><p id="polarion_client12"></p>
+</div>
+<div class="polarion-rp-row-separator"></div>]]></field>
+    <field id="title">Unplanned User Stories</field>
+</rich-page>

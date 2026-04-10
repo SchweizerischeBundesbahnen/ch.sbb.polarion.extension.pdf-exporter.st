@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<test-run>
+    <field id="author">mTest</field>
+    <field id="created">2017-05-18 11:32:36.860 +0200</field>
+    <field id="description" text-type="text/html" type="text/html">&lt;html&gt;&lt;head&gt;&lt;META http-equiv="Content-Type" content="text/html; charset=UTF-8"&gt;&lt;meta content="HTML Tidy for Java (vers. 26 Z&amp;aacute;ř 2004), see www.w3.org" name="generator"&gt;&lt;title&gt;&lt;/title&gt;&lt;/head&gt;&lt;body&gt;This is a full manual test that includes all the manual test cases from the current project.&lt;/body&gt;&lt;/html&gt;</field>
+    <field id="environmentDescription" text-type="text/html" type="text/html">&lt;html&gt;&lt;head&gt;&lt;META http-equiv="Content-Type" content="text/html; charset=UTF-8"&gt;&lt;meta content="HTML Tidy for Java (vers. 26 Z&amp;aacute;ř 2004), see www.w3.org" name="generator"&gt;&lt;title&gt;&lt;/title&gt;&lt;/head&gt;&lt;body&gt;Add Defaults&lt;/body&gt;&lt;/html&gt;</field>
+    <field id="groupId">1.0</field>
+    <field id="planScope" multi="true" type="enum:@plan">
+        <list>
+            <item>Version_1_0</item>
+            <item>Iteration_1</item>
+            <item>Iteration_2</item>
+            <item>Iteration_3</item>
+            <item>Iteration_4</item>
+        </list>
+    </field>
+    <field id="platform" type="enum:platform">linux</field>
+    <field id="query">type:testcase AND testType:manual AND status:active</field>
+    <field id="selectTestCasesBy">dynamicQueryResult</field>
+    <field id="status">inProgress</field>
+    <field id="template">Full Manual System Test</field>
+    <field id="title">Full Manual System Test 1.0</field>
+    <field id="type">manual</field>
+    <field id="useReportFromTemplate">true</field>
+</test-run>

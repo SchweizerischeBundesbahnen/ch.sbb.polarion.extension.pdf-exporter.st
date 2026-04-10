@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<specificationTemplate>
+    <forImport>true</forImport>
+    <forRIF>true</forRIF>
+    <mappingConfiguration>
+        <mappingGroups direction="IMPORT" polarionType="heading" reqIfType="Heading">
+            <fieldMappings polarionField="title" reqIfAttribute="Object Heading"/>
+            <fieldMappings polarionField="description" reqIfAttribute="Object Text"/>
+        </mappingGroups>
+        <mappingGroups direction="IMPORT" polarionType="issue" reqIfType="Issue">
+            <fieldMappings polarionField="title" reqIfAttribute="Object Heading"/>
+            <fieldMappings polarionField="description" reqIfAttribute="Object Text"/>
+        </mappingGroups>
+        <mappingGroups direction="IMPORT" polarionType="requirement" reqIfType="Requirement">
+            <fieldMappings polarionField="title" reqIfAttribute="Object Heading"/>
+            <fieldMappings polarionField="description" reqIfAttribute="Object Text"/>
+        </mappingGroups>
+        <mappingGroups direction="IMPORT" polarionType="task" reqIfType="Task">
+            <fieldMappings polarionField="title" reqIfAttribute="Object Heading"/>
+            <fieldMappings polarionField="description" reqIfAttribute="Object Text"/>
+        </mappingGroups>
+        <mappingGroups direction="IMPORT" polarionType="testcase" reqIfType="Test Case">
+            <fieldMappings polarionField="title" reqIfAttribute="Object Heading"/>
+            <fieldMappings polarionField="description" reqIfAttribute="Object Text"/>
+        </mappingGroups>
+        <mappingGroups direction="IMPORT" polarionType="changerequest" reqIfType="Change Request">
+            <fieldMappings polarionField="title" reqIfAttribute="Object Heading"/>
+            <fieldMappings polarionField="description" reqIfAttribute="Object Text"/>
+        </mappingGroups>
+        <mappingGroups direction="IMPORT" polarionType="userstory" reqIfType="Userstory">
+            <fieldMappings polarionField="title" reqIfAttribute="Object Heading"/>
+            <fieldMappings polarionField="description" reqIfAttribute="Object Text"/>
+        </mappingGroups>
+    </mappingConfiguration>
+</specificationTemplate>

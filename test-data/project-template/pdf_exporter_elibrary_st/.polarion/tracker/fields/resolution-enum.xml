@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<enumeration>
+    <option id="done" name="Done" sortOrder="1"/>
+    <option id="wontdo" name="Won't Do" sortOrder="2"/>
+    <option id="duplicate" name="Duplicate" sortOrder="3"/>
+    <option id="incomplete" name="Incomplete" sortOrder="4"/>
+    <option id="cannotreproduce" name="Cannot Reproduce" sortOrder="5"/>
+    <option id="invalid" name="Invalid" sortOrder="6"/>
+    <option id="later" name="Later" sortOrder="7"/>
+</enumeration>

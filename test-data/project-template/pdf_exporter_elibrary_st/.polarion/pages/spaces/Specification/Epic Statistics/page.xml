@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<rich-page>
+    <field id="author">admin</field>
+    <field id="created">2017-01-17 10:08:47.378 +0100</field>
+    <field id="homePageContent" text-type="text/html"><![CDATA[<div class="polarion-rp-column" style="width: 100%;">
+  <h1 id="polarion_hardcoded_0">Epic Statistics</h1>
+  <p id="polarion_1">
+    <span class="polarion-rp-inline-widget" data-widget="com.polarion.scriptInline">
+      <span class="polarion-rp-widget-parameters" style="display: none;">
+        <sub id="script">
+          <sub id="script" style="white-space:pre;">## Reported By
+#set($infoText = &quot;Reported by $transaction.users().getBy().id($securityService.getCurrentUser()).render()&lt;br/&gt;$date.long&quot;)
+#if($widgetContext.target().isEditor())
+	&lt;div style=&quot;color: grey; text-align: left;&quot;&gt;$infoText&lt;div&gt;
+#elseif($widgetContext.target().isPdf())
+	&lt;div style=&quot;color: grey; text-align: right; position: absolute; top: 22px; right: 10px;&quot;&gt;$infoText&lt;div&gt;
+#elseif($widgetContext.target().isPrint())
+	&lt;div style=&quot;text-align: right; position: absolute; top: 35px; right: 10px;&quot;&gt;$infoText&lt;div&gt;
+#end</sub>
+        </sub>
+      </span>
+    </span>
+  </p>
+</div>
+<div class="polarion-rp-row-separator" page_min_width="1000"></div>
+<div class="polarion-rp-column" style="width: 100%;">
+  <h2 id="polarion_client21">Epics by Status</h2>
+  <div id="polarion_client9" class="polarion-rp-widget-part" data-widget="itemsbystatustiles">
+    <span class="polarion-rp-widget-parameters" style="display: none;">
+      <sub id="dataSet">
+        <sub id="prototype">WorkItem</sub>
+        <sub id="subtype">epic</sub>
+        <sub id="queryType">lucene</sub>
+        <sub id="luceneQuery" style="white-space:pre;"></sub>
+      </sub>
+      <sub id="displayChart">true</sub>
+      <sub id="align">
+        <sub id="values">
+          <sub>center</sub>
+        </sub>
+      </sub>
+    </span>
+  </div>
+</div>
+<div class="polarion-rp-row-separator"></div>
+<div class="polarion-rp-column" style="width: 100%;">
+  <h2 id="polarion_client30">Epic Trends (30 days)</h2>
+  <p id="polarion_client2"></p>
+</div>
+<div class="polarion-rp-row-separator"></div>
+<div class="polarion-rp-column" style="width: 70%;">
+  <div id="polarion_client15" class="polarion-rp-widget-part" data-widget="com.polarion.intervalFieldChart">
+    <span class="polarion-rp-widget-parameters" style="display: none;">
+      <sub id="title"></sub>
+      <sub id="data">
+        <sub id="elements">
+          <sub>
+            <sub id="prototype">WorkItem</sub>
+            <sub id="subtype">epic</sub>
+            <sub id="queryType">lucene</sub>
+            <sub id="luceneQuery" style="white-space:pre;"></sub>
+            <sub id="children">
+              <sub id="intervalField">
+                <sub id="field">created</sub>
+              </sub>
+              <sub id="name">New Epics</sub>
+              <sub id="color">rgb(155, 89, 182)</sub>
+            </sub>
+          </sub>
+          <sub>
+            <sub id="prototype">WorkItem</sub>
+            <sub id="subtype">epic</sub>
+            <sub id="queryType">lucene</sub>
+            <sub id="luceneQuery" style="white-space:pre;">status:verified</sub>
+            <sub id="children">
+              <sub id="intervalField">
+                <sub id="field">created</sub>
+              </sub>
+              <sub id="name">New Verified Epics</sub>
+              <sub id="color">rgb(0, 128, 0)</sub>
+            </sub>
+          </sub>
+        </sub>
+      </sub>
+      <sub id="timeAxis">
+        <sub id="from">
+          <sub id="relative">-30</sub>
+        </sub>
+        <sub id="to">
+          <sub id="relative">0</sub>
+        </sub>
+        <sub id="scaleType">day</sub>
+        <sub id="baseDate">1</sub>
+      </sub>
+      <sub id="advanced">
+        <sub id="height">300px</sub>
+        <sub id="width"></sub>
+      </sub>
+    </span>
+  </div>
+  <div id="polarion_client7" class="polarion-rp-widget-part" data-widget="com.polarion.multiSetTrendChart">
+    <span class="polarion-rp-widget-parameters" style="display: none;">
+      <sub id="title"></sub>
+      <sub id="data">
+        <sub id="elements">
+          <sub>
+            <sub id="prototype">WorkItem</sub>
+            <sub id="subtype">epic</sub>
+            <sub id="queryType">lucene</sub>
+            <sub id="luceneQuery" style="white-space:pre;"></sub>
+            <sub id="children">
+              <sub id="name">Total Epics</sub>
+              <sub id="color">rgb(155, 89, 182)</sub>
+            </sub>
+          </sub>
+          <sub>
+            <sub id="prototype">WorkItem</sub>
+            <sub id="subtype">epic</sub>
+            <sub id="queryType">lucene</sub>
+            <sub id="luceneQuery" style="white-space:pre;">status:verified</sub>
+            <sub id="children">
+              <sub id="name">Total Verified Epics</sub>
+              <sub id="color">rgb(0, 128, 0)</sub>
+            </sub>
+          </sub>
+        </sub>
+      </sub>
+      <sub id="timeAxis">
+        <sub id="from">
+          <sub id="relative">-30</sub>
+        </sub>
+        <sub id="to">
+          <sub id="relative">0</sub>
+        </sub>
+        <sub id="scaleType">day</sub>
+        <sub id="baseDate">1</sub>
+      </sub>
+      <sub id="advanced">
+        <sub id="height">250px</sub>
+        <sub id="width"></sub>
+      </sub>
+    </span>
+  </div>
+  <p id="polarion_client13"></p>
+</div>
+<div class="polarion-rp-column" style="width: 30%;">
+  <div id="polarion_client6" class="polarion-rp-widget-part" data-widget="com.polarion.scriptBlock">
+    <span class="polarion-rp-widget-parameters" style="display: none;">
+      <sub id="script">
+        <sub id="script" style="white-space:pre;">#info(&quot;Epics that are Accepted, In Progress or Done.&quot;)</sub>
+      </sub>
+    </span>
+  </div>
+  <div id="polarion_client39" class="polarion-rp-widget-part" data-widget="com.polarion.multiSetTrendChart">
+    <span class="polarion-rp-widget-parameters">
+      <sub id="title">Epics in Process</sub>
+      <sub id="data">
+        <sub id="elements">
+          <sub>
+            <sub id="prototype">WorkItem</sub>
+            <sub id="subtype">epic</sub>
+            <sub id="queryType">lucene</sub>
+            <sub id="luceneQuery" style="white-space:pre;">status:(accepted inprogress done)</sub>
+            <sub id="children">
+              <sub id="name">Total User Stories In Process</sub>
+              <sub id="color">rgb(163, 0, 0)</sub>
+            </sub>
+          </sub>
+        </sub>
+      </sub>
+      <sub id="timeAxis">
+        <sub id="from">
+          <sub id="relative">-30</sub>
+        </sub>
+        <sub id="to">
+          <sub id="relative">0</sub>
+        </sub>
+        <sub id="scaleType">day</sub>
+        <sub id="baseDate">1</sub>
+      </sub>
+      <sub id="advanced">
+        <sub id="height">200px</sub>
+        <sub id="width"></sub>
+      </sub>
+    </span>
+  </div>
+  <p id="polarion_client36"></p>
+</div>
+<div class="polarion-rp-row-separator"></div>
+<div class="polarion-rp-column" style="width: 100%;">
+  <h2 id="polarion_client35">Epics by Category</h2>
+  <p id="polarion_client3"></p>
+</div>
+<div class="polarion-rp-row-separator"></div>
+<div class="polarion-rp-column" style="width: 70%;">
+  <div id="polarion_client18" class="polarion-rp-widget-part" data-widget="com.polarion.scriptBlock">
+    <span class="polarion-rp-widget-parameters" style="display: none;">
+      <sub id="script">
+        <sub id="script" style="white-space:pre;">## Epics by Category Table
+#set($projectId = $page.getReference().projectId())
+&lt;table class=&quot;polarion-rpw-table-content&quot;&gt;
+	&lt;thead&gt;
+		&lt;tr class=&quot;polarion-rpw-table-header-row&quot;&gt;
+			&lt;th&gt;Category&lt;/th&gt;
+			&lt;th style=&quot;text-align: center;&quot;&gt;Count&lt;/th&gt;
+		&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;/tbody&gt;
+		#foreach($category in $transaction.categories().search().query(&quot;project.id:$projectId&quot;).sort(&quot;id&quot;))
+			#set($categoryId = $category.getReference().id())
+			#set($query = &quot;project.id:$projectId AND type:epic AND categories.id:$categoryId&quot;)
+			#set($count = $transaction.workItems().count().query(&quot;$query&quot;).result())
+			#if($count &gt; 0)
+				#set($link = $transaction.context().createPortalLink().project(&quot;$projectId&quot;).workItems().query(&quot;$query&quot;).toEncodedRelativeUrl())
+				&lt;tr class=&quot;polarion-rpw-table-content-row&quot;&gt;
+					&lt;td&gt;$category.render()&lt;/td&gt;
+					&lt;td&gt;&lt;a href=&quot;$link&quot; target=&quot;_top&quot; style=&quot;display: block; width: 100%; height: 100%; text-align: center;&quot;&gt;$count&lt;/a&gt;&lt;/td&gt;
+				&lt;/tr&gt;
+			#end
+		#end
+		#set($query = &quot;project.id:$projectId AND type:epic AND NOT HAS_VALUE:categories.id&quot;)
+		#set($link = $transaction.context().createPortalLink().project(&quot;$projectId&quot;).workItems().query(&quot;$query&quot;).toEncodedRelativeUrl())
+		#set($count = $transaction.workItems().count().query(&quot;$query&quot;).result())
+		&lt;tr class=&quot;polarion-rpw-table-content-row&quot;&gt;
+			&lt;td&gt;Un-categorized&lt;/td&gt;
+			&lt;td&gt;&lt;a href=&quot;$link&quot; target=&quot;_top&quot; style=&quot;display: block; width: 100%; height: 100%; text-align: center;&quot;&gt;$count&lt;/a&gt;&lt;/td&gt;
+		&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;</sub>
+      </sub>
+    </span>
+  </div>
+  <p id="polarion_client25"></p><p id="polarion_client28"></p><p id="polarion_client29"></p>
+</div>
+<div class="polarion-rp-column" style="width: 30%;">
+  <div id="polarion_client8" class="polarion-rp-widget-part" data-widget="com.polarion.scriptBlock">
+    <span class="polarion-rp-widget-parameters">
+      <sub id="script">
+        <sub id="script" style="white-space:pre;">## Epics by Category Chart
+#set($projectId = $page.getReference().projectId())
+&lt;div class=&quot;polarion-rp-widget-part&quot; data-widget=&quot;com.polarion.multiSetPieChart&quot;&gt;
+	&lt;span class=&quot;polarion-rp-widget-parameters&quot;&gt;
+		&lt;sub id=&quot;title&quot;&gt;&lt;/sub&gt;
+		&lt;sub id=&quot;sectors&quot;&gt;
+			&lt;sub id=&quot;elements&quot;&gt;
+				#foreach($category in $transaction.categories().search().query(&quot;project.id:$projectId&quot;).sort(&quot;id&quot;))
+					#set($categoryId = $category.getReference().id())
+					#set($query = &quot;project.id:$projectId AND type:epic AND categories.id:$categoryId&quot;)
+					&lt;sub&gt;
+						&lt;sub id=&quot;prototype&quot;&gt;WorkItem&lt;/sub&gt;
+						&lt;sub id=&quot;queryType&quot;&gt;luceneVelocity&lt;/sub&gt;
+						&lt;sub id=&quot;luceneQuery&quot;&gt;$query&lt;/sub&gt;
+						&lt;sub id=&quot;children&quot;&gt;
+							&lt;sub id=&quot;sectorName&quot;&gt;$category.fields().name().get()&lt;/sub&gt;
+							&lt;sub id=&quot;sectorColor&quot;&gt;&lt;/sub&gt;
+						&lt;/sub&gt;
+					&lt;/sub&gt;
+				#end
+				&lt;sub&gt;
+					&lt;sub id=&quot;prototype&quot;&gt;WorkItem&lt;/sub&gt;
+					&lt;sub id=&quot;queryType&quot;&gt;luceneVelocity&lt;/sub&gt;
+					&lt;sub id=&quot;luceneQuery&quot;&gt;project.id:$projectId AND type:epic AND NOT HAS_VALUE:categories.id&lt;/sub&gt;
+					&lt;sub id=&quot;children&quot;&gt;
+						&lt;sub id=&quot;sectorName&quot;&gt;Un-categorized&lt;/sub&gt;
+						&lt;sub id=&quot;sectorColor&quot;&gt;rgb(155, 89, 182)&lt;/sub&gt;
+					&lt;/sub&gt;
+				&lt;/sub&gt;
+			&lt;/sub&gt;
+		&lt;/sub&gt;
+		&lt;sub id=&quot;showDataLabels&quot;&gt;true&lt;/sub&gt;
+		&lt;sub id=&quot;showZeroValues&quot;&gt;false&lt;/sub&gt;
+		&lt;sub id=&quot;advanced&quot;&gt;
+			&lt;sub id=&quot;height&quot;&gt;250px&lt;/sub&gt;
+		&lt;/sub&gt;
+	&lt;/span&gt;
+&lt;/div&gt;</sub>
+      </sub>
+    </span>
+  </div>
+</div>
+<div class="polarion-rp-row-separator"></div>]]></field>
+    <field id="title">Epic Statistics</field>
+</rich-page>

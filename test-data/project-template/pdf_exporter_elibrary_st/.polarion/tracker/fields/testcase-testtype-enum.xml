@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<enumeration>
+    <option default="true" iconURL="/polarion/icons/default/enums/req_status_reviewed.gif" id="manual" name="Manual System Test" sortOrder="1"/>
+    <option iconURL="/polarion/icons/default/enums/req_status_implemented.gif" id="automated" name="Automated Test" sortOrder="2"/>
+    <option iconURL="/polarion/icons/default/enums/req_status_accepted.gif" id="user" name="User Acceptance Test" sortOrder="3"/>
+    <option iconURL="/polarion/icons/default/enums/req_status_approved.gif" id="release" name="Release Test" sortOrder="4"/>
+</enumeration>

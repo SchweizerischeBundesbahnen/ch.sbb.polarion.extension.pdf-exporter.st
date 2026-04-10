@@ -1,0 +1,10 @@
+###############################################################################
+##
+##  dependencies.vm - this velocity script is executed on changing relevant widget settings
+##
+
+#set($scope = $parameters.dataSet.scope())
+$parameters.settings.linkedItemTypes.set().scope($scope)
+$parameters.settings.linkedRoles.set().scope($scope)
+$parameters.settings.defectItemTypes.set().scope($scope)
+$parameters.settings.defectRoles.set().scope($scope)

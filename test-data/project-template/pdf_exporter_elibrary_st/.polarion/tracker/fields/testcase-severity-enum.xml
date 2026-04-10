@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<enumeration>
+    <option color="#E74C3C" iconURL="/polarion/icons/default/enums/severity_critical.gif" id="transition" name="Transition" sortOrder="2"/>
+    <option color="#C0392B" iconURL="/polarion/icons/default/enums/severity_major.gif" id="smoke" name="Smoke" sortOrder="3"/>
+    <option color="#000000" default="true" iconURL="/polarion/icons/default/enums/severity_normal.gif" id="basic" name="Basic" sortOrder="4"/>
+    <option color="#2C3E50" iconURL="/polarion/icons/default/enums/severity_minor.gif" id="detailed" name="Detailed" sortOrder="5"/>
+</enumeration>

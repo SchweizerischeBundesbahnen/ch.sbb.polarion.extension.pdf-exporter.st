@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<work-item>
+    <field id="author">admin</field>
+    <field id="created">2025-12-15 07:06:47.445 +0000</field>
+    <field id="description" text-type="text/html"><![CDATA[<img title="blue_triangle.png" src="workitemimg:1-blue_triangle.png" style="max-width: 650px;" data-lastmodified="2025-12-15T08:06:41.735+01:00"/>
+<p class="polarion-rte-caption-paragraph">
+  Figure <span data-sequence="Figure" class="polarion-rte-caption">#</span> inside ref WI
+</p>]]></field>
+    <field id="priority">50.0</field>
+    <field id="reqType" type="enum:reqtype">other</field>
+    <field id="severity">should_have</field>
+    <field id="status">draft</field>
+    <field id="title">Test ToF</field>
+    <field id="type">requirement</field>
+</work-item>

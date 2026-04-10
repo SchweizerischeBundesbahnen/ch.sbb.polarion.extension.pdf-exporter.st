@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<fields>
+    <field description="Select the Target Release Version for the planned Requirement" id="targetVersion" name="Target Version" type="enum:@plan[template.id:release]"/>
+    <field description="Nonfunctional Requirement Type" id="reqType" name="Requirement Type" required="true" type="enum:reqtype"/>
+</fields>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<descriptors>
+  <descriptor>
+    <artifacts>
+      <artifact>
+        <artifactId>elibrary</artifactId>
+      </artifact>
+    </artifacts>
+    <build>
+      <properties>
+           <exclude.tests.pattern>**/LoginTest.java</exclude.tests.pattern>
+           <polarion.build.xUnit.import.idPrefix>build_quick</polarion.build.xUnit.import.idPrefix>
+           <polarion.build.xUnit.import.enabled>true</polarion.build.xUnit.import.enabled>
+      </properties>
+    </build>
+  </descriptor>
+  <descriptor name="All Tests">
+    <artifacts>
+      <artifact>
+        <artifactId>elibrary</artifactId>
+      </artifact>
+    </artifacts>
+    <build>
+      <properties>
+           <polarion.build.xUnit.import.idPrefix>build_all</polarion.build.xUnit.import.idPrefix>
+           <polarion.build.xUnit.import.enabled>true</polarion.build.xUnit.import.enabled>
+      </properties>
+    </build>
+  </descriptor>
+  <descriptor name="All Tests (No xUnit Test Import)">
+    <artifacts>
+      <artifact>
+        <artifactId>elibrary</artifactId>
+      </artifact>
+    </artifacts>
+    <build>
+      <properties>
+           <polarion.build.xUnit.import.enabled>false</polarion.build.xUnit.import.enabled>
+      </properties>
+    </build>
+  </descriptor>
+</descriptors>

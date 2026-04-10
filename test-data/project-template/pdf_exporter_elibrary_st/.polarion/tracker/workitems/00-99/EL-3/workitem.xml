@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<work-item>
+    <field id="author">rProject</field>
+    <field id="categories">
+        <list>
+            <item>security</item>
+        </list>
+    </field>
+    <field id="created">2012-02-01 18:20:54.595 +0100</field>
+    <field id="initialEstimate"/>
+    <field id="linkedWorkItems">
+        <list>
+            <struct>
+                <item id="role">verifies</item>
+                <item id="workItem">EL-146</item>
+            </struct>
+        </list>
+    </field>
+    <field id="previousStatus">draft</field>
+    <field id="priority">50.0</field>
+    <field id="remainingEstimate"/>
+    <field id="severity">basic</field>
+    <field id="status">active</field>
+    <field id="testSteps" type="struct:TestSteps">
+        <struct>
+            <item id="keys">
+                <list>
+                    <item>step</item>
+                    <item>description</item>
+                    <item>expectedResult</item>
+                </list>
+            </item>
+            <item id="steps">
+                <list>
+                    <struct>
+                        <item id="values">
+                            <list>
+                                <item text-type="text/html">Open User Account Page</item>
+                                <item text-type="text/html">Login to E-Library Portal, and click user name in top left corner</item>
+                                <item text-type="text/html">The user account page is shown</item>
+                            </list>
+                        </item>
+                    </struct>
+                    <struct>
+                        <item id="values">
+                            <list>
+                                <item text-type="text/html">Create new user</item>
+                                <item text-type="text/html">Click on "Create new user" link</item>
+                                <item text-type="text/html">The dialog to create a new user is shown</item>
+                            </list>
+                        </item>
+                    </struct>
+                    <struct>
+                        <item id="values">
+                            <list>
+                                <item text-type="text/html">Enter name with tab key</item>
+                                <item text-type="text/html">Type: foo\tbar (where \t is tab key)</item>
+                                <item text-type="text/html"/>
+                            </list>
+                        </item>
+                    </struct>
+                    <struct>
+                        <item id="values">
+                            <list>
+                                <item text-type="text/html">Save it</item>
+                                <item text-type="text/html">Click "Search"</item>
+                                <item text-type="text/html">System reports that the username cannot contain tab key</item>
+                            </list>
+                        </item>
+                    </struct>
+                </list>
+            </item>
+        </struct>
+    </field>
+    <field id="testType" type="enum:testtype">manual</field>
+    <field id="timeSpent"/>
+    <field id="title">Test: user name may not contain tab char</field>
+    <field id="type">testcase</field>
+</work-item>

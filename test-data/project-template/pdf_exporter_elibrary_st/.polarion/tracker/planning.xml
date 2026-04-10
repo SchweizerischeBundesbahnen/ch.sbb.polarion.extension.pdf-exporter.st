@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<planning>
+
+    <!-- estimate used for planning of Work Items with remaining estimate not filled -->
+    <default-estimate>1d</default-estimate>
+
+    <!-- query matching Work Items that should be planned -->
+    <workitems-query>PLAN:(*) AND NOT HAS_VALUE:resolution</workitems-query>
+
+    <!-- linked Work Item role ids that have "dependency" meaning; i.e. if Work Item "A"
+         is linked with other Work Item "B" with "dependency" role then Work Item "A"
+         would be planned after workitem "B"
+    -->
+    <dependency-roles>
+        <role>depends_on</role>
+    </dependency-roles>
+
+    <!-- linked Work Item role ids that have "parent" meaning -->
+    <parent-roles>
+        <role>parent</role>
+        <role>implements</role>
+    </parent-roles>
+
+    <!-- enables splitting of workitems; if this behavior is enabled then when polarion searches for a space
+         for a workitem in the plan, it may decide to split the workitem to two or more pieces and thus make
+         use of periods in time before workitem fixed or postponed by a planning constraint, so that
+         the resulting plan is more optimal in terms of priorities
+    -->
+    <workitem-splitting>true</workitem-splitting>
+
+</planning>

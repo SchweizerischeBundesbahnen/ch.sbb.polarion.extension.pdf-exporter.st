@@ -1,0 +1,24 @@
+###############################################################################
+##
+##  parameters.vm - this velocity script defines the widget parameters
+##
+
+###############################################################################
+##
+##  Velocity Context - following objects are in the velocity context
+##
+## java.util.Map $parameters
+## com.polarion.alm.shared.api.model.rp.parameter.ParameterFactory $factory
+##
+
+###############################################################################
+##
+##  Add parameters
+
+#set($dataSet = $factory.dataSet("Data Set"))
+$dataSet.add("name", $factory.string("Name").build())
+$dataSet.add("color", $factory.string("Color").build())
+$!parameters.put("data", $factory.multi("Series", $dataSet.build()).build())
+$!parameters.put("datePoints", $factory.timeAxis("Dates").scaleWeek().fromRelative(-100).build())
+$!parameters.put("title", $factory.string("Title").build())
+$!parameters.put("height", $factory.integer("Height").build())

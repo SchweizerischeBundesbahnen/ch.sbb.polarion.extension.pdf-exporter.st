@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<rich-page>
+    <field id="author">admin</field>
+    <field id="created">2015-02-18 13:06:03.646 +0100</field>
+    <field id="homePageContent" text-type="text/html"><![CDATA[<div class="polarion-rp-column" style="width: 100%;">
+  <h1 id="polarion_client13">Frequent Test Case Failures</h1>
+  <p id="polarion_1">
+    <span class="polarion-rp-inline-widget" data-widget="com.polarion.scriptInline">
+      <span class="polarion-rp-widget-parameters" style="display: none;">
+        <sub id="script">
+          <sub id="script" style="white-space:pre;">## Reported By
+#set($infoText = &quot;Reported by $transaction.users().getBy().id($securityService.getCurrentUser()).render()&lt;br/&gt;$date.long&quot;)
+#if($widgetContext.target().isEditor())
+	&lt;div style=&quot;color: grey; text-align: left;&quot;&gt;$infoText&lt;div&gt;
+#elseif($widgetContext.target().isPdf())
+	&lt;div style=&quot;color: grey; text-align: right; position: absolute; top: 22px; right: 10px;&quot;&gt;$infoText&lt;div&gt;
+#elseif($widgetContext.target().isPrint())
+	&lt;div style=&quot;text-align: right; position: absolute; top: 35px; right: 10px;&quot;&gt;$infoText&lt;div&gt;
+#end</sub>
+        </sub>
+      </span>
+    </span>
+  </p>
+</div>
+<div class="polarion-rp-row-separator" page_min_width="1000"></div>
+<div class="polarion-rp-column" style="width: 70%;">
+  <div id="polarion_client14" class="polarion-rp-widget-part" data-widget="com.polarion.scriptBlock">
+    <span class="polarion-rp-widget-parameters">
+      <sub id="script">
+        <sub id="script" style="white-space:pre;">#info(&quot;Displays Test Cases and related Issues with frequent failures in the selected Test Runs. (Filtered by Test Run Template and Execution Time). The Test Cases can also be filtered by Category.&quot;)</sub>
+      </sub>
+    </span>
+  </div>
+  <p id="polarion_client11"></p>
+  <h3 id="polarion_client3">Frequently Failed Test Cases</h3>
+  <div id="polarion_client18" class="polarion-rp-widget-part" data-widget="com.polarion.table">
+    <span class="polarion-rp-widget-parameters">
+      <sub id="dataSet">
+        <sub id="prototype">WorkItem</sub>
+        <sub id="queryType">sqlVelocity</sub>
+        <sub id="sqlColumnsQuery" style="white-space:pre;"></sub>
+        <sub id="sqlTablesQuery" style="white-space:pre;">#if($pageParameters.category.values.empty)
+   ,STRUCT_TESTRUN_RECORDS TRR
+#else
+   ,STRUCT_TESTRUN_RECORDS TRR, CATEGORY CAT, REL_WORKITEM_CATEGORY_CATEGORIES LINKCAT
+#end</sub>
+        <sub id="sqlRestQuery" style="white-space:pre;">and WORKITEM.C_URI = TRR.FK_URI_TESTCASE
+and TRR.C_RESULT = &#39;failed&#39;
+and TRR.FK_URI_P_TESTRUN in (
+  select C_URI from TESTRUN where
+        C_FINISHEDON &gt;= &#39;$pageParameters.fromDate 00:00:00&#39;
+    and C_FINISHEDON &lt;= &#39;$pageParameters.toDate 00:00:00&#39;
+#if(!$pageParameters.Test_Run_Template_ID.value().equals(&quot;&quot;))
+    and FK_URI_TEMPLATE in (
+      select C_URI from TESTRUN where C_ISTEMPLATE is true and C_ID = &#39;$pageParameters.Test_Run_Template_ID.value()&#39;
+    )
+#end
+
+)
+#if(!$pageParameters.category.values.empty)
+  and LINKCAT.FK_URI_WORKITEM = TRR.FK_URI_TESTCASE
+  and LINKCAT.FK_URI_CATEGORY = CAT.C_URI
+  and CAT.C_ID in $pageParameters.category
+#end
+group by WORKITEM.C_URI having count(TRR.C_RESULT) &gt;= $pageParameters.minFailures</sub>
+        <sub id="children">
+          <sub id="columns">
+            <sub>
+              <sub id="id">id</sub>
+            </sub>
+            <sub>
+              <sub id="id">title</sub>
+            </sub>
+            <sub>
+              <sub id="id">testType</sub>
+            </sub>
+            <sub>
+              <sub id="id">severity</sub>
+            </sub>
+            <sub>
+              <sub id="id">status</sub>
+            </sub>
+            <sub>
+              <sub id="id">linkedWorkItems</sub>
+            </sub>
+          </sub>
+          <sub id="sortBy"></sub>
+        </sub>
+      </sub>
+      <sub id="propertiesSidebarFields">
+        <sub>
+          <sub id="id">assignee</sub>
+        </sub>
+        <sub>
+          <sub id="id">severity</sub>
+        </sub>
+        <sub>
+          <sub id="id">testType</sub>
+        </sub>
+        <sub>
+          <sub id="id">status</sub>
+        </sub>
+        <sub>
+          <sub id="id">resolution</sub>
+        </sub>
+        <sub>
+          <sub id="id">linkedWorkItems</sub>
+        </sub>
+      </sub>
+      <sub id="advanced">
+        <sub id="top">50</sub>
+      </sub>
+    </span>
+  </div>
+  <h3 id="polarion_client15">Issues</h3>
+  <div id="polarion_client12" class="polarion-rp-widget-part" data-widget="com.polarion.table">
+    <span class="polarion-rp-widget-parameters" style="display: none;">
+      <sub id="dataSet">
+        <sub id="prototype">WorkItem</sub>
+        <sub id="subtype">issue</sub>
+        <sub id="queryType">sqlVelocity</sub>
+        <sub id="sqlColumnsQuery" style="white-space:pre;"></sub>
+        <sub id="sqlTablesQuery" style="white-space:pre;">#if($pageParameters.category.values.empty)
+   ,STRUCT_TESTRUN_RECORDS TRR
+#else
+   ,STRUCT_TESTRUN_RECORDS TRR, CATEGORY CAT, REL_WORKITEM_CATEGORY_CATEGORIES LINKCAT
+#end</sub>
+        <sub id="sqlRestQuery" style="white-space:pre;">and WORKITEM.C_URI = TRR.FK_URI_DEFECT
+and TRR.C_RESULT = &#39;failed&#39;
+and TRR.FK_URI_P_TESTRUN in (
+  select C_URI from TESTRUN where
+        C_FINISHEDON &gt;= &#39;$pageParameters.fromDate 00:00:00&#39;
+    and C_FINISHEDON &lt;= &#39;$pageParameters.toDate 00:00:00&#39;
+    #set($templateIds = &quot;&quot;)
+#if(!$pageParameters.Test_Run_Template_ID.value().equals(&quot;&quot;))
+    and FK_URI_TEMPLATE in (
+      select C_URI from TESTRUN where C_ISTEMPLATE is true and C_ID = &#39;$pageParameters.Test_Run_Template_ID.value()&#39;
+    )
+#end
+)
+#if(!$pageParameters.category.values.empty)
+  and LINKCAT.FK_URI_WORKITEM = TRR.FK_URI_TESTCASE
+  and LINKCAT.FK_URI_CATEGORY = CAT.C_URI
+  and CAT.C_ID IN $pageParameters.category
+#end
+group by WORKITEM.C_URI having count(TRR.C_RESULT) &gt;= $pageParameters.minFailures</sub>
+        <sub id="children">
+          <sub id="columns">
+            <sub>
+              <sub id="id">id</sub>
+            </sub>
+            <sub>
+              <sub id="id">title</sub>
+            </sub>
+            <sub>
+              <sub id="id">status</sub>
+            </sub>
+            <sub>
+              <sub id="id">priority</sub>
+            </sub>
+            <sub>
+              <sub id="id">severity</sub>
+            </sub>
+          </sub>
+          <sub id="sortBy"></sub>
+        </sub>
+      </sub>
+      <sub id="propertiesSidebarFields">
+        <sub>
+          <sub id="id">assignee</sub>
+        </sub>
+        <sub>
+          <sub id="id">severity</sub>
+        </sub>
+        <sub>
+          <sub id="id">occurredInVersion</sub>
+        </sub>
+        <sub>
+          <sub id="id">targetVersion</sub>
+        </sub>
+        <sub>
+          <sub id="id">status</sub>
+        </sub>
+        <sub>
+          <sub id="id">resolution</sub>
+        </sub>
+        <sub>
+          <sub id="id">linkedWorkItems</sub>
+        </sub>
+      </sub>
+      <sub id="advanced">
+        <sub id="top">50</sub>
+      </sub>
+    </span>
+  </div>
+  <p id="polarion_2"></p><p id="polarion_client21"></p><p id="polarion_client22"></p>
+</div>
+<div class="polarion-rp-column" style="width: 30%;">
+  <div id="polarion_client28" class="polarion-rp-widget-part" data-widget="com.polarion.pageParametersForm">
+    <span class="polarion-rp-widget-parameters">
+      <sub id="title"></sub>
+      <sub id="content">
+        <sub>Test_Run_Template_ID</sub>
+        <sub>fromDate</sub>
+        <sub>toDate</sub>
+        <sub>category</sub>
+        <sub>minFailures</sub>
+      </sub>
+      <sub id="width">300</sub>
+    </span>
+  </div>
+  <p id="polarion_client19">
+    <span class="polarion-rp-inline-widget" data-widget="com.polarion.scriptInline">
+      <span class="polarion-rp-widget-parameters" style="display: none;">
+        <sub id="script">
+          <sub id="script" style="white-space:pre;">&lt;style&gt;
+.polarion-rpe-ParameterEditor-outerPanel {
+	border-radius: 5px 5px 5px 5px;
+}
+.polarion-rp-parameters-form-editor-panel {
+	border: none;
+}
+&lt;/style&gt;</sub>
+        </sub>
+      </span>
+    </span>
+  </p>
+</div>
+<div class="polarion-rp-row-separator"></div>
+<span id="polarion-rp-parameters">
+  <sub id="fromDate" data-label="Finished From" data-type="Date">
+    <sub id="absolute">2016-01-01</sub>
+  </sub>
+  <sub id="toDate" data-label="Finished To" data-type="Date">
+    <sub id="relative">1</sub>
+  </sub>
+  <sub id="minFailures" data-label="Min. Failures" data-type="Integer">1</sub>
+  <sub id="Test_Run_Template_ID" data-label="Test Run Template ID" data-type="String"></sub>
+  <sub id="category" data-label="Test Case Category" data-type="Enumeration">
+    <sub id="enumId">@category</sub>
+    <sub id="allowNoValue">true</sub>
+    <sub id="allowMultipleValues">true</sub>
+    <sub id="loadForAllTypes">true</sub>
+  </sub>
+</span>]]></field>
+    <field id="title">Frequent Test Case Failures</field>
+</rich-page>

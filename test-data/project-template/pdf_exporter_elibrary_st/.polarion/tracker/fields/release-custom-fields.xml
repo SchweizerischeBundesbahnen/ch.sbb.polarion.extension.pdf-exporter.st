@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<fields>
+    <field description="The Plan representing the time period that leads to this Release." id="releasePlan" name="Release Plan" required="true" type="enum:@plan[template.id:release]"/>
+    <field description="The Build Number linked with this Release." id="buildId" name="Build ID" type="string"/>
+    <field description="When the Release was (or will be) officially launched for customers." id="publicLaunch" name="Public Launch" type="date"/>
+    <field description="The (planned) Feature Freeze date." id="featureFreezeDate" name="Feature Freeze Date" type="date"/>
+    <field description="The (planned) Code Freeze date." id="codeFreezeDate" name="Code Freeze Date" type="date"/>
+    <field description="The responsible Product Manager." id="releasePM" name="Release PM" type="enum:@user[project_assignable]"/>
+    <field description="The responsible Quality Assurance manager." id="releaseQA" name="Release QA" type="enum:@user[project_assignable]"/>
+    <field description="A description of the Release from the QA POV." id="qaAssessment" name="QA Assessment" type="text/html"/>
+    <field description="A Control set of important Test Runs that must all be Verified Passed before a version can be Released." id="releaseTestEvidence" multi="true" name="Release Test Evidence" type="enum:@testRun"/>
+    <field description="An actual build tracked using Polarion's built-in build manager." id="build" name="Build" type="enum:@build"/>
+</fields>

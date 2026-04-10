@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<rich-page>
+    <field id="author">admin</field>
+    <field id="created">2017-01-31 13:38:15.357 +0100</field>
+    <field id="homePageContent" text-type="text/html"><![CDATA[<div class="polarion-rp-column" style="width: 100%;">
+  <h1 id="polarion_hardcoded_0">Development Environment</h1>
+</div>
+<div class="polarion-rp-row-separator" page_min_width="1000"></div>
+<div class="polarion-rp-column" style="width: 70%;">
+  <div id="polarion_client3" class="polarion-rp-widget-part" data-widget="com.polarion.scriptBlock">
+    <span class="polarion-rp-widget-parameters">
+      <sub id="script">
+        <sub id="script" style="white-space:pre;">#info(&quot;Describe how to set-up your environment:&lt;/br&gt;&lt;ul&gt;&lt;li&gt;What platform to use,&lt;/li&gt;&lt;li&gt;How to use the repository for storing the code,&lt;/li&gt;&lt;li&gt;How to setup your coding environment (Eclipse, NetBeans...),&lt;/li&gt;&lt;li&gt;How to correctly deploy your product,&lt;/li&gt;&lt;li&gt;etc...&lt;/li&gt;&lt;/ul&gt;&quot;)</sub>
+      </sub>
+    </span>
+  </div>
+  <p id="polarion_2"></p><p id="polarion_client1"></p><p id="polarion_client2"></p>
+</div>
+<div class="polarion-rp-column" style="width: 30%;">
+  <p id="polarion_hardcoded_3"></p>
+</div>
+<div class="polarion-rp-row-separator"></div>]]></field>
+    <field id="title">Development Environment</field>
+</rich-page>

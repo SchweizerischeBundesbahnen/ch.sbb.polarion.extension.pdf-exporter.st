@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<rich-page>
+    <field id="author">admin</field>
+    <field id="created">2017-01-31 12:03:42.717 +0100</field>
+    <field id="homePageContent" text-type="text/html"><![CDATA[<div class="polarion-rp-column" style="width: 100%;">
+  <h1 id="polarion_hardcoded_0">Iteration Statistics</h1>
+  <p id="polarion_2">
+    <span class="polarion-rp-inline-widget" data-widget="com.polarion.scriptInline">
+      <span class="polarion-rp-widget-parameters" style="display: none;">
+        <sub id="script">
+          <sub id="script" style="white-space:pre;">## Reported By
+#set($infoText = &quot;Reported by $transaction.users().getBy().id($securityService.getCurrentUser()).render()&lt;br/&gt;$date.long&quot;)
+#if($widgetContext.target().isEditor())
+	&lt;div style=&quot;color: grey; text-align: left;&quot;&gt;$infoText&lt;div&gt;
+#elseif($widgetContext.target().isPdf())
+	&lt;div style=&quot;color: grey; text-align: right; position: absolute; top: 22px; right: 10px;&quot;&gt;$infoText&lt;div&gt;
+#elseif($widgetContext.target().isPrint())
+	&lt;div style=&quot;text-align: right; position: absolute; top: 35px; right: 10px;&quot;&gt;$infoText&lt;div&gt;
+#end</sub>
+        </sub>
+      </span>
+    </span>
+  </p>
+</div>
+<div class="polarion-rp-row-separator" page_min_width="1000"></div>
+<div class="polarion-rp-column" style="width: 100%;">
+  <div id="polarion_client7" class="polarion-rp-widget-part" data-widget="com.polarion.scriptBlock">
+    <span class="polarion-rp-widget-parameters" style="display: none;">
+      <sub id="script">
+        <sub id="script" style="white-space:pre;">###############################################################################
+## Current Iteration Progress
+##
+#set($projectId = $page.getReference().projectId())
+#set($planQuery = &quot;project.id:$projectId AND template.id:iteration AND status:inprogress&quot;)
+#set($plans = $transaction.plans().search().query(&quot;$planQuery&quot;).sort(&quot;~startDate&quot;))
+&lt;h2&gt;Current Iteration Progress#if($plans.size() &gt; 0) - $plans.iterator().next().render().withIcon(false)#end&lt;/h2&gt;
+#if($plans.size() &gt; 0)
+	&lt;div class=&quot;polarion-rp-widget-part&quot; data-widget=&quot;com.polarion.planProgress&quot;&gt;
+		&lt;span class=&quot;polarion-rp-widget-parameters&quot;&gt;
+			&lt;sub id=&quot;plan&quot;&gt;
+				&lt;sub id=&quot;paths&quot;&gt;
+					&lt;sub&gt;$plans.iterator().next().getReference().id()&lt;/sub&gt;
+				&lt;/sub&gt;
+			&lt;/sub&gt;
+			&lt;sub id=&quot;showIdealProgress&quot;&gt;true&lt;/sub&gt;
+			&lt;sub id=&quot;showLabel&quot;&gt;true&lt;/sub&gt;
+			&lt;sub id=&quot;advanced&quot;&gt;
+				&lt;sub id=&quot;width&quot;&gt;&lt;/sub&gt;
+			&lt;/sub&gt;
+		&lt;/span&gt;
+	&lt;/div&gt;
+#else
+	&lt;span class=&quot;polarion-PlanProgressMacro-leftCellGrey&quot;&gt;
+		No Iteration is currently In Progress.
+	&lt;/span&gt;
+#end</sub>
+      </sub>
+    </span>
+  </div>
+  <p id="polarion_3"></p><p id="polarion_client11"></p>
+</div>
+<div class="polarion-rp-row-separator"></div>
+<div class="polarion-rp-column" style="width: 100%;">
+  <h2 id="polarion_client10">All Iterations</h2>
+  <p id="polarion_client9"></p>
+</div>
+<div class="polarion-rp-row-separator"></div>
+<div class="polarion-rp-column" style="width: 70%;">
+  <div id="polarion_client1" class="polarion-rp-widget-part" data-widget="com.polarion.table">
+    <span class="polarion-rp-widget-parameters">
+      <sub id="dataSet">
+        <sub id="prototype">Plan</sub>
+        <sub id="queryType">lucene</sub>
+        <sub id="luceneQuery" style="white-space:pre;">template.id:iteration</sub>
+        <sub id="children">
+          <sub id="columns">
+            <sub>
+              <sub id="id">name</sub>
+            </sub>
+            <sub>
+              <sub id="id">status</sub>
+            </sub>
+            <sub>
+              <sub id="id">_progress</sub>
+            </sub>
+            <sub>
+              <sub id="id">capacity</sub>
+            </sub>
+            <sub>
+              <sub id="id">_totalWork</sub>
+            </sub>
+            <sub>
+              <sub id="id">_remainingWork</sub>
+            </sub>
+            <sub>
+              <sub id="id">_doneWork</sub>
+            </sub>
+          </sub>
+          <sub id="sortBy">
+            <sub>
+              <sub id="id">dueDate</sub>
+              <sub id="descending">true</sub>
+            </sub>
+          </sub>
+        </sub>
+      </sub>
+      <sub id="advanced">
+        <sub id="top">20</sub>
+      </sub>
+    </span>
+  </div>
+  <p id="polarion_1"></p><p id="polarion_client16"></p>
+</div>
+<div class="polarion-rp-column" style="width: 30%;">
+  <div id="polarion_client3" class="polarion-rp-widget-part" data-widget="com.polarion.separateByPieChart">
+    <span class="polarion-rp-widget-parameters" style="display: none;">
+      <sub id="title">Iterations By Status</sub>
+      <sub id="dataSet">
+        <sub id="prototype">Plan</sub>
+        <sub id="queryType">lucene</sub>
+        <sub id="luceneQuery" style="white-space:pre;">template.id:iteration</sub>
+        <sub id="children">
+          <sub id="separateBy">
+            <sub id="field">status</sub>
+          </sub>
+        </sub>
+      </sub>
+      <sub id="showDataLabels">true</sub>
+      <sub id="showZeroValues">false</sub>
+      <sub id="advanced">
+        <sub id="height"></sub>
+        <sub id="width">300</sub>
+      </sub>
+    </span>
+  </div>
+  <p id="polarion_hardcoded_3"></p>
+</div>
+<div class="polarion-rp-row-separator"></div>
+<div class="polarion-rp-column" style="width: 100%;">
+  <h2 id="polarion_client19">Iteration Velocity</h2>
+  <div id="polarion_client37" class="polarion-rp-widget-part" data-widget="com.polarion.scriptBlock">
+    <span class="polarion-rp-widget-parameters" style="display: none;">
+      <sub id="script">
+        <sub id="script" style="white-space:pre;">#info(&quot;The Velocity for a finished Iteration is calculated by dividing its Capacity by the sum of the Initial Estimates of all User Stories planned for the Iteration. The Normalized Velocity for a finished Iteration is calculated as an average of the current and two previous Iterations.&quot;)</sub>
+      </sub>
+    </span>
+  </div>
+  <div id="polarion_client39" class="polarion-rp-widget-part" data-widget="com.polarion.scriptedChart">
+    <span class="polarion-rp-widget-parameters" style="display: none;">
+      <sub id="script">
+        <sub id="script" style="white-space:pre;">###############################################################################
+## Normalized Velocity Chart
+##
+#set($projectId = $page.getReference().projectId())
+#set($projectName = $page.fields().project().get().fields().name().render().withIcon(false))
+#set($quo = &#39;&quot;&#39;)
+#set($ou = 0)
+#set($ouDouble = $ou.doubleValue())
+## Prepare Subtitle
+#set($lastThreeTotal = 0)
+#set($bestThreeTotal = 0)
+#set($worstThreeTotal = 0)
+#set($lastSixArray = [$ouDouble, $ouDouble, $ouDouble, $ouDouble, $ouDouble, $ouDouble])
+#set($planQuery = &quot;project.id:$projectId AND template.id:iteration AND HAS_VALUE:finishedOn&quot;)
+#set($plans = $transaction.plans().search().query(&quot;$planQuery&quot;).sort(&quot;~startDate&quot;).limit(6))
+#foreach($plan in $plans)
+	#set($plan = $plan.utils().getFinishedPlan())
+	#set($velocity = $ouDouble)
+	#set($velocity = $math.roundTo(2, $math.div($plan.statistics().done(), $plan.fields().capacity().get())))
+	#if($velocityCount &gt; 0 &amp;&amp; $velocityCount &lt; 7)
+		#set($void = $lastSixArray.set($math.sub($velocityCount, 1), $velocity))
+	#end
+	#if($velocityCount &gt; 0 &amp;&amp; $velocityCount &lt; 4)
+		#set($lastThreeTotal = $math.add($lastThreeTotal, $velocity))
+	#end
+#end
+#set($lastSixArray = $sorter.sort($lastSixArray))
+#set($worstThreeTotal = $math.add($lastSixArray.get(0), $math.add($lastSixArray.get(1), $lastSixArray.get(2))))
+#set($bestThreeTotal = $math.add($lastSixArray.get(5), $math.add($lastSixArray.get(4), $lastSixArray.get(3))))
+#set($lastThreeAverage = $math.roundTo(2, $math.div($lastThreeTotal, 3)))
+#set($bestThreeAverage = $math.roundTo(2, $math.div($bestThreeTotal, 3)))
+#set($worstThreeAverage = $math.roundTo(2, $math.div($worstThreeTotal, 3)))
+#set($subtitle = &quot;&lt;div style=$quo border:1px solid #95A5A6; padding:4px;$quo&gt;&lt;center&gt;&lt;table&gt;&quot;)
+#set($subtitle = &quot;$subtitle &lt;tr&gt;&lt;td rowspan=$quo 2 $quo&gt;&lt;b&gt;Average Normalized Velocity&lt;/b&gt;&lt;br/&gt;&lt;center&gt;&lt;i&gt;(over the last 6 Iterations)&lt;/i&gt;&lt;/center&gt;&lt;/td&gt;&quot;)
+#set($subtitle = &quot;$subtitle &lt;td&gt;&lt;b&gt;Last 3&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Best 3&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Worst 3&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&quot;)
+#set($subtitle = &quot;$subtitle &lt;tr&gt;&lt;td&gt;$lastThreeAverage&lt;/td&gt;&lt;td&gt;$bestThreeAverage&lt;/td&gt;&lt;td&gt;$worstThreeAverage&lt;/td&gt;&lt;/tr&gt;&quot;)
+#set($subtitle = &quot;$subtitle &lt;/table&gt;&lt;/center&gt;&lt;/div&gt;&quot;)
+## Prepare Graph
+#set($planQuery = &quot;project.id:$projectId AND template.id:iteration AND HAS_VALUE:finishedOn&quot;)
+#set($plans = $transaction.plans().search().query(&quot;$planQuery&quot;).sort(&quot;startDate&quot;))
+#set($velocityData = &quot;&quot;)
+#foreach($plan in $plans)
+	#set($plan = $plan.utils().getFinishedPlan())
+	#set($planId = $plan.getReference().id())
+	#set($url = $transaction.context().createPortalLink().project(&quot;$projectId&quot;).plan(&quot;$planId&quot;).toEncodedRelativeUrl())
+	#set($velocity = $ouDouble)
+	#set($velocity = $math.roundTo(2, $math.div($plan.statistics().done(), $plan.fields().capacity().get())))
+	#set($planFinished = $plan.fields().finishedOn().get())
+	#set($planX = &quot;Date.UTC($planFinished.getYear()+1900, $planFinished.getMonth(), $planFinished.getDate())&quot;)
+	#set($planName = &quot;Plan: &lt;b&gt;$plan.fields().name().get()&lt;/b&gt; ($plan.fields().dueDate().render())&quot;)
+	#set($planNormalizedVelocity = &quot;Normalized Velocity: &lt;b&gt;$velocity&lt;/b&gt;&quot;)
+	#set($planHint = &quot;$planName&lt;br/&gt;$planNormalizedVelocity&quot;)
+	#if(!$velocityData.equals(&quot;&quot;))
+		#set($velocityData = &quot;$velocityData, {x: $planX, y: $velocity, hint: &#39;$planHint&#39;, url: &#39;$url&#39;}&quot;)
+	#else
+		#set($velocityData = &quot;{x: $planX, y: $velocity, hint: &#39;$planHint&#39;, url: &#39;$url&#39;}&quot;)
+	#end
+#end
+## Render
+{
+	chart: {zoomType: &#39;x&#39;},
+	title: {text: &#39;Normalized Velocity&#39;, useHTML: true},
+	subtitle: {text: &#39;$subtitle&#39;, useHTML: true},
+	exporting: {enabled: false},
+	credits: {href: null, text: null},
+	xAxis: {maxPadding: 0, type: &#39;datetime&#39;},
+	yAxis: {title: {text: &#39;Velocity&#39;, useHTML: true}, gridLineWidth: 0, min: 0},
+	tooltip: {
+		formatter: function() {
+			return this.point.hint;
+		}
+	},
+	series: [
+		{
+			name: &#39;$projectName&#39;,
+			type: &#39;spline&#39;,
+			cursor: &#39;pointer&#39;,
+			point: {
+				events: {
+					click: function (e) {
+						window.open(this.url, &#39;_blank&#39;).focus();
+					}
+				}
+			},
+			index: 0,
+			data: [$velocityData]
+		},
+	]
+}</sub>
+      </sub>
+      <sub id="advanced">
+        <sub id="height">300</sub>
+        <sub id="width"></sub>
+      </sub>
+    </span>
+  </div>
+  <div id="polarion_client41" class="polarion-rp-widget-part" data-widget="com.polarion.scriptedChart">
+    <span class="polarion-rp-widget-parameters" style="display: none;">
+      <sub id="script">
+        <sub id="script" style="white-space:pre;">###############################################################################
+## Moving Average Normalized Velocity Chart
+##
+#set($projectId = $page.getReference().projectId())
+#set($projectName = $page.fields().project().get().fields().name().render().withIcon(false))
+#set($quo = &#39;&quot;&#39;)
+#set($ou = 0)
+#set($ouDouble = $ou.doubleValue())
+## Prepare Graph
+#set($planQuery = &quot;project.id:$projectId AND template.id:iteration AND HAS_VALUE:finishedOn&quot;)
+#set($plans = $transaction.plans().search().query(&quot;$planQuery&quot;).sort(&quot;startDate&quot;))
+#set($velocityData = &quot;&quot;)
+#set($firstVelocity = &quot;&quot;)
+#set($secondVelocity = &quot;&quot;)
+#set($thirdVelocity = &quot;&quot;)
+#foreach($plan in $plans)
+	#set($plan = $plan.utils().getFinishedPlan())
+	#set($planId = $plan.getReference().id())
+	#set($url = $transaction.context().createPortalLink().project(&quot;$projectId&quot;).plan(&quot;$planId&quot;).toEncodedRelativeUrl())
+	#set($movingAverageNormalizedVelocity = 0)
+	#set($velocity = $ouDouble)
+	#set($velocity = $math.roundTo(2, $math.div($plan.statistics().done(), $plan.fields().capacity().get())))
+	#set($thirdVelocity = $secondVelocity)
+	#set($secondVelocity = $firstVelocity)
+	#set($firstVelocity = $velocity)
+	#if(!$thirdVelocity.equals(&quot;&quot;))
+		#set($movingAverageNormalizedVelocity = $math.roundTo(2, $math.div($math.add($firstVelocity, $math.add($secondVelocity, $thirdVelocity)), 3)))
+	#end
+	#set($planFinished = $plan.fields().finishedOn().get())
+	#set($planX = &quot;Date.UTC($planFinished.getYear()+1900, $planFinished.getMonth(), $planFinished.getDate())&quot;)
+	#set($planName = &quot;Plan: &lt;b&gt;$plan.fields().name().get()&lt;/b&gt; ($plan.fields().dueDate().render())&quot;)
+	#set($planNormalizedVelocity = &quot;Moving Average Normalized Velocity: &lt;b&gt;$movingAverageNormalizedVelocity&lt;/b&gt;&quot;)
+	#set($planHint = &quot;$planName&lt;br/&gt;$planNormalizedVelocity&quot;)
+	#if(!$velocityData.equals(&quot;&quot;))
+		#set($velocityData = &quot;$velocityData, {x: $planX, y: $movingAverageNormalizedVelocity, hint: &#39;$planHint&#39;, url: &#39;$url&#39;}&quot;)
+	#else
+		#set($velocityData = &quot;{x: $planX, y: $movingAverageNormalizedVelocity, hint: &#39;$planHint&#39;, url: &#39;$url&#39;}&quot;)
+	#end
+#end
+{
+	chart: {zoomType: &#39;x&#39;},
+	title: {text: &#39;Moving Average Normalized Velocity&#39;, useHTML: true},
+	subtitle: {text: &#39;&lt;center&gt;&lt;i&gt;(Averaged over 3 Iterations)&lt;/i&gt;&lt;/center&gt;&#39;, useHTML: true},
+	exporting: {enabled: false},
+	credits: {href: null, text: null},
+	xAxis: {maxPadding: 0, type: &#39;datetime&#39;},
+	yAxis: {title: {text: &#39;Moving Average Normalized Velocity&#39;, useHTML: true}, gridLineWidth: 0, min: 0},
+	tooltip: {
+		formatter: function() {
+			return this.point.hint;
+		}
+	},
+	series: [
+		{
+			name: &#39;$projectName&#39;,
+			type: &#39;areaspline&#39;,
+			cursor: &#39;pointer&#39;,
+			point: {
+				events: {
+					click: function (e) {
+						window.open(this.url, &#39;_blank&#39;).focus();
+					}
+				}
+			},
+			fillOpacity: 0.7,
+			index: 0,
+			data: [$velocityData]
+		},
+	]
+}</sub>
+      </sub>
+      <sub id="advanced">
+        <sub id="height">300</sub>
+        <sub id="width"></sub>
+      </sub>
+    </span>
+  </div>
+  <p id="polarion_client43"></p><p id="polarion_client45"></p><p id="polarion_client47"></p><p id="polarion_client18"></p>
+</div>
+<div class="polarion-rp-row-separator"></div>]]></field>
+    <field id="title">Iteration Statistics</field>
+</rich-page>

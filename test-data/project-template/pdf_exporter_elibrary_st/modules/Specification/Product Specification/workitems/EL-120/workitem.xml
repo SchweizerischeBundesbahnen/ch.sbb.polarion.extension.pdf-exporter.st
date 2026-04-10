@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<work-item>
+    <field id="author">rProject</field>
+    <field id="categories">
+        <list>
+            <item>objects</item>
+        </list>
+    </field>
+    <field id="created">2010-11-20 13:14:25.957 +0100</field>
+    <field id="description" text-type="text/html">Show photo(s) of an author.</field>
+    <field id="previousStatus">draft</field>
+    <field id="priority">50.0</field>
+    <field id="resolvedOn">2010-12-02 10:36:52.672 +0100</field>
+    <field id="severity">nice_to_have</field>
+    <field id="status">reviewed</field>
+    <field id="title">Photo of an author</field>
+    <field id="type">userstory</field>
+</work-item>

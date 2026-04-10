@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<workflow initial-action="rework" initial-status="draft" prototype="WorkItem">
+    <transitions>
+        <transition action="verified" from="implemented" to="verified"/>
+        <transition action="reject" from="reviewed" to="rejected"/>
+        <transition action="reopen" from="implemented" to="changesneeded"/>
+        <transition action="quickly_accept" from="draft" to="accepted"/>
+        <transition action="accept" from="reviewed" to="accepted"/>
+        <transition action="reviewed" from="draft" to="reviewed"/>
+        <transition action="rework" from="reviewed" to="draft"/>
+        <transition action="reject" from="draft" to="rejected"/>
+        <transition action="reject" from="accepted" to="rejected"/>
+        <transition action="rework" from="rejected" to="draft"/>
+        <transition action="rework" from="accepted" to="draft"/>
+        <transition action="start_progress" from="accepted" to="inprogress"/>
+        <transition action="start_progress" from="changesneeded" to="inprogress"/>
+        <transition action="reopen" from="verified" to="changesneeded"/>
+        <transition action="implemented" from="inprogress" to="implemented"/>
+        <transition action="stop_progress" from="inprogress" to="accepted"/>
+        <transition action="rework" from="changesneeded" to="draft"/>
+        <transition action="reject" from="inprogress" to="rejected"/>
+        <transition action="reject" from="changesneeded" to="rejected"/>
+        <transition action="reject" from="implemented" to="rejected"/>
+        <transition action="rework" from="implemented" to="draft"/>
+        <transition action="rework" from="inprogress" to="draft"/>
+        <transition action="rework" from="verified" to="draft"/>
+    </transitions>
+    <actions>
+        <action id="rework" name="Rework">
+            <cleared>
+                <field name="resolution"/>
+                <field name="storyPoints"/>
+            </cleared>
+        </action>
+        <action id="reviewed" name="Review"/>
+        <action id="accept" name="Accept">
+            <required>
+                <field name="storyPoints"/>
+            </required>
+        </action>
+        <action id="quickly_accept" name="Quickly Accept">
+            <required>
+                <field name="storyPoints"/>
+            </required>
+        </action>
+        <action id="start_progress" name="Start Progress">
+            <required>
+                <field name="assignee"/>
+                <field name="plannedIn"/>
+            </required>
+        </action>
+        <action id="stop_progress" name="Stop Progress"/>
+        <action id="implemented" name="Mark as Implemented">
+            <required>
+                <field name="resolution"/>
+                <field name="assignee"/>
+            </required>
+        </action>
+        <action id="verified" name="Mark as Verified">
+            <required>
+                <field name="resolution"/>
+                <field name="assignee"/>
+            </required>
+        </action>
+        <action id="reopen" name="Reopen">
+            <cleared>
+                <field name="resolution"/>
+            </cleared>
+        </action>
+        <action id="reject" name="Reject">
+            <required>
+                <field name="resolution"/>
+            </required>
+        </action>
+    </actions>
+</workflow>

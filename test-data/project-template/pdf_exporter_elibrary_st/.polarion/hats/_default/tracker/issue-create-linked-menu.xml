@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<menu>
+	<item label="Implemented User Story" role="implements" type="userstory"/>
+	<item label="Trigger Test Case" role="triggered_by" type="testcase"/>
+	<item label="Blocking" role="depends_on"/>
+	<item label="Related" role="relates_to"/>
+</menu>

@@ -1,0 +1,23 @@
+###############################################################################
+##
+##  description.vm - this velocity script is executed to render the widget extended tooltip
+##
+
+<b>Parameters:</b>
+<ul>
+	<li>
+		<b>Project</b> - Defines the scope. Set to the <i>current project</i> by default.
+	</li>
+	<li>
+		<b>Render Info for last # months</b> - Controls the size of the used data set. Set to <i>twelve</i> by default.
+	</li>
+	<li>
+		<b>Display Builds by #</b> - Choose whether to display a graph of Build results in absolute values. Set to <i>true</i> by default.
+	</li>
+	<li>
+		<b>Display Builds by %</b> - Choose whether to display a graph of Build results in percentages. Set to <i>true</i> by default.
+	</li>
+	<li>
+		<b>Build Status Colors</b> - Configure the colors used for the series by Build status.
+	</li>
+</ul>

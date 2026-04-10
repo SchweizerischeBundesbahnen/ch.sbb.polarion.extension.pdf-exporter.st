@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<work-item>
+    <field id="assignee">sDeveloper</field>
+    <field id="author">rProject</field>
+    <field id="categories">
+        <list>
+            <item>searching</item>
+        </list>
+    </field>
+    <field id="created">2010-11-25 16:16:29.147 +0100</field>
+    <field id="description" text-type="text/html">The system must provide an easy way to list newly added books. It can return a listing of the 10 - 50 (configurable) most recently added eBooks.</field>
+    <field id="initialEstimate">6d</field>
+    <field id="previousStatus">closed</field>
+    <field id="priority">74.0</field>
+    <field id="resolution">done</field>
+    <field id="resolvedOn">2010-11-25 16:34:21.058 +0100</field>
+    <field id="severity">must_have</field>
+    <field id="status">verified</field>
+    <field id="storyPoints" type="integer">8</field>
+    <field id="timeSpent">5d 4h</field>
+    <field id="title">List of newly added books.</field>
+    <field id="type">userstory</field>
+</work-item>

@@ -1,0 +1,69 @@
+###############################################################################
+##
+##		render.vm - this velocity script is executed to render the actual widget
+##
+
+###############################################################################
+##
+## Velocity Context - following objects are in the velocity context
+##
+## com.polarion.alm.shared.api.transaction.ReadOnlyTransaction $transaction
+## com.polarion.alm.shared.api.model.rp.widget.RichPageWidgetRenderingContext $widgetContext
+## com.polarion.alm.shared.api.model.rp.parameter.RichPageParameters $parameters
+## com.polarion.alm.tracker.ITrackerService $trackerService
+## com.polarion.alm.shared.api.model.rp.parameter.impl.dataset.ScopeParameterImpl $scope
+##
+
+###############################################################################
+##
+## Texts
+##
+#set($warnScopeMustBeProject = "The 'Scope' must be a single project.")
+
+###############################################################################
+##
+## Page Parameters
+##
+#set($allowRendering = true)
+
+#set($scope = $parameters.scope.scope())
+#set($typeId = $parameters.type.singleValue().id())
+#set($enumId = $parameters.enum.singleValue())
+#set($enumOptId = $parameters.enumOpt.singleValue().id())
+#if(!$scope.projectId())
+	$widgetContext.renderWarning("$warnScopeMustBeProject")
+	#set($allowRendering = false)
+#end
+
+#set($renderModelObject = $parameters.render.renderModelObject.value())
+#set($withBaselineIcon = $parameters.render.withBaselineIcon.value())
+#set($withColor = $parameters.render.withColor.value())
+#set($withIcon = $parameters.render.withIcon.value())
+#set($withLinks = $parameters.render.withLinks.value())
+#set($withRevisionIcon = $parameters.render.withRevisionIcon.value())
+#set($withText = $parameters.render.withText.value())
+
+#set($textBefore = $parameters.customization.textBefore.value())
+#set($textAfter = $parameters.customization.textAfter.value())
+#set($customLink = $parameters.customization.customLink.renderHtml())
+
+#if(!$customLink.equals(""))
+	#set($customLinkTarget = $parameters.customization.customLinkTarget.singleValue())
+	#set($withLinks = false)
+	#set($linkStart = "<a href='$customLink' target='$customLinkTarget'>")
+	#set($linkEnd = "</a>")
+#end
+
+###############################################################################
+##
+## Render
+##
+
+#if($allowRendering && $enumOptId)
+	#set($option = $transaction.enumerations().getEnumeration("$enumId").forType("$typeId").forScope($scope).byId("$enumOptId"))
+	#if($renderModelObject)
+		$!linkStart<span style="display: inline-table;">$!textBefore$!option.getModelObject().render().withBaselineIcon($withBaselineIcon).withIcon($withIcon).withLinks($withLinks).withRevisionIcon($withRevisionIcon).withText($withText)$!textAfter</span>$!linkEnd
+	#else
+		$!linkStart<span style="display: inline-table;">$!textBefore$option.render().withBaselineIcon($withBaselineIcon).withColor($withColor).withIcon($withIcon).withLinks($withLinks).withRevisionIcon($withRevisionIcon).withText($withText)$!textAfter</span>$!linkEnd
+	#end
+#end

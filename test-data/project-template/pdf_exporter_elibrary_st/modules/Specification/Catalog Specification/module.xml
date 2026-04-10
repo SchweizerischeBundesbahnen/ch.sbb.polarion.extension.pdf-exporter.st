@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<module>
+    <field id="allowedWITypes">
+        <list>
+            <item>requirement</item>
+        </list>
+    </field>
+    <field id="author">admin</field>
+    <field id="created">2010-11-20 08:40:44.178 +0100</field>
+    <field id="headingSidebarFields">severity,status</field>
+    <field id="homePageContent" text-type="text/html"><![CDATA[<h1 id="polarion_wiki macro name=module-workitem;params=id=EL-100"></h1><div id="polarion_wiki macro name=toc"></div><h2 id="polarion_wiki macro name=module-workitem;params=id=EL-183"></h2><h3 id="polarion_wiki macro name=module-workitem;params=id=EL-184"></h3><p id="polarion_merged_2">This document describes couple of requirements related to the application interface portal.</p><h3 id="polarion_wiki macro name=module-workitem;params=id=EL-185"></h3><p id="polarion_2">Specifications:</p><ul id="polarion_3">
+  <li><span class="polarion-rte-link" data-type="document" id="fake" data-item-name="Product Specification" data-space-name="Specification" data-option-id="default"></span></li>
+</ul><h2 id="polarion_wiki macro name=module-workitem;params=id=EL-144"></h2><h3 id="polarion_wiki macro name=module-workitem;params=id=EL-145"></h3><div id="polarion_wiki macro name=module-workitem;params=id=EL-101"></div><div id="polarion_wiki macro name=module-workitem;params=id=EL-146|level=1"></div><div id="polarion_wiki macro name=module-workitem;params=id=EL-152|level=1"></div><div id="polarion_wiki macro name=module-workitem;params=id=EL-151|level=1"></div><div id="polarion_wiki macro name=module-workitem;params=id=EL-147"></div><div id="polarion_wiki macro name=module-workitem;params=id=EL-149|level=1"></div><div id="polarion_wiki macro name=module-workitem;params=id=EL-148|level=1"></div><div id="polarion_wiki macro name=module-workitem;params=id=EL-150|level=1"></div><h3 id="polarion_wiki macro name=module-workitem;params=id=EL-153"></h3><div id="polarion_wiki macro name=module-workitem;params=id=EL-156"></div><div id="polarion_wiki macro name=module-workitem;params=id=EL-157"></div><h3 id="polarion_wiki macro name=module-workitem;params=id=EL-158"></h3><div id="polarion_wiki macro name=module-workitem;params=id=EL-159"></div><h3 id="polarion_wiki macro name=module-workitem;params=id=EL-155"></h3><div id="polarion_wiki macro name=module-workitem;params=id=EL-160"></div><p id="polarion_1"></p>]]></field>
+    <field id="renderingLayouts">
+        <list>
+            <struct>
+                <item id="label">Requirement</item>
+                <item id="layouter">section</item>
+                <item id="properties">
+                    <list>
+                        <struct>
+                            <item id="key">fieldsAtStart</item>
+                            <item id="value">id</item>
+                        </struct>
+                        <struct>
+                            <item id="key">fieldsAtEnd</item>
+                            <item id="value">severity,status,targetVersion</item>
+                        </struct>
+                        <struct>
+                            <item id="key">fieldsAtEndAsTable</item>
+                            <item id="value">false</item>
+                        </struct>
+                        <struct>
+                            <item id="key">hidden</item>
+                        </struct>
+                        <struct>
+                            <item id="key">noPageBreak</item>
+                        </struct>
+                        <struct>
+                            <item id="key">sidebarWorkItemFields</item>
+                            <item id="value">severity,status</item>
+                        </struct>
+                        <struct>
+                            <item id="key">typeNotInProject</item>
+                        </struct>
+                    </list>
+                </item>
+                <item id="type">requirement</item>
+            </struct>
+            <struct>
+                <item id="label">User Story</item>
+                <item id="layouter">section</item>
+                <item id="properties">
+                    <list>
+                        <struct>
+                            <item id="key">fieldsAtStart</item>
+                            <item id="value">id</item>
+                        </struct>
+                        <struct>
+                            <item id="key">fieldsAtEnd</item>
+                            <item id="value">severity,status,plannedIn</item>
+                        </struct>
+                        <struct>
+                            <item id="key">fieldsAtEndAsTable</item>
+                            <item id="value">false</item>
+                        </struct>
+                        <struct>
+                            <item id="key">hidden</item>
+                        </struct>
+                        <struct>
+                            <item id="key">noPageBreak</item>
+                        </struct>
+                        <struct>
+                            <item id="key">sidebarWorkItemFields</item>
+                            <item id="value">severity,status</item>
+                        </struct>
+                        <struct>
+                            <item id="key">typeNotInProject</item>
+                        </struct>
+                    </list>
+                </item>
+                <item id="type">userstory</item>
+            </struct>
+            <struct>
+                <item id="label">Epic</item>
+                <item id="layouter">section</item>
+                <item id="properties">
+                    <list>
+                        <struct>
+                            <item id="key">fieldsAtStart</item>
+                            <item id="value">id</item>
+                        </struct>
+                        <struct>
+                            <item id="key">fieldsAtEnd</item>
+                            <item id="value">severity,status,targetVersion</item>
+                        </struct>
+                        <struct>
+                            <item id="key">fieldsAtEndAsTable</item>
+                            <item id="value">false</item>
+                        </struct>
+                        <struct>
+                            <item id="key">hidden</item>
+                        </struct>
+                        <struct>
+                            <item id="key">noPageBreak</item>
+                        </struct>
+                        <struct>
+                            <item id="key">sidebarWorkItemFields</item>
+                            <item id="value">severity,status</item>
+                        </struct>
+                        <struct>
+                            <item id="key">typeNotInProject</item>
+                        </struct>
+                    </list>
+                </item>
+                <item id="type">epic</item>
+            </struct>
+        </list>
+    </field>
+    <field id="status">active</field>
+    <field id="structureLinkRole">parent</field>
+    <field id="type">productSpecification</field>
+    <field id="usesOutlineNumbering">true</field>
+    <field id="version" type="string">1.0</field>
+</module>

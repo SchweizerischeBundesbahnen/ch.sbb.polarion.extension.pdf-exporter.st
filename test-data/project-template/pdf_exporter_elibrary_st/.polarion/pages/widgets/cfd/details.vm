@@ -1,0 +1,6 @@
+###############################################################################
+##
+##  details.vm - this velocity script is executed to render the widget tooltip
+##
+
+A <b><i>Cumulative Flow Diagram (CFD)</b></i> is an area graph that displays the current status of all the Work Items planned in the selected plan.

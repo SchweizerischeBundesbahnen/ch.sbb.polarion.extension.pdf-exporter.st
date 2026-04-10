@@ -1,0 +1,190 @@
+###############################################################################
+##
+##		render.vm - this velocity script is executed to render the actual widget
+##
+
+###############################################################################
+##
+## Velocity Context - following objects are in the velocity context
+##
+## com.polarion.alm.shared.api.model.rp.parameter.RichPageParameters $parameters
+## com.polarion.alm.shared.api.model.rp.parameter.impl.object.ObjectSelectorParameterImpl $projectParam
+## com.polarion.alm.shared.api.transaction.ReadOnlyTransaction $transaction
+## com.polarion.alm.shared.api.model.rp.widget.RichPageWidgetRenderingContext $widgetContext
+## com.polarion.alm.shared.api.model.rp.RichPage $page
+##
+
+###############################################################################
+##
+## Page Parameters
+##
+#set($projectParam = $parameters.project)
+#set($count = $parameters.count.value())
+#if(!$count)
+	#set($count = 1)
+#end
+#set($sort = $parameters.sort.value())
+#if($sort.isEmpty())
+	#set($sort = "finishTime")
+#end
+#set($align = $parameters.align.singleValue())
+#set($colorPassed = $parameters.colors.colorPassed.value())
+#set($colorFailed = $parameters.colors.colorFailed.value())
+#set($colorPassedWithFailures = $parameters.colors.colorPassedWithFailures.value())
+#set($colorRunning = $parameters.colors.colorRunning.value())
+#set($colorCancelled = $parameters.colors.colorCancelled.value())
+#set($colorWaiting = $parameters.colors.colorWaiting.value())
+#set($colorOther = $parameters.colors.colorOther.value())
+
+###############################################################################
+##
+## CSS
+##
+<style>
+	.latestBuildTable {
+		width: 40%;
+		min-width: 300px;
+		#if($align.equals("right") || $align.equals("center"))
+			margin-left:auto;
+		#end
+		#if($align.equals("center"))
+			margin-right:auto;
+		#end
+		padding-bottom: 10px;
+	}
+	.latestBuildDownloadTd {
+	    padding-top: 5px;
+	}
+	.latestBuild a:hover {
+		text-decoration: none !important;
+	}
+	.latestBuildDiv {
+		width: 175px;
+		background: -ms-linear-gradient(top,  #F0F0F0 0%, #D8D8D8 100%);
+		background: -moz-linear-gradient(top,  #F0F0F0 0%, #D8D8D8 100%);
+		background: -webkit-linear-gradient(top,  #F0F0F0 0%, #D8D8D8 100%);
+		background: linear-gradient(to bottom,  #F0F0F0 0%, #D8D8D8 100%);
+		cursor: pointer;
+		border: 1px solid;
+		border-radius: 6px;
+		border-color: #C2C2C2;
+		padding-left: 2px;
+		padding-right: 2px;
+		overflow: hidden;
+		-webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+		-moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+		box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+
+	}
+	.latestBuildDownloadTable {
+		min-width: 100px;
+		border-collapse: collapse;
+		margin-left:auto;
+		margin-right:auto;
+	}
+	.latestBuildDownloadButton {
+		padding: 5px 5px 5px 5px;
+		line-height: 1;
+	}
+	.latestBuildDownloadText {
+		font-size: 18px;
+		font-weight: bold;
+		padding-bottom: 1px;
+	}
+</style>
+
+###############################################################################
+##
+## Render
+##
+#set($projectId = $projectParam.value().getReference().projectId())
+#if(!$projectId)
+	#set($projectId = $page.getReference().projectId())
+#end
+#set($projectName = $transaction.projects().getBy().id("$projectId").fields().name().getIfCan())
+#set($buildsForProjectQuery = "buildArtifact.groupEntity.id:/default/$projectId")
+#set($buildsForProject = $trackerService.getDataService().searchInstances("Build", "$buildsForProjectQuery", "~$sort", $count))
+#if($buildsForProject.size() == 0)
+	$widgetContext.renderInfo("No Builds found for project #if($projectName)$projectName#else$projectId#end.")
+#else
+	#foreach($build in $buildsForProject)
+		<table class="latestBuildTable">
+			<tr><th style="width: 80px;"></th><th></th></tr>
+			<tr>
+				<td><b>Artifact:</b></td>
+				<td>
+					#if(!$build.getBuildArtifact().isUnresolvable())
+						$build.getBuildArtifact().getArtifactId()
+					#end
+				</td>
+			</tr>
+			<tr>
+				<td><b>Status:</b></td>
+				#set($status = $build.getBuildStatus().getType().getLabel())
+				#if($status.equals("OK"))
+					#set($color = $colorPassed)
+				#elseif($status.equals("FAILED"))
+					#set($color = $colorFailed)
+				#elseif($status.equals("OK_WITH_FAILURES"))
+					#set($color = $colorPassedWithFailures)
+				#elseif($status.equals("RUNNING"))
+					#set($color = $colorRunning)
+				#elseif($status.equals("CANCELLED"))
+					#set($color = $colorCancelled)
+				#elseif($status.equals("WAITING"))
+					#set($color = $colorWaiting)
+				#else
+					#set($color = $colorOther)
+				#end
+				<td style="color: $color;"><b>$status</b></td>
+			</tr>
+			<tr>
+				<td><b>Build ID:</b></td>
+				#set($buildLink = $transaction.context().createPortalLink().project("$projectId").build("$build.getBuildTag()").toEncodedRelativeUrl())
+				<td><a href="$buildLink" target="_top">$build.getBuildTag()</a></td>
+			</tr>
+			<tr>
+				<td><b>Project:</b></td>
+				#set($projectLink = $transaction.context().createPortalLink().project("$projectId").toEncodedRelativeUrl())
+				<td><a href="$projectLink" target="_top">#if($projectName)$projectName#else$projectId#end</a></td>
+			</tr>
+			#if(!$build.getBuildDescriptorName().equals("_default"))
+				<tr>
+					<td><b>Descriptor:</b></td>
+					<td>$build.getBuildDescriptorName()</td>
+				</tr>
+			#end
+			<tr>
+				<td><b>Duration:</b></td>
+				<td>$build.getDurationAsString()</td>
+			</tr>
+			<tr>
+				<td><b>Author:</b></td>
+				<td>$build.getAuthor().getLabel()</td>
+			</tr>
+			<tr>
+				<td><b>Created on:</b></td>
+				<td>$build.getCreationTime().toLocaleString()</td>
+			</tr>
+			<tr>
+				<td colspan="2" align="center" class="latestBuildDownloadTd">
+					<span class="latestBuild">
+						<a onclick="window.open('/polarion/bir$build.getBIRLocation().getLocationPath(); return false;')">
+							<div class="latestBuildDiv">
+								<table class="latestBuildDownloadTable">
+									<tbody>
+										<tr>
+											<td class="latestBuildDownloadButton">
+												<div class="latestBuildDownloadText" style="color: $color;">Download</div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</a>
+					</span>
+				</td>
+			</tr>
+		</table>
+	#end
+#end

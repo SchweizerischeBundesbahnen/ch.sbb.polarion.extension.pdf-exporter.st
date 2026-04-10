@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<work-item>
+    <field id="assignee">rProject</field>
+    <field id="author">rProject</field>
+    <field id="categories">
+        <list>
+            <item>administration</item>
+            <item>api</item>
+            <item>authentication</item>
+            <item>database</item>
+            <item>gui</item>
+            <item>persistence</item>
+            <item>projectadmin</item>
+            <item>project</item>
+            <item>reporting</item>
+            <item>security</item>
+            <item>usermanagement</item>
+            <item>objects</item>
+        </list>
+    </field>
+    <field id="created">2017-05-03 16:16:13.649 +0200</field>
+    <field id="description" text-type="text/html">This Epic sums up the basic behavior of the product.</field>
+    <field id="previousStatus">accepted</field>
+    <field id="priority">95.0</field>
+    <field id="severity">should_have</field>
+    <field id="status">inprogress</field>
+    <field id="epicEstimate" type="enum:tshirt-sizes">xxl</field>
+    <field id="targetVersion" type="enum:@plan[template.id:release]">Version_1_0</field>
+    <field id="title">Basic Product Behavior</field>
+    <field id="type">epic</field>
+</work-item>

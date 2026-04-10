@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<enumeration>
+    <option description="Performance Nonfunctional Requirement" iconURL="/polarion/icons/default/enums/testrun_type_performance.png" id="performance" name="Performance" sortOrder="1"/>
+    <option description="Safety Nonfunctional Requirement" iconURL="/polarion/icons/default/enums/type_safety.png" id="safety" name="Safety" sortOrder="2"/>
+    <option description="Security Nonfunctional Requirement" iconURL="/polarion/icons/default/enums/type_security.png" id="security" name="Security" sortOrder="3"/>
+    <option description="Software Quality Nonfunctional Requirement" iconURL="/polarion/icons/default/enums/type_blue_spec.png" id="software" name="Software Quality" sortOrder="4"/>
+    <option default="true" description="Other Nonfunctional Requirement" iconURL="/polarion/icons/default/enums/type_work_package.png" id="other" name="Other" sortOrder="5"/>
+</enumeration>

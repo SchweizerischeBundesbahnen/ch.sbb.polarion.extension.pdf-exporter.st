@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<workflow initial-status="draft" prototype="WorkItem">
+    <transitions>
+        <transition action="deactivate" from="active" to="inactive"/>
+        <transition action="deactivate" from="draft" to="inactive"/>
+        <transition action="activate" from="inactive" to="active"/>
+        <transition action="activate" from="draft" to="active"/>
+        <transition action="rework" from="active" to="draft"/>
+        <transition action="rework" from="inactive" to="draft"/>
+    </transitions>
+    <actions>
+        <action id="activate" name="Activate">
+            <required>
+                <field name="testType"/>
+            </required>
+            <cleared>
+                <field name="resolution"/>
+            </cleared>
+        </action>
+        <action id="deactivate" name="Deactivate">
+            <required>
+                <field name="resolution"/>
+            </required>
+        </action>
+        <action id="rework" name="Rework">
+            <cleared>
+                <field name="resolution"/>
+            </cleared>
+        </action>
+    </actions>
+</workflow>

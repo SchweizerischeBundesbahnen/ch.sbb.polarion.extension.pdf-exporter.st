@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<rich-page>
+    <field id="author">admin</field>
+    <field id="created">2017-08-03 09:37:14.058 +0200</field>
+    <field id="homePageContent" text-type="text/html"><![CDATA[<div class="polarion-rp-column" style="width: 100%;">
+  <h1 id="polarion_hardcoded_0">Builds</h1>
+  <p id="polarion_1">
+    <span class="polarion-rp-inline-widget" data-widget="com.polarion.scriptInline">
+      <span class="polarion-rp-widget-parameters" style="display: none;">
+        <sub id="script">
+          <sub id="script" style="white-space:pre;">## Reported By
+#set($infoText = &quot;Reported by $transaction.users().getBy().id($securityService.getCurrentUser()).render()&lt;br/&gt;$date.long&quot;)
+#if($widgetContext.target().isEditor())
+	&lt;div style=&quot;color: grey; text-align: left;&quot;&gt;$infoText&lt;div&gt;
+#elseif($widgetContext.target().isPdf())
+	&lt;div style=&quot;color: grey; text-align: right; position: absolute; top: 22px; right: 10px;&quot;&gt;$infoText&lt;div&gt;
+#elseif($widgetContext.target().isPrint())
+	&lt;div style=&quot;text-align: right; position: absolute; top: 35px; right: 10px;&quot;&gt;$infoText&lt;div&gt;
+#end</sub>
+        </sub>
+      </span>
+    </span>
+  </p>
+</div>
+<div class="polarion-rp-row-separator" page_min_width="1000"></div>
+<div class="polarion-rp-column" style="width: 70%;">
+  <div id="polarion_client17" class="polarion-rp-widget-part" data-widget="buildtrends">
+    <span class="polarion-rp-widget-parameters" style="display: none;">
+      <sub id="project"></sub>
+      <sub id="months">12</sub>
+      <sub id="DisplayNumber">true</sub>
+      <sub id="DisplayPercentage">true</sub>
+      <sub id="colors">
+        <sub id="colorPassed">#27AE60</sub>
+        <sub id="colorFailed">#C0392B</sub>
+      </sub>
+    </span>
+  </div>
+  <p id="polarion_2"></p><p id="polarion_3"></p><p id="polarion_client6"></p>
+</div>
+<div class="polarion-rp-column" style="width: 30%;">
+  <h2 id="polarion_client5">Latest Builds</h2>
+  <div id="polarion_client2" class="polarion-rp-widget-part" data-widget="latestbuilds">
+    <span class="polarion-rp-widget-parameters" style="display: none;">
+      <sub id="project"></sub>
+      <sub id="count">3</sub>
+      <sub id="sort">finishTime</sub>
+      <sub id="align">
+        <sub id="values">
+          <sub>center</sub>
+        </sub>
+      </sub>
+      <sub id="colors">
+        <sub id="colorPassed">#27AE60</sub>
+        <sub id="colorFailed">#C0392B</sub>
+        <sub id="colorPassedErrors">#D35400</sub>
+      </sub>
+    </span>
+  </div>
+  <p id="polarion_hardcoded_3"></p>
+</div>
+<div class="polarion-rp-row-separator"></div>]]></field>
+    <field id="title">Builds</field>
+</rich-page>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<work-item>
+    <field id="approvals">
+        <list>
+            <struct>
+                <item id="status">approved</item>
+                <item id="user">rProject</item>
+            </struct>
+        </list>
+    </field>
+    <field id="assignee">jRequirement</field>
+    <field id="author">rProject</field>
+    <field id="categories">
+        <list>
+            <item>usermanagement</item>
+        </list>
+    </field>
+    <field id="created">2010-11-20 08:46:32.609 +0100</field>
+    <field id="description" text-type="text/html">User name must be validated when a new user account is created</field>
+    <field id="previousStatus">approved</field>
+    <field id="priority">50.0</field>
+    <field id="reqType" type="enum:reqtype">safety</field>
+    <field id="resolvedOn">2017-05-03 12:47:18.612 +0200</field>
+    <field id="severity">should_have</field>
+    <field id="status">verified</field>
+    <field id="targetVersion" type="enum:@plan[template.id:release]">Version_0_9b</field>
+    <field id="type">requirement</field>
+</work-item>

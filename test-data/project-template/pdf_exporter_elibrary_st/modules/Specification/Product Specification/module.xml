@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<module>
+    <field id="allowedWITypes">
+        <list>
+            <item>requirement</item>
+        </list>
+    </field>
+    <field id="author">admin</field>
+    <field id="created">2010-11-20 12:23:08.222 +0100</field>
+    <field id="headingSidebarFields">severity,status</field>
+    <field id="homePageContent" text-type="text/html"><![CDATA[<h1 id="polarion_wiki macro name=module-workitem;params=id=EL-123"></h1><div id="polarion_wiki macro name=toc"></div><h2 id="polarion_wiki macro name=module-workitem;params=id=EL-124"></h2><p id="polarion_4">
+  <span style="font-style: italic;">This document is configured to showcase the <span style="font-weight: bold;">PDF Export Watermark </span>feature. After selecting <span style="font-weight: bold;">Operations &gt; Export to PDF, </span>each page is watermarked with an image. Rules for document watermarks can also be specified via a plugin. This plugin lets users force watermarks based on a custom field value like &quot;Restricted documents&quot;.</span>
+</p><h3 id="polarion_wiki macro name=module-workitem;params=id=EL-5"></h3><p id="polarion_merged_1">A Product Specification is a complete description of the behavior of the product to be developed. It includes a set of User Stories that describe all the interactions that users will have with the software. In addition to User Stories, this document also contains Requirements.</p><h3 id="polarion_wiki macro name=module-workitem;params=id=EL-125"></h3><p id="polarion_merged_2">The document describes a fictitious online eBook lending library with an optional online eBook sales component. The focus is on simplicity rather than depth and completeness, so that you may more easily understand the Document&#39;s features.</p><p id="polarion_new_7">
+  Not all the User Stories need to be implemented in the 1.0 release.  The release planning is managed separately. See <span class="polarion-rte-link" data-type="richPage" id="fake" data-item-name="Home" data-space-name="Planning" data-option-id="default"></span>.
+</p><h3 id="polarion_wiki macro name=module-workitem;params=id=EL-70"></h3><p id="polarion_1">Specifications:</p><ul id="polarion_2">
+  <li><span class="polarion-rte-link" data-type="document" id="fake" data-item-name="Administration Specification" data-space-name="Specification" data-option-id="default"></span></li>
+  <li><span class="polarion-rte-link" data-type="document" id="fake" data-item-name="Catalog Specification" data-space-name="Specification" data-option-id="default"></span><br/>
+    </li>
+</ul><h2 id="polarion_wiki macro name=module-workitem;params=id=EL-6"></h2><p id="polarion_merged_4">This system provides an online portal analogous to a public library where registered patrons can &quot;borrow&quot; books. The main difference being, that the books in the library catalog are all in electronic formats that incorporate Digital Rights Management (DRM). This lets the system “lend” an allowed number of copies to registered users. In addition, when a book has the proper rights, the E-Library can sell patrons a license for a personal copy of the electronic book that they can retain permanently.</p><h3 id="polarion_wiki macro name=module-workitem;params=id=EL-7"></h3><table id="polarion_wiki macro name=table;params=width=100%|uid=3" class="polarion-Document-table" style="width: 100%;margin-left: auto;margin-right: auto;border: 1px solid #CCCCCC;empty-cells: show;border-collapse: collapse;">
+  <tbody>
+    <tr>
+      <th style="font-weight: bold;font-size: 9pt;line-height: 1.5;text-align: left;vertical-align: top;width: 52px;height: 12px;border: 1px solid #CCCCCC;padding: 5px;">TERM</th>
+      <th style="font-weight: bold;font-size: 9pt;line-height: 1.5;text-align: left;vertical-align: top;width: 679px;height: 12px;border: 1px solid #CCCCCC;padding: 5px;">DEFINITION</th>
+    </tr>
+    <tr>
+      <td style="font-size: 9pt;line-height: 1.5;text-align: left;vertical-align: top;width: 52px;height: 12px;border: 1px solid #CCCCCC;padding: 5px;">Cart</td>
+      <td style="font-size: 9pt;line-height: 1.5;text-align: left;vertical-align: top;width: 679px;height: 12px;border: 1px solid #CCCCCC;padding: 5px;">i.e. “Shopping Cart” – A collection of one or more eBooks that a patron has marked for purchase during the current session.</td>
+    </tr>
+    <tr>
+      <td style="font-size: 9pt;line-height: 1.5;text-align: left;vertical-align: top;width: 52px;height: 12px;border: 1px solid #CCCCCC;padding: 5px;">Catalog</td>
+      <td style="font-size: 9pt;line-height: 1.5;text-align: left;vertical-align: top;width: 679px;height: 12px;border: 1px solid #CCCCCC;padding: 5px;">The database of eBooks available for loan and possibly for sale.</td>
+    </tr>
+    <tr>
+      <td style="font-size: 9pt;line-height: 1.5;text-align: left;vertical-align: top;width: 52px;height: 12px;border: 1px solid #CCCCCC;padding: 5px;">Check Out</td>
+      <td style="font-size: 9pt;line-height: 1.5;text-align: left;vertical-align: top;width: 679px;height: 12px;border: 1px solid #CCCCCC;padding: 5px;">The act of “borrowing” an eBook from the library. The term is <span style="font-style: italic;">not</span> used in reference to the process of paying for a purchased eBook. (See Purchase.)</td>
+    </tr>
+    <tr>
+      <td style="font-size: 9pt;line-height: 1.5;text-align: left;vertical-align: top;width: 52px;height: 12px;border: 1px solid #CCCCCC;padding: 5px;">Check In</td>
+      <td style="font-size: 9pt;line-height: 1.5;text-align: left;vertical-align: top;width: 679px;height: 12px;border: 1px solid #CCCCCC;padding: 5px;">The act of “returning” a previously “borrowed” (checked out) eBook.</td>
+    </tr>
+    <tr>
+      <td style="font-size: 9pt;line-height: 1.5;text-align: left;vertical-align: top;width: 52px;height: 12px;border: 1px solid #CCCCCC;padding: 5px;">DRM</td>
+      <td style="font-size: 9pt;line-height: 1.5;text-align: left;vertical-align: top;width: 679px;height: 12px;border: 1px solid #CCCCCC;padding: 5px;">Digital Rights Management</td>
+    </tr>
+    <tr>
+      <td style="font-size: 9pt;line-height: 1.5;text-align: left;vertical-align: top;width: 52px;height: 12px;border: 1px solid #CCCCCC;padding: 5px;">eBook</td>
+      <td style="font-size: 9pt;line-height: 1.5;text-align: left;vertical-align: top;width: 679px;height: 12px;border: 1px solid #CCCCCC;padding: 5px;">An electronic book or other publication lent or sold by the E-Library system.</td>
+    </tr>
+    <tr>
+      <td style="font-size: 9pt;line-height: 1.5;text-align: left;vertical-align: top;width: 52px;height: 12px;border: 1px solid #CCCCCC;padding: 5px;">ISBN</td>
+      <td style="font-size: 9pt;line-height: 1.5;text-align: left;vertical-align: top;width: 679px;height: 12px;border: 1px solid #CCCCCC;padding: 5px;">International Standard Book Number</td>
+    </tr>
+    <tr>
+      <td style="font-size: 9pt;line-height: 1.5;text-align: left;vertical-align: top;width: 52px;height: 12px;border: 1px solid #CCCCCC;padding: 5px;">LC</td>
+      <td style="font-size: 9pt;line-height: 1.5;text-align: left;vertical-align: top;width: 679px;height: 12px;border: 1px solid #CCCCCC;padding: 5px;">Library of Congress</td>
+    </tr>
+    <tr>
+      <td style="font-size: 9pt;line-height: 1.5;text-align: left;vertical-align: top;width: 52px;height: 12px;border: 1px solid #CCCCCC;padding: 5px;">Loan</td>
+      <td style="font-size: 9pt;line-height: 1.5;text-align: left;vertical-align: top;width: 679px;height: 12px;border: 1px solid #CCCCCC;padding: 5px;">See <span style="font-style: italic;">Lend.</span></td>
+    </tr>
+    <tr>
+      <td style="font-size: 9pt;line-height: 1.5;text-align: left;vertical-align: top;width: 52px;height: 12px;border: 1px solid #CCCCCC;padding: 5px;">Lend</td>
+      <td style="font-size: 9pt;line-height: 1.5;text-align: left;vertical-align: top;width: 679px;height: 12px;border: 1px solid #CCCCCC;padding: 5px;">The process of flagging an eBook so the appropriate DRM understands that one of the allowable number of “copies” has been allocated to a patron for the allowable lending period.</td>
+    </tr>
+    <tr>
+      <td style="font-size: 9pt;line-height: 1.5;text-align: left;vertical-align: top;width: 52px;height: 17px;border: 1px solid #CCCCCC;padding: 5px;">Patron</td>
+      <td style="font-size: 9pt;line-height: 1.5;text-align: left;vertical-align: top;width: 679px;height: 17px;border: 1px solid #CCCCCC;padding: 5px;">A user of the E-Library portal.</td>
+    </tr>
+    <tr>
+      <td style="font-size: 9pt;line-height: 1.5;text-align: left;vertical-align: top;width: 52px;height: 12px;border: 1px solid #CCCCCC;padding: 5px;">Purchase</td>
+      <td style="font-size: 9pt;line-height: 1.5;text-align: left;vertical-align: top;width: 679px;height: 12px;border: 1px solid #CCCCCC;padding: 5px;">The process by which library patrons purchase a DRM license for a personal copy of an eBook. <br/>
+        (Also refers to the action of a user navigating through the process of purchasing the eBooks listed in their Cart.)</td>
+    </tr>
+    <tr>
+      <td style="font-size: 9pt;line-height: 1.5;text-align: left;vertical-align: top;width: 52px;height: 12px;border: 1px solid #CCCCCC;padding: 5px;">Store</td>
+      <td style="font-size: 9pt;line-height: 1.5;text-align: left;vertical-align: top;width: 679px;height: 12px;border: 1px solid #CCCCCC;padding: 5px;">An area of the portal that lists a subset of the library’s eBooks.<br/>
+        (eBooks that users can purchase a personal copy license for.)</td>
+    </tr>
+  </tbody>
+</table><h2 id="polarion_wiki macro name=module-workitem;params=id=EL-112"></h2><h3 id="polarion_wiki macro name=module-workitem;params=id=EL-110"></h3><div id="polarion_wiki macro name=module-workitem;params=id=EL-198|layout=2"></div><div id="polarion_wiki macro name=module-workitem;params=id=EL-105|level=1"></div><div id="polarion_wiki macro name=module-workitem;params=id=EL-191|level=1"></div><div id="polarion_wiki macro name=module-workitem;params=id=EL-107|level=1"></div><div id="polarion_wiki macro name=module-workitem;params=id=EL-136|level=1"></div><div id="polarion_wiki macro name=module-workitem;params=id=EL-137|level=1"></div><div id="polarion_wiki macro name=module-workitem;params=id=EL-138|level=1"></div><div id="polarion_wiki macro name=module-workitem;params=id=EL-139|level=1"></div><div id="polarion_wiki macro name=module-workitem;params=id=EL-140|level=1"></div><h3 id="polarion_wiki macro name=module-workitem;params=id=EL-113"></h3><div id="polarion_wiki macro name=module-workitem;params=id=EL-199|layout=2"></div><div id="polarion_wiki macro name=module-workitem;params=id=EL-116|level=1"></div><div id="polarion_wiki macro name=module-workitem;params=id=EL-117|level=1"></div><div id="polarion_wiki macro name=module-workitem;params=id=EL-118|level=1"></div><div id="polarion_wiki macro name=module-workitem;params=id=EL-130|level=1"></div><div id="polarion_wiki macro name=module-workitem;params=id=EL-131|level=1"></div><h3 id="polarion_wiki macro name=module-workitem;params=id=EL-114"></h3><div id="polarion_wiki macro name=module-workitem;params=id=EL-200|layout=2"></div><div id="polarion_wiki macro name=module-workitem;params=id=EL-119|level=1"></div><div id="polarion_wiki macro name=module-workitem;params=id=EL-120|level=1"></div><div id="polarion_wiki macro name=module-workitem;params=id=EL-121|level=1"></div><h3 id="polarion_wiki macro name=module-workitem;params=id=EL-111"></h3><div id="polarion_wiki macro name=module-workitem;params=id=EL-201|layout=2"></div><div id="polarion_wiki macro name=module-workitem;params=id=EL-108|level=1"></div><div id="polarion_wiki macro name=module-workitem;params=id=EL-115|level=1"></div><div id="polarion_wiki macro name=module-workitem;params=id=EL-109|level=1"></div><div id="polarion_wiki macro name=module-workitem;params=id=EL-122|level=1"></div><div id="polarion_wiki macro name=module-workitem;params=id=EL-132|level=1"></div><div id="polarion_wiki macro name=module-workitem;params=id=EL-133|level=1"></div><div id="polarion_wiki macro name=module-workitem;params=id=EL-134|level=1"></div><div id="polarion_wiki macro name=module-workitem;params=id=EL-135|level=1"></div><h2 id="polarion_wiki macro name=module-workitem;params=id=EL-127"></h2><h3 id="polarion_wiki macro name=module-workitem;params=id=EL-141"></h3><p id="polarion_merged_3">The system must provide for the following types of user accounts:</p><table id="polarion_wiki macro name=table;params=width=100%|uid=4" class="polarion-Document-table" style="width: 100%;margin-left: auto;margin-right: auto;border: 1px solid #CCCCCC;empty-cells: show;border-collapse: collapse;">
+  <tbody>
+    <tr>
+      <th style="font-weight: bold;font-size: 9pt;line-height: 1.5;text-align: left;vertical-align: top;width: 108px;height: 12px;border: 1px solid #CCCCCC;padding: 5px;">ACCOUNT TYPE </th>
+      <th style="font-weight: bold;font-size: 9pt;line-height: 1.5;text-align: left;vertical-align: top;width: 622px;height: 12px;border: 1px solid #CCCCCC;padding: 5px;">PERMISSIONS</th>
+    </tr>
+    <tr>
+      <td style="font-size: 9pt;line-height: 1.5;text-align: left;vertical-align: top;width: 108px;height: 12px;border: 1px solid #CCCCCC;padding: 5px;">Administrator</td>
+      <td style="font-size: 9pt;line-height: 1.5;text-align: left;vertical-align: top;width: 622px;height: 12px;border: 1px solid #CCCCCC;padding: 5px;">Can access any component or area of the system including the accounts of other users.</td>
+    </tr>
+    <tr>
+      <td style="font-size: 9pt;line-height: 1.5;text-align: left;vertical-align: top;width: 108px;height: 12px;border: 1px solid #CCCCCC;padding: 5px;">Librarian</td>
+      <td style="font-size: 9pt;line-height: 1.5;text-align: left;vertical-align: top;width: 622px;height: 12px;border: 1px solid #CCCCCC;padding: 5px;">Can access the catalog management features of the system.</td>
+    </tr>
+    <tr>
+      <td style="font-size: 9pt;line-height: 1.5;text-align: left;vertical-align: top;width: 108px;height: 12px;border: 1px solid #CCCCCC;padding: 5px;">Patron</td>
+      <td style="font-size: 9pt;line-height: 1.5;text-align: left;vertical-align: top;width: 622px;height: 12px;border: 1px solid #CCCCCC;padding: 5px;">Can access the general library features, including browsing, searching, check out, check in, reserve, and purchase.</td>
+    </tr>
+    <tr>
+      <td style="font-size: 9pt;line-height: 1.5;text-align: left;vertical-align: top;width: 108px;height: 12px;border: 1px solid #CCCCCC;padding: 5px;">Student</td>
+      <td style="font-size: 9pt;line-height: 1.5;text-align: left;vertical-align: top;width: 622px;height: 12px;border: 1px solid #CCCCCC;padding: 5px;">Same as a Patron, except students can not access Purchase features.</td>
+    </tr>
+  </tbody>
+</table><p id="polarion_3">
+  <img src="attachment:diagram_20130521-1634.12464.mxg.png" style="width: 754px;height: 271px;"/>
+</p><div id="polarion_wiki macro name=module-workitem;params=id=EL-202|layout=2"></div><div id="polarion_wiki macro name=module-workitem;params=id=EL-142|level=1"></div><div id="polarion_wiki macro name=module-workitem;params=id=EL-143|level=1"></div><h2 id="polarion_wiki macro name=module-workitem;params=id=EL-8"></h2><h3 id="polarion_wiki macro name=module-workitem;params=id=EL-9"></h3><p id="polarion_new_37">
+  <span style="font-style: italic;">If there are performance requirements for the product under various circumstances, state them here and explain their rationale.This helps developers understand the intended performance targets and make design choices accordingly. Specify the timing relationships for real time systems. Make these requirements as specific as possible. You may need to state performance requirements for individual functional requirements or features.</span>
+</p><div id="polarion_wiki macro name=module-workitem;params=id=EL-69|layout=1"></div><h3 id="polarion_wiki macro name=module-workitem;params=id=EL-10"></h3><p id="polarion_new_36">
+  <span style="font-style: italic;">Specify any requirements concerned with possible loss, damage, or harm that could result from the use of the product. Define any safeguards or actions that must be taken, as well as actions that must be prevented. Refer to any external policies or regulations that describe safety issues that could affect the product’s design or use. Define any safety certifications that must be satisfied.</span>
+</p><h3 id="polarion_wiki macro name=module-workitem;params=id=EL-11"></h3><p id="polarion_new_35">
+  <span style="font-style: italic;">Specify any requirements regarding security or privacy issues surrounding the use of the product or the protection of data used and created by the product. Define any user identity authentication requirements. Refer to any external policies or regulations containing security issues that affect the product. Define any security or privacy certifications that must be satisfied.</span>
+</p><h3 id="polarion_wiki macro name=module-workitem;params=id=EL-12"></h3><p id="polarion_new_34">
+  <span style="font-style: italic;">Specify any additional quality characteristics for the product that will be important to either customers or developers. Some to consider are: adaptability, availability, correctness, flexibility, interoperability, maintainability, portability, reliability, reusability, robustness, testability, and usability. Write these to be specific, quantitative, and verifiable when possible. At the very least, clarify the relative preferences for various attributes, such as ease of use over ease of learning.</span>
+</p><h3 id="polarion_wiki macro name=module-workitem;params=id=EL-13"></h3><p id="polarion_new_33">
+  <span style="font-style: italic;">Define any other requirements not covered elsewhere in the specification. This might include database requirements, internationalization requirements, legal requirements, reuse objectives for the project, and so on. Add any new sections that are pertinent to the project.</span>
+</p><h2 id="polarion_wiki macro name=module-workitem;params=id=EL-128"></h2><p id="polarion_new_39">
+  <span style="font-style: italic;">Define all the terms necessary to properly interpret this document, including acronyms and abbreviations. You may wish to build a separate glossary that spans multiple projects or the entire organization, and just include terms specific to a single project in each document.<br/>
+    </span>
+</p><h2 id="polarion_wiki macro name=module-workitem;params=id=EL-15"></h2><p id="polarion_new_38">
+  <span style="font-style: italic;">Optionally, include any pertinent analysis models, such as data flow diagrams, class diagrams, state-transition diagrams, or entity-relationship diagrams.</span>
+</p>]]></field>
+    <field id="renderingLayouts">
+        <list>
+            <struct>
+                <item id="label">User Story</item>
+                <item id="layouter">section</item>
+                <item id="properties">
+                    <list>
+                        <struct>
+                            <item id="key">fieldsAtStart</item>
+                            <item id="value">id</item>
+                        </struct>
+                        <struct>
+                            <item id="key">fieldsAtEnd</item>
+                            <item id="value">status,severity,status,plannedIn</item>
+                        </struct>
+                        <struct>
+                            <item id="key">fieldsAtEndAsTable</item>
+                            <item id="value">false</item>
+                        </struct>
+                        <struct>
+                            <item id="key">hidden</item>
+                        </struct>
+                        <struct>
+                            <item id="key">noPageBreak</item>
+                        </struct>
+                        <struct>
+                            <item id="key">sidebarWorkItemFields</item>
+                            <item id="value">status,severity,status</item>
+                        </struct>
+                        <struct>
+                            <item id="key">typeNotInProject</item>
+                        </struct>
+                    </list>
+                </item>
+                <item id="type">userstory</item>
+            </struct>
+            <struct>
+                <item id="label">Requirement</item>
+                <item id="layouter">section</item>
+                <item id="properties">
+                    <list>
+                        <struct>
+                            <item id="key">fieldsAtStart</item>
+                            <item id="value">id</item>
+                        </struct>
+                        <struct>
+                            <item id="key">fieldsAtEnd</item>
+                            <item id="value">severity,status,targetVersion</item>
+                        </struct>
+                        <struct>
+                            <item id="key">fieldsAtEndAsTable</item>
+                            <item id="value">false</item>
+                        </struct>
+                        <struct>
+                            <item id="key">hidden</item>
+                        </struct>
+                        <struct>
+                            <item id="key">noPageBreak</item>
+                        </struct>
+                        <struct>
+                            <item id="key">sidebarWorkItemFields</item>
+                            <item id="value">severity,status</item>
+                        </struct>
+                        <struct>
+                            <item id="key">typeNotInProject</item>
+                        </struct>
+                    </list>
+                </item>
+                <item id="type">requirement</item>
+            </struct>
+            <struct>
+                <item id="label">Epic</item>
+                <item id="layouter">section</item>
+                <item id="properties">
+                    <list>
+                        <struct>
+                            <item id="key">fieldsAtStart</item>
+                            <item id="value">id</item>
+                        </struct>
+                        <struct>
+                            <item id="key">fieldsAtEnd</item>
+                            <item id="value">severity,status,targetVersion</item>
+                        </struct>
+                        <struct>
+                            <item id="key">fieldsAtEndAsTable</item>
+                            <item id="value">false</item>
+                        </struct>
+                        <struct>
+                            <item id="key">hidden</item>
+                        </struct>
+                        <struct>
+                            <item id="key">noPageBreak</item>
+                        </struct>
+                        <struct>
+                            <item id="key">sidebarWorkItemFields</item>
+                            <item id="value">severity,status</item>
+                        </struct>
+                        <struct>
+                            <item id="key">typeNotInProject</item>
+                        </struct>
+                    </list>
+                </item>
+                <item id="type">epic</item>
+            </struct>
+        </list>
+    </field>
+    <field id="status">active</field>
+    <field id="structureLinkRole">parent</field>
+    <field id="type">productSpecification</field>
+    <field id="usesOutlineNumbering">true</field>
+    <field id="version" type="string">1.0</field>
+</module>

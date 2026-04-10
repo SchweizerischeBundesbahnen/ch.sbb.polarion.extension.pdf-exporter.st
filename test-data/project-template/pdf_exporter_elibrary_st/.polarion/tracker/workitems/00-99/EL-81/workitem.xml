@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<work-item>
+    <field id="assignee">sDeveloper</field>
+    <field id="author">rProject</field>
+    <field id="categories">
+        <list>
+            <item>searching</item>
+            <item>ui</item>
+        </list>
+    </field>
+    <field id="created">2011-05-26 08:37:14.142 +0200</field>
+    <field id="initialEstimate">8h</field>
+    <field id="linkedWorkItems">
+        <list>
+            <struct>
+                <item id="role">relates_to</item>
+                <item id="workItem">EL-79</item>
+            </struct>
+            <struct>
+                <item id="role">implements</item>
+                <item id="workItem">EL-131</item>
+            </struct>
+        </list>
+    </field>
+    <field id="occurredInVersion" type="string">1.0</field>
+    <field id="previousStatus">done</field>
+    <field id="priority">50.0</field>
+    <field id="remainingEstimate"/>
+    <field id="resolution">done</field>
+    <field id="resolvedOn">2014-02-13 18:39:10.469 +0100</field>
+    <field id="severity">normal</field>
+    <field id="status">verified</field>
+    <field id="targetVersion" type="enum:@plan[template.id:release]">Version_1_0</field>
+    <field id="timeSpent">1d</field>
+    <field id="title">Fulltext searching in comments does not support non latin characters well</field>
+    <field id="type">issue</field>
+</work-item>

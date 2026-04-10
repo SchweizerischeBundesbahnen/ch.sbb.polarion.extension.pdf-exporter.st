@@ -30,7 +30,7 @@ jobs:
       - name: 🧱 Install dependencies
         run: uv sync --all-groups --locked
       - name: 🧪 Run tests
-        run: uv run tox
+        run: uv run tox --notest # tests should be run on Jenkins; other checks may also need to be moved there
       - name: SonarCloud scan for PR
         uses: sonarsource/sonarqube-scan-action@299e4b793aaa83bf2aba7c9c14bedbb485688ec4  # v7.1.0
         if: github.event_name == 'pull_request' && github.event.repository.visibility == 'public'

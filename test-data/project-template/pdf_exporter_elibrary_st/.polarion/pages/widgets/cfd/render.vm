@@ -1,0 +1,65 @@
+###############################################################################
+##
+##  render.vm - this velocity script is executed to render the actual widget
+##
+
+###############################################################################
+##
+## Velocity Context - following objects are in the velocity context
+##
+## com.polarion.alm.shared.api.transaction.ReadOnlyTransaction $transaction
+## com.polarion.alm.shared.api.model.rp.widget.RichPageWidgetRenderingContext $widgetContext
+## com.polarion.alm.shared.api.model.rp.parameter.RichPageParameters $parameters
+##
+
+###############################################################################
+##
+## Page Parameters
+##
+
+## com.polarion.alm.shared.api.model.rp.parameter.IntegerParameter $heightParam
+#set($heightParam = $parameters.height)
+
+## com.polarion.alm.shared.api.model.rp.parameter.StringParameter $titleParameter
+#set($titleParameter = $parameters.title)
+
+###############################################################################
+##
+## Render Widget
+##
+
+#set($html = $widgetContext.createHtmlFragmentBuilder())
+## com.polarion.alm.shared.api.utils.html.HtmlFragmentBuilder $html
+
+#set($chart = $widgetContext.createChartBuilder())
+## com.polarion.alm.shared.api.utils.charts.PolarionChartBuilder $chart
+
+#set($xy = $chart.xy().zoomX(true))
+
+#set($dataParam = $widgetContext.parameter("data"))
+#set($datePointsParam = $widgetContext.parameter("datePoints"))
+#foreach($serie in $dataParam.get())
+	#set($serieName = $serie.get("name").value())
+	#set($serieColor = $serie.get("color").value())
+	#set($values = $xy.serie($serieName).color($serieColor).type().area().dateToNumber())
+	#foreach($datePoint in $datePointsParam.points())
+		#set($value = $serie.getFor().revision($datePoint.revision()).size())
+		#set($x = $values.add($datePoint.date(), $value))
+	#end
+#end
+
+#if($titleParameter.value())
+	#set($x = $chart.build().title().text($titleParameter.value()))
+#else
+	#set($x = $chart.build().title().text(""))
+#end
+
+#set($x = $chart.build().plotOptions().addRawAttribute("area", "{stacking: 'normal', marker: {enabled: false}}"))
+#set($x = $chart.build().yAxis().title().text("# of Items"))
+
+#set($height = $widgetContext.columnWidth / 3)
+#if($heightParam.value())
+	#set($height = $heightParam.value())
+#end
+#set($x = $chart.build().render($html, $height, $widgetContext.columnWidth))
+$html

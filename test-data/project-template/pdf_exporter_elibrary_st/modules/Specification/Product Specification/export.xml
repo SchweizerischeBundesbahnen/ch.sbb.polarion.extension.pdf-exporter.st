@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<export>
+    <pdf marginLeft="60" marginTop="50" marginRight="60" marginBottom="50">
+        <filename spaceReplacement="_">
+            <document>$[projectName]_$[spaceTitle]_$[documentTitle]</document>
+            <richpage>$[projectName]_$[spaceTitle]_$[documentTitle]</richpage>
+        </filename>
+        <header height="35"><![CDATA[
+            <table width="100%" style="color:rgb(128,128,128); font-size: 9px !important; margin-bottom: 20px;">
+                <tr>
+                    <td width="30%"><a href="https://polarion.plm.automation.siemens.com/"><img width="180" height="29" src="/polarion/ria/images/logos/siemens/siemens_export_logo.png" alt="Siemens Industry Software"></a></td>
+                    <td width="70%" align="right">$[projectName]<br>$[documentTitle] (rev. $[revision])</td>
+                </tr>
+            </table>]]>
+        </header>
+        <footer height="25"><![CDATA[
+            <table width="100%" style="border-top:1px solid rgb(128,128,128); color:rgb(128,128,128); font-size: 9px !important;">
+                <tr>
+                    <td width="20%"><span style="color:rgb(0,0,0);">$[page] |</span> Page</td>
+                    <td width="60%" align="center"><a style="color:rgb(128,128,128); font-size: 8px !important;" href="https://polarion.plm.automation.siemens.com/">$[productName] $[productVersion]</a></td>
+                    <td width="20%" align="right">$[generated]</td>
+                </tr>
+            </table>]]>
+        </footer>
+        <watermark id="confidential" opacity="50"/>
+    </pdf>
+    <pdf-compare marginLeft="10" marginTop="10" marginRight="10" marginBottom="10">
+        <header height="35"><![CDATA[
+            <table width="100%" style="color:rgb(128,128,128); font-size: 9px !important; margin-bottom: 20px;">
+                <tr>
+                    <td width="30%"><a href="https://polarion.plm.automation.siemens.com/"><img width="180" height="29" src="/polarion/ria/images/logos/siemens/siemens_export_logo.png" alt="Siemens Industry Software"></a></td>
+                    <td width="70%" align="right">$[projectName]<br>$[documentTitle] (compare rev. $[revision1] and $[revision2])</td>
+                </tr>
+            </table>]]>
+        </header>
+        <footer height="25"><![CDATA[
+            <table width="100%" style="border-top:1px solid rgb(128,128,128); color:rgb(128,128,128); font-size: 9px !important;">
+                <tr>
+                    <td width="20%"><span style="color:rgb(0,0,0);">$[page] |</span> Page</td>
+                    <td width="60%" align="center"><a style="color:rgb(128,128,128); font-size: 8px !important;" href="https://polarion.plm.automation.siemens.com/">$[productName] $[productVersion]</a></td>
+                    <td width="20%" align="right">$[generated]</td>
+                </tr>
+            </table>]]>
+        </footer>
+    </pdf-compare>
+    <pdf-compare-documents marginLeft="10" marginTop="10" marginRight="10" marginBottom="10">
+        <header height="35"><![CDATA[
+            <table width="100%" style="color:rgb(128,128,128); font-size: 9px !important; margin-bottom: 20px;">
+                <tr>
+                    <td width="30%"><a href="https://polarion.plm.automation.siemens.com/"><img width="180" height="29" src="/polarion/ria/images/logos/siemens/siemens_export_logo.png" alt="Siemens Industry Software"></a></td>
+                    <td width="70%" align="right">$[projectName1]<br>$[documentTitle1] rev. $[revision1] compare $[projectName2] $[documentTitle2] rev. $[revision2]</td>
+                </tr>
+            </table>]]>
+        </header>
+        <footer height="25"><![CDATA[
+            <table width="100%" style="border-top:1px solid rgb(128,128,128); color:rgb(128,128,128); font-size: 9px !important;">
+                <tr>
+                    <td width="20%"><span style="color:rgb(0,0,0);">$[page] |</span> Page</td>
+                    <td width="60%" align="center"><a style="color:rgb(128,128,128); font-size: 8px !important;" href="https://polarion.plm.automation.siemens.com/">$[productName] $[productVersion]</a></td>
+                    <td width="20%" align="right">$[generated]</td>
+                </tr>
+            </table>]]>
+        </footer>
+    </pdf-compare-documents>
+</export>

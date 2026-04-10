@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<work-item>
+    <field id="author">rProject</field>
+    <field id="categories">
+        <list>
+            <item>searching</item>
+        </list>
+    </field>
+    <field id="created">2010-12-06 14:46:33.377 +0100</field>
+    <field id="initialEstimate"/>
+    <field id="linkedWorkItems">
+        <list>
+            <struct>
+                <item id="role">verifies</item>
+                <item id="workItem">EL-109</item>
+            </struct>
+        </list>
+    </field>
+    <field id="priority">50.0</field>
+    <field id="remainingEstimate"/>
+    <field id="severity">smoke</field>
+    <field id="status">active</field>
+    <field id="testSteps" type="struct:TestSteps">
+        <struct>
+            <item id="keys">
+                <list>
+                    <item>step</item>
+                    <item>description</item>
+                    <item>expectedResult</item>
+                </list>
+            </item>
+            <item id="steps">
+                <list>
+                    <struct>
+                        <item id="values">
+                            <list>
+                                <item text-type="text/html">Open &amp;quot;Search perspective&amp;quot;.</item>
+                                <item text-type="text/html">Login to the E-Library Portal, and click &amp;quot;Search&amp;quot; in the top left corner.</item>
+                                <item text-type="text/html">The Search page is displayed.</item>
+                            </list>
+                        </item>
+                    </struct>
+                    <struct>
+                        <item id="values">
+                            <list>
+                                <item text-type="text/html">Select &amp;quot;Search by ISBN&amp;quot;.</item>
+                                <item text-type="text/html"/>
+                                <item text-type="text/html">There is a search via drop-down list next to the search field.</item>
+                            </list>
+                        </item>
+                    </struct>
+                    <struct>
+                        <item id="values">
+                            <list>
+                                <item text-type="text/html">Type: 12-34-567.</item>
+                                <item text-type="text/html"/>
+                                <item text-type="text/html">The ISBN field should be validated, so you cannot click search before you enter the full number.</item>
+                            </list>
+                        </item>
+                    </struct>
+                    <struct>
+                        <item id="values">
+                            <list>
+                                <item text-type="text/html">Click &amp;quot;Search&amp;quot;.</item>
+                                <item text-type="text/html"/>
+                                <item text-type="text/html">Results are shown, 1 book should be returned.</item>
+                            </list>
+                        </item>
+                    </struct>
+                </list>
+            </item>
+        </struct>
+    </field>
+    <field id="testType" type="enum:testtype">user</field>
+    <field id="timeSpent"/>
+    <field id="title">Search for book using ISBN</field>
+    <field id="type">testcase</field>
+</work-item>

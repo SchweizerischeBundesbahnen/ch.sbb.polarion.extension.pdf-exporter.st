@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<work-item>
+    <field id="assignee">sDeveloper</field>
+    <field id="author">rProject</field>
+    <field id="categories">
+        <list>
+            <item>searching</item>
+            <item>ui</item>
+        </list>
+    </field>
+    <field id="created">2009-05-24 13:18:12.291 +0200</field>
+    <field id="initialEstimate">4h</field>
+    <field id="linkedWorkItems">
+        <list>
+            <struct>
+                <item id="role">implements</item>
+                <item id="workItem">EL-132</item>
+            </struct>
+        </list>
+    </field>
+    <field id="previousStatus">closed</field>
+    <field id="priority">50.0</field>
+    <field id="severity">critical</field>
+    <field id="status">reopened</field>
+    <field id="timeSpent">1d</field>
+    <field id="title">Implement advanced search panel</field>
+    <field id="type">task</field>
+</work-item>

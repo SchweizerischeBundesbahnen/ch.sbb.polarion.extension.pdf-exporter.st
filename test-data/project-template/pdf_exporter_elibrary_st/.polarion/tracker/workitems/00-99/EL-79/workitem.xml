@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<work-item>
+    <field id="assignee">sDeveloper</field>
+    <field id="author">rProject</field>
+    <field id="categories">
+        <list>
+            <item>searching</item>
+        </list>
+    </field>
+    <field id="created">2011-05-26 07:45:07.580 +0200</field>
+    <field id="initialEstimate">2d</field>
+    <field id="linkedWorkItems">
+        <list>
+            <struct>
+                <item id="role">relates_to</item>
+                <item id="workItem">EL-122</item>
+            </struct>
+        </list>
+    </field>
+    <field id="previousStatus">open</field>
+    <field id="priority">50.0</field>
+    <field id="resolution">done</field>
+    <field id="resolvedOn">2011-05-26 08:23:21.457 +0200</field>
+    <field id="severity">major</field>
+    <field id="status">done</field>
+    <field id="timeSpent">2d</field>
+    <field id="title">Support fulltext search - including comments</field>
+    <field id="type">task</field>
+</work-item>

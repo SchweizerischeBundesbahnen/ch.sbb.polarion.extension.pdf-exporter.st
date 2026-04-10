@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<work-item>
+    <field id="assignee">sDeveloper</field>
+    <field id="author">rProject</field>
+    <field id="categories">
+        <list>
+            <item>security</item>
+            <item>ui</item>
+        </list>
+    </field>
+    <field id="created">2010-11-20 12:24:59.412 +0100</field>
+    <field id="description" text-type="text/html">When users want to access the Elibrary portal they need to login and provide valid credentials.</field>
+    <field id="initialEstimate">3d 4h</field>
+    <field id="linkedWorkItems">
+        <list>
+            <struct>
+                <item id="role">implements</item>
+                <item id="workItem">EL-147</item>
+            </struct>
+            <struct>
+                <item id="role">implements</item>
+                <item id="workItem">EL-101</item>
+            </struct>
+            <struct>
+                <item id="role">implements</item>
+                <item id="workItem">EL-146</item>
+            </struct>
+            <struct>
+                <item id="role">implements</item>
+                <item id="workItem">EL-152</item>
+            </struct>
+            <struct>
+                <item id="role">implements</item>
+                <item id="workItem">EL-151</item>
+            </struct>
+        </list>
+    </field>
+    <field id="previousStatus">closed</field>
+    <field id="priority">81.0</field>
+    <field id="resolution">done</field>
+    <field id="resolvedOn">2010-11-25 16:34:20.868 +0100</field>
+    <field id="severity">must_have</field>
+    <field id="status">verified</field>
+    <field id="storyPoints" type="integer">5</field>
+    <field id="timeSpent">3d 4h</field>
+    <field id="title">Login Page</field>
+    <field id="type">userstory</field>
+</work-item>

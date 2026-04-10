@@ -1,0 +1,39 @@
+###############################################################################
+##
+##  parameters.vm - this velocity script defines the widget parameters
+##
+
+###############################################################################
+##
+##  Velocity Context - following objects are in the velocity context
+##
+## java.util.Map $parameters
+## com.polarion.alm.shared.api.model.rp.parameter.ParameterFactory $factory
+## com.polarion.alm.shared.api.transaction.ReadOnlyTransaction $transaction
+## com.polarion.alm.shared.api.model.rp.widget.RichPageWidgetRenderingContext $widgetContext
+## com.polarion.alm.shared.api.utils.velocity.ObjectFactory $objectFactory
+## com.polarion.alm.shared.api.model.rp.parameter.DataSet $dataSet
+##
+
+###############################################################################
+##
+##  Add parameters
+
+#set($sortByField = $factory.sorting("Sort By").build())
+#set($mainSidebarConfigField = $factory.fields("Main Work Item Properties Sidebar Fields").fields(["assignee", "severity", "priority", "status", "resolution", "linkedWorkItems"]).build())
+$parameters.put("dataSet", $factory.dataSet("Data Set").add("sortBy", $sortByField).add("mainSidebarConfig", $mainSidebarConfigField).dependencySource(true).build())
+
+#set($linkedItemTypesComposite = $factory.enumeration("Linked Item Type(s)","workitem-type").allowMultipleValues(true).allowNoValue(false).singleValue("testcase").dependencyTarget(true).build())
+#set($linkedRolesComposite = $factory.enumeration("Linked Item -> Main Item Link Role(s)","wi-link-role").allowMultipleValues(true).allowNoValue(false).singleValue("verifies").dependencyTarget(true).build())
+#set($filterByCoverageComposite = $factory.customEnum("Filter Linked Items By Coverage").addEnumItem("hideCovered", "Hide Covered Work Items").addEnumItem("hideNotCovered", "Hide Not Covered Work Items").addEnumItem("displayOnlyProblematic", "Show Only Problematic Work Items").allowNoValue(true).singleValue("").build())
+#set($linkedSidebarConfigComposite = $factory.fields("Linked Item Properties Sidebar Fields").fields(["assignee", "severity", "priority", "status", "resolution", "linkedWorkItems"]).build())
+#set($defectItemTypesComposite = $factory.enumeration("2nd Level Linked Item Type(s)","workitem-type").allowMultipleValues(true).allowNoValue(false).singleValue("defect").dependencyTarget(true).build())
+#set($defectRolesComposite = $factory.enumeration("2nd Level Linked Item -> Linked Item Link Role(s)","wi-link-role").allowMultipleValues(true).allowNoValue(false).singleValue("triggered_by").dependencyTarget(true).build())
+#set($linkedToLinkedSidebarConfigComposite = $factory.fields("2nd Level Linked Item Properties Sidebar Fields").fields(["severity", "status", "linkedWorkItems"]).build())
+$parameters.put("settings", $factory.composite("Linked Work Item Types & Link Role(s)").add("linkedItemTypes", $linkedItemTypesComposite).add("linkedRoles", $linkedRolesComposite).add("filterByCoverage", $filterByCoverageComposite).add("linkedSidebarConfig", $linkedSidebarConfigComposite).add("defectItemTypes", $defectItemTypesComposite).add("defectRoles", $defectRolesComposite).add("linkedToLinkedSidebarConfig", $linkedToLinkedSidebarConfigComposite).build())
+
+#set($collapseLimitComposite = $factory.integer("Collapse from Number of Linked Items").value(0).build())
+#set($sourceItemColumnTitleComposite = $factory.string("Main Item Column Title").value("Use Case").build())
+#set($linkedItemColumnTitleComposite = $factory.string("Linked Item Column Title").value("Test Case").build())
+#set($defectItemColumnTitleComposite = $factory.string("2nd Level Linked Item Column Title").value("Defect").build())
+$parameters.put("advanced", $factory.composite("Advanced").add("collapseLimit", $collapseLimitComposite).add("sourceItemColumnTitle", $sourceItemColumnTitleComposite).add("linkedItemColumnTitle", $linkedItemColumnTitleComposite).add("defectItemColumnTitle", $defectItemColumnTitleComposite).collapsedByDefault(true).build())

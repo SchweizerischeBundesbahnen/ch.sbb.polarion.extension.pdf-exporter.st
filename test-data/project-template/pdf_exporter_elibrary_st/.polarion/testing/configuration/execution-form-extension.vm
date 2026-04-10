@@ -1,0 +1,108 @@
+###############################################################################
+##
+## Velocity Context - following objects are in the velocity context
+##
+## com.polarion.alm.shared.api.transaction.ReadOnlyTransaction $transaction
+## com.polarion.alm.server.api.model.tr.record.ProxyTestRecord $testRecord
+##
+
+## Information Banner
+#if(!$testRecord.isPaused())
+	#if($testRecord.fields().result().get() && !$testRecord.isPlanned())
+		#set($resultColor = $objectFactory.newColorTool().tryParse($testRecord.fields().result().get().fields().color().get(), "#FFFFFF"))
+		#set($bannerColor = $resultColor.withOpacity($number.toNumber("0.4")))
+		<table cellspacing="0" cellpadding="0" class="polarion-trx-Form-banner" style="background-color: ${bannerColor}; margin-bottom: 0px;">
+			<tbody>
+				<tr>
+					<td align="left" width="100%" style="vertical-align: middle;">
+						<span style="margin-left: 10px;">
+							<b>$testRecord.fields().result().render().withText(false) Test Case Verdict: $testRecord.fields().result().render().withIcon(false)</b>
+							#if(!$testRecord.fields().comment().is().empty())
+								#set($comment = $testRecord.fields().comment().asPlainText())
+								#if($comment.length() > 200)
+									 - $esc.html("$comment.substring(0, 200)...")
+								#else
+									 - $esc.html("$comment")
+								#end
+							#end
+						</span>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<table style="width: 100%;">
+			<tbody>
+				<tr>
+					<td>
+						<div style="float: right; color: #999999; font-size: 11px; text-align: right; padding-right: 6px;">
+							Executed by: $testRecord.fields().executedBy().render() on $testRecord.fields().executed().render()
+						</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	#end
+#elseif(!$testRecord.isPlanned())
+	<table cellspacing="0" cellpadding="0" class="polarion-trx-Form-banner" style="background-color: rgb(216, 228, 241);">
+		<tbody>
+			<tr>
+				<td align="left" width="16px" style="vertical-align: middle;">
+					<img src="/polarion/wiki/skins/sidecar/images/msginfo.png" class="polarion-trx-Form-banner-icon" style="height: 16px; width: 16px;">
+				</td>
+				<td align="left" width="100%" style="vertical-align: middle;">
+					<div class="polarion-trx-Form-banner-label" id="gwt-debug-polarion-debug-trx-Form-banner">
+						This test hasn't been completed. You can resume and enter a verdict to complete it.
+					</div>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+#end
+
+## Description
+#set($testCase = $testRecord.fields().testCase().getIfCan())
+#if(!$testCase.fields().description().is().empty())
+	<div class="polarion-JSPreviewPanelTitle polarion-JSPreviewPanelTitleBottomMargin" style="margin-top: 6px;">
+		<table cellspacing="0" cellpadding="0" style="width:100%">
+			<tbody>
+				<tr>
+					<td>
+						<img class="polarion-JSPreviewPanelTitle-icon" src="/polarion/ria/images/fields/description.png">
+					</td>
+					<td class="GEF-42RK5">
+						Description
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<table cellspacing="0" cellpadding="0" class="GEF-42RI5">
+		<tbody>
+			<tr>
+				<td style="padding-left: 10px; padding-right: 10px; width:100%;">
+					<div class="GEF-42RDT">
+						<span style="font-size:10pt; line-height:1.5;">
+							$testCase.fields().description().render()
+						</span>
+					</div>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	#if(!$testCase.fields().get("testSteps").is().empty())
+		<div class="polarion-JSPreviewPanelTitle">
+			<table cellspacing="0" cellpadding="0" style="width:100%">
+				<tbody>
+					<tr>
+						<td>
+							<img class="polarion-JSPreviewPanelTitle-icon" src="/polarion/ria/images/fields/generic.png">
+						</td>
+						<td class="GEF-42RK5">
+							Test Steps
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	#end
+#end

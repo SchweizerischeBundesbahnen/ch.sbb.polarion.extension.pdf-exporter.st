@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<work-item>
+    <field id="author">rProject</field>
+    <field id="created">2011-09-19 12:54:49.471 +0200</field>
+    <field id="initialEstimate"/>
+    <field id="previousStatus">draft</field>
+    <field id="priority">50.0</field>
+    <field id="remainingEstimate"/>
+    <field id="severity">basic</field>
+    <field id="status">active</field>
+    <field id="testCaseID" type="string">com.polarion.demo.BookTest.testBook</field>
+    <field id="testType" type="enum:testtype">automated</field>
+    <field id="timeSpent"/>
+    <field id="title">com.polarion.demo.BookTest.testBook</field>
+    <field id="type">testcase</field>
+</work-item>

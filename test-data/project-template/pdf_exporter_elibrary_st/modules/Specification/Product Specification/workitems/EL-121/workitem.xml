@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<work-item>
+    <field id="assignee">
+        <list>
+            <item>pGUI</item>
+            <item>sDeveloper</item>
+        </list>
+    </field>
+    <field id="author">rProject</field>
+    <field id="categories">
+        <list>
+            <item>objects</item>
+            <item>gui</item>
+        </list>
+    </field>
+    <field id="created">2010-11-20 13:19:33.219 +0100</field>
+    <field id="description" text-type="text/html">When viewing an author&amp;#39;s list of books, users want to see which books are stored in the library and whether or not they are currently available for check out.</field>
+    <field id="initialEstimate">9d 6h</field>
+    <field id="previousStatus">approved</field>
+    <field id="priority">30.0</field>
+    <field id="remainingEstimate">9d 6h</field>
+    <field id="resolvedOn">2010-12-02 10:36:52.652 +0100</field>
+    <field id="severity">nice_to_have</field>
+    <field id="status">accepted</field>
+    <field id="storyPoints" type="integer">13</field>
+    <field id="type">userstory</field>
+</work-item>

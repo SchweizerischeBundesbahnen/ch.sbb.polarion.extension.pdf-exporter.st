@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+    <field id="author">admin</field>
+    <field id="created">2025-12-15 06:56:44.361 +0000</field>
+    <field id="crossReferenceMappingData">20d6667d-ac120003-0bcaa093-ee0ca8c9=elibrary_st_aba3f2311430/EL-222</field>
+    <field id="homePageContent" text-type="text/html"><![CDATA[<h1 id="polarion_wiki macro name=module-workitem;params=id=EL-220"></h1><p id="polarion_template_0"></p><div data-sequence="Figure" id="polarion_wiki macro name=tof;params=uid=1"></div><p id="polarion_1"></p><p id="polarion_2" data-keep-next="true">
+  <img src="attachment:yellow_rectangle.png" style="max-width: 650px;" data-lastmodified="2025-12-15T08:00:09.115+01:00"/>
+</p><p id="polarion_3" style="text-align: left;" class="polarion-rte-caption-paragraph">
+  Figure <span data-sequence="Figure" class="polarion-rte-caption">#</span> 
+</p><p id="polarion_4"></p><div id="polarion_wiki macro name=module-workitem;params=id=EL-219"></div><p id="polarion_5"></p><div id="polarion_wiki macro name=module-workitem;params=id=EL-221"></div><div id="polarion_wiki macro name=module-workitem;params=id=EL-222|external=true|anchor=20d6667d-ac120003-0bcaa093-ee0ca8c9"></div><p id="polarion_6"></p>]]></field>
+    <field id="renderingLayouts">
+        <list>
+            <struct>
+                <item id="label">Requirement</item>
+                <item id="layouter">paragraph</item>
+                <item id="properties">
+                    <list>
+                        <struct>
+                            <item id="key">fieldsAtStart</item>
+                            <item id="value">id</item>
+                        </struct>
+                        <struct>
+                            <item id="key">fieldsAtEnd</item>
+                            <item id="value">status</item>
+                        </struct>
+                    </list>
+                </item>
+                <item id="type">requirement</item>
+            </struct>
+        </list>
+    </field>
+    <field id="status">draft</field>
+    <field id="structureLinkRole">parent</field>
+    <field id="title">live_doc_with_ToF</field>
+    <field id="type">generic</field>
+    <field id="usesOutlineNumbering">true</field>
+</module>

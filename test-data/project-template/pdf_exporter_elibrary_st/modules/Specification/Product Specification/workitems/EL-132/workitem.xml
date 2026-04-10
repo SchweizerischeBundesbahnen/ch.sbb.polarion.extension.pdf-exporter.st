@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<work-item>
+    <field id="assignee">
+        <list>
+            <item>sDeveloper</item>
+            <item>pGUI</item>
+        </list>
+    </field>
+    <field id="author">rProject</field>
+    <field id="categories">
+        <list>
+            <item>searching</item>
+        </list>
+    </field>
+    <field id="created">2010-11-25 16:16:29.057 +0100</field>
+    <field id="description" text-type="text/html">Advanced Search &lt;span style="font-size: 11pt;font-family: Calibri;line-height: 1.5;"&gt;should provide an easy way to construct complex search queries based on multiple fields with different logic (e.g. AND, OR, NOT).&lt;/span&gt;</field>
+    <field id="initialEstimate">5d 2h</field>
+    <field id="previousStatus">implemented</field>
+    <field id="priority">52.0</field>
+    <field id="remainingEstimate">2d 3h</field>
+    <field id="severity">nice_to_have</field>
+    <field id="status">changesneeded</field>
+    <field id="storyPoints" type="integer">7</field>
+    <field id="timeSpent">4d 5h</field>
+    <field id="title">Advanced Search should provide an easy way to construct complex search queries</field>
+    <field id="type">userstory</field>
+</work-item>

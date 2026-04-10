@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<fields>
+    <field id="platform" name="Platform" type="enum:platform"/>
+    <field id="environmentDescription" name="Environment Description" type="text/html"/>
+    <field id="description" name="Description" type="text/html"/>
+    <field description="Select relevant Iterations/Releases" id="planScope" multi="true" name="Plan Scope" type="enum:@plan"/>
+</fields>

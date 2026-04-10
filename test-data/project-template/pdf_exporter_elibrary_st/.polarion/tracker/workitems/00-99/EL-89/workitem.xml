@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<work-item>
+    <field id="assignee">sDeveloper</field>
+    <field id="author">rProject</field>
+    <field id="categories">
+        <list>
+            <item>searching</item>
+            <item>querying</item>
+            <item>ui</item>
+        </list>
+    </field>
+    <field id="created">2011-06-01 17:57:49.078 +0200</field>
+    <field id="description" text-type="text/html">&lt;div&gt;&lt;br&gt;&lt;/div&gt;</field>
+    <field id="initialEstimate">3d</field>
+    <field id="linkedWorkItems">
+        <list>
+            <struct>
+                <item id="role">implements</item>
+                <item id="workItem">EL-109</item>
+            </struct>
+        </list>
+    </field>
+    <field id="priority">50.0</field>
+    <field id="remainingEstimate">3d</field>
+    <field id="severity">normal</field>
+    <field id="status">open</field>
+    <field id="title">Extend the query panel to allow queries based on advanced fields</field>
+    <field id="type">task</field>
+</work-item>

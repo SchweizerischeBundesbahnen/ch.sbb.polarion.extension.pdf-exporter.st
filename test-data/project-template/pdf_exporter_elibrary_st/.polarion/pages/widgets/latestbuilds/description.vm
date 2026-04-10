@@ -1,0 +1,23 @@
+###############################################################################
+##
+##  description.vm - this velocity script is executed to render the widget extended tooltip
+##
+
+<b>Parameters:</b>
+<ul>
+	<li>
+		<b>Project</b> - Defines the scope. Set to the <i>current project</i> by default.
+	</li>
+	<li>
+		<b>Render # Last Builds</b> - Controls how many last Builds are rendered. Set to <i>one</i> by default.
+	</li>
+	<li>
+		<b>Sort Builds by</b> - Decide the sorting order for the latest Builds. Set to <i>finishTime</i> by default.
+	</li>
+	<li>
+		<b>Align</b> - Set the Latest Buid table's alignment. Set to <i>center</i> by default.
+	</li>
+	<li>
+		<b>Build Status Colors</b> - Configure the colors used for the Build status and the download button.
+	</li>
+</ul>

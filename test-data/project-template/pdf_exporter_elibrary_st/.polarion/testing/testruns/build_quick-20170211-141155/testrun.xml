@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<test-run>
+    <field id="author">mTest</field>
+    <field id="created">2017-02-11 14:11:55.743 +0200</field>
+    <field id="finishedOn">2017-02-11 14:11:56.191 +0200</field>
+    <field id="groupId">20170211-1411</field>
+    <field id="records">
+        <list>
+            <struct>
+                <item id="duration">0.0</item>
+                <item id="executed">2017-02-11 14:11:55.937 +0200</item>
+                <item id="executedBy">mTest</item>
+                <item id="result">passed</item>
+                <item id="testCase">EL-22</item>
+            </struct>
+            <struct>
+                <item id="duration">0.006</item>
+                <item id="executed">2017-02-11 14:11:56.059 +0200</item>
+                <item id="executedBy">mTest</item>
+                <item id="result">passed</item>
+                <item id="testCase">EL-24</item>
+            </struct>
+            <struct>
+                <item id="duration">0.0</item>
+                <item id="executed">2017-02-11 14:11:56.178 +0200</item>
+                <item id="executedBy">mTest</item>
+                <item id="result">passed</item>
+                <item id="testCase">EL-23</item>
+            </struct>
+        </list>
+    </field>
+    <field id="selectTestCasesBy">automatedProcess</field>
+    <field id="status">passed</field>
+    <field id="template">xUnit Build Test</field>
+    <field id="type">automated</field>
+    <field id="useReportFromTemplate">true</field>
+</test-run>

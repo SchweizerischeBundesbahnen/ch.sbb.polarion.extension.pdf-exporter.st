@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<workflow initial-action="reopen" initial-status="open" prototype="TestRun">
+    <transitions>
+        <transition action="startProgress" from="open" to="inProgress"/>
+        <transition action="startProgress" from="reopened" to="inProgress"/>
+        <transition action="reopen" from="passed" to="reopened"/>
+        <transition action="reopen" from="failed" to="reopened"/>
+        <transition action="reopen" from="verifiedPassed" to="reopened"/>
+        <transition action="reopen" from="verifiedFailed" to="reopened"/>
+        <transition action="reopen" from="rejected" to="reopened"/>
+        <transition action="markPassed" from="inProgress" to="passed"/>
+        <transition action="markPassed" from="reopened" to="passed"/>
+        <transition action="markFailed" from="inProgress" to="failed"/>
+        <transition action="markFailed" from="reopened" to="failed"/>
+        <transition action="verifyPassed" from="passed" to="verifiedPassed"/>
+        <transition action="verifyFailed" from="failed" to="verifiedFailed"/>
+        <transition action="reject" from="open" to="rejected"/>
+        <transition action="reject" from="inProgress" to="rejected"/>
+        <transition action="reject" from="reopened" to="rejected"/>
+        <transition action="reject" from="passed" to="rejected"/>
+        <transition action="reject" from="failed" to="rejected"/>
+    </transitions>
+    <actions>
+        <action id="startProgress" name="Start Progress">
+            <required>
+                <field name="platform"/>
+                <field name="environmentDescription"/>
+            </required>
+            <cleared>
+                <field name="finishedOn"/>
+            </cleared>
+        </action>
+        <action id="reopen" name="Reopen">
+            <cleared>
+                <field name="finishedOn"/>
+            </cleared>
+            <functions>
+                <function name="MarkWorkflowSignaturesAsObsolete"/>
+            </functions>
+        </action>
+        <action id="markPassed" name="Mark Passed">
+            <signatures>
+                <auto-signature/>
+            </signatures>
+            <required>
+                <field name="platform"/>
+                <field name="environmentDescription"/>
+            </required>
+            <functions>
+                <function name="SetDate">
+                    <param name="field.name" value="finishedOn"/>
+                </function>
+            </functions>
+        </action>
+        <action id="markFailed" name="Mark Failed">
+            <signatures>
+                <auto-signature/>
+            </signatures>
+            <required>
+                <field name="platform"/>
+                <field name="environmentDescription"/>
+            </required>
+            <functions>
+                <function name="SetDate">
+                    <param name="field.name" value="finishedOn"/>
+                </function>
+            </functions>
+        </action>
+        <action id="verifyPassed" name="Verify Passed">
+            <signatures>
+                <auto-signature/>
+            </signatures>
+            <required>
+                <field name="platform"/>
+                <field name="environmentDescription"/>
+            </required>
+        </action>
+        <action id="verifyFailed" name="Verify Failed">
+            <signatures>
+                <auto-signature/>
+            </signatures>
+            <required>
+                <field name="platform"/>
+                <field name="environmentDescription"/>
+            </required>
+        </action>
+        <action id="reject" name="Reject">
+            <functions>
+                <function name="SetDate">
+                    <param name="field.name" value="finishedOn"/>
+                </function>
+            </functions>
+        </action>
+    </actions>
+</workflow>

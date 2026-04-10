@@ -1,0 +1,37 @@
+###############################################################################
+##
+##  description.vm - this velocity script is executed to render the widget extended tooltip
+##
+
+The Widget renders a <b><i>Coverage/Traceability Table</b></i> for the defined set of Work Items.
+Each line indicates that the Work Item is either <i>Not Covered</i>, <i>Covered</i> or <i>Covered with an unresolved Item</i>
+linked to the Work Item that covers it.
+
+<ul>
+	<li>
+		Main Work Items are defined using <b>Scope</b>, Work Item <b>Type</b> and <b>Query</b> parameters, the Work Items can be ordered using <b>Sort By</b> parameter.
+	</li>
+	<li>
+		Linked Work Items that are covering the defined Work Items are configured using <b>Linked Item Type(s)</b> and <b>Linked Item -> Main Item Link Role(s)</b> parameters.
+	</li>
+	<li>
+		The list of rendered linked Work Items can be filtered so it <i><b>displays</b> All found Work Items</i>,
+		<i>Problematic Work Items only</i> (Not Covered or Covered with at least one unresolved 2nd level Item)
+		or <i><b>hides</b> the Covered Work Items</i>
+		or the <i>Not Covered Work Items</i>,
+		all using the <b>Filter Linked Items By Coverage</b> parameter.
+	</li>
+	<li>
+		Items further linked to the Linked Items are configured using <b>2nd Level Linked Item Type(s)</b> and
+		<b>2nd Level Linked Item -> Linked Item Link Role(s)</b> parameters.
+	</li>
+	<li>
+		Fields displayed on Sidebars of all three levels of Work Items can be separately configured using <b>Main</b>, <b>Linked</b> and <b>2nd Level Linked</b> Work Item Properties Sidebar Fields parameters.
+	</li>
+	<li>
+		The list can be configured so it collapses the set of linked Work Items if their count exceeds the number set in <b>Collapse from Number of Linked Items</b> parameter.
+	</li>
+	<li>
+		Titles of all columns can be specified using <b>Main Item</b>, <b>Linked Item</b> and <b>2nd Level Linked Item</b> Column Title parameters.
+	</li>
+</ul>

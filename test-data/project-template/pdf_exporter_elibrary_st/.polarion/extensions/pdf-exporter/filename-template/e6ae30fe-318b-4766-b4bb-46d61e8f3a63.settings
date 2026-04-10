@@ -1,0 +1,21 @@
+-----BEGIN NAME-----
+Default
+-----END NAME-----
+-----BEGIN BUNDLE TIMESTAMP-----
+2026-01-29 08:31
+-----END BUNDLE TIMESTAMP-----
+-----BEGIN USE CUSTOM VALUES-----
+false
+-----END USE CUSTOM VALUES-----
+-----BEGIN DOCUMENT NAME TEMPLATE-----
+$projectName $document.moduleNameWithSpace.replace(" / ", " ")
+-----END DOCUMENT NAME TEMPLATE-----
+-----BEGIN REPORT NAME TEMPLATE-----
+$projectName $page.pageNameWithSpace.replace(" / ", " ") {{ REVISION }}
+-----END REPORT NAME TEMPLATE-----
+-----BEGIN TEST RUN NAME TEMPLATE-----
+$projectName $testrun.label
+-----END TEST RUN NAME TEMPLATE-----
+-----BEGIN WIKI NAME TEMPLATE-----
+$projectName $page.pageNameWithSpace.replace(" / ", " ") {{ REVISION }}
+-----END WIKI NAME TEMPLATE-----

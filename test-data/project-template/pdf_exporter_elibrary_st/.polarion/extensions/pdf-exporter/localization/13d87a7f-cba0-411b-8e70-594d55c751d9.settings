@@ -1,0 +1,282 @@
+-----BEGIN NAME-----
+Default
+-----END NAME-----
+-----BEGIN BUNDLE TIMESTAMP-----
+2026-01-29 08:31
+-----END BUNDLE TIMESTAMP-----
+-----BEGIN DE LOCALIZATION-----
+<?xml version="1.0"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en" trgLang="de">
+ <file id="1" original="de.xlf">
+  <unit id="0">
+   <segment>
+    <source>Accepted</source>
+    <target>Akzeptiert</target>
+   </segment>
+  </unit>
+  <unit id="1">
+   <segment>
+    <source>Done</source>
+    <target>Erledigt</target>
+   </segment>
+  </unit>
+  <unit id="2">
+   <segment>
+    <source>Draft</source>
+    <target>Entwurf</target>
+   </segment>
+  </unit>
+  <unit id="3">
+   <segment>
+    <source>Implemented</source>
+    <target>Implementiert</target>
+   </segment>
+  </unit>
+  <unit id="4">
+   <segment>
+    <source>In Progress</source>
+    <target>In Arbeit</target>
+   </segment>
+  </unit>
+  <unit id="5">
+   <segment>
+    <source>Must Have</source>
+    <target>Muss haben</target>
+   </segment>
+  </unit>
+  <unit id="6">
+   <segment>
+    <source>Nice to Have</source>
+    <target>Schön zu haben</target>
+   </segment>
+  </unit>
+  <unit id="7">
+   <segment>
+    <source>Open</source>
+    <target>Offen</target>
+   </segment>
+  </unit>
+  <unit id="8">
+   <segment>
+    <source>Rejected</source>
+    <target>Abgelehnt</target>
+   </segment>
+  </unit>
+  <unit id="9">
+   <segment>
+    <source>Reopened</source>
+    <target>Wiedereröffnet</target>
+   </segment>
+  </unit>
+  <unit id="10">
+   <segment>
+    <source>Reviewed</source>
+    <target>Geprüft</target>
+   </segment>
+  </unit>
+  <unit id="11">
+   <segment>
+    <source>Should Have</source>
+    <target>Hätte</target>
+   </segment>
+  </unit>
+  <unit id="12">
+   <segment>
+    <source>Verified</source>
+    <target>Verifiziert</target>
+   </segment>
+  </unit>
+  <unit id="13">
+   <segment>
+    <source>Will not Have</source>
+    <target>Will nicht haben</target>
+   </segment>
+  </unit>
+ </file>
+</xliff>
+
+-----END DE LOCALIZATION-----
+-----BEGIN FR LOCALIZATION-----
+<?xml version="1.0"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en" trgLang="fr">
+ <file id="1" original="fr.xlf">
+  <unit id="0">
+   <segment>
+    <source>Accepted</source>
+    <target>Accepté</target>
+   </segment>
+  </unit>
+  <unit id="1">
+   <segment>
+    <source>Done</source>
+    <target>Terminé</target>
+   </segment>
+  </unit>
+  <unit id="2">
+   <segment>
+    <source>Draft</source>
+    <target>Projet</target>
+   </segment>
+  </unit>
+  <unit id="3">
+   <segment>
+    <source>Implemented</source>
+    <target>Mise en œuvre</target>
+   </segment>
+  </unit>
+  <unit id="4">
+   <segment>
+    <source>In Progress</source>
+    <target>En cours</target>
+   </segment>
+  </unit>
+  <unit id="5">
+   <segment>
+    <source>Must Have</source>
+    <target>Indispensable</target>
+   </segment>
+  </unit>
+  <unit id="6">
+   <segment>
+    <source>Nice to Have</source>
+    <target>Un plaisir à avoir</target>
+   </segment>
+  </unit>
+  <unit id="7">
+   <segment>
+    <source>Open</source>
+    <target>Ouvrir</target>
+   </segment>
+  </unit>
+  <unit id="8">
+   <segment>
+    <source>Rejected</source>
+    <target>Refusée</target>
+   </segment>
+  </unit>
+  <unit id="9">
+   <segment>
+    <source>Reopened</source>
+    <target>Réouverture</target>
+   </segment>
+  </unit>
+  <unit id="10">
+   <segment>
+    <source>Reviewed</source>
+    <target>Examiné</target>
+   </segment>
+  </unit>
+  <unit id="11">
+   <segment>
+    <source>Should Have</source>
+    <target>Aurait dû</target>
+   </segment>
+  </unit>
+  <unit id="12">
+   <segment>
+    <source>Verified</source>
+    <target>Vérifié</target>
+   </segment>
+  </unit>
+  <unit id="13">
+   <segment>
+    <source>Will not Have</source>
+    <target>N'aura pas</target>
+   </segment>
+  </unit>
+ </file>
+</xliff>
+
+-----END FR LOCALIZATION-----
+-----BEGIN IT LOCALIZATION-----
+<?xml version="1.0"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en" trgLang="it">
+ <file id="1" original="it.xlf">
+  <unit id="0">
+   <segment>
+    <source>Accepted</source>
+    <target>Accettato</target>
+   </segment>
+  </unit>
+  <unit id="1">
+   <segment>
+    <source>Done</source>
+    <target>Fatto</target>
+   </segment>
+  </unit>
+  <unit id="2">
+   <segment>
+    <source>Draft</source>
+    <target>Bozza</target>
+   </segment>
+  </unit>
+  <unit id="3">
+   <segment>
+    <source>Implemented</source>
+    <target>Implementato</target>
+   </segment>
+  </unit>
+  <unit id="4">
+   <segment>
+    <source>In Progress</source>
+    <target>In elaborazione</target>
+   </segment>
+  </unit>
+  <unit id="5">
+   <segment>
+    <source>Must Have</source>
+    <target>Deve avere</target>
+   </segment>
+  </unit>
+  <unit id="6">
+   <segment>
+    <source>Nice to Have</source>
+    <target>Bello da avere</target>
+   </segment>
+  </unit>
+  <unit id="7">
+   <segment>
+    <source>Open</source>
+    <target>Apri</target>
+   </segment>
+  </unit>
+  <unit id="8">
+   <segment>
+    <source>Rejected</source>
+    <target>Rifiutata</target>
+   </segment>
+  </unit>
+  <unit id="9">
+   <segment>
+    <source>Reopened</source>
+    <target>Riaperto</target>
+   </segment>
+  </unit>
+  <unit id="10">
+   <segment>
+    <source>Reviewed</source>
+    <target>Recensito</target>
+   </segment>
+  </unit>
+  <unit id="11">
+   <segment>
+    <source>Should Have</source>
+    <target>Avrebbe dovuto</target>
+   </segment>
+  </unit>
+  <unit id="12">
+   <segment>
+    <source>Verified</source>
+    <target>Verificato</target>
+   </segment>
+  </unit>
+  <unit id="13">
+   <segment>
+    <source>Will not Have</source>
+    <target>Non avrà</target>
+   </segment>
+  </unit>
+ </file>
+</xliff>
+
+-----END IT LOCALIZATION-----

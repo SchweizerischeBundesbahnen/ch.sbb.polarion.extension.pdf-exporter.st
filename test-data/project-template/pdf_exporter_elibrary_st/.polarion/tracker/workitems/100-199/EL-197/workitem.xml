@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<work-item>
+    <field id="author">rProject</field>
+    <field id="created">2017-05-03 15:13:20.449 +0200</field>
+    <field id="priority">50.0</field>
+    <field id="releasePlan" type="enum:@plan[template.id:release]">Version_1_1</field>
+    <field id="severity">should_have</field>
+    <field id="status">draft</field>
+    <field id="title">Release 1.1</field>
+    <field id="type">release</field>
+</work-item>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<test-run>
+    <field id="author">sDeveloper</field>
+    <field id="created">2016-03-02 23:57:29.476 +0100</field>
+    <field id="environmentDescription" text-type="text/html" type="text/html">&lt;html&gt;&lt;head&gt;&lt;META http-equiv="Content-Type" content="text/html; charset=UTF-8"&gt;&lt;meta content="HTML Tidy for Java (vers. 26 Z&amp;aacute;ř 2004), see www.w3.org" name="generator"&gt;&lt;title&gt;&lt;/title&gt;&lt;/head&gt;&lt;body&gt;All Defaults&lt;/body&gt;&lt;/html&gt;</field>
+    <field id="finishedOn">2016-03-02 23:57:29.531 +0100</field>
+    <field id="groupId">20170211-2357</field>
+    <field id="planScope" multi="true" type="enum:@plan">
+        <list>
+            <item>Version_1_0</item>
+            <item>Iteration_1</item>
+            <item>Iteration_2</item>
+            <item>Iteration_3</item>
+        </list>
+    </field>
+    <field id="platform" type="enum:platform">linux</field>
+    <field id="records">
+        <list>
+            <struct>
+                <item id="duration">0.003</item>
+                <item id="executed">2016-03-02 23:57:28.900 +0100</item>
+                <item id="executedBy">sDeveloper</item>
+                <item id="result">passed</item>
+                <item id="testCase">EL-24</item>
+            </struct>
+            <struct>
+                <item id="duration">0.0</item>
+                <item id="executed">2016-03-02 23:57:29.005 +0100</item>
+                <item id="executedBy">sDeveloper</item>
+                <item id="result">passed</item>
+                <item id="testCase">EL-23</item>
+            </struct>
+            <struct>
+                <item id="duration">0.0</item>
+                <item id="executed">2016-03-02 23:57:29.109 +0100</item>
+                <item id="executedBy">sDeveloper</item>
+                <item id="result">passed</item>
+                <item id="testCase">EL-22</item>
+            </struct>
+            <struct>
+                <item id="comment" text-type="text/html">junit.framework.AssertionFailedError&lt;br/&gt;&lt;br/&gt;Cannot login as Karl Xavier&lt;br/&gt;&lt;br/&gt;junit.framework.AssertionFailedError: Cannot login as Karl Xavier&lt;BR/&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;at junit.framework.Assert.fail(Assert.java:47)&lt;BR/&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;at junit.framework.Assert.assertTrue(Assert.java:20)&lt;BR/&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;at com.polarion.demo.LoginTest.testLogin(LoginTest.java:12)&lt;BR/&gt;</item>
+                <item id="defect">EL-16</item>
+                <item id="duration">0.002</item>
+                <item id="executed">2016-03-02 23:57:29.218 +0100</item>
+                <item id="executedBy">sDeveloper</item>
+                <item id="result">failed</item>
+                <item id="testCase">EL-25</item>
+            </struct>
+            <struct>
+                <item id="comment" text-type="text/html">java.lang.RuntimeException&lt;br/&gt;&lt;br/&gt;Cannot logout, no logged in user&lt;br/&gt;&lt;br/&gt;java.lang.RuntimeException: Cannot logout, no logged in user&lt;BR/&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;at com.polarion.demo.LoginTest.testLogout(LoginTest.java:16)&lt;BR/&gt;</item>
+                <item id="duration">0.0</item>
+                <item id="executed">2016-03-02 23:57:29.476 +0100</item>
+                <item id="executedBy">sDeveloper</item>
+                <item id="result">blocked</item>
+                <item id="testCase">EL-27</item>
+            </struct>
+        </list>
+    </field>
+    <field id="selectTestCasesBy">automatedProcess</field>
+    <field id="status">verifiedFailed</field>
+    <field id="template">xUnit Build Test</field>
+    <field id="title">xUnit Build Test 1.0 I3</field>
+    <field id="type">automated</field>
+    <field id="useReportFromTemplate">true</field>
+</test-run>

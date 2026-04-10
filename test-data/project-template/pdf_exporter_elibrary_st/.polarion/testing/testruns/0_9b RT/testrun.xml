@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<test-run>
+    <field id="author">mTest</field>
+    <field id="created">2017-05-18 11:03:20.907 +0200</field>
+    <field id="description" text-type="text/html" type="text/html">&lt;html&gt;&lt;head&gt;&lt;META http-equiv="Content-Type" content="text/html; charset=UTF-8"&gt;&lt;meta content="HTML Tidy for Java (vers. 26 Z&amp;aacute;ř 2004), see www.w3.org" name="generator"&gt;&lt;title&gt;&lt;/title&gt;&lt;/head&gt;&lt;body&gt;This is a release acceptance test that includes all the release test cases from the current project.&lt;/body&gt;&lt;/html&gt;</field>
+    <field id="environmentDescription" text-type="text/html" type="text/html">&lt;html&gt;&lt;head&gt;&lt;META http-equiv="Content-Type" content="text/html; charset=UTF-8"&gt;&lt;meta content="HTML Tidy for Java (vers. 26 Z&amp;aacute;ř 2004), see www.w3.org" name="generator"&gt;&lt;title&gt;&lt;/title&gt;&lt;/head&gt;&lt;body&gt;Add defaults&lt;/body&gt;&lt;/html&gt;</field>
+    <field id="finishedOn">2017-05-18 11:04:46.904 +0200</field>
+    <field id="groupId">0.9b</field>
+    <field id="planScope" multi="true" type="enum:@plan">
+        <list>
+            <item>Version_0_9b</item>
+        </list>
+    </field>
+    <field id="platform" type="enum:platform">linux</field>
+    <field id="query">type:testcase AND testType:release AND status:active</field>
+    <field id="records">
+        <list>
+            <struct>
+                <item id="comment" text-type="text/plain">Passed</item>
+                <item id="duration">9.43</item>
+                <item id="executed">2017-05-18 11:04:09.850 +0200</item>
+                <item id="executedBy">mTest</item>
+                <item id="result">passed</item>
+                <item id="signed">true</item>
+                <item id="testCase">EL-4</item>
+                <item id="testStepResults">
+                    <list>
+                        <struct>
+                            <item id="comment" text-type="text/plain">Passed</item>
+                            <item id="result">passed</item>
+                        </struct>
+                        <struct>
+                            <item id="comment" text-type="text/plain">Passed</item>
+                            <item id="result">passed</item>
+                        </struct>
+                        <struct>
+                            <item id="comment" text-type="text/plain">Passed</item>
+                            <item id="result">passed</item>
+                        </struct>
+                    </list>
+                </item>
+            </struct>
+        </list>
+    </field>
+    <field id="selectTestCasesBy">dynamicQueryResult</field>
+    <field id="status">verifiedPassed</field>
+    <field id="template">Release Test</field>
+    <field id="title">Release Test 0.9b</field>
+    <field id="type">manual</field>
+    <field id="useReportFromTemplate">true</field>
+</test-run>

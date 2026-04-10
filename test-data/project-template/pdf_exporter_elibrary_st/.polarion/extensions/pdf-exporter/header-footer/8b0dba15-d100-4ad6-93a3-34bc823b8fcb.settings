@@ -1,0 +1,31 @@
+-----BEGIN NAME-----
+Default
+-----END NAME-----
+-----BEGIN BUNDLE TIMESTAMP-----
+2026-01-29 08:31
+-----END BUNDLE TIMESTAMP-----
+-----BEGIN USE CUSTOM VALUES-----
+false
+-----END USE CUSTOM VALUES-----
+-----BEGIN HEADER LEFT-----
+{{ PROJECT_NAME }}
+-----END HEADER LEFT-----
+-----BEGIN HEADER CENTER-----
+
+-----END HEADER CENTER-----
+-----BEGIN HEADER RIGHT-----
+<a href='https://www.sbb.ch/'>
+    <img src='/polarion/icons/group/sbb-headerlogo.png'
+         alt='Schweizerische Bundesbahnen'
+         style='height: 20px'>
+</a>
+-----END HEADER RIGHT-----
+-----BEGIN FOOTER LEFT-----
+{{ DOCUMENT_TITLE }} (rev. {{ REVISION }})
+-----END FOOTER LEFT-----
+-----BEGIN FOOTER CENTER-----
+{{ TIMESTAMP }}
+-----END FOOTER CENTER-----
+-----BEGIN FOOTER RIGHT-----
+{{ PAGE_NUMBER }}/{{ PAGES_TOTAL_COUNT }}
+-----END FOOTER RIGHT-----

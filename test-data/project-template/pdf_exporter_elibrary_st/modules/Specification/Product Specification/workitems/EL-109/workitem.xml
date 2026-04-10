@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<work-item>
+    <field id="assignee">sDeveloper</field>
+    <field id="author">rProject</field>
+    <field id="categories">
+        <list>
+            <item>searching</item>
+            <item>objects</item>
+        </list>
+    </field>
+    <field id="created">2010-11-20 12:33:18.690 +0100</field>
+    <field id="description" text-type="text/html">Users want to search for books using additional properties, for example ISBN or date, but this advanced search should not be too complicated.</field>
+    <field id="initialEstimate">3d 5h</field>
+    <field id="previousStatus">accepted</field>
+    <field id="priority">43.0</field>
+    <field id="remainingEstimate">2d</field>
+    <field id="resolvedOn">2010-12-02 10:36:52.712 +0100</field>
+    <field id="severity">nice_to_have</field>
+    <field id="status">inprogress</field>
+    <field id="storyPoints" type="integer">5</field>
+    <field id="timeSpent">2d 2h</field>
+    <field id="title">Search for a book by advanced properties</field>
+    <field id="type">userstory</field>
+</work-item>
