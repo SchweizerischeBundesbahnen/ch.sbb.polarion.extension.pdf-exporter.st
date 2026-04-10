@@ -11,17 +11,21 @@ requires-python = ">=3.13,<3.14"
 
 dependencies = [
     "python-sbb-polarion",
-    "unittest-xml-reporting==3.2.0",
-    "pre-commit==4.5.0",
+    "unittest-xml-reporting>=3,<4",
     "ruff==0.15.8",
     "mypy==1.19.1",
     "types-requests==2.32.4.20250913",
-    "tox==4.32.0",
+    "tox>=4,<5",
     "PyPDF2==3.0.1",
     "PyMuPDF>=1.26.6",
     "opencv-python-headless>=4.12.0",
-    "parameterized==0.9.0",
+    "parameterized>=0.9,<1",
     "testcontainers>=4.13.3",
+]
+
+[dependency-groups]
+dev = [
+    "pre-commit>=4,<5",
 ]
 
 [build-system]

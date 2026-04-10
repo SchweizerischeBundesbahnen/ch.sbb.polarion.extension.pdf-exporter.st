@@ -23,7 +23,7 @@ pipeline {
             steps {
                 sh '''
                     export PATH="$HOME/.local/bin:$PATH"
-                    uv sync --all-groups --frozen
+                    uv sync --frozen
                 '''
             }
         }
