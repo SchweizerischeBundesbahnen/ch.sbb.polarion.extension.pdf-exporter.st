@@ -11,6 +11,13 @@
 
 # System Tests for Polarion PDF Exporter extension
 
+## CI
+
+This project uses dual CI:
+
+- **GitHub Actions** (`ci.yml`) — linting, type checking, and SonarCloud analysis
+- **Jenkins** (`Jenkinsfile`) — system tests against a Polarion instance behind a firewall. Jenkins discovers new branches via hourly org folder scan and polls for new commits every ~5 minutes.
+
 ## 1. Run tests against prepared Polarion server (local or remote)
 In this mode, the tests will be executed against running Polarion server specified by app_url parameter and using app_token credentials.
 
