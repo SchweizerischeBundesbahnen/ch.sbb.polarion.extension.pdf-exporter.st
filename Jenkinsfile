@@ -9,7 +9,8 @@ pipeline {
     }
     options {
         ansiColor('xterm')
-        disableConcurrentBuilds()
+        disableConcurrentBuilds()  // Prevents parallel builds within the same branch
+        lock('polarion-system-tests')  // Serialize across repos/branches — concurrent runs against the shared Polarion instance cause flaky visual diffs
         timestamps()
     }
     stages {
