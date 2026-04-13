@@ -5,7 +5,7 @@ from http import HTTPStatus
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, ClassVar
 
-from parameterized import parameterized
+import pytest
 from python_sbb_polarion.extensions.pdf_exporter import DocumentType, PdfVariant
 
 from tests.pdf_exporter_test_case import PdfExporterTestCase
@@ -152,7 +152,7 @@ class PdfExporterVariantsTest(PdfExporterTestCase):
             # Clean up temporary file
             tmp_pdf_path.unlink(missing_ok=True)
 
-    @parameterized.expand([(variant, None) for variant in PDF_VARIANTS] + [(variant, "Default") for variant in PDF_VARIANTS])
+    @pytest.mark.parametrize(("pdf_variant", "cover_page"), [(variant, None) for variant in PDF_VARIANTS] + [(variant, "Default") for variant in PDF_VARIANTS])
     def test_pdf_variant(self, pdf_variant: PdfVariant, cover_page: str | None) -> None:
         """Test PDF variant compliance using VeraPDF validation"""
         # Fail if Docker is not available

@@ -4,7 +4,7 @@ from http import HTTPStatus
 from typing import TYPE_CHECKING, ClassVar
 
 import fitz
-from parameterized import parameterized
+import pytest
 from python_sbb_polarion.extensions.pdf_exporter import Orientation
 
 from tests.pdf_exporter_test_case import PdfExporterTestCase
@@ -55,7 +55,7 @@ class PdfExporterPageBreaksTest(PdfExporterTestCase):
         ("PageBreaks/Res", [True, True], {"orientation": Orientation.LANDSCAPE}),
     ]
 
-    @parameterized.expand(PAGE_BREAKS_TEST_DATA)
+    @pytest.mark.parametrize(("file_path", "expected_orientations", "custom_export_params"), PAGE_BREAKS_TEST_DATA)
     def test_convert_live_doc(self, file_path: str, expected_orientations: list[bool], custom_export_params: JsonDict | None) -> None:
         response: Response = self._convert(
             project_id=self.project_id,
