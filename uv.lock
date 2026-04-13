@@ -537,7 +537,7 @@ dependencies = [
     { name = "opencv-python-headless" },
     { name = "parameterized" },
     { name = "pymupdf" },
-    { name = "pypdf2" },
+    { name = "pypdf" },
     { name = "python-sbb-polarion" },
     { name = "ruff" },
     { name = "testcontainers" },
@@ -557,7 +557,7 @@ requires-dist = [
     { name = "opencv-python-headless", specifier = ">=4.12.0" },
     { name = "parameterized", specifier = ">=0.9,<1" },
     { name = "pymupdf", specifier = ">=1.26.6" },
-    { name = "pypdf2", specifier = "==3.0.1" },
+    { name = "pypdf", specifier = "==5.5.0" },
     { name = "python-sbb-polarion", git = "https://github.com/SchweizerischeBundesbahnen/python-sbb-polarion?tag=v2.0.3" },
     { name = "ruff", specifier = "==0.15.10" },
     { name = "testcontainers", specifier = ">=4.13.3" },
@@ -674,12 +674,12 @@ wheels = [
 ]
 
 [[package]]
-name = "pypdf2"
-version = "3.0.1"
+name = "pypdf"
+version = "5.5.0"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/9f/bb/18dc3062d37db6c491392007dfd1a7f524bb95886eb956569ac38a23a784/PyPDF2-3.0.1.tar.gz", hash = "sha256:a74408f69ba6271f71b9352ef4ed03dc53a31aa404d29b5d31f53bfecfee1440", size = 227419, upload-time = "2022-12-31T10:36:13.13Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/e0/c8/543f8ae1cd9e182e9f979d9ab1df18e3445350471abadbdabc0166ae5741/pypdf-5.5.0.tar.gz", hash = "sha256:8ce6a18389f7394fd09a1d4b7a34b097b11c19088a23cfd09e5008f85893e254", size = 5021690, upload-time = "2025-05-11T14:00:42.043Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/8e/5e/c86a5643653825d3c913719e788e41386bee415c2b87b4f955432f2de6b2/pypdf2-3.0.1-py3-none-any.whl", hash = "sha256:d16e4205cfee272fbdc0568b68d82be796540b1537508cef59388f839c191928", size = 232572, upload-time = "2022-12-31T10:36:10.327Z" },
+    { url = "https://files.pythonhosted.org/packages/a1/4e/931b90b51e3ebc69699be926b3d5bfdabae2d9c84337fd0c9fb98adbf70c/pypdf-5.5.0-py3-none-any.whl", hash = "sha256:2f61f2d32dde00471cd70b8977f98960c64e84dd5ba0d070e953fcb4da0b2a73", size = 303371, upload-time = "2025-05-11T14:00:40.064Z" },
 ]
 
 [[package]]

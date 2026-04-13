@@ -4,7 +4,7 @@ import io
 from http import HTTPStatus
 from typing import TYPE_CHECKING, Any
 
-import PyPDF2
+import pypdf
 
 from tests.pdf_exporter_test_case import PdfExporterTestCase
 
@@ -35,7 +35,7 @@ class PdfExporterWILinksConvertTest(PdfExporterTestCase):
 
         # Verify PDF content
         stream: io.BytesIO = io.BytesIO(response.content)
-        pdf_reader: PyPDF2.PdfReader = PyPDF2.PdfReader(stream)
+        pdf_reader: pypdf.PdfReader = pypdf.PdfReader(stream)
 
         # Find target pages
         el_251_page: int | None = self._find_page_with_text(pdf_reader, "EL-251")
@@ -50,7 +50,7 @@ class PdfExporterWILinksConvertTest(PdfExporterTestCase):
 
         # Check all internal links in the PDF
         for page_num in range(len(pdf_reader.pages)):
-            page: PyPDF2.PageObject = pdf_reader.pages[page_num]
+            page: pypdf.PageObject = pdf_reader.pages[page_num]
             page_text: str = page.extract_text()
 
             if "/Annots" not in page:
@@ -83,7 +83,7 @@ class PdfExporterWILinksConvertTest(PdfExporterTestCase):
         self.assertTrue(el_256_to_251_verified, "EL-256 link to EL-251 was not found or verified")
         self.assertTrue(el_255_to_253_verified, "EL-255 link to EL-253 was not found or verified")
 
-    def _find_page_with_text(self, pdf_reader: PyPDF2.PdfReader, search_text: str) -> int | None:
+    def _find_page_with_text(self, pdf_reader: pypdf.PdfReader, search_text: str) -> int | None:
         """Find the first page containing the specified text."""
         for page_num in range(len(pdf_reader.pages)):
             page_text: str = pdf_reader.pages[page_num].extract_text()
@@ -91,7 +91,7 @@ class PdfExporterWILinksConvertTest(PdfExporterTestCase):
                 return page_num
         return None
 
-    def _get_link_target_page(self, annot: Any, pdf_reader: PyPDF2.PdfReader) -> int | None:
+    def _get_link_target_page(self, annot: Any, pdf_reader: pypdf.PdfReader) -> int | None:
         """Extract the target page number from a link annotation."""
         # Check for /Dest
         if "/Dest" in annot:
@@ -122,7 +122,7 @@ class PdfExporterWILinksConvertTest(PdfExporterTestCase):
 
         return None
 
-    def _resolve_named_destination(self, dest_name: str, pdf_reader: PyPDF2.PdfReader) -> int | None:
+    def _resolve_named_destination(self, dest_name: str, pdf_reader: pypdf.PdfReader) -> int | None:
         """Resolve a named destination to a page number."""
         try:
             # Check named_destinations attribute

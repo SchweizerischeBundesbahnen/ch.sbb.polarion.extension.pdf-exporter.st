@@ -4,7 +4,7 @@ import io
 from http import HTTPStatus
 from typing import TYPE_CHECKING
 
-import PyPDF2
+import pypdf
 from python_sbb_polarion.extensions.pdf_exporter import DocumentType
 from python_sbb_polarion.types import MediaType
 
@@ -315,7 +315,7 @@ class PdfExporterConvertTest(PdfExporterTestCase):
 
             # Verify PDF content
             stream: io.BytesIO = io.BytesIO(response.content)
-            pdf_reader: PyPDF2.PdfReader = PyPDF2.PdfReader(stream)
+            pdf_reader: pypdf.PdfReader = pypdf.PdfReader(stream)
             total_pages: int = len(pdf_reader.pages)
             self.assertEqual(1, total_pages)
 
@@ -344,7 +344,7 @@ class PdfExporterConvertTest(PdfExporterTestCase):
 
         # Verify PDF content
         stream: io.BytesIO = io.BytesIO(response.content)
-        pdf_reader: PyPDF2.PdfReader = PyPDF2.PdfReader(stream)
+        pdf_reader: pypdf.PdfReader = pypdf.PdfReader(stream)
         total_pages: int = len(pdf_reader.pages)
         self.assertEqual(1, total_pages)
 
@@ -373,7 +373,7 @@ class PdfExporterConvertTest(PdfExporterTestCase):
 
         # Verify PDF content
         stream: io.BytesIO = io.BytesIO(response.content)
-        pdf_reader: PyPDF2.PdfReader = PyPDF2.PdfReader(stream)
+        pdf_reader: pypdf.PdfReader = pypdf.PdfReader(stream)
         total_pages: int = len(pdf_reader.pages)
         self.assertEqual(2, total_pages)
 
@@ -412,7 +412,7 @@ class PdfExporterConvertTest(PdfExporterTestCase):
 
             # Verify PDF content
             stream: io.BytesIO = io.BytesIO(response.content)
-            pdf_reader: PyPDF2.PdfReader = PyPDF2.PdfReader(stream)
+            pdf_reader: pypdf.PdfReader = pypdf.PdfReader(stream)
             total_pages: int = len(pdf_reader.pages)
             self.assertEqual(2, total_pages)
 
@@ -458,8 +458,8 @@ class PdfExporterConvertTest(PdfExporterTestCase):
 
         # Verify PDF content
         stream: io.BytesIO = io.BytesIO(response.content)
-        pdf_reader: PyPDF2.PdfReader = PyPDF2.PdfReader(stream)
-        metadata: PyPDF2._doc_common.DocumentInformation | None = pdf_reader.metadata  # type: ignore[name-defined]
+        pdf_reader: pypdf.PdfReader = pypdf.PdfReader(stream)
+        metadata: pypdf.DocumentInformation | None = pdf_reader.metadata
 
         # Check the "version" field in metadata
         if metadata is not None:
