@@ -6,7 +6,7 @@ import pathlib
 from http import HTTPStatus
 from typing import TYPE_CHECKING
 
-import PyPDF2
+import pypdf
 from python_sbb_polarion.extensions.pdf_exporter import DocumentType
 from python_sbb_polarion.util import abs_path_str
 
@@ -231,7 +231,7 @@ class TestRunAttachmentTest(PdfExporterTestCase):
 
             # Verify PDF content
             stream: io.BytesIO = io.BytesIO(response_convert.content)
-            pdf_reader: PyPDF2.PdfReader = PyPDF2.PdfReader(stream)
+            pdf_reader: pypdf.PdfReader = pypdf.PdfReader(stream)
 
             total_pages: int = len(pdf_reader.pages)
             self.assertEqual(2, total_pages)
