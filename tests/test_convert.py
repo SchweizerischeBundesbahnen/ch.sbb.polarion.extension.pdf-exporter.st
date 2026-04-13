@@ -459,7 +459,7 @@ class PdfExporterConvertTest(PdfExporterTestCase):
         # Verify PDF content
         stream: io.BytesIO = io.BytesIO(response.content)
         pdf_reader: pypdf.PdfReader = pypdf.PdfReader(stream)
-        metadata = pdf_reader.metadata
+        metadata: pypdf.DocumentInformation | None = pdf_reader.metadata
 
         # Check the "version" field in metadata
         if metadata is not None:
