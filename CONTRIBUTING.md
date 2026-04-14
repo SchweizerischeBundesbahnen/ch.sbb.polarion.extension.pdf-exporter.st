@@ -64,8 +64,7 @@ Before you submit your Pull Request (PR) consider the following guidelines:
 * Test your changes with our supported browsers and screen readers.
 * Run tests and ensure that all tests pass.
 * Commit your changes using a descriptive commit message that follows our
-  [commit message conventions](#commit-message-guidelines). Adherence to these conventions
-  is necessary because release notes are automatically generated from these messages.
+  [commit message conventions](#commit-message-guidelines).
 
      ```shell
      git commit -a --gpg-sign
@@ -84,8 +83,7 @@ Before you submit your Pull Request (PR) consider the following guidelines:
   The PR title and message should as well conform to the [commit message conventions](#commit-message-guidelines).
 
 ### <a id="commit-message-guidelines"></a>Commit Message Guidelines
-This project uses [Conventional Commits](https://www.conventionalcommits.org/) to generate the Changelog using the [Release Please GitHub action](.github/workflows/release-please.yml).
-For comprehensive information, please consult the [Release Please documentation](https://github.com/googleapis/release-please).
+This project uses [Conventional Commits](https://www.conventionalcommits.org/).
 
 ### <a id="coding-rules"></a>Coding Rules
 To ensure consistency throughout the source code, keep these rules in mind as you are working:
