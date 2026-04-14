@@ -1,5 +1,5 @@
 ---
-name: Build & Release
+name: CI
 on:
   push:
     branches: ['**']
@@ -49,12 +49,3 @@ jobs:
         with:
           args: |
             -Dsonar.branch.name=${{ github.head_ref }}
-  release-please:
-    if: github.event_name != 'pull_request' && github.ref_name == 'main'
-    uses: SchweizerischeBundesbahnen/github-workflows-polarion/.github/workflows/reusable-release-please.yml@main
-    permissions:
-      contents: write
-      pull-requests: write
-    with:
-      release-type: python
-      include-v-in-tag: false
