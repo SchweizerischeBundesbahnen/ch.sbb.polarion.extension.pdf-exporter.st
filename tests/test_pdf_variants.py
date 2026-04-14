@@ -5,7 +5,6 @@ from http import HTTPStatus
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, ClassVar
 
-from parameterized import parameterized
 from python_sbb_polarion.extensions.pdf_exporter import DocumentType, PdfVariant
 
 from tests.pdf_exporter_test_case import PdfExporterTestCase
@@ -13,6 +12,8 @@ from tests.verapdf_manager import VeraPDFManager
 
 
 if TYPE_CHECKING:
+    from collections.abc import Callable
+
     from python_sbb_polarion.types import JsonDict
     from requests import Response
 
@@ -152,8 +153,7 @@ class PdfExporterVariantsTest(PdfExporterTestCase):
             # Clean up temporary file
             tmp_pdf_path.unlink(missing_ok=True)
 
-    @parameterized.expand([(variant, None) for variant in PDF_VARIANTS] + [(variant, "Default") for variant in PDF_VARIANTS])
-    def test_pdf_variant(self, pdf_variant: PdfVariant, cover_page: str | None) -> None:
+    def _run_pdf_variant(self, pdf_variant: PdfVariant, cover_page: str | None) -> None:
         """Test PDF variant compliance using VeraPDF validation"""
         # Fail if Docker is not available
         if not DOCKER_AVAILABLE:
@@ -214,3 +214,18 @@ class PdfExporterVariantsTest(PdfExporterTestCase):
             is_compliant,
             f"PDF variant {pdf_variant} validation failed: {message}",
         )
+
+
+_variant_test_params = [(variant, None) for variant in PdfExporterVariantsTest.PDF_VARIANTS] + [(variant, "Default") for variant in PdfExporterVariantsTest.PDF_VARIANTS]
+
+for _idx, (_pdf_variant, _cover_page) in enumerate(_variant_test_params):
+    _test_name = f"test_pdf_variant_{_idx:02d}_{_pdf_variant.name}"
+
+    def _make_test(_pv: PdfVariant = _pdf_variant, _cp: str | None = _cover_page) -> Callable[..., None]:
+        def test_method(self: PdfExporterVariantsTest) -> None:
+            self._run_pdf_variant(_pv, _cp)
+
+        test_method.__doc__ = f"Test PDF variant compliance using VeraPDF validation [with pdf_variant={_pv!r}, cover_page={_cp!r}]"
+        return test_method
+
+    setattr(PdfExporterVariantsTest, _test_name, _make_test())
