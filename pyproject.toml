@@ -1,6 +1,6 @@
 [project]
 name = "polarion-pdf-exporter-st"
-version = "1.0.0"
+version = "0.1.0"
 description = "System Tests for Polarion PDF Exporter extension"
 authors = [
     {name = "SBB Polarion Team", email = "polarion-opensource@sbb.ch"},
