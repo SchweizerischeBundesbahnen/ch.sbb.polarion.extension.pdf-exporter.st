@@ -179,7 +179,7 @@ class PdfExporterVariantsTest(PdfExporterTestCase):
 
 def _make_variant_test(pdf_variant: PdfVariant, cover_page: str | None) -> Callable[..., None]:
     def test_method(self: PdfExporterVariantsTest) -> None:
-        """Test PDF variant compliance using VeraPDF validation [with pdf_variant={pdf_variant!r}, cover_page={cover_page!r}]"""
+        """Test PDF variant compliance using VeraPDF validation"""
         if not DOCKER_AVAILABLE:
             self.fail("Docker not available - VeraPDF tests require Docker")
 

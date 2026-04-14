@@ -17,6 +17,27 @@ if TYPE_CHECKING:
     from requests import Response
 
 
+def _sanitize_name(name: str) -> str:
+    return re.sub(r"[^a-zA-Z0-9]", "_", name)
+
+
+def _make_page_break_test(file_path: str, expected_orientations: list[bool], custom_export_params: JsonDict | None) -> Callable[..., None]:
+    def test_method(self: PdfExporterPageBreaksTest) -> None:
+        response: Response = self._convert(
+            project_id=self.project_id,
+            custom_export_params=custom_export_params,
+            location_path=file_path,
+        )
+        self.assertEqual(HTTPStatus.OK, response.status_code)
+
+        pdf_bytes: bytes = response.content
+
+        page_orientations: list[bool] = self._pdf_pages_orientation(pdf_bytes)
+        self.assertEqual(expected_orientations, page_orientations)
+
+    return test_method
+
+
 class PdfExporterPageBreaksTest(PdfExporterTestCase):
     """Tests for PDF page breaks functionality."""
 
@@ -69,27 +90,6 @@ class PdfExporterPageBreaksTest(PdfExporterTestCase):
 
         pdf_document.close()
         return result
-
-
-def _make_page_break_test(file_path: str, expected_orientations: list[bool], custom_export_params: JsonDict | None) -> Callable[..., None]:
-    def test_method(self: PdfExporterPageBreaksTest) -> None:
-        response: Response = self._convert(
-            project_id=self.project_id,
-            custom_export_params=custom_export_params,
-            location_path=file_path,
-        )
-        self.assertEqual(HTTPStatus.OK, response.status_code)
-
-        pdf_bytes: bytes = response.content
-
-        page_orientations: list[bool] = self._pdf_pages_orientation(pdf_bytes)
-        self.assertEqual(expected_orientations, page_orientations)
-
-    return test_method
-
-
-def _sanitize_name(name: str) -> str:
-    return re.sub(r"[^a-zA-Z0-9]", "_", name)
 
 
 for _idx, (_file_path, _expected_orientations, _custom_export_params) in enumerate(PdfExporterPageBreaksTest.PAGE_BREAKS_TEST_DATA):
