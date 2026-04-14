@@ -64,8 +64,7 @@ Before you submit your Pull Request (PR) consider the following guidelines:
 * Test your changes with our supported browsers and screen readers.
 * Run tests and ensure that all tests pass.
 * Commit your changes using a descriptive commit message that follows our
-  [commit message conventions](#commit-message-guidelines). Adherence to these conventions
-  is necessary because release notes are automatically generated from these messages.
+  [commit message conventions](#commit-message-guidelines).
 
      ```shell
      git commit -a --gpg-sign
