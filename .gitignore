@@ -172,3 +172,8 @@ pyrightconfig.json
 .vscode/
 junittest.xml
 .history/
+
+.psp-lint-cache/
+test-data/output/
+
+TEST-*.xml
