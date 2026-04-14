@@ -153,6 +153,45 @@ class PdfExporterVariantsTest(PdfExporterTestCase):
             # Clean up temporary file
             tmp_pdf_path.unlink(missing_ok=True)
 
+    def _run_pdf_variant(self, pdf_variant: PdfVariant, cover_page: str | None) -> None:
+        """Test PDF variant compliance using VeraPDF validation"""
+        # Fail if Docker is not available
+        if not DOCKER_AVAILABLE:
+            self.fail("Docker not available - VeraPDF tests require Docker")
+
+        # Arrange
+        export_params: JsonDict = {
+            "pdfVariant": str(pdf_variant.value),
+        }
+        if cover_page:
+            export_params["coverPage"] = cover_page
+
+        # Act
+        response: Response = self._convert(
+            project_id=self.project_id,
+            location_path=self.PRODUCT_SPECIFICATION_LOCATION,
+            custom_export_params=export_params,
+        )
+
+        # Assert HTTP response
+        cover_info: str = "with cover page" if cover_page else "without cover page"
+        self.assertEqual(
+            HTTPStatus.OK,
+            response.status_code,
+            f"Failed to export PDF with variant {pdf_variant} {cover_info}",
+        )
+        self.assertIsNotNone(response.content)
+        self.assertGreater(len(response.content), 0, "PDF content is empty")
+
+        # Verify PDF compliance with VeraPDF
+        is_compliant: bool
+        message: str
+        is_compliant, message = self._verify_pdf_with_verapdf(response.content, pdf_variant)
+        self.assertTrue(
+            is_compliant,
+            f"PDF variant {pdf_variant} {cover_info} validation failed: {message}",
+        )
+
     def test_pdf_a_4f_variant(self) -> None:
         """Test pdf/a-4f variant compliance using VeraPDF validation. Special handling as there should be embeddings into PDF"""
         # Arrange
@@ -177,47 +216,16 @@ class PdfExporterVariantsTest(PdfExporterTestCase):
         )
 
 
-def _make_variant_test(pdf_variant: PdfVariant, cover_page: str | None) -> Callable[..., None]:
-    def test_method(self: PdfExporterVariantsTest) -> None:
-        """Test PDF variant compliance using VeraPDF validation"""
-        if not DOCKER_AVAILABLE:
-            self.fail("Docker not available - VeraPDF tests require Docker")
-
-        export_params: JsonDict = {
-            "pdfVariant": str(pdf_variant.value),
-        }
-        if cover_page:
-            export_params["coverPage"] = cover_page
-
-        response: Response = self._convert(
-            project_id=self.project_id,
-            location_path=self.PRODUCT_SPECIFICATION_LOCATION,
-            custom_export_params=export_params,
-        )
-
-        cover_info: str = "with cover page" if cover_page else "without cover page"
-        self.assertEqual(
-            HTTPStatus.OK,
-            response.status_code,
-            f"Failed to export PDF with variant {pdf_variant} {cover_info}",
-        )
-        self.assertIsNotNone(response.content)
-        self.assertGreater(len(response.content), 0, "PDF content is empty")
-
-        is_compliant: bool
-        message: str
-        is_compliant, message = self._verify_pdf_with_verapdf(response.content, pdf_variant)
-        self.assertTrue(
-            is_compliant,
-            f"PDF variant {pdf_variant} {cover_info} validation failed: {message}",
-        )
-
-    test_method.__doc__ = f"Test PDF variant compliance using VeraPDF validation [with pdf_variant={pdf_variant!r}, cover_page={cover_page!r}]"
-    return test_method
-
-
 _variant_test_params = [(variant, None) for variant in PdfExporterVariantsTest.PDF_VARIANTS] + [(variant, "Default") for variant in PdfExporterVariantsTest.PDF_VARIANTS]
 
 for _idx, (_pdf_variant, _cover_page) in enumerate(_variant_test_params):
     _test_name = f"test_pdf_variant_{_idx:02d}_{_pdf_variant.name}"
-    setattr(PdfExporterVariantsTest, _test_name, _make_variant_test(_pdf_variant, _cover_page))
+
+    def _make_test(_pv: PdfVariant = _pdf_variant, _cp: str | None = _cover_page) -> Callable[..., None]:
+        def test_method(self: PdfExporterVariantsTest) -> None:
+            self._run_pdf_variant(_pv, _cp)
+
+        test_method.__doc__ = f"Test PDF variant compliance using VeraPDF validation [with pdf_variant={_pv!r}, cover_page={_cp!r}]"
+        return test_method
+
+    setattr(PdfExporterVariantsTest, _test_name, _make_test())

@@ -17,27 +17,6 @@ if TYPE_CHECKING:
     from requests import Response
 
 
-def _sanitize_name(name: str) -> str:
-    return re.sub(r"[^a-zA-Z0-9]", "_", name)
-
-
-def _make_page_break_test(file_path: str, expected_orientations: list[bool], custom_export_params: JsonDict | None) -> Callable[..., None]:
-    def test_method(self: PdfExporterPageBreaksTest) -> None:
-        response: Response = self._convert(
-            project_id=self.project_id,
-            custom_export_params=custom_export_params,
-            location_path=file_path,
-        )
-        self.assertEqual(HTTPStatus.OK, response.status_code)
-
-        pdf_bytes: bytes = response.content
-
-        page_orientations: list[bool] = self._pdf_pages_orientation(pdf_bytes)
-        self.assertEqual(expected_orientations, page_orientations)
-
-    return test_method
-
-
 class PdfExporterPageBreaksTest(PdfExporterTestCase):
     """Tests for PDF page breaks functionality."""
 
@@ -78,6 +57,19 @@ class PdfExporterPageBreaksTest(PdfExporterTestCase):
         ("PageBreaks/Res", [True, True], {"orientation": Orientation.LANDSCAPE}),
     ]
 
+    def _run_convert_live_doc(self, file_path: str, expected_orientations: list[bool], custom_export_params: JsonDict | None) -> None:
+        response: Response = self._convert(
+            project_id=self.project_id,
+            custom_export_params=custom_export_params,
+            location_path=file_path,
+        )
+        self.assertEqual(HTTPStatus.OK, response.status_code)
+
+        pdf_bytes: bytes = response.content
+
+        page_orientations: list[bool] = self._pdf_pages_orientation(pdf_bytes)
+        self.assertEqual(expected_orientations, page_orientations)
+
     def _pdf_pages_orientation(self, pdf_bytes: bytes) -> list[bool]:
         """Get orientations of all PDF pages (True for landscape, False for portrait)."""
         pdf_document: fitz.Document = fitz.open(stream=pdf_bytes, filetype="pdf")  # type: ignore[no-any-unimported]
@@ -92,6 +84,17 @@ class PdfExporterPageBreaksTest(PdfExporterTestCase):
         return result
 
 
+def _sanitize_name(name: str) -> str:
+    return re.sub(r"[^a-zA-Z0-9]", "_", name)
+
+
 for _idx, (_file_path, _expected_orientations, _custom_export_params) in enumerate(PdfExporterPageBreaksTest.PAGE_BREAKS_TEST_DATA):
     _test_name = f"test_convert_live_doc_{_idx:02d}_{_sanitize_name(_file_path)}"
-    setattr(PdfExporterPageBreaksTest, _test_name, _make_page_break_test(_file_path, _expected_orientations, _custom_export_params))
+
+    def _make_test(_fp: str = _file_path, _eo: list[bool] = _expected_orientations, _cep: JsonDict | None = _custom_export_params) -> Callable[..., None]:
+        def test_method(self: PdfExporterPageBreaksTest) -> None:
+            self._run_convert_live_doc(_fp, _eo, _cep)
+
+        return test_method
+
+    setattr(PdfExporterPageBreaksTest, _test_name, _make_test())
