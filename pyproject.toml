@@ -269,11 +269,6 @@ ignore_missing_imports = true
 module = ["fitz"]
 ignore_missing_imports = true
 
-# pytest is not installed as a direct dependency (provided by tox/test runner)
-[[tool.mypy.overrides]]
-module = ["pytest"]
-ignore_missing_imports = true
-
 # =============================================================================
 # SBB Polarion Linter Configuration
 # =============================================================================

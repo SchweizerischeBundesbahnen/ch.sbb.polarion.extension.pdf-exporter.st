@@ -4,7 +4,6 @@ from http import HTTPStatus
 from typing import TYPE_CHECKING, ClassVar
 
 import fitz
-import pytest
 from python_sbb_polarion.extensions.pdf_exporter import Orientation
 
 from tests.pdf_exporter_test_case import PdfExporterTestCase
@@ -55,19 +54,20 @@ class PdfExporterPageBreaksTest(PdfExporterTestCase):
         ("PageBreaks/Res", [True, True], {"orientation": Orientation.LANDSCAPE}),
     ]
 
-    @pytest.mark.parametrize(("file_path", "expected_orientations", "custom_export_params"), PAGE_BREAKS_TEST_DATA)
-    def test_convert_live_doc(self, file_path: str, expected_orientations: list[bool], custom_export_params: JsonDict | None) -> None:
-        response: Response = self._convert(
-            project_id=self.project_id,
-            custom_export_params=custom_export_params,
-            location_path=file_path,
-        )
-        self.assertEqual(HTTPStatus.OK, response.status_code)
+    def test_convert_live_doc(self) -> None:
+        for file_path, expected_orientations, custom_export_params in self.PAGE_BREAKS_TEST_DATA:
+            with self.subTest(file_path=file_path, expected_orientations=expected_orientations, custom_export_params=custom_export_params):
+                response: Response = self._convert(
+                    project_id=self.project_id,
+                    custom_export_params=custom_export_params,
+                    location_path=file_path,
+                )
+                self.assertEqual(HTTPStatus.OK, response.status_code)
 
-        pdf_bytes: bytes = response.content
+                pdf_bytes: bytes = response.content
 
-        page_orientations: list[bool] = self._pdf_pages_orientation(pdf_bytes)
-        self.assertEqual(expected_orientations, page_orientations)
+                page_orientations: list[bool] = self._pdf_pages_orientation(pdf_bytes)
+                self.assertEqual(expected_orientations, page_orientations)
 
     def _pdf_pages_orientation(self, pdf_bytes: bytes) -> list[bool]:
         """Get orientations of all PDF pages (True for landscape, False for portrait)."""
