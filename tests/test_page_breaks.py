@@ -1,16 +1,18 @@
 from __future__ import annotations
 
+import re
 from http import HTTPStatus
 from typing import TYPE_CHECKING, ClassVar
 
 import fitz
-from parameterized import parameterized
 from python_sbb_polarion.extensions.pdf_exporter import Orientation
 
 from tests.pdf_exporter_test_case import PdfExporterTestCase
 
 
 if TYPE_CHECKING:
+    from collections.abc import Callable
+
     from python_sbb_polarion.types import JsonDict
     from requests import Response
 
@@ -55,8 +57,7 @@ class PdfExporterPageBreaksTest(PdfExporterTestCase):
         ("PageBreaks/Res", [True, True], {"orientation": Orientation.LANDSCAPE}),
     ]
 
-    @parameterized.expand(PAGE_BREAKS_TEST_DATA)
-    def test_convert_live_doc(self, file_path: str, expected_orientations: list[bool], custom_export_params: JsonDict | None) -> None:
+    def _run_convert_live_doc(self, file_path: str, expected_orientations: list[bool], custom_export_params: JsonDict | None) -> None:
         response: Response = self._convert(
             project_id=self.project_id,
             custom_export_params=custom_export_params,
@@ -81,3 +82,19 @@ class PdfExporterPageBreaksTest(PdfExporterTestCase):
 
         pdf_document.close()
         return result
+
+
+def _sanitize_name(name: str) -> str:
+    return re.sub(r"[^a-zA-Z0-9]", "_", name)
+
+
+for _idx, (_file_path, _expected_orientations, _custom_export_params) in enumerate(PdfExporterPageBreaksTest.PAGE_BREAKS_TEST_DATA):
+    _test_name = f"test_convert_live_doc_{_idx:02d}_{_sanitize_name(_file_path)}"
+
+    def _make_test(_fp: str = _file_path, _eo: list[bool] = _expected_orientations, _cep: JsonDict | None = _custom_export_params) -> Callable[..., None]:
+        def test_method(self: PdfExporterPageBreaksTest) -> None:
+            self._run_convert_live_doc(_fp, _eo, _cep)
+
+        return test_method
+
+    setattr(PdfExporterPageBreaksTest, _test_name, _make_test())

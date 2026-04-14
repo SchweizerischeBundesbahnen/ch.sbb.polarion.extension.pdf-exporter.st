@@ -9,7 +9,7 @@ pipeline {
     }
     options {
         ansiColor('xterm')
-        disableConcurrentBuilds(abortPrevious: true)  // Abort running build when new commit arrives on the same branch
+        disableConcurrentBuilds()
         timestamps()
     }
     stages {
