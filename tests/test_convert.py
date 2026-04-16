@@ -236,8 +236,8 @@ class PdfExporterConvertTest(PdfExporterTestCase):
             output_folder=self._get_output_folder(),
         )
         self.assertEqual(2, page_numbers)
-        # Pixel coordinates for ignoring timestamp region on page 1
-        ignore_region_coords: list[tuple[int, int, int, int]] = [(1575, 250 + 250, 2300, 575)]
+        # Pixel coordinates for ignoring "Reported by {user}" and timestamp region on page 1
+        ignore_region_coords: list[tuple[int, int, int, int]] = [(1575, 450, 2300, 575)]
         self._compare_pdf_pages(
             custom_prefix="test_convert_live_report",
             page_numbers=page_numbers,
@@ -277,8 +277,8 @@ class PdfExporterConvertTest(PdfExporterTestCase):
             output_folder=self._get_output_folder(),
         )
         self.assertEqual(3, page_numbers)
-        # Pixel coordinates for ignoring timestamp region on page 2
-        ignore_region_coords_page2: list[tuple[int, int, int, int]] = [(1575, 250 + 250, 2300, 575)]
+        # Pixel coordinates for ignoring "Reported by {user}" and timestamp region on page 2
+        ignore_region_coords_page2: list[tuple[int, int, int, int]] = [(1575, 450, 2300, 575)]
         self._compare_pdf_pages(
             custom_prefix="test_convert_live_report_with_title_page",
             page_numbers=page_numbers,
@@ -691,18 +691,18 @@ class PdfExporterConvertTest(PdfExporterTestCase):
         )
 
     def test_convert_live_doc_with_filter(self) -> None:
-        """Test LiveDoc export with workitem filter using urlQueryParameters.
+        # Test LiveDoc export with workitem filter using urlQueryParameters.
 
-        This test exports Product Specification document twice:
-        1. Without filter - should have 7 pages (all 54 workitems)
-        2. With filter severity:must_have - should have 5 pages (only 8 workitems)
+        # This test exports Product Specification document twice:
+        # 1. Without filter - should have 7 pages (all 54 workitems)
+        # 2. With filter severity:must_have - should have 5 pages (only 8 workitems)
 
-        Hidden workitems (46 total): EL-138, EL-137, EL-134, EL-130, EL-131, EL-132,
-        EL-141, EL-142, EL-140, EL-143, EL-136, EL-191, EL-125, EL-135, EL-11, EL-70,
-        EL-13, EL-12, EL-15, EL-10, EL-69, EL-7, EL-6, EL-9, EL-8, EL-5, EL-112, EL-113,
-        EL-111, EL-110, EL-109, EL-127, EL-128, EL-123, EL-124, EL-122, EL-120, EL-121,
-        EL-114, EL-117, EL-202, EL-200, EL-201, EL-199, EL-198, EL-139
-        """
+        # Hidden workitems (46 total): EL-138, EL-137, EL-134, EL-130, EL-131, EL-132,
+        # EL-141, EL-142, EL-140, EL-143, EL-136, EL-191, EL-125, EL-135, EL-11, EL-70,
+        # EL-13, EL-12, EL-15, EL-10, EL-69, EL-7, EL-6, EL-9, EL-8, EL-5, EL-112, EL-113,
+        # EL-111, EL-110, EL-109, EL-127, EL-128, EL-123, EL-124, EL-122, EL-120, EL-121,
+        # EL-114, EL-117, EL-202, EL-200, EL-201, EL-199, EL-198, EL-139
+
         # Set header footer settings without timestamp
         previous_header_footer_settings: JsonDict
         _current_header_footer_settings: JsonDict
@@ -790,6 +790,39 @@ class PdfExporterConvertTest(PdfExporterTestCase):
         self.assertEqual(9, page_numbers)
         self._compare_pdf_pages(
             custom_prefix="test_convert_live_doc_indent",
+            page_numbers=page_numbers,
+            expected_folder=self._get_expected_folder(),
+            output_folder=self._get_output_folder(),
+        )
+
+    def test_convert_live_doc_no_split_table_rows_between_pages(self) -> None:
+        # Set header footer settings without timestamp
+        previous_header_footer_settings: JsonDict
+        _current_header_footer_settings: JsonDict
+        previous_header_footer_settings, _current_header_footer_settings = self._save_header_footer_settings(self.HEADER_FOOTER_WITHOUT_TIMESTAMP)
+
+        # Act
+        response: Response = self._convert(
+            project_id=self.project_id,
+            location_path="Specification/No_Split_Table",
+        )
+
+        # Restore original header footer settings
+        self._save_header_footer_settings(previous_header_footer_settings)
+
+        # Assert
+        self.assertEqual(HTTPStatus.OK, response.status_code)
+        self.assertIsNotNone(response.content)
+
+        # Verify PDF content
+        page_numbers: int = self._pdf_to_png(
+            pdf_bytes=response.content,
+            custom_prefix="test_convert_live_doc_no_split_table_rows_between_pages",
+            output_folder=self._get_output_folder(),
+        )
+        self.assertEqual(5, page_numbers)
+        self._compare_pdf_pages(
+            custom_prefix="test_convert_live_doc_no_split_table_rows_between_pages",
             page_numbers=page_numbers,
             expected_folder=self._get_expected_folder(),
             output_folder=self._get_output_folder(),

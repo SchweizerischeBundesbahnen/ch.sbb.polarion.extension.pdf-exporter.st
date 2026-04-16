@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<work-item>
+    <field id="author">rProject</field>
+    <field id="created">2026-04-15 12:53:15.898 +0000</field>
+    <field id="priority">50.0</field>
+    <field id="severity">should_have</field>
+    <field id="status">open</field>
+    <field id="title">No_Split_Table</field>
+    <field id="type">heading</field>
+</work-item>
