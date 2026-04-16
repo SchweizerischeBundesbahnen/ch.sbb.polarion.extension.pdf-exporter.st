@@ -4,9 +4,6 @@ pipeline {
     agent {
         label 'polarion-testing-latest'
     }
-    triggers {
-        pollSCM('H/5 * * * *')
-    }
     options {
         ansiColor('xterm')
         disableConcurrentBuilds()
