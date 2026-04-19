@@ -12,7 +12,7 @@ requires-python = ">=3.14,<3.15"
 dependencies = [
     "python-sbb-polarion",
     "unittest-xml-reporting>=4,<5",
-    "ruff==0.15.10",
+    "ruff==0.15.11",
     "mypy==1.20.1",
     "types-requests==2.33.0.20260408",
     "tox>=4,<5",
