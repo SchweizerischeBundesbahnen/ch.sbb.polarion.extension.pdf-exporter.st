@@ -12,7 +12,7 @@ if TYPE_CHECKING:
 
 
 class PdfExporterLinkRoleDirectionTest(PdfExporterTestCase):
-    """Tests for 'Fit To Page' logic during PDF conversion."""
+    """Tests for link roles direction logic during PDF conversion."""
 
     def test_direct_link_role_direction(self) -> None:
         # Set header footer settings without timestamp
