@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+    <field id="author">admin</field>
+    <field id="created">2026-04-20 15:21:41.893 +0000</field>
+    <field id="crossReferenceMappingData">ab7c8a7c-ac120002-7bd5f420-748a615c=elibrary_st_e6b4b20efef6/EL-166</field>
+    <field id="homePageContent" text-type="text/html">&lt;h1 id="polarion_wiki macro name=module-workitem;params=id=EL-263"&gt;&lt;/h1&gt;&lt;h2 id="polarion_wiki macro name=module-workitem;params=id=EL-266"&gt;&lt;/h2&gt;&lt;div id="polarion_wiki macro name=module-workitem;params=id=EL-265"&gt;&lt;/div&gt;&lt;p id="polarion_2"&gt;&lt;/p&gt;</field>
+    <field id="renderingLayouts">
+        <list>
+            <struct>
+                <item id="label">Requirement</item>
+                <item id="layouter">section</item>
+                <item id="properties">
+                    <list>
+                        <struct>
+                            <item id="key">fieldsAtStart</item>
+                            <item id="value">id</item>
+                        </struct>
+                        <struct>
+                            <item id="key">fieldsAtEnd</item>
+                            <item id="value">status,linkedWorkItems as linked-workitem-in-document</item>
+                        </struct>
+                        <struct>
+                            <item id="key">fieldsAtEndAsTable</item>
+                            <item id="value">true</item>
+                        </struct>
+                        <struct>
+                            <item id="key">sidebarWorkItemFields</item>
+                            <item id="value">severity,status,linkedWorkItems</item>
+                        </struct>
+                    </list>
+                </item>
+                <item id="type">requirement</item>
+            </struct>
+        </list>
+    </field>
+    <field id="status">draft</field>
+    <field id="structureLinkRole">parent</field>
+    <field id="title">Link Role Direction Test</field>
+    <field id="type">generic</field>
+    <field id="usesOutlineNumbering">true</field>
+</module>

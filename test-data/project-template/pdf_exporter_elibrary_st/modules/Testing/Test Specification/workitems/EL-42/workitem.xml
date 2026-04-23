@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <work-item>
     <field id="author">rProject</field>
     <field id="categories">
@@ -6,19 +6,21 @@
             <item>objects</item>
         </list>
     </field>
-    <field id="created">2011-01-24 10:51:45.685 +0100</field>
-    <field id="initialEstimate"/>
+    <field id="created">2011-01-24 09:51:45.685 +0000</field>
     <field id="linkedWorkItems">
         <list>
             <struct>
                 <item id="role">verifies</item>
                 <item id="workItem">EL-119</item>
             </struct>
+            <struct>
+                <item id="role">relates_to</item>
+                <item id="workItem">EL-265</item>
+            </struct>
         </list>
     </field>
     <field id="previousStatus">draft</field>
     <field id="priority">50.0</field>
-    <field id="remainingEstimate"/>
     <field id="severity">smoke</field>
     <field id="status">active</field>
     <field id="testSteps" type="struct:TestSteps">
@@ -73,7 +75,6 @@
         </struct>
     </field>
     <field id="testType" type="enum:testtype">user</field>
-    <field id="timeSpent"/>
     <field id="title">Open Author details</field>
     <field id="type">testcase</field>
 </work-item>
