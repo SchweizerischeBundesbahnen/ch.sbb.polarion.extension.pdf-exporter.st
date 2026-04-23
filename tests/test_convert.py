@@ -581,6 +581,82 @@ class PdfExporterConvertTest(PdfExporterTestCase):
             ignore_regions_per_page={1: ignore_region_coords_page1},
         )
 
+    def test_convert_live_doc_with_open_unreferenced_comments(self) -> None:
+        # Set header footer settings without timestamp
+        previous_header_footer_settings: JsonDict
+        _current_header_footer_settings: JsonDict
+        previous_header_footer_settings, _current_header_footer_settings = self._save_header_footer_settings(self.HEADER_FOOTER_WITHOUT_TIMESTAMP)
+
+        custom_export_params: JsonDict = {
+            "renderComments": "OPEN",
+            "includeUnreferencedComments": "true",
+        }
+        # Act
+        response: Response = self._convert(
+            project_id=self.project_id,
+            location_path="Specification/live_doc_with_comments",
+            custom_export_params=custom_export_params,
+        )
+
+        # Restore original header footer settings
+        self._save_header_footer_settings(previous_header_footer_settings)
+
+        # Assert
+        self.assertEqual(HTTPStatus.OK, response.status_code)
+        self.assertIsNotNone(response.content)
+
+        # Verify PDF content
+        page_numbers: int = self._pdf_to_png(
+            pdf_bytes=response.content,
+            custom_prefix="test_convert_live_doc_with_open_unref_comments",
+            output_folder=self._get_output_folder(),
+        )
+        self.assertEqual(1, page_numbers)
+        self._compare_pdf_pages(
+            custom_prefix="test_convert_live_doc_with_open_unref_comments",
+            page_numbers=page_numbers,
+            expected_folder=self._get_expected_folder(),
+            output_folder=self._get_output_folder(),
+        )
+
+    def test_convert_live_doc_with_all_unreferenced_comments(self) -> None:
+        # Set header footer settings without timestamp
+        previous_header_footer_settings: JsonDict
+        _current_header_footer_settings: JsonDict
+        previous_header_footer_settings, _current_header_footer_settings = self._save_header_footer_settings(self.HEADER_FOOTER_WITHOUT_TIMESTAMP)
+
+        custom_export_params: JsonDict = {
+            "renderComments": "ALL",
+            "includeUnreferencedComments": "true",
+        }
+        # Act
+        response: Response = self._convert(
+            project_id=self.project_id,
+            location_path="Specification/live_doc_with_comments",
+            custom_export_params=custom_export_params,
+        )
+
+        # Restore original header footer settings
+        self._save_header_footer_settings(previous_header_footer_settings)
+
+        # Assert
+        self.assertEqual(HTTPStatus.OK, response.status_code)
+        self.assertIsNotNone(response.content)
+
+        # Verify PDF content
+        page_numbers: int = self._pdf_to_png(
+            pdf_bytes=response.content,
+            custom_prefix="test_convert_live_doc_with_all_unref_comments",
+            output_folder=self._get_output_folder(),
+        )
+        self.assertEqual(1, page_numbers)
+        self._compare_pdf_pages(
+            custom_prefix="test_convert_live_doc_with_all_unref_comments",
+            page_numbers=page_numbers,
+            expected_folder=self._get_expected_folder(),
+            output_folder=self._get_output_folder(),
+        )
+
     def test_convert_live_doc_with_open_native_comments(self) -> None:
         # Set header footer settings without timestamp
         previous_header_footer_settings: JsonDict
