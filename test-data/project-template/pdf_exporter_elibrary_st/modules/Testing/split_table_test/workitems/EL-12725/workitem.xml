@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<work-item>
+    <field id="author">admin</field>
+    <field id="created">2026-05-05 06:38:38.628 +0000</field>
+    <field id="description" text-type="text/html">[insert single-row table here]</field>
+    <field id="linkedWorkItems">
+        <list>
+            <struct>
+                <item id="revision">100474</item>
+                <item id="role">duplicates</item>
+                <item id="workItem">elibrary_st_37de33f3e487$EL-12727</item>
+            </struct>
+            <struct>
+                <item id="revision">100477</item>
+                <item id="role">duplicates</item>
+                <item id="workItem">elibrary_st_00f74594a151$EL-252</item>
+            </struct>
+            <struct>
+                <item id="revision">100478</item>
+                <item id="role">duplicates</item>
+                <item id="workItem">elibrary_st_b199e6d1f167$EL-12725</item>
+            </struct>
+            <struct>
+                <item id="revision">100479</item>
+                <item id="role">duplicates</item>
+                <item id="workItem">elibrary_st_3afc506d6756$EL-252</item>
+            </struct>
+            <struct>
+                <item id="revision">100480</item>
+                <item id="role">duplicates</item>
+                <item id="workItem">elibrary_st_f96519759043$EL-12725</item>
+            </struct>
+            <struct>
+                <item id="revision">100481</item>
+                <item id="role">duplicates</item>
+                <item id="workItem">elibrary$EL-256</item>
+            </struct>
+        </list>
+    </field>
+    <field id="priority">50.0</field>
+    <field id="reqType" type="enum:reqtype">other</field>
+    <field id="severity">should_have</field>
+    <field id="status">draft</field>
+    <field id="type">requirement</field>
+</work-item>

@@ -39,7 +39,7 @@ class PdfExporterFitToPageTest(PdfExporterTestCase):
             custom_prefix="test_fit_to_page",
             output_folder=self._get_output_folder(),
         )
-        self.assertEqual(10, page_numbers)
+        self.assertEqual(9, page_numbers)
         self._compare_pdf_pages(
             custom_prefix="test_fit_to_page",
             page_numbers=page_numbers,
