@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<work-item>
+    <field id="author">admin</field>
+    <field id="created">2026-05-22 11:57:35.218 +0200</field>
+    <field id="description" text-type="text/html">Lucene quoted phrases in title: searches are accepted.</field>
+    <field id="priority">50.0</field>
+    <field id="severity">should_have</field>
+    <field id="status">draft</field>
+    <field id="title">Quoted Phrase acceptance</field>
+    <field id="type">requirement</field>
+</work-item>
