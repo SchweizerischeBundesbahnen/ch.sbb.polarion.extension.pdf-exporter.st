@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<work-item>
+    <field id="author">deleted_user</field>
+    <field id="created">2026-05-19 16:32:04.583 +0000</field>
+    <field id="priority">50.0</field>
+    <field id="severity">should_have</field>
+    <field id="status">open</field>
+    <field id="title">Comment from deleted user test</field>
+    <field id="type">heading</field>
+</work-item>

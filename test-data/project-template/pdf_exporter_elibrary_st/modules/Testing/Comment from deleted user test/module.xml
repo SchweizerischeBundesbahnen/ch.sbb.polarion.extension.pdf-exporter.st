@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+    <field id="author">deleted_user</field>
+    <field id="created">2026-05-19 16:31:35.987 +0000</field>
+    <field id="homePageContent" text-type="text/html"><![CDATA[<h1 id="polarion_wiki macro name=module-workitem;params=id=EL-267"></h1><p id="polarion_template_0">
+  <br/>
+</p><p id="polarion_template_1">THIS DOCUMENT HAS NO CONTENT YET.</p><p id="polarion_template_2">
+  YOU CAN CREATE AND SAVE CONTENT NOW USING THIS EDITOR.<span id="polarion-comment:1"></span>
+</p>]]></field>
+    <field id="renderingLayouts">
+        <list>
+            <struct>
+                <item id="label">Requirement</item>
+                <item id="layouter">paragraph</item>
+                <item id="properties">
+                    <list>
+                        <struct>
+                            <item id="key">fieldsAtStart</item>
+                            <item id="value">id</item>
+                        </struct>
+                        <struct>
+                            <item id="key">fieldsAtEnd</item>
+                            <item id="value">status</item>
+                        </struct>
+                    </list>
+                </item>
+                <item id="type">requirement</item>
+            </struct>
+        </list>
+    </field>
+    <field id="status">draft</field>
+    <field id="structureLinkRole">parent</field>
+    <field id="title">Comment from deleted user test</field>
+    <field id="type">generic</field>
+    <field id="usesOutlineNumbering">true</field>
+</module>
