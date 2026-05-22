@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<work-item>
+    <field id="author">admin</field>
+    <field id="created">2026-05-22 11:57:34.289 +0200</field>
+    <field id="description" text-type="text/html">Null workItemsQuery must not appear in the persisted JSON.</field>
+    <field id="priority">50.0</field>
+    <field id="severity">should_have</field>
+    <field id="status">draft</field>
+    <field id="title">Persist null query as omitted</field>
+    <field id="type">epic</field>
+</work-item>

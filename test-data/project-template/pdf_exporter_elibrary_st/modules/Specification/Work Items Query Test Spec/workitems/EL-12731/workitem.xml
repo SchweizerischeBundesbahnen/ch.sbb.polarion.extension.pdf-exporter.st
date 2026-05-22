@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<work-item>
+    <field id="author">admin</field>
+    <field id="created">2026-05-22 11:57:32.929 +0200</field>
+    <field id="description" text-type="text/html">Covers WI filtering by Lucene type predicate.</field>
+    <field id="priority">50.0</field>
+    <field id="severity">should_have</field>
+    <field id="status">draft</field>
+    <field id="title">Filter by type</field>
+    <field id="type">requirement</field>
+</work-item>
