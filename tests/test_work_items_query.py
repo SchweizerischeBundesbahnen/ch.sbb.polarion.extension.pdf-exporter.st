@@ -135,11 +135,16 @@ class PdfExporterWorkItemsQueryTest(PdfExporterTestCase):
             self._save_header_footer_settings(previous_header_footer_settings)
 
     def test_convert_live_doc_with_query_no_match(self) -> None:
-        """A query that matches nothing filters out every WI including headings.
+        """A query that matches no body work items still renders chapter headings.
 
-        The fixture has zero work items whose title or type matches
-        `title:zzz_no_match_xyz` — so the resulting PDF differs from
-        `type:heading` (which keeps all 4 chapter headings).
+        Polarion's renderer treats heading work items as part of the document
+        outline, so a `title:zzz_no_match_xyz` query — which matches zero WIs by
+        title — produces a PDF showing just the 4 chapter headings (no body
+        rows). That makes this snapshot intentionally identical to
+        `test_convert_live_doc_with_work_items_query_filter` (`type:heading`):
+        both end up rendering only the chapter outline. The two scenarios
+        exercise different filter branches in the backend even though their
+        rendered output is the same.
         """
         previous_header_footer_settings: JsonDict
         previous_header_footer_settings, _ = self._save_header_footer_settings(self.HEADER_FOOTER_WITHOUT_TIMESTAMP)
@@ -155,9 +160,12 @@ class PdfExporterWorkItemsQueryTest(PdfExporterTestCase):
     def test_convert_with_unicode_query(self) -> None:
         """Unicode in the query must be accepted and actually match.
 
-        The fixture has heading `Übersicht der Filter` — a successful end-to-end
-        UTF-8 round trip through the export pipeline means `title:Übersicht`
-        returns 200 and that one heading.
+        The fixture has two WIs whose title starts with `Übersicht`:
+        the chapter heading `Übersicht der Filter` and the requirement
+        `Übersicht der Lucene-Validierung` under it. A successful UTF-8 round
+        trip through the export pipeline means `title:Übersicht` returns 200
+        and the snapshot pins both items (chapter heading + its requirement) —
+        which is what distinguishes this snapshot from `with_query_no_match`.
         """
         previous_header_footer_settings: JsonDict
         previous_header_footer_settings, _ = self._save_header_footer_settings(self.HEADER_FOOTER_WITHOUT_TIMESTAMP)
@@ -389,8 +397,11 @@ class PdfExporterWorkItemsQueryTest(PdfExporterTestCase):
     def test_convert_with_quoted_query(self) -> None:
         """A quoted phrase must round-trip through query parsing and produce the expected match.
 
-        The fixture has heading `Quoted Phrase Compatibility` — exactly one WI
-        whose title contains the quoted phrase. The snapshot pins that.
+        The fixture has two WIs containing the adjacent tokens `Quoted Phrase`
+        in their title: the chapter heading `Quoted Phrase Compatibility` and
+        the requirement `Quoted Phrase acceptance` under it. The snapshot pins
+        both — that's how this scenario distinguishes itself from
+        `with_query_no_match`.
         """
         previous_header_footer_settings: JsonDict
         previous_header_footer_settings, _ = self._save_header_footer_settings(self.HEADER_FOOTER_WITHOUT_TIMESTAMP)
