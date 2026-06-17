@@ -58,6 +58,16 @@ jobs:
           # Token-only auth (same token as the Maven X-JFrog-Art-Api header). For a JFrog access
           # token the username is not validated, so a fixed placeholder is enough.
           printf '%s' "$IO_JFROG_SBB_POLARION_TOKEN" | docker login sbb.jfrog.io -u polarion --password-stdin
+      - name: 🔎 DEBUG — probe JFrog auth methods (temporary)
+        run: |
+          # Probe which auth method Artifactory accepts for the Maven repo. Prints only HTTP status codes,
+          # never the token (headers built via process substitution, so nothing lands in argv). REMOVE once resolved.
+          url="https://sbb.jfrog.io/artifactory/polarion-mvn/ch/sbb/polarion/extensions/ch.sbb.polarion.extension.admin-utility/5.0.0/ch.sbb.polarion.extension.admin-utility-5.0.0.pom"
+          basic=$(printf 'polarion:%s' "$IO_JFROG_SBB_POLARION_TOKEN" | base64 | tr -d '\n')
+          echo "anonymous            : $(curl -s -o /dev/null -w '%{http_code}' "$url")"
+          echo "X-JFrog-Art-Api      : $(curl -s -o /dev/null -w '%{http_code}' -H @<(printf 'X-JFrog-Art-Api: %s' "$IO_JFROG_SBB_POLARION_TOKEN") "$url")"
+          echo "Authorization Basic  : $(curl -s -o /dev/null -w '%{http_code}' -H @<(printf 'Authorization: Basic %s' "$basic") "$url")"
+          echo "Authorization Bearer : $(curl -s -o /dev/null -w '%{http_code}' -H @<(printf 'Authorization: Bearer %s' "$IO_JFROG_SBB_POLARION_TOKEN") "$url")"
       - name: 🧱 Install dependencies
         run: uv sync --frozen
       - name: 🧪 Run system tests against Polarion in Docker
