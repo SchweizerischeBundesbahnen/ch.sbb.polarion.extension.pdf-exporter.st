@@ -19,12 +19,6 @@
             </repositories>
             <pluginRepositories/>
         </profile>
-        <profile>
-            <id>deploy-github-packages</id>
-            <properties>
-                <altDeploymentRepository>github::https://maven.pkg.github.com/${env.GITHUB_REPO_NAME}</altDeploymentRepository>
-            </properties>
-        </profile>
     </profiles>
     <servers>
         <server>
@@ -37,20 +31,6 @@
                     </property>
                 </httpHeaders>
             </configuration>
-        </server>
-        <server>
-            <id>github</id>
-            <username>${env.GITHUB_ACTOR}</username>
-            <password>${env.GITHUB_TOKEN}</password>
-        </server>
-        <server>
-            <id>sonatype-central</id>
-            <username>${env.COM_SONATYPE_CENTRAL_POLARION_OPENSOURCE_USERNAME}</username>
-            <password>${env.COM_SONATYPE_CENTRAL_POLARION_OPENSOURCE_TOKEN}</password>
-        </server>
-        <server>
-            <id>gpg.passphrase</id>
-            <passphrase>${env.COM_SONATYPE_CENTRAL_POLARION_OPENSOURCE_GPG_PASSPHRASE}</passphrase>
         </server>
     </servers>
     <mirrors/>
