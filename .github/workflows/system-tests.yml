@@ -61,7 +61,7 @@ jobs:
         run: |
           # Token-only auth (same token as the Maven X-JFrog-Art-Api header). For a JFrog access
           # token the username is not validated, so a fixed placeholder is enough.
-          printf '%s' "$IO_JFROG_SBB_POLARION_TOKEN" | docker login sbb.jfrog.io -u polarion-ci --password-stdin
+          printf '%s' "$IO_JFROG_SBB_POLARION_TOKEN" | docker login sbb.jfrog.io -u polarion --password-stdin
       - name: 🏷️ Resolve latest released extension versions
         run: |
           base="https://sbb.jfrog.io/artifactory/polarion-mvn/ch/sbb/polarion/extensions"
