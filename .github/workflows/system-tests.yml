@@ -2,7 +2,7 @@
 name: System Tests (Polarion in Docker)
 # Integration tests for pull requests: spin up Polarion + WeasyPrint in Docker
 # (via the testcontainers harness in tests/run.py) and run the .st system tests
-# against the latest released pdf-exporter extension. This is the merge gate, so
+# against pinned extension versions (see env below). This is the merge gate, so
 # PRs no longer depend on the availability of the Polarion SUT.
 on:
   pull_request:
@@ -17,7 +17,9 @@ concurrency:
 env:
   JAVA_VERSION: '21'
   JAVA_DISTRIBUTION: temurin
+  TC_EXTENSION_VERSION: 13.0.0
   TC_ADMIN_UTILITY_VERSION: 5.0.0
+  TC_TEST_DATA_VERSION: 5.0.0
   TC_WEASYPRINT_SERVICE_IMAGE_NAME: ghcr.io/schweizerischebundesbahnen/weasyprint-service:68.1.1
   TC_POLARION_IMAGE_NAME: sbb.jfrog.io/polarion-docker/polarion/polarion:2606
 jobs:
@@ -56,30 +58,6 @@ jobs:
           # Token-only auth (same token as the Maven X-JFrog-Art-Api header). For a JFrog access
           # token the username is not validated, so a fixed placeholder is enough.
           printf '%s' "$IO_JFROG_SBB_POLARION_TOKEN" | docker login sbb.jfrog.io -u polarion --password-stdin
-      - name: 🏷️ Resolve latest released extension versions
-        run: |
-          base="https://repo.maven.apache.org/maven2/ch/sbb/polarion/extensions"
-          resolve_latest() {
-            artifact="$1"
-            meta=$(curl -fsSL "${base}/${artifact}/maven-metadata.xml")
-            version=$(printf '%s' "${meta}" | xmllint --xpath 'string(//metadata/versioning/release)' - 2>/dev/null)
-            if [ -z "${version}" ]; then
-              version=$(printf '%s' "${meta}" | xmllint --xpath 'string(//metadata/versioning/latest)' - 2>/dev/null)
-            fi
-            if [ -z "${version}" ]; then
-              echo "::error::Could not resolve latest version for ${artifact}" >&2
-              return 1
-            fi
-            printf '%s' "${version}"
-          }
-          ext_version=$(resolve_latest "ch.sbb.polarion.extension.pdf-exporter") || exit 1
-          test_data_version=$(resolve_latest "ch.sbb.polarion.extension.test-data") || exit 1
-          echo "Resolved latest pdf-exporter version: ${ext_version}"
-          echo "Resolved latest test-data version: ${test_data_version}"
-          {
-            echo "TC_EXTENSION_VERSION=${ext_version}"
-            echo "TC_TEST_DATA_VERSION=${test_data_version}"
-          } >> "${GITHUB_ENV}"
       - name: 🧱 Install dependencies
         run: uv sync --frozen
       - name: 🧪 Run system tests against Polarion in Docker
