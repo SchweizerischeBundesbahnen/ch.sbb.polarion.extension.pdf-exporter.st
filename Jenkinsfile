@@ -24,15 +24,22 @@ pipeline {
         timestamps()
     }
     triggers {
-        cron('H 2 * * *')  // Nightly run against the Polarion SUT; PRs are gated by GitHub Actions instead
+        // Nightly run against the Polarion SUT; PRs are gated by GitHub Actions instead.
+        // Timed to start after the scheduled nightly environment auto-update has completed.
+        cron('H 2 * * *')
     }
     stages {
         stage('System Tests') {
             when {
-                // Scheduled or manual runs only — do not run per push/PR (that is handled by GitHub Actions)
-                anyOf {
-                    triggeredBy 'TimerTrigger'
-                    triggeredBy cause: 'UserIdCause'
+                // Run only on the main branch and only for scheduled or manual builds. This is a
+                // multibranch job, so without the branch guard every feature/PR branch would also
+                // run these tests — those are gated by GitHub Actions instead.
+                allOf {
+                    branch 'main'
+                    anyOf {
+                        triggeredBy 'TimerTrigger'
+                        triggeredBy cause: 'UserIdCause'
+                    }
                 }
             }
             options {
