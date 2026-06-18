@@ -15,8 +15,10 @@
 
 This project uses dual CI:
 
-- **GitHub Actions** (`ci.yml`) — linting, type checking, and SonarCloud analysis
-- **Jenkins** (`Jenkinsfile`) — system tests against a Polarion instance behind a firewall. Jenkins discovers new branches via hourly org folder scan and polls for new commits every ~5 minutes.
+- **GitHub Actions**
+  - `ci.yml` — linting, type checking, and SonarCloud analysis.
+  - `system-tests.yml` — system tests against a Polarion instance running in a Docker container. This is the pull request merge gate (the `system-tests` check is required on `main`), so merging no longer depends on the availability of a long-lived Polarion instance.
+- **Jenkins** (`Jenkinsfile`) — the same system tests run on a nightly schedule against a long-lived Polarion instance behind a firewall, on the `main` branch only. Jenkins is no longer part of the per-pull-request merge path.
 
 ## 1. Run tests against prepared Polarion server (local or remote)
 In this mode, the tests will be executed against running Polarion server specified by app_url parameter and using app_token credentials.
