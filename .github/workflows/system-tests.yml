@@ -1,0 +1,76 @@
+---
+name: System Tests (Polarion in Docker)
+# Integration tests for pull requests: spin up Polarion + WeasyPrint in Docker
+# (via the testcontainers harness in tests/run.py) and run the .st system tests
+# against pinned extension versions (see env below). This is the merge gate, so
+# PRs no longer depend on the availability of the Polarion SUT.
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened, ready_for_review]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: system-tests-${{ github.ref }}
+  cancel-in-progress: true
+env:
+  JAVA_VERSION: '21'
+  JAVA_DISTRIBUTION: temurin
+  TC_EXTENSION_VERSION: 13.0.0
+  TC_ADMIN_UTILITY_VERSION: 5.0.0
+  TC_TEST_DATA_VERSION: 5.0.0
+  TC_WEASYPRINT_SERVICE_IMAGE_NAME: ghcr.io/schweizerischebundesbahnen/weasyprint-service:68.1.1
+  TC_POLARION_IMAGE_NAME: sbb.jfrog.io/polarion-docker/polarion/polarion:2606-0
+jobs:
+  system-tests:
+    # Skip draft PRs (this container suite is expensive); still runs on manual workflow_dispatch.
+    if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    env:
+      IO_JFROG_SBB_POLARION_TOKEN: ${{ secrets.IO_JFROG_SBB_POLARION_TOKEN }}
+    steps:
+      - name: 📄 Checkout code
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6.0.3
+        with:
+          persist-credentials: false
+      - name: 🐍 Set up Python from .tool-versions
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405  # v6.2.0
+        with:
+          python-version-file: .tool-versions
+      - name: 🧱 Install uv
+        uses: astral-sh/setup-uv@fac544c07dec837d0ccb6301d7b5580bf5edae39  # v8.2.0
+        with:
+          enable-cache: true
+      - name: ☕ Set up JDK and Maven
+        uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654  # v5.2.0
+        with:
+          distribution: ${{ env.JAVA_DISTRIBUTION }}
+          java-version: ${{ env.JAVA_VERSION }}
+      - name: 🔐 Configure Maven settings.xml (from repo .mvn/settings.xml)
+        run: |
+          mkdir -p "$HOME/.m2"
+          cp "$GITHUB_WORKSPACE/.mvn/settings.xml" "$HOME/.m2/settings.xml"
+      - name: 🐳 Log in to sbb.jfrog.io Docker registry
+        run: |
+          # Token-only auth (same token as the Maven X-JFrog-Art-Api header). For a JFrog access
+          # token the username is not validated, so a fixed placeholder is enough.
+          printf '%s' "$IO_JFROG_SBB_POLARION_TOKEN" | docker login sbb.jfrog.io -u polarion --password-stdin
+      - name: 🧱 Install dependencies
+        run: uv sync --frozen
+      - name: 🧪 Run system tests against Polarion in Docker
+        run: uv run tox -e test
+      - name: 📤 Upload test reports and generated/diff artifacts
+        # Always upload so failures can be diagnosed: the output folder contains the generated
+        # PDFs, the rendered page PNGs and the *_diff.png images highlighting visual mismatches.
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
+        with:
+          name: system-test-reports
+          path: |
+            TEST-*.xml
+            test-data/output/**
+          if-no-files-found: warn
+          retention-days: 7
