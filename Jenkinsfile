@@ -2,16 +2,10 @@
 
 // PR gating now happens in GitHub Actions (.github/workflows/system-tests.yml) against
 // Polarion in a Docker container, so Jenkins is no longer in the merge path. Here we only
-// run system tests on a schedule against the real Polarion SUT and notify on failure.
+// run system tests on a schedule against the real Polarion SUT. Build status is reported to
+// GitHub automatically and visible in the Jenkins UI; we just log the outcome here.
 def notifyOnFailure(String status) {
-    String recipient = env.POLARION_NOTIFY_EMAIL
-    if (recipient) {
-        mail to: recipient,
-             subject: "Polarion system tests ${status}: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-             body: "Scheduled system tests against the Polarion SUT ${status}.\n\n${env.BUILD_URL}"
-    } else {
-        echo "System tests ${status}. Set the POLARION_NOTIFY_EMAIL env var to enable e-mail notifications. See ${env.BUILD_URL}"
-    }
+    echo "Polarion system tests ${status}. See ${env.BUILD_URL}"
 }
 
 pipeline {
