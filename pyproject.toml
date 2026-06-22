@@ -186,6 +186,7 @@ mccabe = { max-complexity = 10 }
     "PLR0913", # too-many-arguments (test functions can have many fixtures)
     "PLR6201", # literal-membership (test readability over micro-optimization)
     "PLR6301", # no-self-use (test methods often don't use self)
+    "PLW0717", # too-many-try-statements (test setup readability; threshold not configurable in ruff)
     "PLW2901", # redefined-loop-name (test code readability pattern)
     "PT009",   # unittest-assertion (allow unittest-style assertions)
     "PT027",   # unittest-raises-assertion (allow unittest-style assertRaises)

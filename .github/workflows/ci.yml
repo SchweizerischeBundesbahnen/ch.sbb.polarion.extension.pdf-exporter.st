@@ -29,8 +29,12 @@ jobs:
           enable-cache: true
       - name: 🧱 Install dependencies
         run: uv sync --frozen
-      - name: 🧪 Run tests
-        run: uv run tox --notest # tests should be run on Jenkins; other checks may also need to be moved there
+      - name: 🔍 Run static checks (ruff lint + format, mypy, psp-linter)
+        # The Polarion-dependent `test` env runs in system-tests.yml (containerized) and nightly on
+        # Jenkins. Static checks run here so lint/type/format regressions are caught on the PR.
+        run: |
+          uv run tox -e lint,mypy,psp-linter
+          uv run ruff format --check --diff .
       - name: SonarCloud scan for PR
         uses: sonarsource/sonarqube-scan-action@713881670b6b3676cda39549040e2d88c70d582e  # v8.2.0
         if: github.event_name == 'pull_request' && github.event.repository.visibility == 'public'
