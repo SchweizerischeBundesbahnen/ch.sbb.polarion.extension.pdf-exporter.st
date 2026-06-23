@@ -16,6 +16,13 @@ pipeline {
         ansiColor('xterm')
         disableConcurrentBuilds()
         timestamps()
+        // Do not auto-build when the org-folder scan detects a new commit (BranchIndexingCause).
+        // Jenkins is behind the SBB network, so GitHub cannot push webhooks; the org folder polls
+        // GitHub and would otherwise trigger an indexing build on every push to main. That build
+        // skips the stage below, fails on the empty JUnit report, and posts a misleading status to
+        // the commit. This veto applies only to BranchIndexingCause; the nightly cron (TimerTrigger)
+        // and manual runs (UserIdCause) are unaffected. PRs are gated by GitHub Actions instead.
+        overrideIndexTriggers(false)
     }
     triggers {
         // Nightly run against the Polarion SUT; PRs are gated by GitHub Actions instead.
