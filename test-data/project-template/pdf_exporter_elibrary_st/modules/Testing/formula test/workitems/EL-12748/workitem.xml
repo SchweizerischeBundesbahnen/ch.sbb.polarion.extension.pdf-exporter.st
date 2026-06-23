@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<work-item>
+    <field id="author">admin</field>
+    <field id="created">2026-06-22 14:20:15.918 +0000</field>
+    <field id="description" text-type="text/html"><![CDATA[<br/>Formula 1 :  <span data-source="x=\frac{-b\pm\sqrt{\color{Red}{b^2-4ac}}}{2a}" data-inline="false" class="polarion-rte-formula"></span><br/>Formula 2 :<br/><br/> <span data-source="A = \pmatrix{
+a_{11} &amp; a_{12} &amp; \ldots &amp; a_{1n} \cr
+a_{21} &amp; a_{22} &amp; \ldots &amp; a_{2n} \cr
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots \cr
+a_{m1} &amp; a_{m2} &amp; \ldots &amp; a_{mn} \cr
+}" data-inline="false" class="polarion-rte-formula"></span> Formula 3 :<br/><br/> <span data-source="A = é à è" data-inline="false" class="polarion-rte-formula"></span> <br/><br/>]]></field>
+    <field id="linkedWorkItems">
+        <list>
+            <struct>
+                <item id="revision">124167</item>
+                <item id="role">duplicates</item>
+                <item id="workItem">elibrary$EL-264</item>
+            </struct>
+            <struct>
+                <item id="revision">126334</item>
+                <item id="role">duplicates</item>
+                <item id="workItem">EL-12746</item>
+            </struct>
+        </list>
+    </field>
+    <field id="priority">50.0</field>
+    <field id="severity">should_have</field>
+    <field id="status">draft</field>
+    <field id="title">Test_Set_Formula</field>
+    <field id="type">text</field>
+</work-item>
