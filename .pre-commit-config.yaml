@@ -9,14 +9,13 @@ repos:
         entry: uv run ruff format
         language: system
         types: [python]
-      # Run the linter (inherits config from pyproject.toml)
+      # Run the linter (inherits config from pyproject.toml; tests have relaxed per-file ignores)
       - id: ruff-check
         name: ruff linter
         entry: uv run ruff check
         language: system
         types: [python]
         args: [--fix]
-        exclude: ^tests/
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v6.0.0
     hooks:
@@ -56,8 +55,8 @@ repos:
         entry: uv run mypy
         language: system
         types: [python]
-        exclude: (^tests/)
-        args: [--config-file, pyproject.toml]
+        files: ^tests/
+        args: [--config-file, pyproject.toml, tests/]
         require_serial: true  # Serial processing is required for mypy (better performance and error reporting)
         pass_filenames: false  # Don't pass individual files, use the specified path
   - repo: local
@@ -65,11 +64,12 @@ repos:
       # Custom code style linter (PSP001-PSP005)
       - id: python-sbb-polarion-linter
         name: python-sbb-polarion code style linter
-        entry: uv run python -m python_sbb_polarion.linter
+        entry: uv run python-sbb-polarion-lint
         language: system
         types: [python]
+        files: ^tests/
+        args: [tests/]
         pass_filenames: false
-        files: ^python_sbb_polarion/
   - repo: local
     hooks:
       - id: uv-lock
