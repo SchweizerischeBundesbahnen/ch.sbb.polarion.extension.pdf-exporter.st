@@ -2,5 +2,88 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "github>SchweizerischeBundesbahnen/casc-renovate-preset-polarion-python"
+  ],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "Track the pdf-exporter extension version pinned in the system-tests workflow (GitHub Packages Maven registry, which hosts SNAPSHOT versions)",
+      "managerFilePatterns": [
+        "/(^|/)system-tests\\.yml$/"
+      ],
+      "matchStrings": [
+        "TC_EXTENSION_VERSION:\\s*[\"']?(?<currentValue>\\d[^\"'\\s]+)"
+      ],
+      "depNameTemplate": "ch.sbb.polarion.extensions:ch.sbb.polarion.extension.pdf-exporter",
+      "datasourceTemplate": "maven",
+      "registryUrlTemplate": "https://maven.pkg.github.com/SchweizerischeBundesbahnen/ch.sbb.polarion.extension.pdf-exporter",
+      "versioningTemplate": "maven"
+    },
+    {
+      "customType": "regex",
+      "description": "Track the admin-utility extension version pinned in the system-tests workflow (JFrog Maven repo)",
+      "managerFilePatterns": [
+        "/(^|/)system-tests\\.yml$/"
+      ],
+      "matchStrings": [
+        "TC_ADMIN_UTILITY_VERSION:\\s*[\"']?(?<currentValue>\\d[^\"'\\s]+)"
+      ],
+      "depNameTemplate": "ch.sbb.polarion.extensions:ch.sbb.polarion.extension.admin-utility",
+      "datasourceTemplate": "maven",
+      "registryUrlTemplate": "https://sbb.jfrog.io/artifactory/polarion-mvn",
+      "versioningTemplate": "maven"
+    },
+    {
+      "customType": "regex",
+      "description": "Track the test-data extension version pinned in the system-tests workflow (GitHub releases)",
+      "managerFilePatterns": [
+        "/(^|/)system-tests\\.yml$/"
+      ],
+      "matchStrings": [
+        "TC_TEST_DATA_VERSION:\\s*[\"']?(?<currentValue>\\d[^\"'\\s]+)"
+      ],
+      "depNameTemplate": "SchweizerischeBundesbahnen/ch.sbb.polarion.extension.test-data",
+      "datasourceTemplate": "github-releases",
+      "extractVersionTemplate": "^v(?<version>.+)$"
+    },
+    {
+      "customType": "regex",
+      "description": "Track the WeasyPrint service Docker image pinned in the system-tests workflow",
+      "managerFilePatterns": [
+        "/(^|/)system-tests\\.yml$/"
+      ],
+      "matchStrings": [
+        "TC_WEASYPRINT_SERVICE_IMAGE_NAME:\\s*(?<depName>[^\\s:]+):(?<currentValue>[^\\s\"']+)"
+      ],
+      "datasourceTemplate": "docker"
+    },
+    {
+      "customType": "regex",
+      "description": "Track the Polarion Docker image pinned in the system-tests workflow (JFrog Docker registry; YYMM-N tag scheme)",
+      "managerFilePatterns": [
+        "/(^|/)system-tests\\.yml$/"
+      ],
+      "matchStrings": [
+        "TC_POLARION_IMAGE_NAME:\\s*(?<depName>[^\\s:]+):(?<currentValue>[^\\s\"']+)"
+      ],
+      "datasourceTemplate": "docker",
+      "versioningTemplate": "regex:^(?<major>\\d+)-(?<minor>\\d+)$"
+    }
+  ],
+  "packageRules": [
+    {
+      "description": "pdf-exporter: also offer SNAPSHOT (unstable) versions from the GitHub Packages Maven registry",
+      "matchDepNames": [
+        "ch.sbb.polarion.extensions:ch.sbb.polarion.extension.pdf-exporter"
+      ],
+      "ignoreUnstable": false
+    },
+    {
+      "description": "Merge the system-test version bumps straight from the branch without opening a PR (includes majors and SNAPSHOTs)",
+      "matchManagers": [
+        "custom.regex"
+      ],
+      "automerge": true,
+      "automergeType": "branch"
+    }
   ]
 }
