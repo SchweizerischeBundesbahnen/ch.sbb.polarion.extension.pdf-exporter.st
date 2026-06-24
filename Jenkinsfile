@@ -1,9 +1,9 @@
 #!groovy
 
-// PR gating now happens in GitHub Actions (.github/workflows/system-tests.yml) against
-// Polarion in a Docker container, so Jenkins is no longer in the merge path. Here we only
-// run system tests on a schedule against the real Polarion SUT. Build status is reported to
-// GitHub automatically and visible in the Jenkins UI; we just log the outcome here.
+// PR gating happens in GitHub Actions (.github/workflows/system-tests.yml) against Polarion in a
+// Docker container, so Jenkins is not in the merge path. Here we only run the system tests on a
+// schedule against a persistent Polarion instance.
+
 def notifyOnFailure(String status) {
     echo "Polarion system tests ${status}. See ${env.BUILD_URL}"
 }
@@ -17,16 +17,15 @@ pipeline {
         disableConcurrentBuilds()
         timestamps()
         // Do not auto-build when the org-folder scan detects a new commit (BranchIndexingCause).
-        // Jenkins is behind the SBB network, so GitHub cannot push webhooks; the org folder polls
-        // GitHub and would otherwise trigger an indexing build on every push to main. That build
-        // skips the stage below, fails on the empty JUnit report, and posts a misleading status to
-        // the commit. This veto applies only to BranchIndexingCause; the nightly cron (TimerTrigger)
+        // GitHub webhooks are not delivered to this Jenkins, so the org folder polls GitHub and
+        // would otherwise trigger an indexing build on every push to main. That build skips the
+        // stage below, fails on the empty JUnit report, and posts a misleading status to the
+        // commit. This veto applies only to BranchIndexingCause; the nightly cron (TimerTrigger)
         // and manual runs (UserIdCause) are unaffected. PRs are gated by GitHub Actions instead.
         overrideIndexTriggers(false)
     }
     triggers {
-        // Nightly run against the Polarion SUT; PRs are gated by GitHub Actions instead.
-        // Timed to start after the scheduled nightly environment auto-update has completed.
+        // Nightly run against the persistent Polarion instance; PRs are gated by GitHub Actions instead.
         cron('H 2 * * *')
     }
     stages {
@@ -44,7 +43,7 @@ pipeline {
                 }
             }
             options {
-                lock resource: 'polarion-system-tests'  // Serialize across repos/branches — concurrent runs against the shared Polarion instance cause flaky visual diffs
+                lock resource: 'polarion-system-tests'  // Serialize across repos/branches — concurrent runs against the shared Polarion instance cause flaky results
             }
             stages {
                 stage('Install uv') {
@@ -69,7 +68,7 @@ pipeline {
                         ]) {
                             sh '''
                                 export PATH="$HOME/.local/bin:$PATH"
-                                uv run tox -- --app_url ${POLARION_BASE_URL} --app_token ${AUTH_TOKEN}
+                                uv run tox -e test -- --app_url ${POLARION_BASE_URL} --app_token ${AUTH_TOKEN}
                             '''
                         }
                     }

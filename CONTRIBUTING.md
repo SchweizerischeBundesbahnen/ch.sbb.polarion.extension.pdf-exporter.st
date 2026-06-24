@@ -34,7 +34,7 @@ Providing the following information will increase the chances of your issue bein
 * **Overview of the Issue** - if an error is being thrown a non-minified stack trace helps
 * **Toolchain and Environment Details** - which versions of libraries, toolchain, platform etc
 * **Motivation for or Use Case** - explain what are you trying to do and why the current behavior is a bug for you
-* **Browsers and Operating System** - is this a problem with all browsers?
+* **Polarion and Environment** - which Polarion version, run mode (external server or Docker test container), and operating system?
 * **Reproduce the Error** - provide a live example or a unambiguous set of steps
 * **Screenshots** - maybe screenshots can help the team to triage issues far more quickly than a text description
 * **Related Issues** - has a similar issue been reported before?
@@ -61,7 +61,7 @@ Before you submit your Pull Request (PR) consider the following guidelines:
 
 * Create your patch, **including appropriate test cases**.
 * Follow our [Coding Rules](#coding-rules).
-* Test your changes with our supported browsers and screen readers.
+* Run the system tests against a Polarion instance (see the README for the external-server and Docker test-container run modes).
 * Run tests and ensure that all tests pass.
 * Commit your changes using a descriptive commit message that follows our
   [commit message conventions](#commit-message-guidelines).
@@ -88,6 +88,6 @@ This project uses [Conventional Commits](https://www.conventionalcommits.org/).
 ### <a id="coding-rules"></a>Coding Rules
 To ensure consistency throughout the source code, keep these rules in mind as you are working:
 
-* All features or bug fixes **must be tested** by one or more specs (unit-tests).
-* All API methods **must be documented**.
+* All features or bug fixes **must be covered** by one or more system tests.
+* All test helpers and shared utilities **must be documented**.
 * Also see [CODING_STANDARDS.md](./CODING_STANDARDS.md)
