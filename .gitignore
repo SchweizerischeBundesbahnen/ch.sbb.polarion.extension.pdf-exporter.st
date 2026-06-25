@@ -173,7 +173,9 @@ pyrightconfig.json
 junittest.xml
 .history/
 
+# python-sbb-polarion linter cache
 .psp-lint-cache/
-test-data/output/
 
+# System-test runtime artifacts
+test-data/output/
 TEST-*.xml
