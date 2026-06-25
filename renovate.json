@@ -3,7 +3,7 @@
   "extends": [
     "github>SchweizerischeBundesbahnen/casc-renovate-preset-polarion-python"
   ],
-  pinDigests: false,
+  "pinDigests": false,
   "customManagers": [
     {
       "customType": "regex",
