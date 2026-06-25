@@ -78,9 +78,12 @@
       "ignoreUnstable": false
     },
     {
-      "description": "Merge the system-test version bumps straight from the branch without opening a PR (includes majors and SNAPSHOTs)",
+      "description": "Merge the system-test version bumps straight from the branch without opening a PR (includes majors and SNAPSHOTs). Scoped to system-tests.yml so the inherited preset's custom.regex manager (e.g. python-sbb-polarion in pyproject.toml) keeps its normal flow",
       "matchManagers": [
         "custom.regex"
+      ],
+      "matchFileNames": [
+        "**/system-tests.yml"
       ],
       "automerge": true,
       "automergeType": "branch"
