@@ -8,6 +8,18 @@
             <id>github</id>
             <repositories>
                 <repository>
+                    <id>github</id>
+                    <name>GitHub Packages</name>
+                    <url>https://maven.pkg.github.com/SchweizerischeBundesbahnen/ch.sbb.polarion.extension.pdf-exporter</url>
+                    <releases>
+                        <enabled>false</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>true</enabled>
+                        <updatePolicy>always</updatePolicy>
+                    </snapshots>
+                </repository>
+                <repository>
                     <id>jfrog_io</id>
                     <name>sbb.jfrog.io/artifactory/polarion-mvn</name>
                     <url>https://sbb.jfrog.io/artifactory/polarion-mvn</url>
@@ -25,6 +37,11 @@
         </profile>
     </profiles>
     <servers>
+        <server>
+            <id>github</id>
+            <username>${env.GITHUB_ACTOR}</username>
+            <password>${env.GITHUB_TOKEN}</password>
+        </server>
         <server>
             <id>jfrog_io</id>
             <configuration>
