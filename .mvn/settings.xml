@@ -15,20 +15,7 @@
                         <enabled>true</enabled>
                         <updatePolicy>never</updatePolicy>
                     </releases>
-                    <!-- Releases resolve from JFrog; snapshots are served by GitHub Packages below. -->
-                    <snapshots>
-                        <enabled>false</enabled>
-                    </snapshots>
-                </repository>
-                <!-- Extension SNAPSHOTs (e.g. 13.0.1-SNAPSHOT) are published to GitHub Packages,
-                     not JFrog. Needed to system-test against an unreleased extension build. -->
-                <repository>
-                    <id>github_packages</id>
-                    <name>GitHub Packages (pdf-exporter snapshots)</name>
-                    <url>https://maven.pkg.github.com/SchweizerischeBundesbahnen/ch.sbb.polarion.extension.pdf-exporter</url>
-                    <releases>
-                        <enabled>false</enabled>
-                    </releases>
+                    <!-- Both releases and SNAPSHOTs (e.g. 13.0.1-SNAPSHOT) resolve from JFrog. -->
                     <snapshots>
                         <enabled>true</enabled>
                     </snapshots>
@@ -48,11 +35,6 @@
                     </property>
                 </httpHeaders>
             </configuration>
-        </server>
-        <server>
-            <id>github_packages</id>
-            <username>${env.GITHUB_ACTOR}</username>
-            <password>${env.GITHUB_TOKEN}</password>
         </server>
     </servers>
     <mirrors/>

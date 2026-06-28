@@ -35,14 +35,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      # Extension SNAPSHOTs are resolved from GitHub Packages (see .mvn/settings.xml);
-      # reading them requires the GITHUB_TOKEN to carry the packages:read scope.
-      packages: read
     env:
       IO_JFROG_SBB_POLARION_TOKEN: ${{ secrets.IO_JFROG_SBB_POLARION_TOKEN }}
-      # Consumed by the github_packages <server> in .mvn/settings.xml for snapshot auth.
-      # GITHUB_ACTOR is provided automatically by the Actions runner.
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: 📄 Checkout code
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0  # v7
