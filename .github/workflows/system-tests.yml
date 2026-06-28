@@ -8,6 +8,12 @@ on:
   pull_request:
     branches: [main]
     types: [opened, synchronize, reopened, ready_for_review]
+  # Run the suite on Renovate's own branches so branch-automerge bumps
+  # (automergeType: branch in renovate.json) are exercised by system-tests
+  # before Renovate fast-forwards them into main. Renovate opens no PR for
+  # these, so the pull_request trigger above never fires for them.
+  push:
+    branches: ['renovate/**']
   workflow_dispatch:
 permissions:
   contents: read
@@ -17,7 +23,7 @@ concurrency:
 env:
   JAVA_VERSION: '21'
   JAVA_DISTRIBUTION: temurin
-  TC_EXTENSION_VERSION: 13.0.0
+  TC_EXTENSION_VERSION: 13.0.1-SNAPSHOT
   TC_ADMIN_UTILITY_VERSION: 5.0.0
   TC_TEST_DATA_VERSION: 5.0.0
   TC_WEASYPRINT_SERVICE_IMAGE_NAME: ghcr.io/schweizerischebundesbahnen/weasyprint-service:68.1.1
@@ -37,7 +43,7 @@ jobs:
         with:
           persist-credentials: false
       - name: 🐍 Set up Python from .tool-versions
-        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405  # v6.2.0
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1  # v6.3.0
         with:
           python-version-file: .tool-versions
       - name: 🧱 Install uv
