@@ -27,7 +27,6 @@
                         <enabled>true</enabled>
                         <updatePolicy>never</updatePolicy>
                     </releases>
-                    <!-- Both releases and SNAPSHOTs (e.g. 13.0.1-SNAPSHOT) resolve from JFrog. -->
                     <snapshots>
                         <enabled>true</enabled>
                     </snapshots>
