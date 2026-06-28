@@ -6,7 +6,7 @@
   "customManagers": [
     {
       "customType": "regex",
-      "description": "Track the pdf-exporter extension version pinned in the system-tests workflow (GitHub Packages Maven registry, which hosts SNAPSHOT versions)",
+      "description": "Track the pdf-exporter extension version pinned in the system-tests workflow (JFrog Maven repo, which hosts both release and SNAPSHOT versions)",
       "managerFilePatterns": [
         "/(^|/)system-tests\\.yml$/"
       ],
@@ -15,7 +15,7 @@
       ],
       "depNameTemplate": "ch.sbb.polarion.extensions:ch.sbb.polarion.extension.pdf-exporter",
       "datasourceTemplate": "maven",
-      "registryUrlTemplate": "https://maven.pkg.github.com/SchweizerischeBundesbahnen/ch.sbb.polarion.extension.pdf-exporter",
+      "registryUrlTemplate": "https://sbb.jfrog.io/artifactory/polarion-mvn",
       "versioningTemplate": "maven"
     },
     {
@@ -71,7 +71,7 @@
   ],
   "packageRules": [
     {
-      "description": "pdf-exporter: also offer SNAPSHOT (unstable) versions from the GitHub Packages Maven registry",
+      "description": "pdf-exporter: also offer SNAPSHOT (unstable) versions from the JFrog Maven repo",
       "matchDepNames": [
         "ch.sbb.polarion.extensions:ch.sbb.polarion.extension.pdf-exporter"
       ],
