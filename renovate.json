@@ -7,7 +7,7 @@
   "customManagers": [
     {
       "customType": "regex",
-      "description": "Track the pdf-exporter extension version pinned in the system-tests workflow (JFrog Maven repo, which hosts both release and SNAPSHOT versions)",
+      "description": "Track the pdf-exporter extension version pinned in the system-tests workflow (JFrog Maven repo, which hosts SNAPSHOT versions)",
       "managerFilePatterns": [
         "/(^|/)system-tests\\.yml$/"
       ],
