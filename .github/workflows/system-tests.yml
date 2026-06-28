@@ -35,7 +35,6 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      packages: read
     env:
       IO_JFROG_SBB_POLARION_TOKEN: ${{ secrets.IO_JFROG_SBB_POLARION_TOKEN }}
     steps:
@@ -68,8 +67,6 @@ jobs:
       - name: 🧱 Install dependencies
         run: uv sync --frozen
       - name: 🧪 Run system tests against Polarion in Docker
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: uv run tox -e test
       - name: 📤 Upload test reports and generated/diff artifacts
         # Always upload so failures can be diagnosed: the output folder contains the generated
