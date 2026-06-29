@@ -1,9 +1,14 @@
 ---
 name: System Tests (Polarion in Docker)
-# Integration tests for pull requests: spin up Polarion + WeasyPrint in Docker
-# (via the testcontainers harness in tests/run.py) and run the .st system tests
-# against pinned extension versions (see env below). This is the merge gate, so
-# PRs no longer depend on the availability of the Polarion SUT.
+# Integration tests for pull requests: run the .st system tests against Polarion + WeasyPrint
+# started as GitHub Actions *service containers* (see services: below). GitHub starts these during
+# job initialisation, in parallel with checkout/toolchain setup, so the large Polarion image is
+# pulled and booted off the test critical path. A provisioning step then installs the pinned
+# extension bundles into the running Polarion and restarts it, and the tests connect to the
+# pre-started services via TC_POLARION_SUT_URL / TC_WEASYPRINT_SERVICE_URL (python-sbb-polarion
+# falls back to its own testcontainers when those are absent — local dev and the Jenkins nightly
+# run are unaffected). This is the merge gate, so PRs no longer depend on the availability of the
+# Polarion SUT.
 on:
   pull_request:
     branches: [main]
@@ -26,8 +31,6 @@ env:
   TC_EXTENSION_VERSION: 13.0.1-SNAPSHOT
   TC_ADMIN_UTILITY_VERSION: 5.0.0
   TC_TEST_DATA_VERSION: 5.0.0
-  TC_WEASYPRINT_SERVICE_IMAGE_NAME: ghcr.io/schweizerischebundesbahnen/weasyprint-service:68.1.1
-  TC_POLARION_IMAGE_NAME: sbb.jfrog.io/polarion-docker/polarion/polarion:2606-0
 jobs:
   system-tests:
     # Skip draft PRs (this container suite is expensive); still runs on manual workflow_dispatch.
@@ -37,6 +40,26 @@ jobs:
       contents: read
     env:
       IO_JFROG_SBB_POLARION_TOKEN: ${{ secrets.IO_JFROG_SBB_POLARION_TOKEN }}
+    services:
+      # Started during job init, in parallel with checkout/toolchain setup, so the image pulls and
+      # Polarion's first boot overlap with everything below instead of the test critical path.
+      weasyprint:
+        image: ghcr.io/schweizerischebundesbahnen/weasyprint-service:68.1.1@sha256:ef7a97d2ceb3e30a18e7d7d35492f3932a37e5ceddd9404d051b829195caaf6b
+        ports:
+          - 9080:9080
+      polarion:
+        image: sbb.jfrog.io/polarion-docker/polarion/polarion:2606-0@sha256:0aa19d59ad4ebc4afa980a7359f870cae96905a3d0377e2263470cf6ecb16a9c
+        # Private registry: GitHub pulls the image using these credentials (a JFrog access token, for
+        # which the username is not validated, so a fixed placeholder is enough).
+        credentials:
+          username: polarion
+          password: ${{ secrets.IO_JFROG_SBB_POLARION_TOKEN }}
+        ports:
+          - 80:80
+        env:
+          # Reach the WeasyPrint service by its container-network alias (service label).
+          WEASYPRINT_SERVICE_ENDPOINT: http://weasyprint:9080
+          TZ: Europe/Zurich
     steps:
       - name: 📄 Checkout code
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0  # v7
@@ -59,14 +82,51 @@ jobs:
         run: |
           mkdir -p "$HOME/.m2"
           cp "$GITHUB_WORKSPACE/.mvn/settings.xml" "$HOME/.m2/settings.xml"
-      - name: 🐳 Log in to sbb.jfrog.io Docker registry
-        run: |
-          # Token-only auth (same token as the Maven X-JFrog-Art-Api header). For a JFrog access
-          # token the username is not validated, so a fixed placeholder is enough.
-          printf '%s' "$IO_JFROG_SBB_POLARION_TOKEN" | docker login sbb.jfrog.io -u polarion --password-stdin
       - name: 🧱 Install dependencies
         run: uv sync --frozen
-      - name: 🧪 Run system tests against Polarion in Docker
+      - name: 🧩 Provision the Polarion service (install extensions + restart)
+        # The Polarion service starts as a bare instance and does its expensive first-boot indexing
+        # while the steps above run. python-sbb-polarion does NOT provision a pre-started SUT, so we
+        # resolve the pinned bundles from JFrog, copy them into the running container and restart it
+        # so Polarion loads them (the warm restart is much faster than the cold first boot). The test
+        # step then connects and activates the licence / issues a token.
+        env:
+          POLARION_SERVICE_ID: ${{ job.services.polarion.id }}
+        run: |
+          set -euo pipefail
+          plugins_dir="$(mktemp -d)/plugins"
+          mkdir -p "$plugins_dir"
+          for artifact in \
+            "ch.sbb.polarion.extensions:ch.sbb.polarion.extension.pdf-exporter:${TC_EXTENSION_VERSION}" \
+            "ch.sbb.polarion.extensions:ch.sbb.polarion.extension.admin-utility:${TC_ADMIN_UTILITY_VERSION}" \
+            "ch.sbb.polarion.extensions:ch.sbb.polarion.extension.test-data:${TC_TEST_DATA_VERSION}"; do
+            mvn -B org.apache.maven.plugins:maven-dependency-plugin:copy \
+              -Dartifact="$artifact" -DoutputDirectory="$plugins_dir"
+          done
+
+          # Install the bundles into the running Polarion service and restart so it loads them.
+          # docker restart keeps the container filesystem, so whatever first-boot indexing already
+          # ran (overlapping the setup steps above) is preserved across the restart.
+          ext_path=/opt/polarion/polarion/extensions/sbb-extensions/eclipse/plugins
+          docker exec "$POLARION_SERVICE_ID" mkdir -p "$ext_path"
+          docker cp "$plugins_dir/." "$POLARION_SERVICE_ID:$ext_path/"
+          echo "Restarting Polarion so it loads the freshly installed extensions ..."
+          docker restart "$POLARION_SERVICE_ID"
+
+          # Wait until Polarion answers again before the tests connect: python-sbb-polarion retries
+          # HTTP 503 but not the connection resets a restarting Polarion returns first.
+          echo "Waiting for Polarion to come back up after the restart ..."
+          for attempt in $(seq 1 90); do
+            code="$(curl -s -o /dev/null -w '%{http_code}' http://localhost:80/polarion/ || true)"
+            echo "  attempt ${attempt}: HTTP ${code}"
+            case "$code" in 200 | 301 | 302) echo "Polarion is up."; break ;; esac
+            if [ "$attempt" -eq 90 ]; then echo "::error::Polarion did not come back up after the restart"; exit 1; fi
+            sleep 10
+          done
+      - name: 🧪 Run system tests against the pre-started Polarion
+        env:
+          TC_POLARION_SUT_URL: http://localhost:80
+          TC_WEASYPRINT_SERVICE_URL: http://localhost:9080
         run: uv run tox -e test
       - name: 📤 Upload test reports and generated/diff artifacts
         # Always upload so failures can be diagnosed: the output folder contains the generated
