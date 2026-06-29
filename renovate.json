@@ -45,29 +45,6 @@
       "depNameTemplate": "SchweizerischeBundesbahnen/ch.sbb.polarion.extension.test-data",
       "datasourceTemplate": "github-releases",
       "extractVersionTemplate": "^v(?<version>.+)$"
-    },
-    {
-      "customType": "regex",
-      "description": "Track the WeasyPrint service Docker image pinned in the system-tests workflow",
-      "managerFilePatterns": [
-        "/(^|/)system-tests\\.yml$/"
-      ],
-      "matchStrings": [
-        "TC_WEASYPRINT_SERVICE_IMAGE_NAME:\\s*(?<depName>[^\\s:]+):(?<currentValue>[^\\s\"']+)"
-      ],
-      "datasourceTemplate": "docker"
-    },
-    {
-      "customType": "regex",
-      "description": "Track the Polarion Docker image pinned in the system-tests workflow (JFrog Docker registry; YYMM-N tag scheme)",
-      "managerFilePatterns": [
-        "/(^|/)system-tests\\.yml$/"
-      ],
-      "matchStrings": [
-        "TC_POLARION_IMAGE_NAME:\\s*(?<depName>[^\\s:]+):(?<currentValue>[^\\s\"']+)"
-      ],
-      "datasourceTemplate": "docker",
-      "versioningTemplate": "regex:^(?<major>\\d+)-(?<minor>\\d+)$"
     }
   ],
   "packageRules": [
@@ -82,6 +59,30 @@
       "description": "Merge the system-test version bumps straight from the branch without opening a PR (includes majors and SNAPSHOTs). Scoped to system-tests.yml so the inherited preset's custom.regex manager (e.g. python-sbb-polarion in pyproject.toml) keeps its normal flow",
       "matchManagers": [
         "custom.regex"
+      ],
+      "matchFileNames": [
+        "**/system-tests.yml"
+      ],
+      "automerge": true,
+      "automergeType": "branch"
+    },
+    {
+      "description": "Polarion service-container image uses a YYMM-N tag scheme (e.g. 2606-0), tracked by the github-actions manager via the services: block in system-tests.yml",
+      "matchDatasources": [
+        "docker"
+      ],
+      "matchPackageNames": [
+        "sbb.jfrog.io/polarion-docker/polarion/polarion"
+      ],
+      "versioning": "regex:^(?<major>\\d+)-(?<minor>\\d+)$"
+    },
+    {
+      "description": "Branch-automerge the system-test service-container image bumps (WeasyPrint, Polarion), same flow as the version bumps above, so they are exercised by system-tests before being fast-forwarded into main",
+      "matchManagers": [
+        "github-actions"
+      ],
+      "matchDatasources": [
+        "docker"
       ],
       "matchFileNames": [
         "**/system-tests.yml"
