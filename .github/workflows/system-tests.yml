@@ -104,20 +104,25 @@ jobs:
               -Dartifact="$artifact" -DoutputDirectory="$plugins_dir"
           done
 
-          echo "Waiting for the Polarion service to finish its first boot ..."
-          for attempt in $(seq 1 90); do
-            code="$(curl -s -o /dev/null -w '%{http_code}' http://localhost:80/polarion/ || true)"
-            echo "  attempt ${attempt}: HTTP ${code}"
-            case "$code" in 200 | 301 | 302) echo "Polarion is up."; break ;; esac
-            if [ "$attempt" -eq 90 ]; then echo "::error::Polarion did not come up in time"; exit 1; fi
-            sleep 10
-          done
-
+          # Install the bundles into the running Polarion service and restart so it loads them.
+          # docker restart keeps the container filesystem, so whatever first-boot indexing already
+          # ran (overlapping the setup steps above) is preserved across the restart.
           ext_path=/opt/polarion/polarion/extensions/sbb-extensions/eclipse/plugins
           docker exec "$POLARION_SERVICE_ID" mkdir -p "$ext_path"
           docker cp "$plugins_dir/." "$POLARION_SERVICE_ID:$ext_path/"
           echo "Restarting Polarion so it loads the freshly installed extensions ..."
           docker restart "$POLARION_SERVICE_ID"
+
+          # Wait until Polarion answers again before the tests connect: python-sbb-polarion retries
+          # HTTP 503 but not the connection resets a restarting Polarion returns first.
+          echo "Waiting for Polarion to come back up after the restart ..."
+          for attempt in $(seq 1 90); do
+            code="$(curl -s -o /dev/null -w '%{http_code}' http://localhost:80/polarion/ || true)"
+            echo "  attempt ${attempt}: HTTP ${code}"
+            case "$code" in 200 | 301 | 302) echo "Polarion is up."; break ;; esac
+            if [ "$attempt" -eq 90 ]; then echo "::error::Polarion did not come back up after the restart"; exit 1; fi
+            sleep 10
+          done
       - name: 🧪 Run system tests against the pre-started Polarion
         env:
           TC_POLARION_SUT_URL: http://localhost:80
