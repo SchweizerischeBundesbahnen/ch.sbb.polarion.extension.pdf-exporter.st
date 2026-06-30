@@ -88,6 +88,19 @@
       ],
       "automerge": true,
       "automergeType": "branch"
+    },
+    {
+      "description": "Do not pin SHA digests for the Docker images tracked by the custom regex managers in system-tests.yml. config:best-practices (inherited via the preset) pulls in docker:pinDigests, a packageRule that enables pinDigests for the docker datasource and overrides the top-level pinDigests:false. These tags are floating (WeasyPrint release tag, Polarion YYMM-N) and the custom managers capture no currentDigest, so Renovate cannot write a digest back and the renovate/pin-dependencies branch fails to update on every run",
+      "matchManagers": [
+        "custom.regex"
+      ],
+      "matchDatasources": [
+        "docker"
+      ],
+      "matchFileNames": [
+        "**/system-tests.yml"
+      ],
+      "pinDigests": false
     }
   ]
 }
