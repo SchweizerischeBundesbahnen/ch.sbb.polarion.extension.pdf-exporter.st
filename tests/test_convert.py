@@ -936,3 +936,36 @@ class PdfExporterConvertTest(PdfExporterTestCase):
             expected_folder=self._get_expected_folder(),
             output_folder=self._get_output_folder(),
         )
+
+    def test_convert_live_doc_with_formula(self) -> None:
+        # Set header footer settings without timestamp
+        previous_header_footer_settings: JsonDict
+        _current_header_footer_settings: JsonDict
+        previous_header_footer_settings, _current_header_footer_settings = self._save_header_footer_settings(self.HEADER_FOOTER_WITHOUT_TIMESTAMP)
+
+        # Act
+        response: Response = self._convert(
+            project_id=self.project_id,
+            location_path="Testing/formula test",
+        )
+
+        # Restore original header footer settings
+        self._save_header_footer_settings(previous_header_footer_settings)
+
+        # Assert
+        self.assertEqual(HTTPStatus.OK, response.status_code)
+        self.assertIsNotNone(response.content)
+
+        # Verify PDF content
+        page_numbers: int = self._pdf_to_png(
+            pdf_bytes=response.content,
+            custom_prefix="test_convert_live_doc_with_formula",
+            output_folder=self._get_output_folder(),
+        )
+        self.assertEqual(1, page_numbers)
+        self._compare_pdf_pages(
+            custom_prefix="test_convert_live_doc_with_formula",
+            page_numbers=page_numbers,
+            expected_folder=self._get_expected_folder(),
+            output_folder=self._get_output_folder(),
+        )

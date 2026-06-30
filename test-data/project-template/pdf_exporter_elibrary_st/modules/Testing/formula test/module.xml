@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+    <field id="author">admin</field>
+    <field id="created">2026-06-22 14:20:15.894 +0000</field>
+    <field id="crossReferenceMappingData">elibrary_st_29477d0b61ac/EL-12745=elibrary_st_29477d0b61ac/EL-12747,elibrary_st_29477d0b61ac/EL-12746=elibrary_st_29477d0b61ac/EL-12748,elibrary/EL-264=elibrary_st_29477d0b61ac/EL-12746</field>
+    <field id="homePageContent" text-type="text/html">&lt;h1 id="polarion_wiki macro name=module-workitem;params=id=EL-12747"&gt;&lt;/h1&gt;&lt;div id="polarion_wiki macro name=module-workitem;params=id=EL-12748"&gt;&lt;/div&gt;&lt;p id="polarion_template_1"&gt;THIS DOCUMENT HAS NO CONTENT YET.&lt;/p&gt;&lt;p id="polarion_template_2"&gt;YOU CAN CREATE AND SAVE CONTENT NOW USING THIS EDITOR.&lt;/p&gt;</field>
+    <field id="renderingLayouts">
+        <list>
+            <struct>
+                <item id="label">Requirement</item>
+                <item id="layouter">paragraph</item>
+                <item id="properties">
+                    <list>
+                        <struct>
+                            <item id="key">fieldsAtStart</item>
+                            <item id="value">id</item>
+                        </struct>
+                        <struct>
+                            <item id="key">fieldsAtEnd</item>
+                            <item id="value">status</item>
+                        </struct>
+                    </list>
+                </item>
+                <item id="type">requirement</item>
+            </struct>
+        </list>
+    </field>
+    <field id="status">draft</field>
+    <field id="structureLinkRole">parent</field>
+    <field id="title">formula test</field>
+    <field id="type">generic</field>
+    <field id="usesOutlineNumbering">true</field>
+</module>
