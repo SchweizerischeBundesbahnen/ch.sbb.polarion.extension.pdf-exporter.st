@@ -75,7 +75,21 @@ jobs:
         run: |
           # Token-only auth (same token as the Maven X-JFrog-Art-Api header). For a JFrog access
           # token the username is not validated, so a fixed placeholder is enough.
-          printf '%s' "$IO_JFROG_SBB_POLARION_TOKEN" | docker login sbb.jfrog.io -u polarion --password-stdin
+          # Retry with backoff: the registry occasionally times out ("context deadline exceeded"),
+          # and a single transient failure here would otherwise fail the whole merge gate.
+          set -euo pipefail
+          for attempt in 1 2 3; do
+            if printf '%s' "$IO_JFROG_SBB_POLARION_TOKEN" | docker login sbb.jfrog.io -u polarion --password-stdin; then
+              echo "Logged in to sbb.jfrog.io (attempt ${attempt})."
+              break
+            fi
+            if [ "$attempt" -eq 3 ]; then
+              echo "::error::docker login to sbb.jfrog.io failed after 3 attempts"
+              exit 1
+            fi
+            echo "docker login attempt ${attempt} failed; retrying in $((attempt * 10))s ..."
+            sleep "$((attempt * 10))"
+          done
       - name: 🧱 Install dependencies
         run: uv sync --frozen
       - name: 🌐 Resolve the WeasyPrint service endpoint (reachable from the Polarion container)
