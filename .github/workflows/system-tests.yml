@@ -1,9 +1,13 @@
 ---
 name: System Tests (Polarion in Docker)
-# Integration tests for pull requests: spin up Polarion + WeasyPrint in Docker
-# (via the testcontainers harness in tests/run.py) and run the .st system tests
-# against pinned extension versions (see env below). This is the merge gate, so
-# PRs no longer depend on the availability of the Polarion SUT.
+# Integration tests for pull requests: run the .st system tests against pinned extension versions
+# (see env below). Polarion is started in the test step by the testcontainers harness (tests/run.py),
+# while WeasyPrint runs as a GitHub Actions *service container* (see services: below) so its image is
+# pulled during job initialisation, in parallel with checkout/toolchain setup, instead of on the test
+# critical path. Polarion reaches the pre-started WeasyPrint via the docker bridge gateway (see the
+# step that resolves TC_WEASYPRINT_SERVICE_URL); the harness falls back to its own WeasyPrint container
+# when that variable is absent (local dev, Jenkins nightly). This is the merge gate, so PRs no longer
+# depend on the availability of the Polarion SUT.
 on:
   pull_request:
     branches: [main]
@@ -26,7 +30,6 @@ env:
   TC_EXTENSION_VERSION: 13.1.1-SNAPSHOT
   TC_ADMIN_UTILITY_VERSION: 5.0.0
   TC_TEST_DATA_VERSION: 5.0.0
-  TC_WEASYPRINT_SERVICE_IMAGE_NAME: ghcr.io/schweizerischebundesbahnen/weasyprint-service:68.1.1
   TC_POLARION_IMAGE_NAME: sbb.jfrog.io/polarion-docker/polarion/polarion:2606-0
 jobs:
   system-tests:
@@ -37,6 +40,15 @@ jobs:
       contents: read
     env:
       IO_JFROG_SBB_POLARION_TOKEN: ${{ secrets.IO_JFROG_SBB_POLARION_TOKEN }}
+    services:
+      # WeasyPrint as a service: GitHub starts it during job init, in parallel with checkout/toolchain
+      # setup, so the (public, GHCR) image pull is hidden behind setup time. Polarion stays on
+      # testcontainers and reaches this service through the docker bridge gateway — see the
+      # "Resolve the WeasyPrint service endpoint" step. Tracked by Renovate's github-actions manager.
+      weasyprint:
+        image: ghcr.io/schweizerischebundesbahnen/weasyprint-service:68.1.1@sha256:ef7a97d2ceb3e30a18e7d7d35492f3932a37e5ceddd9404d051b829195caaf6b
+        ports:
+          - 9080:9080
     steps:
       - name: 📄 Checkout code
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0  # v7
@@ -63,10 +75,36 @@ jobs:
         run: |
           # Token-only auth (same token as the Maven X-JFrog-Art-Api header). For a JFrog access
           # token the username is not validated, so a fixed placeholder is enough.
-          printf '%s' "$IO_JFROG_SBB_POLARION_TOKEN" | docker login sbb.jfrog.io -u polarion --password-stdin
+          # Retry with backoff: the registry occasionally times out ("context deadline exceeded"),
+          # and a single transient failure here would otherwise fail the whole merge gate.
+          set -euo pipefail
+          for attempt in 1 2 3; do
+            if printf '%s' "$IO_JFROG_SBB_POLARION_TOKEN" | docker login sbb.jfrog.io -u polarion --password-stdin; then
+              echo "Logged in to sbb.jfrog.io (attempt ${attempt})."
+              break
+            fi
+            if [ "$attempt" -eq 3 ]; then
+              echo "::error::docker login to sbb.jfrog.io failed after 3 attempts"
+              exit 1
+            fi
+            echo "docker login attempt ${attempt} failed; retrying in $((attempt * 10))s ..."
+            sleep "$((attempt * 10))"
+          done
       - name: 🧱 Install dependencies
         run: uv sync --frozen
+      - name: 🌐 Resolve the WeasyPrint service endpoint (reachable from the Polarion container)
+        # The harness injects this URL into the Polarion container as WEASYPRINT_SERVICE_ENDPOINT.
+        # Polarion runs as a testcontainer on the default bridge, while the WeasyPrint service publishes
+        # 9080 on the host — so "localhost" would be Polarion's own container. Reach the host (and thus
+        # the published service) through the bridge gateway address instead.
+        run: |
+          set -euo pipefail
+          gateway="$(docker network inspect bridge -f '{{ (index .IPAM.Config 0).Gateway }}')"
+          echo "WeasyPrint reachable from containers at http://${gateway}:9080"
+          echo "TC_WEASYPRINT_SERVICE_URL=http://${gateway}:9080" >> "$GITHUB_ENV"
       - name: 🧪 Run system tests against Polarion in Docker
+        # TC_WEASYPRINT_SERVICE_URL (set above) tells the harness to use the pre-started WeasyPrint
+        # service instead of starting its own container.
         run: uv run tox -e test
       - name: 📤 Upload test reports and generated/diff artifacts
         # Always upload so failures can be diagnosed: the output folder contains the generated
