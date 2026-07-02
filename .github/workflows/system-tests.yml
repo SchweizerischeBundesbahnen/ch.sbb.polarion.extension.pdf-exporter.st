@@ -26,7 +26,7 @@ env:
   TC_EXTENSION_VERSION: 13.1.1-SNAPSHOT
   TC_ADMIN_UTILITY_VERSION: 5.0.0
   TC_TEST_DATA_VERSION: 5.0.0
-  TC_WEASYPRINT_SERVICE_IMAGE_NAME: ghcr.io/schweizerischebundesbahnen/weasyprint-service:68.1.1
+  TC_WEASYPRINT_SERVICE_IMAGE_NAME: ghcr.io/schweizerischebundesbahnen/weasyprint-service:69.0.0
   TC_POLARION_IMAGE_NAME: sbb.jfrog.io/polarion-docker/polarion/polarion:2606-0
 jobs:
   system-tests:
