@@ -20,170 +20,39 @@ class PdfExporterConvertTest(PdfExporterTestCase):
     """Tests for PDF conversion functionality."""
 
     def test_convert_live_doc(self) -> None:
-        # Set header footer settings without timestamp
-        previous_header_footer_settings: JsonDict
-        _current_header_footer_settings: JsonDict
-        previous_header_footer_settings, _current_header_footer_settings = self._save_header_footer_settings(self.HEADER_FOOTER_WITHOUT_TIMESTAMP)
-
-        # Act
-        response: Response = self._convert(
-            project_id=self.project_id,
+        self._assert_convert_matches_snapshot(
             location_path=self.DOCUMENT_LOCATION,
-        )
-
-        # Restore original header footer settings
-        self._save_header_footer_settings(previous_header_footer_settings)
-
-        # Assert
-        self.assertEqual(HTTPStatus.OK, response.status_code)
-        self.assertIsNotNone(response.content)
-
-        # Verify PDF content
-        page_numbers: int = self._pdf_to_png(
-            pdf_bytes=response.content,
             custom_prefix="test_convert_live_doc",
-            output_folder=self._get_output_folder(),
-        )
-        self.assertEqual(1, page_numbers)
-        self._compare_pdf_pages(
-            custom_prefix="test_convert_live_doc",
-            page_numbers=page_numbers,
-            expected_folder=self._get_expected_folder(),
-            output_folder=self._get_output_folder(),
+            expected_page_count=1,
         )
 
     def test_convert_live_doc_with_toc(self) -> None:
-        # Set header footer settings without timestamp
-        previous_header_footer_settings: JsonDict
-        _current_header_footer_settings: JsonDict
-        previous_header_footer_settings, _current_header_footer_settings = self._save_header_footer_settings(self.HEADER_FOOTER_WITHOUT_TIMESTAMP)
-
-        # Act
-        response: Response = self._convert(
-            project_id=self.project_id,
+        self._assert_convert_matches_snapshot(
             location_path="Specification/live_doc_with_ToC",
-        )
-
-        # Restore original header footer settings
-        self._save_header_footer_settings(previous_header_footer_settings)
-
-        # Assert
-        self.assertEqual(HTTPStatus.OK, response.status_code)
-        self.assertIsNotNone(response.content)
-
-        # Verify PDF content
-        page_numbers: int = self._pdf_to_png(
-            pdf_bytes=response.content,
             custom_prefix="test_convert_live_doc_with_ToC",
-            output_folder=self._get_output_folder(),
-        )
-        self.assertEqual(3, page_numbers)
-        self._compare_pdf_pages(
-            custom_prefix="test_convert_live_doc_with_ToC",
-            page_numbers=page_numbers,
-            expected_folder=self._get_expected_folder(),
-            output_folder=self._get_output_folder(),
+            expected_page_count=3,
         )
 
     def test_convert_live_doc_with_tof(self) -> None:
-        # Set header footer settings without timestamp
-        previous_header_footer_settings: JsonDict
-        _current_header_footer_settings: JsonDict
-        previous_header_footer_settings, _current_header_footer_settings = self._save_header_footer_settings(self.HEADER_FOOTER_WITHOUT_TIMESTAMP)
-
-        # Act
-        response: Response = self._convert(
-            project_id=self.project_id,
+        self._assert_convert_matches_snapshot(
             location_path="Specification/live_doc_with_ToF",
-        )
-
-        # Restore original header footer settings
-        self._save_header_footer_settings(previous_header_footer_settings)
-
-        # Assert
-        self.assertEqual(HTTPStatus.OK, response.status_code)
-        self.assertIsNotNone(response.content)
-
-        # Verify PDF content
-        page_numbers: int = self._pdf_to_png(
-            pdf_bytes=response.content,
             custom_prefix="test_convert_live_doc_with_ToF",
-            output_folder=self._get_output_folder(),
-        )
-        self.assertEqual(4, page_numbers)
-        self._compare_pdf_pages(
-            custom_prefix="test_convert_live_doc_with_ToF",
-            page_numbers=page_numbers,
-            expected_folder=self._get_expected_folder(),
-            output_folder=self._get_output_folder(),
+            expected_page_count=4,
         )
 
     def test_convert_live_doc_with_tot(self) -> None:
-        # Set header footer settings without timestamp
-        previous_header_footer_settings: JsonDict
-        _current_header_footer_settings: JsonDict
-        previous_header_footer_settings, _current_header_footer_settings = self._save_header_footer_settings(self.HEADER_FOOTER_WITHOUT_TIMESTAMP)
-
-        # Act
-        response: Response = self._convert(
-            project_id=self.project_id,
+        self._assert_convert_matches_snapshot(
             location_path="Specification/live_doc_with_ToT",
-        )
-
-        # Restore original header footer settings
-        self._save_header_footer_settings(previous_header_footer_settings)
-
-        # Assert
-        self.assertEqual(HTTPStatus.OK, response.status_code)
-        self.assertIsNotNone(response.content)
-
-        # Verify PDF content
-        page_numbers: int = self._pdf_to_png(
-            pdf_bytes=response.content,
             custom_prefix="test_convert_live_doc_with_ToT",
-            output_folder=self._get_output_folder(),
-        )
-        self.assertEqual(1, page_numbers)
-        self._compare_pdf_pages(
-            custom_prefix="test_convert_live_doc_with_ToT",
-            page_numbers=page_numbers,
-            expected_folder=self._get_expected_folder(),
-            output_folder=self._get_output_folder(),
+            expected_page_count=1,
         )
 
     def test_convert_live_doc_with_title_page(self) -> None:
-        # Set header footer settings without timestamp
-        previous_header_footer_settings: JsonDict
-        _current_header_footer_settings: JsonDict
-        previous_header_footer_settings, _current_header_footer_settings = self._save_header_footer_settings(self.HEADER_FOOTER_WITHOUT_TIMESTAMP)
-
-        # Act
-        custom_export_params: JsonDict = {"coverPage": "Default"}
-        response: Response = self._convert(
-            project_id=self.project_id,
+        self._assert_convert_matches_snapshot(
             location_path=self.DOCUMENT_LOCATION,
-            custom_export_params=custom_export_params,
-        )
-
-        # Restore original header footer settings
-        self._save_header_footer_settings(previous_header_footer_settings)
-
-        # Assert
-        self.assertEqual(HTTPStatus.OK, response.status_code)
-        self.assertIsNotNone(response.content)
-
-        # Verify PDF content
-        page_numbers: int = self._pdf_to_png(
-            pdf_bytes=response.content,
             custom_prefix="test_convert_live_doc_with_title_page",
-            output_folder=self._get_output_folder(),
-        )
-        self.assertEqual(2, page_numbers)
-        self._compare_pdf_pages(
-            custom_prefix="test_convert_live_doc_with_title_page",
-            page_numbers=page_numbers,
-            expected_folder=self._get_expected_folder(),
-            output_folder=self._get_output_folder(),
+            expected_page_count=2,
+            custom_export_params={"coverPage": "Default"},
         )
 
     def test_convert_unknown_project(self) -> None:
@@ -209,81 +78,27 @@ class PdfExporterConvertTest(PdfExporterTestCase):
         self.assertEqual(HTTPStatus.NOT_FOUND, response.status_code)
 
     def test_convert_live_report(self) -> None:
-        # Set header footer settings without timestamp
-        previous_header_footer_settings: JsonDict
-        _current_header_footer_settings: JsonDict
-        previous_header_footer_settings, _current_header_footer_settings = self._save_header_footer_settings(self.HEADER_FOOTER_WITHOUT_TIMESTAMP)
-
-        # Act
-        custom_export_params: JsonDict = {"documentType": DocumentType.LIVE_REPORT}
-        response: Response = self._convert(
-            project_id=self.project_id,
-            location_path="Reports/Items By Status",
-            custom_export_params=custom_export_params,
-        )
-
-        # Restore original header footer settings
-        self._save_header_footer_settings(previous_header_footer_settings)
-
-        # Assert
-        self.assertEqual(HTTPStatus.OK, response.status_code)
-        self.assertIsNotNone(response.content)
-
-        # Verify PDF content
-        page_numbers: int = self._pdf_to_png(
-            pdf_bytes=response.content,
-            custom_prefix="test_convert_live_report",
-            output_folder=self._get_output_folder(),
-        )
-        self.assertEqual(2, page_numbers)
         # Pixel coordinates for ignoring "Reported by {user}" and timestamp region on page 1
         ignore_region_coords: list[tuple[int, int, int, int]] = [(1575, 450, 2300, 575)]
-        self._compare_pdf_pages(
+        self._assert_convert_matches_snapshot(
+            location_path="Reports/Items By Status",
             custom_prefix="test_convert_live_report",
-            page_numbers=page_numbers,
-            expected_folder=self._get_expected_folder(),
-            output_folder=self._get_output_folder(),
+            expected_page_count=2,
+            custom_export_params={"documentType": DocumentType.LIVE_REPORT},
             ignore_regions_per_page={1: ignore_region_coords},
         )
 
     def test_convert_live_report_with_title_page(self) -> None:
-        # Set header footer settings without timestamp
-        previous_header_footer_settings: JsonDict
-        _current_header_footer_settings: JsonDict
-        previous_header_footer_settings, _current_header_footer_settings = self._save_header_footer_settings(self.HEADER_FOOTER_WITHOUT_TIMESTAMP)
-
-        # Act
-        custom_export_params: JsonDict = {
-            "coverPage": "Default",
-            "documentType": DocumentType.LIVE_REPORT,
-        }
-        response: Response = self._convert(
-            project_id=self.project_id,
-            location_path="Reports/Items By Status",
-            custom_export_params=custom_export_params,
-        )
-
-        # Restore original header footer settings
-        self._save_header_footer_settings(previous_header_footer_settings)
-
-        # Assert
-        self.assertEqual(HTTPStatus.OK, response.status_code)
-        self.assertIsNotNone(response.content)
-
-        # Verify PDF content
-        page_numbers: int = self._pdf_to_png(
-            pdf_bytes=response.content,
-            custom_prefix="test_convert_live_report_with_title_page",
-            output_folder=self._get_output_folder(),
-        )
-        self.assertEqual(3, page_numbers)
         # Pixel coordinates for ignoring "Reported by {user}" and timestamp region on page 2
         ignore_region_coords_page2: list[tuple[int, int, int, int]] = [(1575, 450, 2300, 575)]
-        self._compare_pdf_pages(
+        self._assert_convert_matches_snapshot(
+            location_path="Reports/Items By Status",
             custom_prefix="test_convert_live_report_with_title_page",
-            page_numbers=page_numbers,
-            expected_folder=self._get_expected_folder(),
-            output_folder=self._get_output_folder(),
+            expected_page_count=3,
+            custom_export_params={
+                "coverPage": "Default",
+                "documentType": DocumentType.LIVE_REPORT,
+            },
             ignore_regions_per_page={2: ignore_region_coords_page2},
         )
 
@@ -438,8 +253,7 @@ class PdfExporterConvertTest(PdfExporterTestCase):
     def test_convert_live_doc_with_metadate(self) -> None:
         # Set header footer settings without timestamp
         previous_header_footer_settings: JsonDict
-        _current_header_footer_settings: JsonDict
-        previous_header_footer_settings, _current_header_footer_settings = self._save_header_footer_settings(self.HEADER_FOOTER_WITHOUT_TIMESTAMP)
+        previous_header_footer_settings, _ = self._save_header_footer_settings(self.HEADER_FOOTER_WITHOUT_TIMESTAMP)
 
         custom_export_params: JsonDict = {"metadataFields": ["version"]}
         # Act
@@ -477,293 +291,82 @@ class PdfExporterConvertTest(PdfExporterTestCase):
             "footerCenter": "#set ($doc = $transaction.documents.getBy.oldApiObject($document) ) $doc.fields.type.render",
             "footerRight": "FR",
         }
-        previous_header_footer_settings: JsonDict
-        _current_header_footer_settings: JsonDict
-        previous_header_footer_settings, _current_header_footer_settings = self._save_header_footer_settings(header_footer_settings)
-
-        # Act
-        response: Response = self._convert(project_id=self.project_id, location_path=self.DOCUMENT_LOCATION)
-
-        # Restore original header footer settings
-        self._save_header_footer_settings(previous_header_footer_settings)
-
-        # Assert
-        self.assertEqual(HTTPStatus.OK, response.status_code)
-        self.assertIsNotNone(response.content)
-
-        # Verify PDF content
-        page_numbers: int = self._pdf_to_png(
-            pdf_bytes=response.content,
+        self._assert_convert_matches_snapshot(
+            location_path=self.DOCUMENT_LOCATION,
             custom_prefix="test_convert_live_doc_with_velocity",
-            output_folder=self._get_output_folder(),
-        )
-        self.assertEqual(1, page_numbers)
-        self._compare_pdf_pages(
-            custom_prefix="test_convert_live_doc_with_velocity",
-            page_numbers=page_numbers,
-            expected_folder=self._get_expected_folder(),
-            output_folder=self._get_output_folder(),
+            expected_page_count=1,
+            header_footer_settings=header_footer_settings,
         )
 
     def test_convert_live_doc_with_all_comments(self) -> None:
-        # Set header footer settings without timestamp
-        previous_header_footer_settings: JsonDict
-        _current_header_footer_settings: JsonDict
-        previous_header_footer_settings, _current_header_footer_settings = self._save_header_footer_settings(self.HEADER_FOOTER_WITHOUT_TIMESTAMP)
-
-        custom_export_params: JsonDict = {"renderComments": "ALL"}
-        # Act
-        response: Response = self._convert(
-            project_id=self.project_id,
-            location_path="Specification/live_doc_with_comments",
-            custom_export_params=custom_export_params,
-        )
-
-        # Restore original header footer settings
-        self._save_header_footer_settings(previous_header_footer_settings)
-
-        # Assert
-        self.assertEqual(HTTPStatus.OK, response.status_code)
-        self.assertIsNotNone(response.content)
-
-        # Verify PDF content
-        page_numbers: int = self._pdf_to_png(
-            pdf_bytes=response.content,
-            custom_prefix="test_convert_live_doc_with_all_comments",
-            output_folder=self._get_output_folder(),
-        )
-        self.assertEqual(1, page_numbers)
-
         ignore_region_coords_page1: list[tuple[int, int, int, int]] = [(550, 600, 860, 2000)]
-        self._compare_pdf_pages(
+        self._assert_convert_matches_snapshot(
+            location_path="Specification/live_doc_with_comments",
             custom_prefix="test_convert_live_doc_with_all_comments",
-            page_numbers=page_numbers,
-            expected_folder=self._get_expected_folder(),
-            output_folder=self._get_output_folder(),
+            expected_page_count=1,
+            custom_export_params={"renderComments": "ALL"},
             ignore_regions_per_page={1: ignore_region_coords_page1},
         )
 
     def test_convert_live_doc_with_open_comments(self) -> None:
-        # Set header footer settings without timestamp
-        previous_header_footer_settings: JsonDict
-        _current_header_footer_settings: JsonDict
-        previous_header_footer_settings, _current_header_footer_settings = self._save_header_footer_settings(self.HEADER_FOOTER_WITHOUT_TIMESTAMP)
-
-        custom_export_params: JsonDict = {"renderComments": "OPEN"}
-        # Act
-        response: Response = self._convert(
-            project_id=self.project_id,
-            location_path="Specification/live_doc_with_comments",
-            custom_export_params=custom_export_params,
-        )
-
-        # Restore original header footer settings
-        self._save_header_footer_settings(previous_header_footer_settings)
-
-        # Assert
-        self.assertEqual(HTTPStatus.OK, response.status_code)
-        self.assertIsNotNone(response.content)
-
-        # Verify PDF content
-        page_numbers: int = self._pdf_to_png(
-            pdf_bytes=response.content,
-            custom_prefix="test_convert_live_doc_with_open_comments",
-            output_folder=self._get_output_folder(),
-        )
-        self.assertEqual(1, page_numbers)
-
         ignore_region_coords_page1: list[tuple[int, int, int, int]] = [(550, 550, 860, 1600)]
-        self._compare_pdf_pages(
+        self._assert_convert_matches_snapshot(
+            location_path="Specification/live_doc_with_comments",
             custom_prefix="test_convert_live_doc_with_open_comments",
-            page_numbers=page_numbers,
-            expected_folder=self._get_expected_folder(),
-            output_folder=self._get_output_folder(),
+            expected_page_count=1,
+            custom_export_params={"renderComments": "OPEN"},
             ignore_regions_per_page={1: ignore_region_coords_page1},
         )
 
     def test_convert_live_doc_with_open_unreferenced_comments(self) -> None:
-        # Set header footer settings without timestamp
-        previous_header_footer_settings: JsonDict
-        _current_header_footer_settings: JsonDict
-        previous_header_footer_settings, _current_header_footer_settings = self._save_header_footer_settings(self.HEADER_FOOTER_WITHOUT_TIMESTAMP)
-
-        custom_export_params: JsonDict = {
-            "renderComments": "OPEN",
-            "includeUnreferencedComments": "true",
-        }
-        # Act
-        response: Response = self._convert(
-            project_id=self.project_id,
+        self._assert_convert_matches_snapshot(
             location_path="Specification/live_doc_with_comments",
-            custom_export_params=custom_export_params,
-        )
-
-        # Restore original header footer settings
-        self._save_header_footer_settings(previous_header_footer_settings)
-
-        # Assert
-        self.assertEqual(HTTPStatus.OK, response.status_code)
-        self.assertIsNotNone(response.content)
-
-        # Verify PDF content
-        page_numbers: int = self._pdf_to_png(
-            pdf_bytes=response.content,
             custom_prefix="test_convert_live_doc_with_open_unref_comments",
-            output_folder=self._get_output_folder(),
-        )
-        self.assertEqual(1, page_numbers)
-        self._compare_pdf_pages(
-            custom_prefix="test_convert_live_doc_with_open_unref_comments",
-            page_numbers=page_numbers,
-            expected_folder=self._get_expected_folder(),
-            output_folder=self._get_output_folder(),
+            expected_page_count=1,
+            custom_export_params={
+                "renderComments": "OPEN",
+                "includeUnreferencedComments": "true",
+            },
         )
 
     def test_convert_live_doc_with_all_unreferenced_comments(self) -> None:
-        # Set header footer settings without timestamp
-        previous_header_footer_settings: JsonDict
-        _current_header_footer_settings: JsonDict
-        previous_header_footer_settings, _current_header_footer_settings = self._save_header_footer_settings(self.HEADER_FOOTER_WITHOUT_TIMESTAMP)
-
-        custom_export_params: JsonDict = {
-            "renderComments": "ALL",
-            "includeUnreferencedComments": "true",
-        }
-        # Act
-        response: Response = self._convert(
-            project_id=self.project_id,
+        self._assert_convert_matches_snapshot(
             location_path="Specification/live_doc_with_comments",
-            custom_export_params=custom_export_params,
-        )
-
-        # Restore original header footer settings
-        self._save_header_footer_settings(previous_header_footer_settings)
-
-        # Assert
-        self.assertEqual(HTTPStatus.OK, response.status_code)
-        self.assertIsNotNone(response.content)
-
-        # Verify PDF content
-        page_numbers: int = self._pdf_to_png(
-            pdf_bytes=response.content,
             custom_prefix="test_convert_live_doc_with_all_unref_comments",
-            output_folder=self._get_output_folder(),
-        )
-        self.assertEqual(1, page_numbers)
-        self._compare_pdf_pages(
-            custom_prefix="test_convert_live_doc_with_all_unref_comments",
-            page_numbers=page_numbers,
-            expected_folder=self._get_expected_folder(),
-            output_folder=self._get_output_folder(),
+            expected_page_count=1,
+            custom_export_params={
+                "renderComments": "ALL",
+                "includeUnreferencedComments": "true",
+            },
         )
 
     def test_convert_live_doc_with_open_native_comments(self) -> None:
-        # Set header footer settings without timestamp
-        previous_header_footer_settings: JsonDict
-        _current_header_footer_settings: JsonDict
-        previous_header_footer_settings, _current_header_footer_settings = self._save_header_footer_settings(self.HEADER_FOOTER_WITHOUT_TIMESTAMP)
-
-        custom_export_params: JsonDict = {
-            "renderComments": "OPEN",
-            "renderNativeComments": "true",
-        }
-        # Act
-        response: Response = self._convert(
-            project_id=self.project_id,
+        self._assert_convert_matches_snapshot(
             location_path="Specification/live_doc_with_comments",
-            custom_export_params=custom_export_params,
-        )
-
-        # Restore original header footer settings
-        self._save_header_footer_settings(previous_header_footer_settings)
-
-        # Assert
-        self.assertEqual(HTTPStatus.OK, response.status_code)
-        self.assertIsNotNone(response.content)
-
-        # Verify PDF content
-        page_numbers: int = self._pdf_to_png(
-            pdf_bytes=response.content,
             custom_prefix="test_convert_live_doc_with_open_native_comments",
-            output_folder=self._get_output_folder(),
-        )
-        self.assertEqual(1, page_numbers)
-        self._compare_pdf_pages(
-            custom_prefix="test_convert_live_doc_with_open_native_comments",
-            page_numbers=page_numbers,
-            expected_folder=self._get_expected_folder(),
-            output_folder=self._get_output_folder(),
+            expected_page_count=1,
+            custom_export_params={
+                "renderComments": "OPEN",
+                "renderNativeComments": "true",
+            },
         )
 
     def test_convert_live_doc_with_all_native_comments(self) -> None:
-        # Set header footer settings without timestamp
-        previous_header_footer_settings: JsonDict
-        _current_header_footer_settings: JsonDict
-        previous_header_footer_settings, _current_header_footer_settings = self._save_header_footer_settings(self.HEADER_FOOTER_WITHOUT_TIMESTAMP)
-
-        custom_export_params: JsonDict = {
-            "renderComments": "ALL",
-            "renderNativeComments": "true",
-        }
-        # Act
-        response: Response = self._convert(
-            project_id=self.project_id,
+        self._assert_convert_matches_snapshot(
             location_path="Specification/live_doc_with_comments",
-            custom_export_params=custom_export_params,
-        )
-
-        # Restore original header footer settings
-        self._save_header_footer_settings(previous_header_footer_settings)
-
-        # Assert
-        self.assertEqual(HTTPStatus.OK, response.status_code)
-        self.assertIsNotNone(response.content)
-
-        # Verify PDF content
-        page_numbers: int = self._pdf_to_png(
-            pdf_bytes=response.content,
             custom_prefix="test_convert_live_doc_with_all_native_comments",
-            output_folder=self._get_output_folder(),
-        )
-        self.assertEqual(1, page_numbers)
-        self._compare_pdf_pages(
-            custom_prefix="test_convert_live_doc_with_all_native_comments",
-            page_numbers=page_numbers,
-            expected_folder=self._get_expected_folder(),
-            output_folder=self._get_output_folder(),
+            expected_page_count=1,
+            custom_export_params={
+                "renderComments": "ALL",
+                "renderNativeComments": "true",
+            },
         )
 
     def test_convert_live_doc_without_comments_rendering(self) -> None:
-        # Set header footer settings without timestamp
-        previous_header_footer_settings: JsonDict
-        _current_header_footer_settings: JsonDict
-        previous_header_footer_settings, _current_header_footer_settings = self._save_header_footer_settings(self.HEADER_FOOTER_WITHOUT_TIMESTAMP)
-
-        # Act
-        response: Response = self._convert(
-            project_id=self.project_id,
+        self._assert_convert_matches_snapshot(
             location_path="Specification/live_doc_with_comments",
-        )
-
-        # Restore original header footer settings
-        self._save_header_footer_settings(previous_header_footer_settings)
-
-        # Assert
-        self.assertEqual(HTTPStatus.OK, response.status_code)
-        self.assertIsNotNone(response.content)
-
-        # Verify PDF content
-        page_numbers: int = self._pdf_to_png(
-            pdf_bytes=response.content,
             custom_prefix="test_convert_live_doc_without_comments_rendering",
-            output_folder=self._get_output_folder(),
-        )
-        self.assertEqual(1, page_numbers)
-        self._compare_pdf_pages(
-            custom_prefix="test_convert_live_doc_without_comments_rendering",
-            page_numbers=page_numbers,
-            expected_folder=self._get_expected_folder(),
-            output_folder=self._get_output_folder(),
+            expected_page_count=1,
         )
 
     def test_convert_live_doc_with_filter(self) -> None:
@@ -781,8 +384,7 @@ class PdfExporterConvertTest(PdfExporterTestCase):
 
         # Set header footer settings without timestamp
         previous_header_footer_settings: JsonDict
-        _current_header_footer_settings: JsonDict
-        previous_header_footer_settings, _current_header_footer_settings = self._save_header_footer_settings(self.HEADER_FOOTER_WITHOUT_TIMESTAMP)
+        previous_header_footer_settings, _ = self._save_header_footer_settings(self.HEADER_FOOTER_WITHOUT_TIMESTAMP)
 
         # Step 1: Export WITHOUT filter - should have 7 pages
         response_no_filter: Response = self._convert(
@@ -839,81 +441,58 @@ class PdfExporterConvertTest(PdfExporterTestCase):
         self.assertLess(page_numbers_with_filter, page_numbers_no_filter, "Filter should reduce page count")
 
     def test_convert_live_doc_indentation_format(self) -> None:
-        # Set header footer settings without timestamp
-        previous_header_footer_settings: JsonDict
-        _current_header_footer_settings: JsonDict
-        previous_header_footer_settings, _current_header_footer_settings = self._save_header_footer_settings(self.HEADER_FOOTER_WITHOUT_TIMESTAMP)
-
-        # Act
-        response: Response = self._convert(
-            project_id=self.project_id,
+        self._assert_convert_matches_snapshot(
             location_path="Testing/Indent Test",
-        )
-
-        # Restore original header footer settings
-        self._save_header_footer_settings(previous_header_footer_settings)
-
-        # Assert
-        self.assertEqual(HTTPStatus.OK, response.status_code)
-        self.assertIsNotNone(response.content)
-
-        # Verify PDF content
-        page_numbers: int = self._pdf_to_png(
-            pdf_bytes=response.content,
             custom_prefix="test_convert_live_doc_indent",
-            output_folder=self._get_output_folder(),
-        )
-        self.assertEqual(9, page_numbers)
-        self._compare_pdf_pages(
-            custom_prefix="test_convert_live_doc_indent",
-            page_numbers=page_numbers,
-            expected_folder=self._get_expected_folder(),
-            output_folder=self._get_output_folder(),
+            expected_page_count=9,
         )
 
     def test_convert_live_doc_no_split_table_rows_between_pages(self) -> None:
-        # Set header footer settings without timestamp
-        previous_header_footer_settings: JsonDict
-        _current_header_footer_settings: JsonDict
-        previous_header_footer_settings, _current_header_footer_settings = self._save_header_footer_settings(self.HEADER_FOOTER_WITHOUT_TIMESTAMP)
-
-        # Act
-        response: Response = self._convert(
-            project_id=self.project_id,
+        self._assert_convert_matches_snapshot(
             location_path="Specification/No_Split_Table",
-        )
-
-        # Restore original header footer settings
-        self._save_header_footer_settings(previous_header_footer_settings)
-
-        # Assert
-        self.assertEqual(HTTPStatus.OK, response.status_code)
-        self.assertIsNotNone(response.content)
-
-        # Verify PDF content
-        page_numbers: int = self._pdf_to_png(
-            pdf_bytes=response.content,
             custom_prefix="test_convert_live_doc_no_split_table_rows_between_pages",
-            output_folder=self._get_output_folder(),
-        )
-        self.assertEqual(5, page_numbers)
-        self._compare_pdf_pages(
-            custom_prefix="test_convert_live_doc_no_split_table_rows_between_pages",
-            page_numbers=page_numbers,
-            expected_folder=self._get_expected_folder(),
-            output_folder=self._get_output_folder(),
+            expected_page_count=5,
         )
 
     def test_convert_live_doc_split_single_row_table_test(self) -> None:
-        # Set header footer settings without timestamp
+        self._assert_convert_matches_snapshot(
+            location_path="Testing/split_table_test",
+            custom_prefix="test_convert_live_doc_split_single_row_table",
+            expected_page_count=2,
+        )
+
+    def test_convert_live_report_page_breaks_test(self) -> None:
+        self._assert_convert_matches_snapshot(
+            location_path="PageBreaks/LiveReport Widget",
+            custom_prefix="test_convert_live_report_page_breaks",
+            expected_page_count=4,
+            custom_export_params={"documentType": DocumentType.LIVE_REPORT},
+        )
+
+    def _assert_convert_matches_snapshot(
+        self,
+        *,
+        location_path: str,
+        custom_prefix: str,
+        expected_page_count: int,
+        custom_export_params: JsonDict | None = None,
+        ignore_regions_per_page: dict[int, list[tuple[int, int, int, int]]] | None = None,
+        header_footer_settings: JsonDict | None = None,
+    ) -> Response:
+        """Convert a document and compare its rendered pages against the stored snapshot.
+
+        Sets header/footer settings without a timestamp (unless overridden) so snapshots are
+        stable, converts, then restores the original settings before asserting.
+        """
+        settings: JsonDict = header_footer_settings if header_footer_settings is not None else self.HEADER_FOOTER_WITHOUT_TIMESTAMP
         previous_header_footer_settings: JsonDict
-        _current_header_footer_settings: JsonDict
-        previous_header_footer_settings, _current_header_footer_settings = self._save_header_footer_settings(self.HEADER_FOOTER_WITHOUT_TIMESTAMP)
+        previous_header_footer_settings, _ = self._save_header_footer_settings(settings)
 
         # Act
         response: Response = self._convert(
             project_id=self.project_id,
-            location_path="Testing/split_table_test",
+            location_path=location_path,
+            custom_export_params=custom_export_params,
         )
 
         # Restore original header footer settings
@@ -926,13 +505,15 @@ class PdfExporterConvertTest(PdfExporterTestCase):
         # Verify PDF content
         page_numbers: int = self._pdf_to_png(
             pdf_bytes=response.content,
-            custom_prefix="test_convert_live_doc_split_single_row_table",
+            custom_prefix=custom_prefix,
             output_folder=self._get_output_folder(),
         )
-        self.assertEqual(2, page_numbers)
+        self.assertEqual(expected_page_count, page_numbers)
         self._compare_pdf_pages(
-            custom_prefix="test_convert_live_doc_split_single_row_table",
+            custom_prefix=custom_prefix,
             page_numbers=page_numbers,
             expected_folder=self._get_expected_folder(),
             output_folder=self._get_output_folder(),
+            ignore_regions_per_page=ignore_regions_per_page,
         )
+        return response
