@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rich-page>
+    <field id="author">admin</field>
+    <field id="created">2026-07-06 13:15:07.710 +0200</field>
+    <field id="homePageContent" text-type="text/html"><![CDATA[<div class="polarion-rp-column" style="width: 100%;">
+  <h1 id="polarion_hardcoded_0">LiveReport Widget</h1>
+  <p id="polarion_hardcoded_1"></p>
+</div>
+<div class="polarion-rp-row-separator" page_min_width="1000"></div>
+<div class="polarion-rp-column" style="width: 100%;">
+  <p id="polarion_hardcoded_2">Page 1</p>
+  <p id="polarion_client7">
+    <span class="polarion-rp-inline-widget" data-widget="ch.sbb.polarion.extension.pdf.exporter.widgets.pageBreak"><span class="polarion-rp-widget-parameters"></span></span>
+  </p>
+  <p id="polarion_client8">Page 2</p>
+  <p id="polarion_client9">
+    <span class="polarion-rp-inline-widget" data-widget="ch.sbb.polarion.extension.pdf.exporter.widgets.pageBreak">
+      <span class="polarion-rp-widget-parameters">
+        <sub id="landscape">true</sub>
+      </span>
+    </span>
+  </p>
+  <p id="polarion_client1">Page 3</p>
+  <p id="polarion_client2">
+    <span class="polarion-rp-inline-widget" data-widget="ch.sbb.polarion.extension.pdf.exporter.widgets.pageBreak"><span class="polarion-rp-widget-parameters"></span></span>
+  </p>
+  <p id="polarion_client10">Page 4</p>
+  <p id="polarion_client6"></p>
+</div>
+<div class="polarion-rp-row-separator"></div>]]></field>
+    <field id="title">LiveReport Widget</field>
+</rich-page>
