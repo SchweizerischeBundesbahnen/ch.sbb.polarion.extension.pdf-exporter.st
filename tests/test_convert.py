@@ -469,6 +469,14 @@ class PdfExporterConvertTest(PdfExporterTestCase):
             custom_export_params={"documentType": DocumentType.LIVE_REPORT},
         )
 
+    def test_convert_tables_and_formulas_captions_test(self) -> None:
+        self._assert_convert_matches_snapshot(
+            location_path="Testing/Tables and Formulas Captions Test",
+            custom_prefix="test_convert_tables_and_formulas_captions",
+            expected_page_count=2,
+            custom_export_params={"documentType": DocumentType.LIVE_DOC},
+        )
+
     def _assert_convert_matches_snapshot(
         self,
         *,
