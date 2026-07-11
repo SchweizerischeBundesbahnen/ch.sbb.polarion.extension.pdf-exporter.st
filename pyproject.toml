@@ -13,7 +13,7 @@ dependencies = [
     "python-sbb-polarion",
     "unittest-xml-reporting>=4,<5",
     "ruff==0.15.20",
-    "mypy==2.1.0",
+    "mypy==2.2.0",
     "types-requests==2.33.0.20260518",
     "tox>=4,<5",
     "pypdf==6.14.2",
