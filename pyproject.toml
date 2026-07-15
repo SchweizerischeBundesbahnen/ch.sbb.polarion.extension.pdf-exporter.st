@@ -14,7 +14,7 @@ dependencies = [
     "unittest-xml-reporting>=4,<5",
     "ruff==0.15.21",
     "mypy==2.2.0",
-    "types-requests==2.33.0.20260518",
+    "types-requests==2.33.0.20260712",
     "tox>=4,<5",
     "pypdf==6.14.2",
     "PyMuPDF>=1.26.6",
