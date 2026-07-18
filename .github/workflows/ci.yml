@@ -36,7 +36,7 @@ jobs:
           uv run tox -e lint,mypy,psp-linter
           uv run ruff format --check --diff .
       - name: SonarCloud scan for PR
-        uses: sonarsource/sonarqube-scan-action@713881670b6b3676cda39549040e2d88c70d582e  # v8.2.0
+        uses: sonarsource/sonarqube-scan-action@22918119ff8e1ca75a623e15c8296b6ea4fbe28f  # v8.2.1
         if: github.event_name == 'pull_request' && github.event.repository.visibility == 'public'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information
@@ -47,7 +47,7 @@ jobs:
             -Dsonar.pullrequest.branch=${{ github.event.pull_request.head.ref }}
             -Dsonar.pullrequest.base=${{ github.event.pull_request.base.ref }}
       - name: SonarCloud scan for Push
-        uses: sonarsource/sonarqube-scan-action@713881670b6b3676cda39549040e2d88c70d582e  # v8.2.0
+        uses: sonarsource/sonarqube-scan-action@22918119ff8e1ca75a623e15c8296b6ea4fbe28f  # v8.2.1
         if: github.event_name == 'push' && github.event.repository.visibility == 'public'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information
