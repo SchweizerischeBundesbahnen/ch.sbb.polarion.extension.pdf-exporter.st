@@ -42,6 +42,11 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7
         with:
           persist-credentials: false
+      - name: 🐳 Log in to sbb.jfrog.io Docker registry
+        run: |
+          # Token-only auth (same token as the Maven X-JFrog-Art-Api header). For a JFrog access
+          # token the username is not validated, so a fixed placeholder is enough.
+          printf '%s' "$IO_JFROG_SBB_POLARION_TOKEN" | docker login sbb.jfrog.io -u polarion --password-stdin
       - name: 🐍 Set up Python from .tool-versions
         uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97  # v7.0.0
         with:
@@ -59,13 +64,21 @@ jobs:
         run: |
           mkdir -p "$HOME/.m2"
           cp "$GITHUB_WORKSPACE/.mvn/settings.xml" "$HOME/.m2/settings.xml"
-      - name: 🐳 Log in to sbb.jfrog.io Docker registry
+      - name: 🧱 Install dependencies (pre-pulling images in the background)
+        # The testcontainers harness (tests/run.py) otherwise pulls the WeasyPrint and the large,
+        # private Polarion image inside the test step, on the critical path. Kick both pulls off in
+        # the background and let them run while `uv sync` installs dependencies; by the time the
+        # harness starts the containers the images are already in the local docker cache, so its pull
+        # is a no-op. `wait <pid>` then joins each pull and fails the step (via `set -e`) if it
+        # errored — registry flap / expired token — surfacing the cause here rather than as an opaque
+        # testcontainers error. Login above is required for the private Polarion image (WeasyPrint is
+        # public on GHCR).
         run: |
-          # Token-only auth (same token as the Maven X-JFrog-Art-Api header). For a JFrog access
-          # token the username is not validated, so a fixed placeholder is enough.
-          printf '%s' "$IO_JFROG_SBB_POLARION_TOKEN" | docker login sbb.jfrog.io -u polarion --password-stdin
-      - name: 🧱 Install dependencies
-        run: uv sync --frozen
+          docker pull "$TC_WEASYPRINT_SERVICE_IMAGE_NAME" & wp_pid=$!
+          docker pull "$TC_POLARION_IMAGE_NAME" & polarion_pid=$!
+          uv sync --frozen
+          wait "$wp_pid"
+          wait "$polarion_pid"
       - name: 🧪 Run system tests against Polarion in Docker
         run: uv run tox -e test
       - name: 📤 Upload test reports and generated/diff artifacts
