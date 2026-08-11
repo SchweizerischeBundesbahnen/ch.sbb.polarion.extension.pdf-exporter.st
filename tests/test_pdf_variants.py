@@ -36,22 +36,26 @@ class PdfExporterVariantsTest(PdfExporterTestCase):
         _verapdf_manager.stop_container()
         super().tearDownClass()
 
-    # Supported PDF variants
+    # PDF variants this test covers
     PDF_VARIANTS: ClassVar[list[PdfVariant]] = [
         PdfVariant.PDF_A_1A,
         PdfVariant.PDF_A_1B,
-        # PdfVariant.PDF_A_2A,  # TODO: FontAwesome uses Unicode PUA characters without ActualText entries (ISO 32000-1:2008, 14.9.4)
         PdfVariant.PDF_A_2B,
         PdfVariant.PDF_A_2U,
-        # PdfVariant.PDF_A_3A,  # TODO: FontAwesome uses Unicode PUA characters without ActualText entries (ISO 32000-1:2008, 14.9.4)
         PdfVariant.PDF_A_3B,
         PdfVariant.PDF_A_3U,
         PdfVariant.PDF_A_4E,
-        # PdfVariant.PDF_A_4F,  # Tested in separate test case, see test_pdf_a_4f_variant() method
         PdfVariant.PDF_A_4U,
-        # PdfVariant.PDF_UA_1,  # TODO: Requires alt text for images and correct list structure
-        # PdfVariant.PDF_UA_2,  # TODO: Requires alt text for images and correct list structure
     ]
+
+    # PDF variants this test does not cover, and why
+    EXCLUDED_VARIANTS: ClassVar[dict[PdfVariant, str]] = {
+        PdfVariant.PDF_A_2A: "FontAwesome uses Unicode PUA characters without ActualText entries (ISO 32000-1:2008, 14.9.4)",
+        PdfVariant.PDF_A_3A: "FontAwesome uses Unicode PUA characters without ActualText entries (ISO 32000-1:2008, 14.9.4)",
+        PdfVariant.PDF_A_4F: "covered by test_pdf_a_4f_variant()",
+        PdfVariant.PDF_UA_1: "requires alt text for images and correct list structure",
+        PdfVariant.PDF_UA_2: "requires alt text for images and correct list structure",
+    }
 
     # Map PDF variant to VeraPDF flavour codes
     VARIANT_FLAVOUR_MAP: ClassVar[dict[PdfVariant, str]] = {
@@ -147,7 +151,8 @@ class PdfExporterVariantsTest(PdfExporterTestCase):
 
             return self._parse_verapdf_response(verapdf_result)
 
-        except Exception as e:
+        # The validator reports failures as a result, it never raises at the caller.
+        except Exception as e:  # noqa: BLE001
             return False, f"Unexpected error during VeraPDF validation: {e}"
         finally:
             # Clean up temporary file

@@ -60,9 +60,8 @@ class PdfExporterWILinksConvertTest(PdfExporterTestCase):
             if hasattr(annotations, "get_object"):
                 annotations = annotations.get_object()
 
-            for annot in annotations:
-                if hasattr(annot, "get_object"):
-                    annot = annot.get_object()
+            for annot_ref in annotations:
+                annot: Any = annot_ref.get_object() if hasattr(annot_ref, "get_object") else annot_ref
 
                 if annot.get("/Subtype") != "/Link":
                     continue
@@ -141,7 +140,7 @@ class PdfExporterWILinksConvertTest(PdfExporterTestCase):
                         # Try direct comparison
                         if hasattr(target_page_ref, "get_object") and pdf_page == target_page_ref.get_object():
                             return idx
-        except (KeyError, AttributeError, TypeError):
+        except KeyError, AttributeError, TypeError:
             pass
 
         return None

@@ -141,7 +141,6 @@ class PdfExporterConvertTest(PdfExporterTestCase):
             self.assertEqual(HTTPStatus.NO_CONTENT, response.status_code)
 
     def test_convert_wiki_page(self) -> None:
-        project_id: str = self.project_id
         space_id: str = "Specification"
         name: str = "Test Wiki page"
 
