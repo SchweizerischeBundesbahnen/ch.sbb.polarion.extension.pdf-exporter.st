@@ -477,6 +477,32 @@ class PdfExporterConvertTest(PdfExporterTestCase):
             custom_export_params={"documentType": DocumentType.LIVE_DOC},
         )
 
+    def _assert_hyphenation_snapshot(self, language: str, expected_page_count: int) -> None:
+        """Convert a "Support for hyphenation <lang>" LiveDoc and compare against its snapshot.
+
+        Passing ``languageCustomField=docLanguage`` makes the exporter inject the document's language into the
+        exported HTML as ``<html lang="…">``; together with ``.content { hyphens: auto }`` in the style-package CSS
+        this lets WeasyPrint hyphenate the long compound/long words according to the language. Guards both the
+        language injection and the hyphenation CSS end to end.
+        """
+        self._assert_convert_matches_snapshot(
+            location_path=f"Testing/Support for hyphenation {language}",
+            custom_prefix=f"test_convert_hyphenation_{language}",
+            expected_page_count=expected_page_count,
+            custom_export_params={"languageCustomField": "docLanguage",
+                                  "css": "test_hyphenation"
+                                  },
+        )
+
+    def test_convert_hyphenation_de(self) -> None:
+        self._assert_hyphenation_snapshot(language="de", expected_page_count=1)
+
+    def test_convert_hyphenation_fr(self) -> None:
+        self._assert_hyphenation_snapshot(language="fr", expected_page_count=1)
+
+    def test_convert_hyphenation_it(self) -> None:
+        self._assert_hyphenation_snapshot(language="it", expected_page_count=1)
+
     def _assert_convert_matches_snapshot(
         self,
         *,
