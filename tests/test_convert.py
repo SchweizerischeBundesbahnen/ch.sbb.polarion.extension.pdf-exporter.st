@@ -489,9 +489,7 @@ class PdfExporterConvertTest(PdfExporterTestCase):
             location_path=f"Testing/Support for hyphenation {language}",
             custom_prefix=f"test_convert_hyphenation_{language}",
             expected_page_count=expected_page_count,
-            custom_export_params={"languageCustomField": "docLanguage",
-                                  "css": "test_hyphenation"
-                                  },
+            custom_export_params={"languageCustomField": "docLanguage", "css": "test_hyphenation"},
         )
 
     def test_convert_hyphenation_de(self) -> None:
