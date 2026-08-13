@@ -140,7 +140,8 @@ class PdfExporterWILinksConvertTest(PdfExporterTestCase):
                         # Try direct comparison
                         if hasattr(target_page_ref, "get_object") and pdf_page == target_page_ref.get_object():
                             return idx
+        # Malformed or missing destination data means the link is unresolved.
         except KeyError, AttributeError, TypeError:
-            pass
+            return None
 
         return None
