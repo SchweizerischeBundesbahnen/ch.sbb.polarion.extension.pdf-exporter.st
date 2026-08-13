@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<enumeration>
+    <option id="de" name="Deutsch"/>
+    <option default="true" id="en" name="English"/>
+    <option id="fr" name="Français"/>
+    <option id="it" name="Italiano"/>
+</enumeration>

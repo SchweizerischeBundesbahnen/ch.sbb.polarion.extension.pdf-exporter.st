@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <fields>
     <field id="version" name="Version" type="string"/>
+    <field id="docLanguage" name="Document Language" type="enum:language"/>
 </fields>
