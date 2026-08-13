@@ -35,12 +35,10 @@ class PdfExporterFilterOrderTest(PdfExporterTestCase):
 
     def setUp(self) -> None:
         super().setUp()
+        # Registered before the setting is changed, so the restore runs even if that change fails.
+        # Nothing else restores it: authorization is not one of SUPPORTED_FEATURES.
+        self.addCleanup(self._save_authorization, UNRESTRICTED)
         self._save_authorization(RESTRICTED)
-
-    def tearDown(self) -> None:
-        # Not one of SUPPORTED_FEATURES, so setUp does not reset it for the other test cases.
-        self._save_authorization(UNRESTRICTED)
-        super().tearDown()
 
     def _save_authorization(self, data: JsonDict) -> None:
         response: Response = self.api().save_setting(feature=PdfExporterFeature.AUTHORIZATION, scope=self.scope, data=data)
