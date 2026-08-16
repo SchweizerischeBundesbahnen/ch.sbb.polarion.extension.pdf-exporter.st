@@ -89,6 +89,28 @@ def reachable_probe_endpoint(port: int) -> str | None:
     return None
 
 
+def polarion_base_url() -> str | None:
+    """The url the server knows itself under - the one origin the policy trusts without an allowlist.
+
+    A document may always name the server it is exported from, so a resource there passes the address
+    gate and is decided on its content alone. That is the shape of the reported issue: a url which
+    answers with something which is not a picture.
+    """
+    container: Any = _polarion_container()
+    if container is None:
+        return None
+    try:
+        answer: Any = container.exec_run(["grep", "-m1", "-E", "^base.url", "/opt/polarion/etc/polarion.properties"])
+    except Exception:  # noqa: BLE001 - without the base url the cases are skipped
+        logger.info("the base url of the server could not be read")
+        return None
+    if answer[0] != 0:
+        return None
+    line: str = answer[1].decode().strip()
+    value: str = line.partition("=")[2]
+    return value.strip().rstrip("/") or None
+
+
 FORWARDER_MARKER = "ssrf-loopback-forwarder"
 
 # Carries the probe from the loopback of the Polarion container to the test host. Without it

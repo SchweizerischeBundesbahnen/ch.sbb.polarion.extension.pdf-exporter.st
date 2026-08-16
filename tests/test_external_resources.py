@@ -16,8 +16,8 @@ from typing import TYPE_CHECKING, ClassVar
 import fitz
 
 from tests.pdf_exporter_test_case import PdfExporterTestCase
-from tests.ssrf_probe import PROBE_IMAGE_HEIGHT, PROBE_IMAGE_WIDTH, SsrfProbe
-from tests.ssrf_support import answers_on_loopback, reachable_probe_endpoint, start_loopback_forwarder, stop_loopback_forwarder
+from tests.ssrf_probe import PROBE_IMAGE_HEIGHT, PROBE_IMAGE_WIDTH, PROBE_JSON, SsrfProbe
+from tests.ssrf_support import answers_on_loopback, polarion_base_url, reachable_probe_endpoint, start_loopback_forwarder, stop_loopback_forwarder
 
 
 if TYPE_CHECKING:
@@ -162,6 +162,59 @@ class PdfExporterExternalResourcesTest(PdfExporterTestCase):
 
     def test_an_svg_reference_is_refused(self) -> None:
         self._refused(f"<svg xmlns='http://www.w3.org/2000/svg'><image href='http://{self.endpoint}/probe/ok.png'/></svg>")
+
+    # ------------------------------------------------------------------ the reported issue
+
+    def test_the_body_of_a_refused_resource_never_reaches_the_file(self) -> None:
+        """The reported issue itself: the whole response written into the exported document.
+
+        The report named `{image:https://httpbun.com/get}` in a document and exported it; the produced
+        file carried the full json answer, headers and the address of the server among it. The url is
+        never fetched now, and where it stood only the placeholder remains.
+        """
+        pdf_bytes: bytes = self._refused(f"<p><img src='http://{self.endpoint}/probe/report.json'/>text</p>")
+
+        self.assertNotIn(PROBE_JSON, pdf_bytes, "the body of the answer reached the exported document")
+        self.assertEqual([], self._embedded_pictures(pdf_bytes), "only the placeholder may stand where the resource was refused")
+
+    def test_a_body_which_is_not_a_picture_is_not_embedded(self) -> None:
+        """The shape of the reported issue: a trusted origin answering with something else than a picture.
+
+        The reporter named an external url whose body was json; the whole response was written into
+        the exported file. The address gate does not decide this one - a document may always name the
+        server it is exported from - so the content does, and this url answers with the login page
+        under the name of a picture.
+        """
+        base: str | None = polarion_base_url()
+        if base is None:
+            self.skipTest("the base url of the server is unknown")
+        pdf_bytes: bytes = self._export(f"<p><img src='{base}/polarion/wiki/skins/sidecar/msg.png'/>text</p>")
+
+        self.assertEqual([], self._embedded_pictures(pdf_bytes), "only the placeholder may stand where the resource was refused")
+
+    def test_a_picture_from_the_server_is_embedded(self) -> None:
+        # the other half of the case above: a real picture on the same origin still reaches the document,
+        # so the refusal above is about the content and not about the address
+        base: str | None = polarion_base_url()
+        if base is None:
+            self.skipTest("the base url of the server is unknown")
+        pdf_bytes: bytes = self._export(f"<p><img src='{base}/polarion/icons/default/enums/document_package.png'/>text</p>")
+
+        self.assertTrue(self._embedded_pictures(pdf_bytes), "a picture from the server itself must still be embedded")
+
+    def _embedded_pictures(self, pdf_bytes: bytes) -> list[tuple[int, int]]:
+        """Every embedded picture larger than the 1x1 placeholder."""
+        found: list[tuple[int, int]] = []
+        document: fitz.Document = fitz.open(stream=pdf_bytes, filetype="pdf")  # type: ignore[no-any-unimported]
+        try:
+            for page_index in range(len(document)):
+                for image in document[page_index].get_images(full=True):
+                    extracted: dict[str, int] = document.extract_image(image[0])
+                    if extracted["width"] > 1 or extracted["height"] > 1:
+                        found.append((extracted["width"], extracted["height"]))
+        finally:
+            document.close()
+        return found
 
     # ------------------------------------------------------------------ what must keep working
 

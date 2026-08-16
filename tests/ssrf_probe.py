@@ -46,6 +46,8 @@ def _png(width: int, height: int, rgb: tuple[int, int, int]) -> bytes:
 
 PROBE_PNG: bytes = _png(PROBE_IMAGE_WIDTH, PROBE_IMAGE_HEIGHT, (255, 0, 0))
 PROBE_CSS: bytes = b"body { background-image: url(/probe/ok.png); }"
+# what the reported issue used: a url which answers with a body that is not a picture at all
+PROBE_JSON: bytes = b'{"method": "GET", "headers": {"Host": "probe"}, "origin": "the address of the server"}'
 
 
 class _Handler(BaseHTTPRequestHandler):
@@ -53,7 +55,9 @@ class _Handler(BaseHTTPRequestHandler):
 
     def do_GET(self) -> None:
         self.probe.record(self.path)
-        if self.path.startswith("/probe/style.css"):
+        if self.path.startswith("/probe/report.json"):
+            self._answer(b"application/json", PROBE_JSON)
+        elif self.path.startswith("/probe/style.css"):
             self._answer(b"text/css", PROBE_CSS)
         elif self.path.startswith("/probe/login.png"):
             # what an unauthenticated Polarion answers: a page, under the name of a picture
