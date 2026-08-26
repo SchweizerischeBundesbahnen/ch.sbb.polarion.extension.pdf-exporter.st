@@ -88,12 +88,31 @@ jobs:
         # The Polarion service starts as a bare instance and does its expensive first-boot indexing
         # while the steps above run. python-sbb-polarion does NOT provision a pre-started SUT, so we
         # resolve the pinned bundles from JFrog, copy them into the running container and restart it
-        # so Polarion loads them (the warm restart is much faster than the cold first boot). The test
-        # step then connects and activates the licence / issues a token.
+        # so Polarion loads them. The restart MUST be clean: we wait for the cold boot to FULLY finish
+        # (Polarion answering, not just Apache) before restarting, and give the graceful shutdown a long
+        # timeout. Otherwise the restart fires mid-boot, Polarion's shutdown listener is not ready, the
+        # graceful stop fails ("Polarion could not be stopped"), and the container is SIGKILLed with a
+        # dirty index — which Polarion then recovers/reindexes in the background during the test run,
+        # slowing every test (~1.7x). See the dirty-shutdown guard below.
         env:
           POLARION_SERVICE_ID: ${{ job.services.polarion.id }}
         run: |
           set -euo pipefail
+
+          # Poll until Polarion itself answers (Apache returns 000/503 until the webapp is up).
+          wait_for_polarion() {
+            label="$1"
+            echo "Waiting for Polarion to be ready (${label}) ..."
+            for attempt in $(seq 1 90); do
+              code="$(curl -s -o /dev/null -w '%{http_code}' http://localhost:80/polarion/ || true)"
+              echo "  attempt ${attempt}: HTTP ${code}"
+              case "$code" in 200 | 301 | 302) echo "Polarion is ready (${label})."; return 0 ;; esac
+              sleep 10
+            done
+            echo "::error::Polarion did not become ready (${label})"
+            return 1
+          }
+
           plugins_dir="$(mktemp -d)/plugins"
           mkdir -p "$plugins_dir"
           for artifact in \
@@ -104,25 +123,26 @@ jobs:
               -Dartifact="$artifact" -DoutputDirectory="$plugins_dir"
           done
 
-          # Install the bundles into the running Polarion service and restart so it loads them.
-          # docker restart keeps the container filesystem, so whatever first-boot indexing already
-          # ran (overlapping the setup steps above) is preserved across the restart.
+          # Let the cold boot finish BEFORE touching Polarion: a restart issued mid-boot cannot shut
+          # down gracefully (the shutdown listener is not up yet) and leaves the index dirty.
+          wait_for_polarion "first boot"
+
+          # Install the bundles into the now-idle Polarion and restart so it loads them. Give the
+          # graceful shutdown a generous timeout (-t) so the container is never SIGKILLed mid-shutdown.
           ext_path=/opt/polarion/polarion/extensions/sbb-extensions/eclipse/plugins
           docker exec "$POLARION_SERVICE_ID" mkdir -p "$ext_path"
           docker cp "$plugins_dir/." "$POLARION_SERVICE_ID:$ext_path/"
           echo "Restarting Polarion so it loads the freshly installed extensions ..."
-          docker restart "$POLARION_SERVICE_ID"
+          docker restart -t 180 "$POLARION_SERVICE_ID"
 
-          # Wait until Polarion answers again before the tests connect: python-sbb-polarion retries
-          # HTTP 503 but not the connection resets a restarting Polarion returns first.
-          echo "Waiting for Polarion to come back up after the restart ..."
-          for attempt in $(seq 1 90); do
-            code="$(curl -s -o /dev/null -w '%{http_code}' http://localhost:80/polarion/ || true)"
-            echo "  attempt ${attempt}: HTTP ${code}"
-            case "$code" in 200 | 301 | 302) echo "Polarion is up."; break ;; esac
-            if [ "$attempt" -eq 90 ]; then echo "::error::Polarion did not come back up after the restart"; exit 1; fi
-            sleep 10
-          done
+          # Guard against the dirty-index regression: if the graceful shutdown did not complete, fail
+          # the job loudly rather than letting the tests run slowly against a recovering Polarion.
+          if docker logs "$POLARION_SERVICE_ID" 2>&1 | grep -q "Polarion could not be stopped"; then
+            echo "::error::Polarion was not shut down gracefully before the restart (dirty index — tests would be slow). Increase the readiness wait or the -t timeout."
+            exit 1
+          fi
+
+          wait_for_polarion "after restart"
       - name: 🧪 Run system tests against the pre-started Polarion
         env:
           TC_POLARION_SUT_URL: http://localhost:80
