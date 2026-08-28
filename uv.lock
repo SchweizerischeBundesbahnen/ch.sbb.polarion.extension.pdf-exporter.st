@@ -583,12 +583,12 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "mypy", specifier = "==2.3.1" },
-    { name = "opencv-python-headless", specifier = ">=4.12.0" },
-    { name = "pymupdf", specifier = ">=1.26.6" },
+    { name = "opencv-python-headless", specifier = "==4.13.0.92" },
+    { name = "pymupdf", specifier = "==1.27.2.3" },
     { name = "pypdf", specifier = "==6.16.2" },
     { name = "python-sbb-polarion", git = "https://github.com/SchweizerischeBundesbahnen/python-sbb-polarion?tag=v3.3.0" },
     { name = "ruff", specifier = "==0.16.4" },
-    { name = "testcontainers", specifier = ">=4.13.3" },
+    { name = "testcontainers", specifier = "==4.14.2" },
     { name = "tox", specifier = ">=4,<5" },
     { name = "types-requests", specifier = "==2.33.0.20260712" },
     { name = "unittest-xml-reporting", specifier = ">=4,<5" },
