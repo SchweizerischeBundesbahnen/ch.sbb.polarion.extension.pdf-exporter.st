@@ -19,7 +19,7 @@ dependencies = [
     "pypdf==6.16.2",
     "PyMuPDF==1.27.2.3",
     "opencv-python-headless==4.13.0.92",
-    "testcontainers==4.14.2",
+    "testcontainers==4.15.0",
 ]
 
 [dependency-groups]
@@ -199,11 +199,6 @@ no_implicit_optional = true              # Disallows implicit Optional types (e.
 disallow_any_unimported = true           # Disallows Any from unfollowed imports (stricter typing)
 disallow_any_generics = true             # Requires type parameters for generic types (e.g., list[str] not list)
 disallow_subclassing_any = true          # Disallows subclassing Any types
-
-# Testing module: testcontainers library has no type stubs
-[[tool.mypy.overrides]]
-module = ["testcontainers.*"]
-ignore_missing_imports = true
 
 # xmlrunner has no type stubs
 [[tool.mypy.overrides]]
