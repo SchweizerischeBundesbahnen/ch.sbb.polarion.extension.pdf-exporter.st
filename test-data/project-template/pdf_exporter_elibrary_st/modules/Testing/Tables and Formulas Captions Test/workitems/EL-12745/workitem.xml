@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<work-item>
+    <field id="author">admin</field>
+    <field id="created">2026-07-09 13:02:17.220 +0200</field>
+    <field id="description" text-type="text/html"><![CDATA[<p data-keep-next="true" class="polarion-rte-caption-paragraph" style="text-align: left;">
+  Table <span data-sequence="Table" class="polarion-rte-caption">#</span> T1
+</p>
+
+<table id="polarion_wiki macro name=table" class="polarion-Document-table" style="width: 100%;max-width: 1280px;margin-left: 0px;margin-right: auto;border: 1px solid #CCCCCC;empty-cells: show;border-collapse: collapse;max-width: 1280.0px;">
+  <tbody>
+    <tr>
+      <th style="font-weight: bold;background-color: #F0F0F0;text-align: left;vertical-align: top;height: 12px;border: 1px solid #CCCCCC;padding: 5px;">Test</th>
+      <th style="font-weight: bold;background-color: #F0F0F0;text-align: left;vertical-align: top;height: 12px;border: 1px solid #CCCCCC;padding: 5px;">Table 1</th>
+    </tr>
+    <tr>
+      <td style="text-align: left;vertical-align: top;height: 12px;border: 1px solid #CCCCCC;padding: 5px;">1</td>
+      <td style="text-align: left;vertical-align: top;height: 12px;border: 1px solid #CCCCCC;padding: 5px;">2</td>
+    </tr>
+  </tbody>
+</table>
+ <br/><br/><br/>
+<p data-keep-next="true" class="polarion-rte-caption-paragraph" style="text-align: left;"> </p>
+
+<table id="polarion_wiki macro name=table" class="polarion-Document-table" style="width: 100%;max-width: 1280px;margin-left: 0px;margin-right: auto;border: 1px solid #CCCCCC;empty-cells: show;border-collapse: collapse;max-width: 1280.0px;">
+  <tbody>
+    <tr>
+      <th style="font-weight: bold;background-color: #F0F0F0;text-align: left;vertical-align: top;height: 12px;border: 1px solid #CCCCCC;padding: 5px;">Test </th>
+      <th style="font-weight: bold;background-color: #F0F0F0;text-align: left;vertical-align: top;height: 12px;border: 1px solid #CCCCCC;padding: 5px;">Figure 1</th>
+    </tr>
+    <tr>
+      <td style="text-align: left;vertical-align: top;height: 12px;border: 1px solid #CCCCCC;padding: 5px;">1</td>
+      <td style="text-align: left;vertical-align: top;height: 12px;border: 1px solid #CCCCCC;padding: 5px;">2</td>
+    </tr>
+  </tbody>
+</table>
+<p class="polarion-rte-caption-paragraph" style="text-align: left;">
+  Figure <span data-sequence="Figure" class="polarion-rte-caption">#</span> F1
+</p>
+ <br/><br/><br/>
+<p data-keep-next="true" class="polarion-rte-caption-paragraph" style="text-align: left;">
+  Custom <span data-sequence="Custom" class="polarion-rte-caption">#</span> C1
+</p>
+
+<table id="polarion_wiki macro name=table" class="polarion-Document-table" style="width: 100%;max-width: 1280px;margin-left: 0px;margin-right: auto;border: 1px solid #CCCCCC;empty-cells: show;border-collapse: collapse;max-width: 1280.0px;">
+  <tbody>
+    <tr>
+      <th style="font-weight: bold;background-color: #F0F0F0;text-align: left;vertical-align: top;height: 12px;border: 1px solid #CCCCCC;padding: 5px;">Test</th>
+      <th style="font-weight: bold;background-color: #F0F0F0;text-align: left;vertical-align: top;height: 12px;border: 1px solid #CCCCCC;padding: 5px;">Custom 1</th>
+    </tr>
+    <tr>
+      <td style="text-align: left;vertical-align: top;height: 12px;border: 1px solid #CCCCCC;padding: 5px;">1</td>
+      <td style="text-align: left;vertical-align: top;height: 12px;border: 1px solid #CCCCCC;padding: 5px;">2</td>
+    </tr>
+  </tbody>
+</table>]]></field>
+    <field id="previousStatus">draft</field>
+    <field id="priority">50.0</field>
+    <field id="reqType" type="enum:reqtype">other</field>
+    <field id="severity">should_have</field>
+    <field id="status">draft</field>
+    <field id="title">WI 1</field>
+    <field id="type">requirement</field>
+</work-item>

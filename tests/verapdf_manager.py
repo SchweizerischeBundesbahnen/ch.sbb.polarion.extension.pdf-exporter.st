@@ -69,11 +69,13 @@ class VeraPDFManager:
         try:
             client = DockerClient()
             client.client.ping()
-            logger.info("Docker availability check: Docker is available and working")
-            return True
-        except Exception as e:
+        # This is a probe: any failure means Docker is unusable, and that is the answer.
+        except Exception as e:  # noqa: BLE001
             logger.warning(f"Docker availability check: Docker is not available - {e}")
             return False
+        else:
+            logger.info("Docker availability check: Docker is available and working")
+            return True
 
     def _ensure_container_running(self) -> VeraPDFContainer:
         """Ensure the VeraPDF container is running, starting it if necessary."""
@@ -125,9 +127,6 @@ class VeraPDFManager:
                 return False, None, f"VeraPDF REST API returned status {response.status_code}: {response.text}"
 
             json_response: JsonDict = response.json()
-            logger.info("VeraPDF validation completed successfully")
-            logger.debug(f"VeraPDF response: {json_response}")
-            return True, json_response, ""
 
         except requests.RequestException as e:
             logger.exception("Error calling VeraPDF REST API")
@@ -135,3 +134,7 @@ class VeraPDFManager:
         except Exception as e:
             logger.exception("Error during VeraPDF validation")
             return False, None, f"Failed to run VeraPDF validation: {e}"
+        else:
+            logger.info("VeraPDF validation completed successfully")
+            logger.debug(f"VeraPDF response: {json_response}")
+            return True, json_response, ""

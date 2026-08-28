@@ -23,7 +23,7 @@ COLLECTION_ID = "1"
 # (no prose between headings), which makes cutEmptyChapters observable and
 # forces snapshot-level divergence between filter outcomes. The initial
 # content was produced via the test-data extension's
-# POST /internal/projects/{projectId}/spaces/Specification/work-items-query-fixture
+# POST /internal/projects/{projectId}/spaces/Specification/work-items-query-fixture  # noqa: ERA001
 # endpoint (WorkItemsQueryFixtureService) and then exported into the template.
 FIXTURE_DOC = "Specification/Work Items Query Test Spec"
 
@@ -367,8 +367,8 @@ class PdfExporterWorkItemsQueryTest(PdfExporterTestCase):
     #   1. Add a rich page to baseline collection 1 via the Polarion UI.
     #   2. POST /pdf-exporter/rest/internal/convert with body:
     #        { "documentType": "LIVE_REPORT",
-    #          "projectId": "<your_project>",
-    #          "locationPath": "<space>/<RichPageName>",
+    #          "projectId": "<your_project>",  # noqa: ERA001
+    #          "locationPath": "<space>/<RichPageName>",  # noqa: ERA001
     #          "urlQueryParameters": { "query": "type:heading" } }
     #   3. Expect 200 OK (the query parameter must be silently ignored by
     #      LiveReportAdapter, not rejected with 400).
@@ -377,7 +377,7 @@ class PdfExporterWorkItemsQueryTest(PdfExporterTestCase):
     # A: Lucene syntax edge cases
     # ------------------------------------------------------------------
 
-    def test_convert_with_compound_query_AND(self) -> None:
+    def test_convert_with_compound_query_and(self) -> None:
         """Compound query with AND must be accepted and applied — snapshot-verified."""
         previous_header_footer_settings: JsonDict
         previous_header_footer_settings, _ = self._save_header_footer_settings(self.HEADER_FOOTER_WITHOUT_TIMESTAMP)

@@ -13,6 +13,7 @@ class PdfExporterFeature(StrEnum):
     LOCALIZATION = "localization"
     STYLE_PACKAGE = "style-package"
     WEBHOOKS = "webhooks"
+    AUTHORIZATION = "authorization"
 
 
 # PDF rendering settings

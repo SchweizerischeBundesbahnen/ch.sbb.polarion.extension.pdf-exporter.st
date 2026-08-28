@@ -14,7 +14,7 @@ from tests.pdf_exporter_test_case import PdfExporterTestCase
 class PdfExporterConvertHtmlLandscapeTest(PdfExporterTestCase):
     """Tests for HTML to PDF conversion in landscape orientation."""
 
-    def test_convert_html_landscape_A3(self) -> None:
+    def test_convert_html_landscape_a3(self) -> None:
         # Arrange
         html: str = self._load_test_data(filename="test-specification.html")
 
@@ -27,12 +27,12 @@ class PdfExporterConvertHtmlLandscapeTest(PdfExporterTestCase):
         # Verify PDF content
         page_numbers: int = self._pdf_to_png(
             pdf_bytes=response.content,
-            custom_prefix="test_convert_html_landscape_A3",
+            custom_prefix="test_convert_html_landscape_a3",
             output_folder=self._get_output_folder(),
         )
         self.assertEqual(3, page_numbers)
         self._compare_pdf_pages(
-            custom_prefix="test_convert_html_landscape_A3",
+            custom_prefix="test_convert_html_landscape_a3",
             page_numbers=page_numbers,
             expected_folder=self._get_expected_folder(),
             output_folder=self._get_output_folder(),

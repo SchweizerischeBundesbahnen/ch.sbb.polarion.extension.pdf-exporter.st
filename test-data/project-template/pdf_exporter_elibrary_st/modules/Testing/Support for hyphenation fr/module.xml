@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+    <field id="author">admin</field>
+    <field id="created">2026-08-10 10:12:58.410 +0000</field>
+    <field id="docLanguage" type="enum:language">fr</field>
+    <field id="homePageContent" text-type="text/html"><![CDATA[<h1 id="polarion_wiki macro name=module-workitem;params=id=EL-12748"></h1><p id="polarion_1">L&#39;interprétation des réglementationsenvironnementales internationales nécessite une communicationinterprofessionnelle et une coordinationadministrative exceptionnelle.</p><p id="polarion_2">
+  <br/>
+</p><table id="polarion_wiki macro name=table;params=uid=3" class="polarion-Document-table" style="width: 100%;max-width: 1280px;margin-left: 0px;margin-right: auto;border: 1px solid #CCCCCC;empty-cells: show;border-collapse: collapse;">
+  <tbody>
+    <tr>
+      <th style="font-weight: bold;background-color: #F0F0F0;text-align: left;vertical-align: top;width: 85px;height: 12px;border: 1px solid #CCCCCC;border-top: 1px solid #CCCCCC;border-bottom: 1px solid #CCCCCC;border-right: 1px solid #CCCCCC;border-left: 1px solid #CCCCCC;padding: 5px;"></th>
+      <th style="font-weight: bold;background-color: #F0F0F0;text-align: left;vertical-align: top;width: 269px;height: 12px;border: 1px solid #CCCCCC;border-top: 1px solid #CCCCCC;border-bottom: 1px solid #CCCCCC;border-right: 1px solid #CCCCCC;border-left: 1px solid #CCCCCC;padding: 5px;"></th>
+      <th style="font-weight: bold;background-color: #F0F0F0;text-align: left;vertical-align: top;width: 366px;height: 12px;border: 1px solid #CCCCCC;border-top: 1px solid #CCCCCC;border-bottom: 1px solid #CCCCCC;border-right: 1px solid #CCCCCC;border-left: 1px solid #CCCCCC;padding: 5px;"></th>
+    </tr>
+    <tr>
+      <td style="text-align: left;vertical-align: top;width: 85px;height: 12px;border: 1px solid #CCCCCC;border-top: 1px solid #CCCCCC;border-bottom: 1px solid #CCCCCC;border-right: 1px solid #CCCCCC;border-left: 1px solid #CCCCCC;padding: 5px;">L&#39;interprétation des réglementations environnementales internationales nécessite une communication interprofessionnelle et une coordination administrative exceptionnelle.</td>
+      <td style="text-align: left;vertical-align: top;width: 269px;height: 12px;border: 1px solid #CCCCCC;border-top: 1px solid #CCCCCC;border-bottom: 1px solid #CCCCCC;border-right: 1px solid #CCCCCC;border-left: 1px solid #CCCCCC;padding: 5px;">L&#39;interprétation des réglementations environnementales internationales nécessite une communication interprofessionnelle et une coordination administrative exceptionnelle.</td>
+      <td style="text-align: left;vertical-align: top;width: 366px;height: 12px;border: 1px solid #CCCCCC;border-top: 1px solid #CCCCCC;border-bottom: 1px solid #CCCCCC;border-right: 1px solid #CCCCCC;border-left: 1px solid #CCCCCC;padding: 5px;">L&#39;interprétation des réglementations environnementales internationales nécessite une communication interprofessionnelle et une coordination administrative exceptionnelle.</td>
+    </tr>
+    <tr>
+      <td style="text-align: left;vertical-align: top;width: 85px;height: 12px;border: 1px solid #CCCCCC;border-top: 1px solid #CCCCCC;border-bottom: 1px solid #CCCCCC;border-right: 1px solid #CCCCCC;border-left: 1px solid #CCCCCC;padding: 5px;"></td>
+      <td style="text-align: left;vertical-align: top;width: 269px;height: 12px;border: 1px solid #CCCCCC;border-top: 1px solid #CCCCCC;border-bottom: 1px solid #CCCCCC;border-right: 1px solid #CCCCCC;border-left: 1px solid #CCCCCC;padding: 5px;"></td>
+      <td style="text-align: left;vertical-align: top;width: 366px;height: 12px;border: 1px solid #CCCCCC;border-top: 1px solid #CCCCCC;border-bottom: 1px solid #CCCCCC;border-right: 1px solid #CCCCCC;border-left: 1px solid #CCCCCC;padding: 5px;"></td>
+    </tr>
+  </tbody>
+</table><p id="polarion_template_2"></p>]]></field>
+    <field id="renderingLayouts">
+        <list>
+            <struct>
+                <item id="label">Requirement</item>
+                <item id="layouter">paragraph</item>
+                <item id="properties">
+                    <list>
+                        <struct>
+                            <item id="key">fieldsAtStart</item>
+                            <item id="value">id</item>
+                        </struct>
+                        <struct>
+                            <item id="key">fieldsAtEnd</item>
+                            <item id="value">status</item>
+                        </struct>
+                    </list>
+                </item>
+                <item id="type">requirement</item>
+            </struct>
+        </list>
+    </field>
+    <field id="status">draft</field>
+    <field id="structureLinkRole">parent</field>
+    <field id="title">Support for hyphenation fr</field>
+    <field id="type">generic</field>
+    <field id="usesOutlineNumbering">true</field>
+</module>
