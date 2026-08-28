@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<work-item>
+    <field id="author">admin</field>
+    <field id="created">2026-06-22 14:20:15.904 +0000</field>
+    <field id="linkedWorkItems">
+        <list>
+            <struct>
+                <item id="role">duplicates</item>
+                <item id="workItem">elibrary$EL-265</item>
+            </struct>
+            <struct>
+                <item id="revision">126334</item>
+                <item id="role">duplicates</item>
+                <item id="workItem">EL-12745</item>
+            </struct>
+        </list>
+    </field>
+</work-item>

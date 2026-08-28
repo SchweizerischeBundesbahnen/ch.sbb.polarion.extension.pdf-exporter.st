@@ -55,6 +55,13 @@ class PdfExporterConvertTest(PdfExporterTestCase):
             custom_export_params={"coverPage": "Default"},
         )
 
+    def test_convert_live_doc_with_formula(self) -> None:
+        self._assert_convert_matches_snapshot(
+            location_path="Testing/formula test",
+            custom_prefix="test_convert_live_doc_with_formula",
+            expected_page_count=1,
+        )
+
     def test_convert_unknown_project(self) -> None:
         # Act
         response: Response = self._convert(
