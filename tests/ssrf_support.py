@@ -76,6 +76,39 @@ def _answers(container: Any, host: str, port: int) -> bool:
     return bool(exit_code == 0 and output.decode().strip() == "200")
 
 
+def served_as(url: str) -> tuple[int, str] | None:
+    """The status and the content type Polarion itself gets for a url, asked from inside the container.
+
+    A case which says "this url answers with something which is not a picture" states a premise about
+    the server. Asked this way, the premise is checked instead of assumed.
+    """
+    container: Any = _polarion_container()
+    if container is None:
+        return None
+    command: list[str] = ["curl", "-s", "-m", "5", "-o", "/dev/null", "-w", "%{http_code} %{content_type}", url]
+    try:
+        answer: Any = container.exec_run(command)
+    except Exception:  # noqa: BLE001 - an unreadable answer is reported, not raised
+        return None
+    if answer[0] != 0:
+        return None
+    parts: list[str] = answer[1].decode().strip().split(" ", 1)
+    status: str = parts[0]
+    if not status.isdigit():
+        return None
+    content_type: str = parts[1].strip() if len(parts) > 1 else ""
+    return int(status), content_type
+
+
+def containerized_run() -> bool:
+    """Whether the suite drives a container it started itself - the GitHub Actions merge gate.
+
+    There the probe is part of the harness, so a probe which cannot be reached is a broken run. The
+    nightly run against a long-lived server has no docker to ask, and skips instead.
+    """
+    return bool(os.environ.get("TC_POLARION_IMAGE_NAME"))
+
+
 def reachable_probe_endpoint(port: int) -> str | None:
     """The ``host:port`` the Polarion container really reaches, or None when there is none."""
     container: Any = _polarion_container()

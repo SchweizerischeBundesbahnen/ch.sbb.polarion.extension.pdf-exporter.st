@@ -46,8 +46,10 @@ def _png(width: int, height: int, rgb: tuple[int, int, int]) -> bytes:
 
 PROBE_PNG: bytes = _png(PROBE_IMAGE_WIDTH, PROBE_IMAGE_HEIGHT, (255, 0, 0))
 PROBE_CSS: bytes = b"body { background-image: url(/probe/ok.png); }"
+# one word of the body, which survives the text extraction of a pdf: a case looks for it there
+PROBE_BODY_MARKER = "ssrf-probe-body-reached-the-document"
 # what the reported issue used: a url which answers with a body that is not a picture at all
-PROBE_JSON: bytes = b'{"method": "GET", "headers": {"Host": "probe"}, "origin": "the address of the server"}'
+PROBE_JSON: bytes = b'{"method": "GET", "headers": {"Host": "probe"}, "origin": "' + PROBE_BODY_MARKER.encode() + b'"}'
 
 
 class _Handler(BaseHTTPRequestHandler):
