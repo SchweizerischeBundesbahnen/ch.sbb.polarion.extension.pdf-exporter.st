@@ -26,6 +26,7 @@ from tests.ssrf_support import (
     containerized_run,
     polarion_base_url,
     reachable_probe_endpoint,
+    release_docker,
     served_as,
     start_loopback_forwarder,
     stop_loopback_forwarder,
@@ -72,6 +73,7 @@ class PdfExporterExternalResourcesTest(PdfExporterTestCase):
         if cls.probe is not None:
             cls.probe.__exit__(None, None, None)
             cls.probe = None
+        release_docker()
         super().tearDownClass()
 
     def setUp(self) -> None:
@@ -130,7 +132,11 @@ class PdfExporterExternalResourcesTest(PdfExporterTestCase):
 
     def _require_loopback(self, family: str) -> None:
         if not self.__class__.loopback_forwarded or not answers_on_loopback(self._probe().port, family):
-            self._unavailable(f"the probe does not answer on the {family} loopback of the container")
+            # the forwarder ends by itself after its lifetime, so a slow run finds it gone rather
+            # than broken: it is started once more before the loopback is called unreachable
+            self.__class__.loopback_forwarded = start_loopback_forwarder(self._probe().port, self.__class__.endpoint.rsplit(":", 1)[0])
+            if not self.__class__.loopback_forwarded or not answers_on_loopback(self._probe().port, family):
+                self._unavailable(f"the probe does not answer on the {family} loopback of the container")
         self._probe().reset()
 
     def _text_of(self, pdf_bytes: bytes) -> str:

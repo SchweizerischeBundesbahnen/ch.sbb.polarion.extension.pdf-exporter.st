@@ -61,9 +61,6 @@ class _Handler(BaseHTTPRequestHandler):
             self._answer(b"application/json", PROBE_JSON)
         elif self.path.startswith("/probe/style.css"):
             self._answer(b"text/css", PROBE_CSS)
-        elif self.path.startswith("/probe/login.png"):
-            # what an unauthenticated Polarion answers: a page, under the name of a picture
-            self._answer(b"text/html;charset=UTF-8", b"<html><body>login</body></html>")
         else:
             self._answer(b"image/png", PROBE_PNG)
 

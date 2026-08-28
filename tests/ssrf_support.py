@@ -17,42 +17,78 @@ import logging
 import os
 import time
 from typing import Any
-from urllib.parse import urlparse
+from urllib.parse import ParseResult, urlparse
+
+import docker  # type: ignore[import-untyped]
 
 
 logger = logging.getLogger(__name__)
 
 PROBE_PATH = "/probe/ok.png"
+DEFAULT_PORT_OF_SCHEME = {"http": 80, "https": 443}
+
+_client: Any = None
+_container: Any = None
+_looked_for_container: bool = False
 
 
-def _polarion_container() -> Any:
-    """The running Polarion container, found by name or by the port the tests talk to."""
-    try:
-        import docker  # type: ignore[import-untyped]
-    except ImportError:
-        logger.info("the docker package is absent, the external-resource cases are skipped")
-        return None
-
+def _wanted_port() -> str:
+    """The port the tests talk to, named or implied by the scheme."""
     app_url: str = os.environ.get("APP_URL", "http://localhost")
-    wanted_port: str = str(urlparse(app_url).port or 80)
-    named: str | None = os.environ.get("POLARION_CONTAINER")
+    parts: ParseResult = urlparse(app_url)
+    return str(parts.port or DEFAULT_PORT_OF_SCHEME.get(parts.scheme, 80))
+
+
+def _find_polarion_container() -> Any:
+    """The running Polarion container: the one named, or the one publishing the port of APP_URL."""
+    global _client  # noqa: PLW0603 - one client for the run, closed by release_docker()
 
     try:
-        client: Any = docker.from_env()
-        containers: list[Any] = client.containers.list()
+        _client = docker.from_env()
+        containers: list[Any] = _client.containers.list()
     except Exception:  # noqa: BLE001 - no docker, no cases; the reason is logged
         logger.info("docker is not reachable, the external-resource cases are skipped")
         return None
 
+    named: str | None = os.environ.get("POLARION_CONTAINER")
+    if named:
+        # an explicit name is an answer, not a hint: it may not lose to a container which happens
+        # to publish the same port
+        for container in containers:
+            if container.name == named:
+                return container
+        logger.info("no container is named %s, the external-resource cases are skipped", named)
+        return None
+
+    wanted_port: str = _wanted_port()
     for container in containers:
-        if named and container.name == named:
-            return container
         ports: dict[str, list[dict[str, str]] | None] = container.attrs["NetworkSettings"]["Ports"] or {}
         for bindings in ports.values():
             for binding in bindings or []:
                 if binding.get("HostPort") == wanted_port:
                     return container
     return None
+
+
+def _polarion_container() -> Any:
+    """The container, looked for once: every case in the run talks to the same one."""
+    global _container, _looked_for_container  # noqa: PLW0603 - the lookup is the state
+
+    if not _looked_for_container:
+        _container = _find_polarion_container()
+        _looked_for_container = True
+    return _container
+
+
+def release_docker() -> None:
+    """Give the connection of the docker client back, at the end of the run."""
+    global _client, _container, _looked_for_container  # noqa: PLW0603 - the lookup is the state
+
+    if _client is not None:
+        _client.close()
+    _client = None
+    _container = None
+    _looked_for_container = False
 
 
 def _candidate_hosts(container: Any) -> list[str]:
