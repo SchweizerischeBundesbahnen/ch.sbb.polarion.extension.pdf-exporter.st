@@ -27,9 +27,10 @@ logger = logging.getLogger(__name__)
 PROBE_PATH = "/probe/ok.png"
 DEFAULT_PORT_OF_SCHEME = {"http": 80, "https": 443}
 
+_UNRESOLVED: Any = object()
+
 _client: Any = None
-_container: Any = None
-_looked_for_container: bool = False
+_container: Any = _UNRESOLVED
 
 
 def _wanted_port() -> str:
@@ -71,24 +72,25 @@ def _find_polarion_container() -> Any:
 
 
 def _polarion_container() -> Any:
-    """The container, looked for once: every case in the run talks to the same one."""
-    global _container, _looked_for_container  # noqa: PLW0603 - the lookup is the state
+    """The container, looked for once: every case in the run talks to the same one.
 
-    if not _looked_for_container:
+    The lookup answers None as well, and that answer is kept: the sentinel tells the two apart.
+    """
+    global _container  # noqa: PLW0603 - the lookup is the state
+
+    if _container is _UNRESOLVED:
         _container = _find_polarion_container()
-        _looked_for_container = True
     return _container
 
 
 def release_docker() -> None:
     """Give the connection of the docker client back, at the end of the run."""
-    global _client, _container, _looked_for_container  # noqa: PLW0603 - the lookup is the state
+    global _client, _container  # noqa: PLW0603 - the lookup is the state
 
     if _client is not None:
         _client.close()
     _client = None
-    _container = None
-    _looked_for_container = False
+    _container = _UNRESOLVED
 
 
 def _candidate_hosts(container: Any) -> list[str]:
