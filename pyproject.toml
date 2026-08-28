@@ -200,11 +200,6 @@ disallow_any_unimported = true           # Disallows Any from unfollowed imports
 disallow_any_generics = true             # Requires type parameters for generic types (e.g., list[str] not list)
 disallow_subclassing_any = true          # Disallows subclassing Any types
 
-# Testing module: testcontainers library has no type stubs
-[[tool.mypy.overrides]]
-module = ["testcontainers.*"]
-ignore_missing_imports = true
-
 # xmlrunner has no type stubs
 [[tool.mypy.overrides]]
 module = ["xmlrunner"]

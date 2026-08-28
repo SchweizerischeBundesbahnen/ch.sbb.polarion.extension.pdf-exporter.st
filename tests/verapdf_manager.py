@@ -27,7 +27,7 @@ if TYPE_CHECKING:
 logger = logging.getLogger(__name__)
 
 
-class VeraPDFContainer(DockerContainer):  # type: ignore[misc,no-any-unimported]
+class VeraPDFContainer(DockerContainer):
     """VeraPDF REST API container."""
 
     VERAPDF_IMAGE = "verapdf/rest:latest"
