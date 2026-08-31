@@ -53,10 +53,12 @@ if weasyprint_api_key:
     # Neither the name nor the key is printed: the name comes from the environment and the key is
     # masked by the job which minted it.
     if stored.status_code not in (HTTPStatus.OK, HTTPStatus.CREATED, HTTPStatus.NO_CONTENT):
-        message: str = f"The API key of the WeasyPrint service could not be stored in its Polarion secret: HTTP {stored.status_code}, {stored.text[:400]}"
-        raise SystemExit(message)
+        # the containers this run started are given back before it stops, or they outlive the job
+        testcontainers_helper.tear_down()
+        raise SystemExit(f"The API key of the WeasyPrint service could not be stored in its Polarion secret: HTTP {stored.status_code}, {stored.text[:400]}")
     read_back: Response = admin_utility.get_vault_record(record_name)
     if read_back.status_code != HTTPStatus.OK or not read_back.json().get("password"):
+        testcontainers_helper.tear_down()
         raise SystemExit(f"The Polarion secret of the WeasyPrint service is empty after it was written: HTTP {read_back.status_code}")
     sys.stdout.write("The API key of the WeasyPrint service is stored in its Polarion secret\n")
 
