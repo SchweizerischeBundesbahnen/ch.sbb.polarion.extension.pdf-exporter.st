@@ -38,11 +38,14 @@ PROPERTIES_PATH = "/opt/polarion/etc/polarion.properties"
 SERVICE_PROPERTY = "ch.sbb.polarion.extension.pdf-exporter.weasyprint.service"
 API_KEY_SECRET_PROPERTY = "ch.sbb.polarion.extension.pdf-exporter.weasyprint.apiKeySecret"
 CACERTS_PATH = "/opt/java/openjdk/lib/security/cacerts"
-# the documented default of a JDK truststore, not a credential of this project
-CACERTS_PASSWORD = "changeit"
+# The documented default of a JDK truststore. It is not a credential of this project, and an
+# installation which changed it names the new one here.
+CACERTS_PASSWORD = os.environ.get("POLARION_TRUSTSTORE_PASSWORD", "changeit")
 # the authority which signed the certificate of the service, where the environment names it itself
 CA_ALIAS_OVERRIDE = os.environ.get("WEASYPRINT_CA_ALIAS", "")
 SERVICE_READY_ATTEMPTS = 30
+# where the authority waits while a case runs without it, so a killed run leaves it recoverable
+CA_UNDER_TEST_PATH = "/tmp/ca-under-test.pem"  # a path inside the container
 
 
 def _polarion_exec(command: list[str]) -> tuple[int, str] | None:
@@ -53,7 +56,8 @@ def _polarion_exec(command: list[str]) -> tuple[int, str] | None:
     try:
         answer: Any = container.exec_run(command)
     except Exception:  # noqa: BLE001 - an unreachable container is reported, not raised
-        logger.info("the Polarion container did not run %s", command[0])
+        # the command itself is never logged: some of them carry the password of the truststore
+        logger.info("a command could not be run in the Polarion container")
         return None
     return int(answer[0]), answer[1].decode(errors="replace")
 
@@ -156,8 +160,11 @@ def _service_spec(container: Any) -> dict[str, Any]:
         "image": attributes["Config"]["Image"],
         "env": [value for value in attributes["Config"]["Env"] if not value.startswith("API_KEY=")],
         "api_keys": next((value.partition("=")[2] for value in attributes["Config"]["Env"] if value.startswith("API_KEY=")), None),
-        "ports": {port: bindings[0]["HostPort"] for port, bindings in (attributes["HostConfig"]["PortBindings"] or {}).items() if bindings},
-        "volumes": {mount["Source"]: {"bind": mount["Destination"], "mode": "ro" if not mount.get("RW", True) else "rw"} for mount in attributes.get("Mounts") or [] if mount.get("Type") == "bind"},
+        # every binding of every port, the interface it was published on included: a service reachable
+        # only on the loopback must not come back reachable from the network
+        "ports": {port: [(binding.get("HostIp") or "", binding["HostPort"]) for binding in bindings] for port, bindings in (attributes["HostConfig"]["PortBindings"] or {}).items() if bindings},
+        # a named volume is carried under its name, a bind mount under its path on the host
+        "volumes": {mount.get("Name") or mount["Source"]: {"bind": mount["Destination"], "mode": "rw" if mount.get("RW", True) else "ro"} for mount in attributes.get("Mounts") or [] if mount.get("Destination")},
         "networks": {name: settings.get("Aliases") or [] for name, settings in attributes["NetworkSettings"]["Networks"].items()},
     }
 
@@ -216,8 +223,10 @@ def service_running_with(api_keys: str | None) -> Generator[bool]:
         return
     spec: dict[str, Any] = _service_spec(original)
 
-    _recreate(spec, api_keys)
     try:
+        # inside the block: a recreate which fails leaves no service, and the restore below is what
+        # puts one back
+        _recreate(spec, api_keys)
         yield _wait_until_answering()
     finally:
         _recreate(spec, spec["api_keys"])
@@ -281,7 +290,7 @@ def ca_removed(alias: str) -> Generator[bool]:
     The truststore is read per request, so this needs no restart, which is what makes a negative
     certificate case affordable at all.
     """
-    exported: tuple[int, str] | None = _polarion_exec(["keytool", "-exportcert", "-alias", alias, "-keystore", CACERTS_PATH, "-storepass", CACERTS_PASSWORD, "-rfc", "-file", "/tmp/ca-under-test.pem"])
+    exported: tuple[int, str] | None = _polarion_exec(["keytool", "-exportcert", "-alias", alias, "-keystore", CACERTS_PATH, "-storepass", CACERTS_PASSWORD, "-rfc", "-file", CA_UNDER_TEST_PATH])
     if exported is None or exported[0] != 0:
         yield False
         return
@@ -290,5 +299,9 @@ def ca_removed(alias: str) -> Generator[bool]:
     try:
         yield removed is not None and removed[0] == 0
     finally:
-        _polarion_exec(["keytool", "-importcert", "-alias", alias, "-file", "/tmp/ca-under-test.pem", "-keystore", CACERTS_PATH, "-storepass", CACERTS_PASSWORD, "-noprompt"])
-        _polarion_exec(["rm", "-f", "/tmp/ca-under-test.pem"])
+        restored: tuple[int, str] | None = _polarion_exec(["keytool", "-importcert", "-alias", alias, "-file", CA_UNDER_TEST_PATH, "-keystore", CACERTS_PATH, "-storepass", CACERTS_PASSWORD, "-noprompt"])
+        if restored is None or restored[0] != 0:
+            # said out loud, or the next case fails with a handshake error which reads like a defect
+            logger.error("the authority '%s' could not be put back into the truststore, it is still in %s", alias, CA_UNDER_TEST_PATH)
+        else:
+            _polarion_exec(["rm", "-f", CA_UNDER_TEST_PATH])

@@ -104,16 +104,20 @@ class PdfExporterWeasyPrintAuthTest(PdfExporterTestCase):
         self.assertIn("rejected the configured API key", message, f"the export did not name the rejected key: {message}")
 
     def test_the_service_says_nothing_about_the_key_it_refused(self) -> None:
+        # the credential at risk is the one which arrives in the header, which is the key Polarion
+        # holds. It is read before the service is given another one, since afterwards the container
+        # carries the other key and the value under test would be gone
         self._require_restartable_service()
+        refused_key: str = self._stored_key_placeholder()
 
         with service_running_with(OTHER_KEY) as answering:
             self.assertTrue(answering, "the service did not come back with the other key")
             self._failed_export_message()
             rejections: int = service_log_lines(REJECTION_LOGGED)
-            leaked: int = service_log_lines(OTHER_KEY)
+            leaked: int = service_log_lines(refused_key)
 
         self.assertGreater(rejections, 0, "the service did not log the refusal")
-        self.assertEqual(0, leaked, "the service wrote a key into its log")
+        self.assertEqual(0, leaked, "the service wrote the key it refused into its log")
 
     def test_the_status_page_stays_green_while_the_key_is_refused(self) -> None:
         # the version endpoint carries no key, so it cannot see the refusal. That is why the
