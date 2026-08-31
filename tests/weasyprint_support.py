@@ -19,6 +19,7 @@ from __future__ import annotations
 
 import logging
 import os
+import shlex
 import time
 from contextlib import contextmanager
 from pathlib import Path
@@ -44,6 +45,8 @@ CACERTS_PASSWORD = os.environ.get("POLARION_TRUSTSTORE_PASSWORD", "changeit")
 # the authority which signed the certificate of the service, where the environment names it itself
 CA_ALIAS_OVERRIDE = os.environ.get("WEASYPRINT_CA_ALIAS", "")
 SERVICE_READY_ATTEMPTS = 30
+# what a recreated container can carry over: a named volume under its name, a bind under its path
+RECREATABLE_MOUNT_TYPES = ("bind", "volume")
 # where the authority waits while a case runs without it, so a killed run leaves it recoverable
 CA_UNDER_TEST_PATH = "/tmp/ca-under-test.pem"  # a path inside the container
 
@@ -147,7 +150,12 @@ def service_restartable() -> str | None:
         return "the container of the WeasyPrint service was not found"
     for mount in container.attrs.get("Mounts") or []:
         source: str = mount.get("Source", "")
-        if mount.get("Type") == "bind" and source and not Path(source).exists():
+        kind: str = mount.get("Type", "")
+        if kind not in RECREATABLE_MOUNT_TYPES:
+            # said rather than dropped: a tmpfs is not carried over, and a service which came back
+            # without one would not be the service the other cases measured
+            return f"the service carries a '{kind}' mount at '{mount.get('Destination')}', which this cannot reproduce"
+        if kind == "bind" and source and not Path(source).exists():
             return f"the service was started from '{source}', which no longer exists on the host"
     return None
 
@@ -164,7 +172,11 @@ def _service_spec(container: Any) -> dict[str, Any]:
         # only on the loopback must not come back reachable from the network
         "ports": {port: [(binding.get("HostIp") or "", binding["HostPort"]) for binding in bindings] for port, bindings in (attributes["HostConfig"]["PortBindings"] or {}).items() if bindings},
         # a named volume is carried under its name, a bind mount under its path on the host
-        "volumes": {mount.get("Name") or mount["Source"]: {"bind": mount["Destination"], "mode": "rw" if mount.get("RW", True) else "ro"} for mount in attributes.get("Mounts") or [] if mount.get("Destination")},
+        "volumes": {
+            mount.get("Name") or mount["Source"]: {"bind": mount["Destination"], "mode": "rw" if mount.get("RW", True) else "ro"}
+            for mount in attributes.get("Mounts") or []
+            if mount.get("Type") in RECREATABLE_MOUNT_TYPES and mount.get("Destination")
+        },
         "networks": {name: settings.get("Aliases") or [] for name, settings in attributes["NetworkSettings"]["Networks"].items()},
     }
 
@@ -244,7 +256,8 @@ def _certificate_issuer() -> str | None:
         return None
     host: str = urlparse(url).hostname or ""
     port: int = urlparse(url).port or 443
-    answer: tuple[int, str] | None = _polarion_exec(["sh", "-c", f"echo | openssl s_client -connect {host}:{port} -servername {host} 2>/dev/null | openssl x509 -noout -issuer"])
+    quoted_host: str = shlex.quote(host)
+    answer: tuple[int, str] | None = _polarion_exec(["sh", "-c", f"echo | openssl s_client -connect {quoted_host}:{port:d} -servername {quoted_host} 2>/dev/null | openssl x509 -noout -issuer"])
     if answer is None or answer[0] != 0:
         return None
     # 'issuer=CN = Name, O = Org' becomes 'Name': the common name is what the truststore prints too
@@ -268,7 +281,11 @@ def trusted_ca_alias() -> str | None:
     issuer: str | None = _certificate_issuer()
     if issuer is None:
         return None
-    answer: tuple[int, str] | None = _polarion_exec(["sh", "-c", f'keytool -list -v -keystore {CACERTS_PATH} -storepass {CACERTS_PASSWORD} 2>/dev/null | grep -B8 "{issuer}" | grep "Alias name" | head -1'])
+    # the password is configurable and the issuer comes from a certificate, so neither is pasted into
+    # the shell as it stands. The issuer is matched literally as well: a common name is not a pattern
+    quoted_password: str = shlex.quote(CACERTS_PASSWORD)
+    quoted_issuer: str = shlex.quote(issuer)
+    answer: tuple[int, str] | None = _polarion_exec(["sh", "-c", f"keytool -list -v -keystore {CACERTS_PATH} -storepass {quoted_password} 2>/dev/null | grep -F -B8 -- {quoted_issuer} | grep 'Alias name' | head -1"])
     if answer is None or answer[0] != 0:
         return None
     alias: str = answer[1].strip().partition(":")[2].strip()
@@ -302,6 +319,8 @@ def ca_removed(alias: str) -> Generator[bool]:
         restored: tuple[int, str] | None = _polarion_exec(["keytool", "-importcert", "-alias", alias, "-file", CA_UNDER_TEST_PATH, "-keystore", CACERTS_PATH, "-storepass", CACERTS_PASSWORD, "-noprompt"])
         if restored is None or restored[0] != 0:
             # said out loud, or the next case fails with a handshake error which reads like a defect
-            logger.error("the authority '%s' could not be put back into the truststore, it is still in %s", alias, CA_UNDER_TEST_PATH)
+            # the alias is not named: it is read through a command carrying the password of the
+            # truststore, and the path is what the reader needs anyway
+            logger.error("the authority could not be put back into the truststore, it is still in %s", CA_UNDER_TEST_PATH)
         else:
             _polarion_exec(["rm", "-f", CA_UNDER_TEST_PATH])

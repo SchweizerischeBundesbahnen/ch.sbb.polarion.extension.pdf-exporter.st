@@ -114,7 +114,9 @@ class PdfExporterWeasyPrintAuthTest(PdfExporterTestCase):
             self.assertTrue(answering, "the service did not come back with the other key")
             self._failed_export_message()
             rejections: int = service_log_lines(REJECTION_LOGGED)
-            leaked: int = service_log_lines(refused_key)
+            # the service may hold several keys, and only one of them travels in a header, so each
+            # one is looked for on its own: the joined list would never appear in a log
+            leaked: int = sum(service_log_lines(key) for key in (part.strip() for part in refused_key.split(",")) if key)
 
         self.assertGreater(rejections, 0, "the service did not log the refusal")
         self.assertEqual(0, leaked, "the service wrote the key it refused into its log")
