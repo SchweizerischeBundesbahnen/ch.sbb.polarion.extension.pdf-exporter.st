@@ -83,6 +83,17 @@ def _polarion_container() -> Any:
     return _container
 
 
+def polarion_container() -> Any:
+    """The Polarion container the tests talk to, for the cases which need to ask it something."""
+    return _polarion_container()
+
+
+def docker_client() -> Any:
+    """The client which found the container, so a caller can look for another one."""
+    _polarion_container()
+    return _client
+
+
 def release_docker() -> None:
     """Give the connection of the docker client back, at the end of the run."""
     global _client, _container  # noqa: PLW0603 - the lookup is the state
