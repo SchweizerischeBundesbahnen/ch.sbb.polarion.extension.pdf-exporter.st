@@ -39,9 +39,11 @@ testcontainers_helper.create_test_container_if_required("pdf-exporter")
 # key in a secret, and reads it once, so the record is written before the first export.
 weasyprint_api_key: str | None = os.environ.get("WEASYPRINT_API_KEY")
 if weasyprint_api_key:
-    secret_name: str = os.environ.get("WEASYPRINT_API_KEY_SECRET", "weasyprint.api.key")
-    PdfExporterTestCase.create_extension_api("admin-utility").create_vault_record(secret_name, "weasyprint", weasyprint_api_key)
-    logging.getLogger(__name__).info("Stored the WeasyPrint API key in the Polarion secret '%s'", secret_name)
+    record_name: str = os.environ.get("WEASYPRINT_API_KEY_SECRET", "weasyprint.api.key")
+    PdfExporterTestCase.create_extension_api("admin-utility").create_vault_record(record_name, "weasyprint", weasyprint_api_key)
+    # the record is named by the same configuration which named it to Polarion, and neither the name
+    # nor the key is written to the log
+    logging.getLogger(__name__).info("Stored the API key of the WeasyPrint service in its Polarion secret")
 
 elibrary = TempProject("elibrary", "E-Library", "pdf_exporter_elibrary_st", abs_path("../test-data/project-template/pdf_exporter_elibrary_st"))
 PdfExporterTestCase.set_elibrary(elibrary)
