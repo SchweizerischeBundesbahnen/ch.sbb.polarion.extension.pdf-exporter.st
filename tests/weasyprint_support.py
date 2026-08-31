@@ -20,6 +20,7 @@ from __future__ import annotations
 import logging
 import os
 import shlex
+import sys
 import time
 from contextlib import contextmanager
 from pathlib import Path
@@ -194,6 +195,16 @@ def _service_spec(container: Any) -> dict[str, Any]:
     }
 
 
+def _print_service_log(container: Any) -> None:
+    """Put the log of a container into the output of the run, before it is taken away with it."""
+    try:
+        lines: str = container.logs().decode(errors="replace")
+    except Exception:  # noqa: BLE001 - a log which cannot be read is not worth failing a case over
+        return
+    if lines.strip():
+        sys.stdout.write(f"--- the WeasyPrint service, before it was replaced ---\n{lines}\n")
+
+
 def _recreate(spec: dict[str, Any], api_keys: str | None) -> None:
     """Put the service back from a spec, with these keys and every name it answered under.
 
@@ -211,7 +222,12 @@ def _recreate(spec: dict[str, Any], api_keys: str | None) -> None:
     except Exception:  # noqa: BLE001 - nothing to replace is a fine starting point
         existing = None
     if existing is not None:
-        existing.stop(timeout=10)
+        # What the container said is read before it goes, since removing it takes its log along, and
+        # the cases which replace it are the ones whose failures are read out of that log.
+        _print_service_log(existing)
+        # Killed rather than asked to stop: it is removed on the next line, so there is nothing to
+        # flush, and asking politely costs the ten seconds of the stop timeout every single time.
+        existing.kill()
         existing.remove()
 
     networks: dict[str, list[str]] = spec["networks"]

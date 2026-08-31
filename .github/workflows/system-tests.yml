@@ -115,14 +115,7 @@ jobs:
       - name: 🔒 Start the WeasyPrint service over TLS
         run: |
           docker network create "$TC_POLARION_NETWORK"
-          # The authentication cases replace this container several times, and each replacement takes
-          # the log of the one before it with it. The logs live on the host instead, one file per
-          # container, so what the service said about the whole suite survives. The directory is
-          # opened up because the image runs as uid 1000 and the runner as another.
-          mkdir -p "$RUNNER_TEMP/weasyprint-logs"
-          chmod 777 "$RUNNER_TEMP/weasyprint-logs"
           docker run --detach --name "$WEASYPRINT_CONTAINER" \
-            --volume "$RUNNER_TEMP/weasyprint-logs:/opt/weasyprint/logs" \
             --network "$TC_POLARION_NETWORK" --network-alias "$WEASYPRINT_HOST" \
             --volume "$RUNNER_TEMP/tls:/tls:ro" \
             --env API_KEY="$WEASYPRINT_API_KEY" \
@@ -142,10 +135,8 @@ jobs:
         run: uv run tox -e test
       - name: 🧾 WeasyPrint service log
         if: always()
-        run: |
-          # every container the run had, not only the one which happens to be alive at the end
-          cat "$RUNNER_TEMP/weasyprint-logs/"*.log 2>/dev/null || true
-          docker logs "$WEASYPRINT_CONTAINER" 2>/dev/null || true
+        # the containers replaced during the run print their own log as they go, from the suite
+        run: docker logs "$WEASYPRINT_CONTAINER" 2>/dev/null || true
       - name: 📤 Upload test reports and generated/diff artifacts
         # Always upload so failures can be diagnosed: the output folder contains the generated
         # PDFs, the rendered page PNGs and the *_diff.png images highlighting visual mismatches.
