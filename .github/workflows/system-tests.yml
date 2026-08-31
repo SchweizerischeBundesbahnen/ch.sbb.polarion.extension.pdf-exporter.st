@@ -35,6 +35,9 @@ env:
   TC_POLARION_NETWORK: system-tests
   TC_WEASYPRINT_SERVICE_URL: https://weasyprint.system-tests:9080
   TC_POLARION_EXTRA_PROPERTIES: ch.sbb.polarion.extension.pdf-exporter.weasyprint.apiKeySecret=weasyprint.api.key
+  # the same name, read by tests/run.py when it writes the key into that secret. The two literals sit
+  # together so an edit to one is made looking at the other
+  WEASYPRINT_API_KEY_SECRET: weasyprint.api.key
 jobs:
   system-tests:
     # Skip draft PRs (this container suite is expensive); still runs on manual workflow_dispatch.
@@ -92,7 +95,10 @@ jobs:
           cat service.crt ca.pem > service.pem
           chmod 644 ./*.pem ./*.key
           # a key which lives as long as this run, so no credential is written into the repository
-          echo "WEASYPRINT_API_KEY=$(openssl rand -hex 24)" >> "$GITHUB_ENV"
+          weasyprint_api_key="$(openssl rand -hex 24)"
+          # masked at the point it is minted, which covers every step and every test that receives it
+          echo "::add-mask::$weasyprint_api_key"
+          echo "WEASYPRINT_API_KEY=$weasyprint_api_key" >> "$GITHUB_ENV"
           echo "TC_POLARION_CA_CERTIFICATES=$RUNNER_TEMP/tls/ca.pem" >> "$GITHUB_ENV"
       # Started here rather than by the harness, which can pass neither a certificate nor a key. The
       # network alias is the name the certificate carries, and Polarion joins the same network, so it
@@ -109,7 +115,12 @@ jobs:
             "$TC_WEASYPRINT_SERVICE_IMAGE_NAME"
           # The image carries its own probe, and it follows the configured scheme, so waiting on the
           # health of the container beats asking again from here. `docker run` has no wait of its own.
-          timeout 90 sh -c 'until [ "$(docker inspect -f "{{.State.Health.Status}}" weasyprint-service)" = healthy ]; do sleep 2; done' \
+          # A container which has already exited, on a certificate it cannot read, is not waited for.
+          # shellcheck disable=SC2016  # the expansion belongs to the inner shell, on every turn
+          timeout 90 sh -c 'until [ "$(docker inspect -f "{{.State.Health.Status}}" weasyprint-service)" = healthy ]; do
+              [ "$(docker inspect -f "{{.State.Running}}" weasyprint-service)" = true ] || exit 1
+              sleep 2
+            done' \
             || { echo "the WeasyPrint service did not become healthy"; docker logs weasyprint-service; exit 1; }
       - name: 🧪 Run system tests against Polarion in Docker
         run: uv run tox -e test
