@@ -38,6 +38,9 @@ env:
   # the same name, used below to seed the key into that secret. The two literals sit together so an
   # edit to one is made looking at the other
   WEASYPRINT_API_KEY_SECRET: weasyprint.api.key
+  # the name the service is started under below, so the cases which recreate it find it by name
+  # rather than by matching the network alias, which the docker API has been moving away from
+  WEASYPRINT_CONTAINER: weasyprint-service
 jobs:
   system-tests:
     # Skip draft PRs (this container suite is expensive); still runs on manual workflow_dispatch.

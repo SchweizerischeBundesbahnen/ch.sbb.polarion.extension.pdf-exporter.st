@@ -119,7 +119,8 @@ def service_container() -> Any:
             continue
         networks: dict[str, dict[str, Any]] = container.attrs["NetworkSettings"]["Networks"]
         for settings in networks.values():
-            if wanted_host in (settings.get("Aliases") or []):
+            # both spellings: newer daemons report the names under DNSNames and leave Aliases behind
+            if wanted_host in (settings.get("Aliases") or []) or wanted_host in (settings.get("DNSNames") or []):
                 return container
     if named:
         logger.info("no container is named %s", named)
