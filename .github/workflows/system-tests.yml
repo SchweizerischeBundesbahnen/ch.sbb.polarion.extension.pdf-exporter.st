@@ -28,6 +28,13 @@ env:
   TC_TEST_DATA_VERSION: 5.1.0
   TC_WEASYPRINT_SERVICE_IMAGE_NAME: ghcr.io/schweizerischebundesbahnen/weasyprint-service:69.0.1
   TC_POLARION_IMAGE_NAME: sbb.jfrog.io/polarion-docker/polarion/polarion:2606-0
+  # The suite runs against the service the way it is deployed: TLS, with an API key. The service is
+  # started here rather than by the harness, so it can be given a certificate and a key, and Polarion
+  # joins its network to reach it under the name the certificate carries.
+  WEASYPRINT_HOST: weasyprint.system-tests
+  TC_POLARION_NETWORK: system-tests
+  TC_WEASYPRINT_SERVICE_URL: https://weasyprint.system-tests:9080
+  TC_POLARION_EXTRA_PROPERTIES: ch.sbb.polarion.extension.pdf-exporter.weasyprint.apiKeySecret=weasyprint.api.key
 jobs:
   system-tests:
     # Skip draft PRs (this container suite is expensive); still runs on manual workflow_dispatch.
@@ -66,8 +73,45 @@ jobs:
           printf '%s' "$IO_JFROG_SBB_POLARION_TOKEN" | docker login sbb.jfrog.io -u polarion --password-stdin
       - name: 🧱 Install dependencies
         run: uv sync --frozen
+      - name: 🔐 Issue the certificate the WeasyPrint service serves
+        run: |
+          mkdir -p "$RUNNER_TEMP/tls"
+          cd "$RUNNER_TEMP/tls"
+          openssl genrsa -out ca.key 4096
+          openssl req -x509 -new -key ca.key -sha256 -days 30 -out ca.pem \
+            -subj "/CN=Polarion system tests CA" -addext "basicConstraints=critical,CA:TRUE"
+          openssl genrsa -out service.key 2048
+          openssl req -new -key service.key -out service.csr -subj "/CN=$WEASYPRINT_HOST"
+          printf 'basicConstraints=critical,CA:FALSE\nkeyUsage=critical,digitalSignature,keyEncipherment\nextendedKeyUsage=serverAuth\nsubjectAltName=DNS:%s\n' "$WEASYPRINT_HOST" > service.ext
+          openssl x509 -req -in service.csr -CA ca.pem -CAkey ca.key -CAcreateserial \
+            -out service.crt -days 30 -sha256 -extfile service.ext
+          cat service.crt ca.pem > service.pem
+          chmod 644 ./*.pem ./*.key
+          # a key which lives as long as this run, so no credential is written into the repository
+          echo "WEASYPRINT_API_KEY=$(openssl rand -hex 24)" >> "$GITHUB_ENV"
+          echo "TC_POLARION_CA_CERTIFICATES=$RUNNER_TEMP/tls/ca.pem" >> "$GITHUB_ENV"
+      - name: 🖨️ Start the WeasyPrint service over TLS
+        run: |
+          docker network create "$TC_POLARION_NETWORK"
+          docker run --detach --name weasyprint-service \
+            --network "$TC_POLARION_NETWORK" --network-alias "$WEASYPRINT_HOST" \
+            --volume "$RUNNER_TEMP/tls:/tls:ro" \
+            --env API_KEY="$WEASYPRINT_API_KEY" \
+            --env TLS_CERT_FILE=/tls/service.pem \
+            --env TLS_KEY_FILE=/tls/service.key \
+            "$TC_WEASYPRINT_SERVICE_IMAGE_NAME"
+          for _ in $(seq 30); do
+            if docker exec weasyprint-service /bin/sh -c 'curl -sk -o /dev/null https://localhost:9080/version'; then
+              echo "the service answers"; exit 0
+            fi
+            sleep 2
+          done
+          echo "the WeasyPrint service did not come up"; docker logs weasyprint-service; exit 1
       - name: 🧪 Run system tests against Polarion in Docker
         run: uv run tox -e test
+      - name: 🧾 WeasyPrint service log
+        if: always()
+        run: docker logs weasyprint-service || true
       - name: 📤 Upload test reports and generated/diff artifacts
         # Always upload so failures can be diagnosed: the output folder contains the generated
         # PDFs, the rendered page PNGs and the *_diff.png images highlighting visual mismatches.

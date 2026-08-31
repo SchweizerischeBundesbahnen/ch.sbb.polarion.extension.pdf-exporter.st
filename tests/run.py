@@ -15,6 +15,8 @@ Example:
         $ python tests/run.py --tc_polarion_image_name polarion:POLARION_VERSION
 """
 
+import logging
+import os
 import sys
 import unittest
 
@@ -32,6 +34,14 @@ suite = loader.discover(abs_path_str("."))
 
 testcontainers_helper = TestContainersHelper()
 testcontainers_helper.create_test_container_if_required("pdf-exporter")
+
+# The WeasyPrint service is reached with an API key where the run configures one. Polarion holds the
+# key in a secret, and reads it once, so the record is written before the first export.
+weasyprint_api_key: str | None = os.environ.get("WEASYPRINT_API_KEY")
+if weasyprint_api_key:
+    secret_name: str = os.environ.get("WEASYPRINT_API_KEY_SECRET", "weasyprint.api.key")
+    PdfExporterTestCase.create_extension_api("admin-utility").create_vault_record(secret_name, "weasyprint", weasyprint_api_key)
+    logging.getLogger(__name__).info("Stored the WeasyPrint API key in the Polarion secret '%s'", secret_name)
 
 elibrary = TempProject("elibrary", "E-Library", "pdf_exporter_elibrary_st", abs_path("../test-data/project-template/pdf_exporter_elibrary_st"))
 PdfExporterTestCase.set_elibrary(elibrary)
