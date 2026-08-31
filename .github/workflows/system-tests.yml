@@ -100,6 +100,9 @@ jobs:
           echo "::add-mask::$weasyprint_api_key"
           echo "WEASYPRINT_API_KEY=$weasyprint_api_key" >> "$GITHUB_ENV"
           echo "TC_POLARION_CA_CERTIFICATES=$RUNNER_TEMP/tls/ca.pem" >> "$GITHUB_ENV"
+          # Polarion reads its secrets when it starts and keeps them, so the key is written into the
+          # store before the container runs. A key written into a running Polarion is never seen.
+          echo "TC_POLARION_SECRETS=$WEASYPRINT_API_KEY_SECRET=$weasyprint_api_key" >> "$GITHUB_ENV"
       # Started here rather than by the harness, which can pass neither a certificate nor a key. The
       # network alias is the name the certificate carries, and Polarion joins the same network, so it
       # reaches the service under a name the certificate covers.
