@@ -161,6 +161,18 @@ def service_restartable() -> str | None:
     return None
 
 
+def _network_aliases(settings: dict[str, Any], container_name: str, container_id: str) -> list[str]:
+    """Every name a network answers this container under, minus the two docker adds by itself.
+
+    A newer daemon reports the names under `DNSNames` and leaves `Aliases` behind, and `DNSNames`
+    also carries the name of the container and its short id. Those two come back on their own, and
+    passing the short id of a container which no longer exists would be wrong.
+    """
+    names: list[str] = [*(settings.get("Aliases") or []), *(settings.get("DNSNames") or [])]
+    given: set[str] = {container_name, container_id[:12]}
+    return [name for name in dict.fromkeys(names) if name not in given]
+
+
 def _service_spec(container: Any) -> dict[str, Any]:
     """Everything needed to put this container back, read once so a restore cannot use a stale view."""
     attributes: dict[str, Any] = container.attrs
@@ -178,7 +190,7 @@ def _service_spec(container: Any) -> dict[str, Any]:
             for mount in attributes.get("Mounts") or []
             if mount.get("Type") in RECREATABLE_MOUNT_TYPES and mount.get("Destination")
         },
-        "networks": {name: settings.get("Aliases") or [] for name, settings in attributes["NetworkSettings"]["Networks"].items()},
+        "networks": {name: _network_aliases(settings, attributes["Name"].lstrip("/"), attributes["Id"]) for name, settings in attributes["NetworkSettings"]["Networks"].items()},
     }
 
 

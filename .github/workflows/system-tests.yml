@@ -115,7 +115,7 @@ jobs:
       - name: 🔒 Start the WeasyPrint service over TLS
         run: |
           docker network create "$TC_POLARION_NETWORK"
-          docker run --detach --name weasyprint-service \
+          docker run --detach --name "$WEASYPRINT_CONTAINER" \
             --network "$TC_POLARION_NETWORK" --network-alias "$WEASYPRINT_HOST" \
             --volume "$RUNNER_TEMP/tls:/tls:ro" \
             --env API_KEY="$WEASYPRINT_API_KEY" \
@@ -126,16 +126,16 @@ jobs:
           # health of the container beats asking again from here. `docker run` has no wait of its own.
           # A container which has already exited, on a certificate it cannot read, is not waited for.
           # shellcheck disable=SC2016  # the expansion belongs to the inner shell, on every turn
-          timeout 90 sh -c 'until [ "$(docker inspect -f "{{.State.Health.Status}}" weasyprint-service)" = healthy ]; do
-              [ "$(docker inspect -f "{{.State.Running}}" weasyprint-service)" = true ] || exit 1
+          timeout 90 sh -c 'until [ "$(docker inspect -f "{{.State.Health.Status}}" "$WEASYPRINT_CONTAINER")" = healthy ]; do
+              [ "$(docker inspect -f "{{.State.Running}}" "$WEASYPRINT_CONTAINER")" = true ] || exit 1
               sleep 2
             done' \
-            || { echo "the WeasyPrint service did not become healthy"; docker logs weasyprint-service; exit 1; }
+            || { echo "the WeasyPrint service did not become healthy"; docker logs "$WEASYPRINT_CONTAINER"; exit 1; }
       - name: 🧪 Run system tests against Polarion in Docker
         run: uv run tox -e test
       - name: 🧾 WeasyPrint service log
         if: always()
-        run: docker logs weasyprint-service || true
+        run: docker logs "$WEASYPRINT_CONTAINER" || true
       - name: 📤 Upload test reports and generated/diff artifacts
         # Always upload so failures can be diagnosed: the output folder contains the generated
         # PDFs, the rendered page PNGs and the *_diff.png images highlighting visual mismatches.
