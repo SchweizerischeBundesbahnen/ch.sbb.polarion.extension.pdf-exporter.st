@@ -40,8 +40,8 @@ API_KEY_SECRET_PROPERTY = "ch.sbb.polarion.extension.pdf-exporter.weasyprint.api
 CACERTS_PATH = "/opt/java/openjdk/lib/security/cacerts"
 # the documented default of a JDK truststore, not a credential of this project
 CACERTS_PASSWORD = "changeit"
-# the authority which signed the certificate of the service, named as the environment stores it
-CA_ALIAS = os.environ.get("WEASYPRINT_CA_ALIAS", "pebble-root")
+# the authority which signed the certificate of the service, where the environment names it itself
+CA_ALIAS_OVERRIDE = os.environ.get("WEASYPRINT_CA_ALIAS", "")
 SERVICE_READY_ATTEMPTS = 30
 
 
@@ -148,32 +148,50 @@ def service_restartable() -> str | None:
     return None
 
 
-def _recreate(container: Any, api_keys: str | None) -> Any:
-    """Put the service back with a different key, keeping everything else as it was."""
-    client: Any = docker_client()
+def _service_spec(container: Any) -> dict[str, Any]:
+    """Everything needed to put this container back, read once so a restore cannot use a stale view."""
     attributes: dict[str, Any] = container.attrs
-    name: str = attributes["Name"].lstrip("/")
-    image: str = attributes["Config"]["Image"]
-    environment: list[str] = [value for value in attributes["Config"]["Env"] if not value.startswith("API_KEY=")]
+    return {
+        "name": attributes["Name"].lstrip("/"),
+        "image": attributes["Config"]["Image"],
+        "env": [value for value in attributes["Config"]["Env"] if not value.startswith("API_KEY=")],
+        "api_keys": next((value.partition("=")[2] for value in attributes["Config"]["Env"] if value.startswith("API_KEY=")), None),
+        "ports": {port: bindings[0]["HostPort"] for port, bindings in (attributes["HostConfig"]["PortBindings"] or {}).items() if bindings},
+        "volumes": {mount["Source"]: {"bind": mount["Destination"], "mode": "ro" if not mount.get("RW", True) else "rw"} for mount in attributes.get("Mounts") or [] if mount.get("Type") == "bind"},
+        "networks": {name: settings.get("Aliases") or [] for name, settings in attributes["NetworkSettings"]["Networks"].items()},
+    }
+
+
+def _recreate(spec: dict[str, Any], api_keys: str | None) -> None:
+    """Put the service back from a spec, with these keys and every name it answered under.
+
+    The aliases are what the address in polarion.properties resolves through, and they are applied
+    from the spec rather than from the container being replaced: a container recreated once carries
+    no alias in its own attributes yet, and a restore reading those would drop the name.
+    """
+    client: Any = docker_client()
+    environment: list[str] = list(spec["env"])
     if api_keys is not None:
         environment.append(f"API_KEY={api_keys}")
-    ports: dict[str, Any] = {port: bindings[0]["HostPort"] for port, bindings in (attributes["HostConfig"]["PortBindings"] or {}).items() if bindings}
-    volumes: dict[str, dict[str, str]] = {mount["Source"]: {"bind": mount["Destination"], "mode": "ro" if not mount.get("RW", True) else "rw"} for mount in attributes.get("Mounts") or [] if mount.get("Type") == "bind"}
-    networks: dict[str, dict[str, Any]] = attributes["NetworkSettings"]["Networks"]
-    first_network: str = next(iter(networks), "")
 
-    container.stop(timeout=10)
-    container.remove()
-    fresh: Any = client.containers.run(image, name=name, detach=True, environment=environment, ports=ports, volumes=volumes, network=first_network or None)
-    for network_name, settings in networks.items():
-        if network_name == first_network:
-            continue
-        client.networks.get(network_name).connect(fresh, aliases=settings.get("Aliases"))
-    if first_network and networks[first_network].get("Aliases"):
-        # the alias of the first network is not part of containers.run, so it is reconnected with it
-        client.networks.get(first_network).disconnect(fresh)
-        client.networks.get(first_network).connect(fresh, aliases=networks[first_network]["Aliases"])
-    return fresh
+    try:
+        existing: Any = client.containers.get(spec["name"])
+    except Exception:  # noqa: BLE001 - nothing to replace is a fine starting point
+        existing = None
+    if existing is not None:
+        existing.stop(timeout=10)
+        existing.remove()
+
+    networks: dict[str, list[str]] = spec["networks"]
+    first: str = next(iter(networks), "")
+    fresh: Any = client.containers.run(spec["image"], name=spec["name"], detach=True, environment=environment, ports=spec["ports"], volumes=spec["volumes"], network=first or None)
+    # containers.run takes a network but no alias, and the alias is the name the address resolves
+    # through, so every network is joined again carrying its own
+    for network_name, aliases in networks.items():
+        network: Any = client.networks.get(network_name)
+        if network_name == first:
+            network.disconnect(fresh)
+        network.connect(fresh, aliases=aliases or None)
 
 
 def _wait_until_answering() -> bool:
@@ -196,28 +214,68 @@ def service_running_with(api_keys: str | None) -> Generator[bool]:
     if original is None:
         yield False
         return
-    attributes: dict[str, Any] = dict(original.attrs)
-    original_keys: str | None = next((value.partition("=")[2] for value in attributes["Config"]["Env"] if value.startswith("API_KEY=")), None)
+    spec: dict[str, Any] = _service_spec(original)
 
-    changed: Any = _recreate(original, api_keys)
+    _recreate(spec, api_keys)
     try:
         yield _wait_until_answering()
     finally:
-        _recreate(changed, original_keys)
-        _wait_until_answering()
+        _recreate(spec, spec["api_keys"])
+        if not _wait_until_answering():
+            logger.error("the WeasyPrint service did not answer after it was put back")
 
 
 # ------------------------------------------------------------------ the truststore
 
 
-def ca_in_truststore(alias: str = CA_ALIAS) -> bool:
-    """Whether the Polarion JVM trusts the authority which signed the certificate of the service."""
+def _certificate_issuer() -> str | None:
+    """The authority which signed the certificate the service presents, as it names itself."""
+    url: str | None = service_url()
+    if url is None:
+        return None
+    host: str = urlparse(url).hostname or ""
+    port: int = urlparse(url).port or 443
+    answer: tuple[int, str] | None = _polarion_exec(["sh", "-c", f"echo | openssl s_client -connect {host}:{port} -servername {host} 2>/dev/null | openssl x509 -noout -issuer"])
+    if answer is None or answer[0] != 0:
+        return None
+    # 'issuer=CN = Name, O = Org' becomes 'Name': the common name is what the truststore prints too
+    issuer: str = answer[1].strip().partition("=")[2]
+    for part in issuer.split(","):
+        pair: tuple[str, str, str] = part.partition("=")
+        if pair[1] and pair[0].strip() == "CN":
+            return pair[2].strip()
+    return None
+
+
+def trusted_ca_alias() -> str | None:
+    """The alias under which the truststore holds the authority of the service, or None.
+
+    An environment which names it itself is taken at its word. Otherwise the certificate is asked who
+    signed it, and the truststore is asked which alias holds that name, so a case does not remove some
+    other authority and conclude that trust does not matter.
+    """
+    if CA_ALIAS_OVERRIDE:
+        return CA_ALIAS_OVERRIDE
+    issuer: str | None = _certificate_issuer()
+    if issuer is None:
+        return None
+    answer: tuple[int, str] | None = _polarion_exec(["sh", "-c", f'keytool -list -v -keystore {CACERTS_PATH} -storepass {CACERTS_PASSWORD} 2>/dev/null | grep -B8 "{issuer}" | grep "Alias name" | head -1'])
+    if answer is None or answer[0] != 0:
+        return None
+    alias: str = answer[1].strip().partition(":")[2].strip()
+    return alias or None
+
+
+def ca_in_truststore(alias: str | None) -> bool:
+    """Whether the Polarion JVM trusts the authority under this alias."""
+    if not alias:
+        return False
     answer: tuple[int, str] | None = _polarion_exec(["keytool", "-list", "-alias", alias, "-keystore", CACERTS_PATH, "-storepass", CACERTS_PASSWORD])
     return answer is not None and answer[0] == 0
 
 
 @contextmanager
-def ca_removed(alias: str = CA_ALIAS) -> Generator[bool]:
+def ca_removed(alias: str) -> Generator[bool]:
     """Run the block with the authority out of the truststore, then put it back.
 
     The truststore is read per request, so this needs no restart, which is what makes a negative

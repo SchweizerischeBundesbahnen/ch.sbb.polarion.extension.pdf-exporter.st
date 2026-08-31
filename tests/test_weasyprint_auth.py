@@ -21,7 +21,6 @@ from typing import TYPE_CHECKING, Any
 
 from tests.pdf_exporter_test_case import PdfExporterTestCase
 from tests.weasyprint_support import (
-    CA_ALIAS,
     api_key_secret_name,
     authenticated_over_tls,
     ca_in_truststore,
@@ -32,6 +31,7 @@ from tests.weasyprint_support import (
     service_restartable,
     service_running_with,
     service_url,
+    trusted_ca_alias,
 )
 
 
@@ -51,6 +51,13 @@ class PdfExporterWeasyPrintAuthTest(PdfExporterTestCase):
         super().setUp()
         if not authenticated_over_tls():
             self.skipTest("this Polarion does not name the WeasyPrint service over https with a configured key")
+
+    def _require_trusted_authority(self) -> str:
+        """The alias holding the authority of the service, or a skip naming what could not be found."""
+        alias: str | None = trusted_ca_alias()
+        if not ca_in_truststore(alias):
+            self.skipTest("the truststore does not hold the authority which signed the certificate of the service")
+        return str(alias)
 
     def _require_restartable_service(self) -> None:
         reason: str | None = service_restartable()
@@ -165,10 +172,9 @@ class PdfExporterWeasyPrintAuthTest(PdfExporterTestCase):
     def test_an_untrusted_certificate_is_reported_by_the_status(self) -> None:
         # the truststore is read per request, so this case needs no restart. The export itself says
         # only that something failed, the reason reaches the status page
-        if not ca_in_truststore():
-            self.skipTest(f"the truststore holds no authority under '{CA_ALIAS}'")
+        alias: str = self._require_trusted_authority()
 
-        with ca_removed() as removed:
+        with ca_removed(alias) as removed:
             self.assertTrue(removed, "the authority could not be taken out of the truststore")
             with self.suppress_api_errors():
                 response: Response = self._export()
@@ -181,8 +187,7 @@ class PdfExporterWeasyPrintAuthTest(PdfExporterTestCase):
 
     def test_the_trust_comes_back_with_the_authority(self) -> None:
         # the other half of the case above: the removal is what failed the export, not the run itself
-        if not ca_in_truststore():
-            self.skipTest(f"the truststore holds no authority under '{CA_ALIAS}'")
+        self._require_trusted_authority()
 
         response: Response = self._export()
 
