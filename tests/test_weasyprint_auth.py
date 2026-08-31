@@ -20,6 +20,7 @@ from http import HTTPStatus
 from typing import TYPE_CHECKING, Any
 
 from tests.pdf_exporter_test_case import PdfExporterTestCase
+from tests.ssrf_support import release_docker
 from tests.weasyprint_support import (
     api_key_secret_name,
     authenticated_over_tls,
@@ -47,10 +48,18 @@ OTHER_KEY: str = "a-key-the-service-was-not-started-with"
 class PdfExporterWeasyPrintAuthTest(PdfExporterTestCase):
     """Cases for the API key and the certificate of the WeasyPrint service."""
 
+    @classmethod
+    def tearDownClass(cls) -> None:
+        # the client this class opened through the container lookup is given back
+        release_docker()
+        super().tearDownClass()
+
     def setUp(self) -> None:
-        super().setUp()
+        # asked before the settings of the base class are reinitialised: a run which cannot reach an
+        # authenticated service should not pay for that first
         if not authenticated_over_tls():
             self.skipTest("this Polarion does not name the WeasyPrint service over https with a configured key")
+        super().setUp()
 
     def _require_trusted_authority(self) -> str:
         """The alias holding the authority of the service, or a skip naming what could not be found."""
@@ -64,12 +73,13 @@ class PdfExporterWeasyPrintAuthTest(PdfExporterTestCase):
         if reason is not None:
             self.skipTest(f"the service cannot be recreated: {reason}")
 
-    def _export(self) -> Response:
-        return self._convert_html(self.api(), html=DOCUMENT)
+    def _export(self, print_error: bool = True) -> Response:
+        # the printing is decided here rather than by a wrapper: _convert_html sets it from this
+        # argument and puts it back to True, so a surrounding suppression would never be seen
+        return self._convert_html(self.api(), html=DOCUMENT, print_error=print_error)
 
     def _failed_export_message(self) -> str:
-        with self.suppress_api_errors():
-            response: Response = self._export()
+        response: Response = self._export(print_error=False)
         self.assertEqual(HTTPStatus.INTERNAL_SERVER_ERROR, response.status_code, "an export which cannot authenticate must not report success")
         return str(response.json().get("message", ""))
 
@@ -182,8 +192,7 @@ class PdfExporterWeasyPrintAuthTest(PdfExporterTestCase):
 
         with ca_removed(alias) as removed:
             self.assertTrue(removed, "the authority could not be taken out of the truststore")
-            with self.suppress_api_errors():
-                response: Response = self._export()
+            response: Response = self._export(print_error=False)
             entries: list[dict[str, str]] = self._weasyprint_status()
 
         self.assertEqual(HTTPStatus.INTERNAL_SERVER_ERROR, response.status_code, "an export over an untrusted certificate must not report success")
