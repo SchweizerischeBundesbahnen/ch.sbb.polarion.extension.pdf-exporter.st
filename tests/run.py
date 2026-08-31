@@ -15,10 +15,11 @@ Example:
         $ python tests/run.py --tc_polarion_image_name polarion:POLARION_VERSION
 """
 
-import logging
 import os
 import sys
 import unittest
+from http import HTTPStatus
+from typing import TYPE_CHECKING
 
 import xmlrunner
 from python_sbb_polarion.testing.temp_project import TempProject
@@ -26,6 +27,11 @@ from python_sbb_polarion.testing.testcontainers_helper import TestContainersHelp
 from python_sbb_polarion.util import abs_path, abs_path_str
 
 from tests.pdf_exporter_test_case import PdfExporterTestCase
+
+
+if TYPE_CHECKING:
+    from python_sbb_polarion.extensions.admin_utility import PolarionAdminUtilityApi
+    from requests import Response
 
 
 # find and load tests
@@ -40,10 +46,19 @@ testcontainers_helper.create_test_container_if_required("pdf-exporter")
 weasyprint_api_key: str | None = os.environ.get("WEASYPRINT_API_KEY")
 if weasyprint_api_key:
     record_name: str = os.environ.get("WEASYPRINT_API_KEY_SECRET", "weasyprint.api.key")
-    PdfExporterTestCase.create_extension_api("admin-utility").create_vault_record(record_name, "weasyprint", weasyprint_api_key)
-    # the record is named by the same configuration which named it to Polarion, and neither the name
-    # nor the key is written to the log
-    logging.getLogger(__name__).info("Stored the API key of the WeasyPrint service in its Polarion secret")
+    admin_utility: PolarionAdminUtilityApi = PdfExporterTestCase.create_extension_api("admin-utility")
+    stored: Response = admin_utility.create_vault_record(record_name, "weasyprint", weasyprint_api_key)
+    # A run whose key never reached the secret fails every export it has, on a message about the
+    # secret rather than about the run. It is said here instead, once, where the reason is known.
+    # Neither the name nor the key is printed: the name comes from the environment and the key is
+    # masked by the job which minted it.
+    if stored.status_code not in (HTTPStatus.OK, HTTPStatus.CREATED, HTTPStatus.NO_CONTENT):
+        message: str = f"The API key of the WeasyPrint service could not be stored in its Polarion secret: HTTP {stored.status_code}, {stored.text[:400]}"
+        raise SystemExit(message)
+    read_back: Response = admin_utility.get_vault_record(record_name)
+    if read_back.status_code != HTTPStatus.OK or not read_back.json().get("password"):
+        raise SystemExit(f"The Polarion secret of the WeasyPrint service is empty after it was written: HTTP {read_back.status_code}")
+    sys.stdout.write("The API key of the WeasyPrint service is stored in its Polarion secret\n")
 
 elibrary = TempProject("elibrary", "E-Library", "pdf_exporter_elibrary_st", abs_path("../test-data/project-template/pdf_exporter_elibrary_st"))
 PdfExporterTestCase.set_elibrary(elibrary)
