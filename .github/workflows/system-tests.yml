@@ -73,7 +73,11 @@ jobs:
           printf '%s' "$IO_JFROG_SBB_POLARION_TOKEN" | docker login sbb.jfrog.io -u polarion --password-stdin
       - name: 🧱 Install dependencies
         run: uv sync --frozen
-      - name: 🔐 Issue the certificate the WeasyPrint service serves
+      # The suite exports over TLS with a key, so the job issues its own authority and certificate for
+      # the name the service answers under, and a key which lives as long as the run. Polarion is
+      # given the authority and the name of the secret; the key itself is written into that secret by
+      # tests/run.py, since Polarion reads a secret once and caches it.
+      - name: 📜 Issue the certificate the WeasyPrint service serves
         run: |
           mkdir -p "$RUNNER_TEMP/tls"
           cd "$RUNNER_TEMP/tls"
@@ -90,7 +94,10 @@ jobs:
           # a key which lives as long as this run, so no credential is written into the repository
           echo "WEASYPRINT_API_KEY=$(openssl rand -hex 24)" >> "$GITHUB_ENV"
           echo "TC_POLARION_CA_CERTIFICATES=$RUNNER_TEMP/tls/ca.pem" >> "$GITHUB_ENV"
-      - name: 🖨️ Start the WeasyPrint service over TLS
+      # Started here rather than by the harness, which can pass neither a certificate nor a key. The
+      # network alias is the name the certificate carries, and Polarion joins the same network, so it
+      # reaches the service under a name the certificate covers.
+      - name: 🔒 Start the WeasyPrint service over TLS
         run: |
           docker network create "$TC_POLARION_NETWORK"
           docker run --detach --name weasyprint-service \
@@ -100,13 +107,10 @@ jobs:
             --env TLS_CERT_FILE=/tls/service.pem \
             --env TLS_KEY_FILE=/tls/service.key \
             "$TC_WEASYPRINT_SERVICE_IMAGE_NAME"
-          for _ in $(seq 30); do
-            if docker exec weasyprint-service /bin/sh -c 'curl -sk -o /dev/null https://localhost:9080/version'; then
-              echo "the service answers"; exit 0
-            fi
-            sleep 2
-          done
-          echo "the WeasyPrint service did not come up"; docker logs weasyprint-service; exit 1
+          # The image carries its own probe, and it follows the configured scheme, so waiting on the
+          # health of the container beats asking again from here. `docker run` has no wait of its own.
+          timeout 90 sh -c 'until [ "$(docker inspect -f "{{.State.Health.Status}}" weasyprint-service)" = healthy ]; do sleep 2; done' \
+            || { echo "the WeasyPrint service did not become healthy"; docker logs weasyprint-service; exit 1; }
       - name: 🧪 Run system tests against Polarion in Docker
         run: uv run tox -e test
       - name: 🧾 WeasyPrint service log
