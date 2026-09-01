@@ -20,6 +20,7 @@ from __future__ import annotations
 import logging
 import os
 import shlex
+import sys
 import time
 from contextlib import contextmanager
 from pathlib import Path
@@ -119,7 +120,8 @@ def service_container() -> Any:
             continue
         networks: dict[str, dict[str, Any]] = container.attrs["NetworkSettings"]["Networks"]
         for settings in networks.values():
-            if wanted_host in (settings.get("Aliases") or []):
+            # both spellings: newer daemons report the names under DNSNames and leave Aliases behind
+            if wanted_host in (settings.get("Aliases") or []) or wanted_host in (settings.get("DNSNames") or []):
                 return container
     if named:
         logger.info("no container is named %s", named)
@@ -160,6 +162,18 @@ def service_restartable() -> str | None:
     return None
 
 
+def _network_aliases(settings: dict[str, Any], container_name: str, container_id: str) -> list[str]:
+    """Every name a network answers this container under, minus the two docker adds by itself.
+
+    A newer daemon reports the names under `DNSNames` and leaves `Aliases` behind, and `DNSNames`
+    also carries the name of the container and its short id. Those two come back on their own, and
+    passing the short id of a container which no longer exists would be wrong.
+    """
+    names: list[str] = [*(settings.get("Aliases") or []), *(settings.get("DNSNames") or [])]
+    given: set[str] = {container_name, container_id[:12]}
+    return [name for name in dict.fromkeys(names) if name not in given]
+
+
 def _service_spec(container: Any) -> dict[str, Any]:
     """Everything needed to put this container back, read once so a restore cannot use a stale view."""
     attributes: dict[str, Any] = container.attrs
@@ -177,8 +191,18 @@ def _service_spec(container: Any) -> dict[str, Any]:
             for mount in attributes.get("Mounts") or []
             if mount.get("Type") in RECREATABLE_MOUNT_TYPES and mount.get("Destination")
         },
-        "networks": {name: settings.get("Aliases") or [] for name, settings in attributes["NetworkSettings"]["Networks"].items()},
+        "networks": {name: _network_aliases(settings, attributes["Name"].lstrip("/"), attributes["Id"]) for name, settings in attributes["NetworkSettings"]["Networks"].items()},
     }
+
+
+def _print_service_log(container: Any) -> None:
+    """Put the log of a container into the output of the run, before it is taken away with it."""
+    try:
+        lines: str = container.logs().decode(errors="replace")
+    except Exception:  # noqa: BLE001 - a log which cannot be read is not worth failing a case over
+        return
+    if lines.strip():
+        sys.stdout.write(f"--- the WeasyPrint service, before it was replaced ---\n{lines}\n")
 
 
 def _recreate(spec: dict[str, Any], api_keys: str | None) -> None:
@@ -198,6 +222,9 @@ def _recreate(spec: dict[str, Any], api_keys: str | None) -> None:
     except Exception:  # noqa: BLE001 - nothing to replace is a fine starting point
         existing = None
     if existing is not None:
+        # What the container said is read before it goes, since removing it takes its log along, and
+        # the cases which replace it are the ones whose failures are read out of that log.
+        _print_service_log(existing)
         existing.stop(timeout=10)
         existing.remove()
 

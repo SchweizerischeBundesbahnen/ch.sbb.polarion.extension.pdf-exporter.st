@@ -17,10 +17,10 @@ would cost a Polarion, so it belongs to a run configured for it.
 from __future__ import annotations
 
 from http import HTTPStatus
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, NoReturn
 
 from tests.pdf_exporter_test_case import PdfExporterTestCase
-from tests.ssrf_support import release_docker
+from tests.ssrf_support import containerized_run, release_docker
 from tests.weasyprint_support import (
     api_key_secret_name,
     authenticated_over_tls,
@@ -58,20 +58,32 @@ class PdfExporterWeasyPrintAuthTest(PdfExporterTestCase):
         # asked before the settings of the base class are reinitialised: a run which cannot reach an
         # authenticated service should not pay for that first
         if not authenticated_over_tls():
-            self.skipTest("this Polarion does not name the WeasyPrint service over https with a configured key")
+            self._unavailable("this Polarion does not name the WeasyPrint service over https with a configured key")
         super().setUp()
+
+    def _unavailable(self, reason: str) -> NoReturn:
+        """A missing piece of the harness: a failure where the run owns it, a skip where it does not.
+
+        A run which starts the container itself is configured for the authenticated path, and this
+        class is the only thing which measures it. Skipping there would leave the required check
+        green over a run which covered none of what it exists to cover. A run against a long-lived
+        server configures none of this and has no docker to ask, so it skips.
+        """
+        if containerized_run():
+            self.fail(f"the authenticated cases cannot run: {reason}")
+        self.skipTest(reason)
 
     def _require_trusted_authority(self) -> str:
         """The alias holding the authority of the service, or a skip naming what could not be found."""
         alias: str | None = trusted_ca_alias()
         if not ca_in_truststore(alias):
-            self.skipTest("the truststore does not hold the authority which signed the certificate of the service")
+            self._unavailable("the truststore does not hold the authority which signed the certificate of the service")
         return str(alias)
 
     def _require_restartable_service(self) -> None:
         reason: str | None = service_restartable()
         if reason is not None:
-            self.skipTest(f"the service cannot be recreated: {reason}")
+            self._unavailable(f"the service cannot be recreated: {reason}")
 
     def _export(self, print_error: bool = True) -> Response:
         # the printing is decided here rather than by a wrapper: _convert_html sets it from this
@@ -174,7 +186,7 @@ class PdfExporterWeasyPrintAuthTest(PdfExporterTestCase):
         """
         container_keys: str | None = self._current_service_keys()
         if not container_keys:
-            self.skipTest("the key the service runs with could not be read")
+            self._unavailable("the key the service runs with could not be read")
         return container_keys
 
     def _current_service_keys(self) -> str | None:
