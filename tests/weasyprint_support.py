@@ -225,9 +225,7 @@ def _recreate(spec: dict[str, Any], api_keys: str | None) -> None:
         # What the container said is read before it goes, since removing it takes its log along, and
         # the cases which replace it are the ones whose failures are read out of that log.
         _print_service_log(existing)
-        # Killed rather than asked to stop: it is removed on the next line, so there is nothing to
-        # flush, and asking politely costs the ten seconds of the stop timeout every single time.
-        existing.kill()
+        existing.stop(timeout=10)
         existing.remove()
 
     networks: dict[str, list[str]] = spec["networks"]
