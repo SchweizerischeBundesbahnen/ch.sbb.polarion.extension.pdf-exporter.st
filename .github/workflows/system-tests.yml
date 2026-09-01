@@ -126,7 +126,7 @@ jobs:
         run: |
           # the pull started after the checkout, and this is the first step which needs it
           for _ in $(seq 120); do
-            [ -f "$RUNNER_TEMP/pull-weasyprint.status" ] && break
+            [ -s "$RUNNER_TEMP/pull-weasyprint.status" ] && break
             sleep 5
           done
           weasyprint_pull="$(cat "$RUNNER_TEMP/pull-weasyprint.status" 2>/dev/null || echo 'still running')"
@@ -157,7 +157,7 @@ jobs:
         # in the local cache. Joined here rather than there, so a registry failure is reported as one.
         run: |
           for _ in $(seq 120); do
-            [ -f "$RUNNER_TEMP/pull-polarion.status" ] && break
+            [ -s "$RUNNER_TEMP/pull-polarion.status" ] && break
             sleep 5
           done
           polarion_pull="$(cat "$RUNNER_TEMP/pull-polarion.status" 2>/dev/null || echo 'still running')"
