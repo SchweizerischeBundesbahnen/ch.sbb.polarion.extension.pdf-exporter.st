@@ -55,6 +55,21 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7
         with:
           persist-credentials: false
+      - name: 🐳 Log in to sbb.jfrog.io and start pulling the images
+        run: |
+          # Token-only auth (same token as the Maven X-JFrog-Art-Api header). For a JFrog access
+          # token the username is not validated, so a fixed placeholder is enough.
+          printf '%s' "$IO_JFROG_SBB_POLARION_TOKEN" | docker login sbb.jfrog.io -u polarion --password-stdin
+          # Both images are pulled from here on, while the toolchain is installed and the certificate
+          # is issued, and each is waited for where it is first needed. A background job cannot be
+          # joined from another step, so each pull writes its exit code when it ends and the waits
+          # below read that: a pull which failed on a registry flap must not read as one which is
+          # still running.
+          rm -f "$RUNNER_TEMP"/pull-*.status
+          # shellcheck disable=SC2016  # the inner shell expands these, after it is detached
+          nohup sh -c 'docker pull "$TC_WEASYPRINT_SERVICE_IMAGE_NAME" > "$RUNNER_TEMP/pull-weasyprint.log" 2>&1; echo "$?" > "$RUNNER_TEMP/pull-weasyprint.status"' > /dev/null 2>&1 &
+          # shellcheck disable=SC2016  # the inner shell expands these, after it is detached
+          nohup sh -c 'docker pull "$TC_POLARION_IMAGE_NAME" > "$RUNNER_TEMP/pull-polarion.log" 2>&1; echo "$?" > "$RUNNER_TEMP/pull-polarion.status"' > /dev/null 2>&1 &
       - name: 🐍 Set up Python from .tool-versions
         uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97  # v7.0.0
         with:
@@ -72,11 +87,6 @@ jobs:
         run: |
           mkdir -p "$HOME/.m2"
           cp "$GITHUB_WORKSPACE/.mvn/settings.xml" "$HOME/.m2/settings.xml"
-      - name: 🐳 Log in to sbb.jfrog.io Docker registry
-        run: |
-          # Token-only auth (same token as the Maven X-JFrog-Art-Api header). For a JFrog access
-          # token the username is not validated, so a fixed placeholder is enough.
-          printf '%s' "$IO_JFROG_SBB_POLARION_TOKEN" | docker login sbb.jfrog.io -u polarion --password-stdin
       - name: 🧱 Install dependencies
         run: uv sync --frozen
       # The suite exports over TLS with a key, so the job issues its own authority and certificate for
@@ -114,6 +124,17 @@ jobs:
       # reaches the service under a name the certificate covers.
       - name: 🔒 Start the WeasyPrint service over TLS
         run: |
+          # the pull started after the checkout, and this is the first step which needs it
+          for _ in $(seq 120); do
+            [ -f "$RUNNER_TEMP/pull-weasyprint.status" ] && break
+            sleep 5
+          done
+          weasyprint_pull="$(cat "$RUNNER_TEMP/pull-weasyprint.status" 2>/dev/null || echo 'still running')"
+          if [ "$weasyprint_pull" != 0 ]; then
+            echo "the WeasyPrint image could not be pulled ($weasyprint_pull)"
+            cat "$RUNNER_TEMP/pull-weasyprint.log" 2>/dev/null || true
+            exit 1
+          fi
           docker network create "$TC_POLARION_NETWORK"
           docker run --detach --name "$WEASYPRINT_CONTAINER" \
             --network "$TC_POLARION_NETWORK" --network-alias "$WEASYPRINT_HOST" \
@@ -131,6 +152,20 @@ jobs:
               sleep 2
             done' \
             || { echo "the WeasyPrint service did not become healthy"; docker logs "$WEASYPRINT_CONTAINER"; exit 1; }
+      - name: ⏳ Wait for the Polarion image
+        # The harness starts the container inside the test step, so this is where the pull has to be
+        # in the local cache. Joined here rather than there, so a registry failure is reported as one.
+        run: |
+          for _ in $(seq 120); do
+            [ -f "$RUNNER_TEMP/pull-polarion.status" ] && break
+            sleep 5
+          done
+          polarion_pull="$(cat "$RUNNER_TEMP/pull-polarion.status" 2>/dev/null || echo 'still running')"
+          if [ "$polarion_pull" != 0 ]; then
+            echo "the Polarion image could not be pulled ($polarion_pull)"
+            cat "$RUNNER_TEMP/pull-polarion.log" 2>/dev/null || true
+            exit 1
+          fi
       - name: 🧪 Run system tests against Polarion in Docker
         run: uv run tox -e test
       - name: 🧾 WeasyPrint service log
