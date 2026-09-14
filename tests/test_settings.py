@@ -60,6 +60,24 @@ class PdfExporterSettingsTest(PdfExporterTestCase):
                 for key, value in expected.items():
                     self.assertEqual(value, content[key], key)
 
+    def test_settings_cover_page_template_content(self) -> None:
+        # Act
+        names_url: str = f"{self.api().rest_api_url}/settings/cover-page/templates"
+        names_response: Response = self.api().polarion_connection.api_request_get(names_url)
+        self.assertEqual(HTTPStatus.OK, names_response.status_code)
+        template_names: list[str] = names_response.json()
+
+        # Assert
+        self.assertIn("English", template_names)
+        for template_name in template_names:
+            with self.subTest(template=template_name):
+                content_url: str = f"{self.api().rest_api_url}/settings/cover-page/templates/{template_name}/content"
+                content_response: Response = self.api().polarion_connection.api_request_get(content_url)
+                self.assertEqual(HTTPStatus.OK, content_response.status_code)
+                content: JsonDict = content_response.json()
+                self.assertTrue(content["templateHtml"])
+                self.assertRegex(str(content["defaultHash"]), r"^[0-9a-f]{64}$")
+
     def test_settings_post_css(self) -> None:
         # Act
         response_get: Response = self.api().get_setting_default_content(feature="css")
