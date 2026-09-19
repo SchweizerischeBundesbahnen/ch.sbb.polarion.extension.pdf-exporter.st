@@ -507,6 +507,92 @@ class PdfExporterConvertTest(PdfExporterTestCase):
     def test_convert_hyphenation_it(self) -> None:
         self._assert_hyphenation_snapshot(language="it", expected_page_count=1)
 
+    # ------------------------------------------------------------------ the external-resource policy
+
+    EXTERNAL_RESOURCES_DOCUMENT: str = "Testing/External Resources Test"
+    EXTERNAL_RESOURCES_REFUSED_IMAGE_DOCUMENT: str = "Testing/External Resources Refused Image Test"
+    REFUSED_ADDRESS: str = "http://169.254.169.254/refused.png"
+    BLOCKED_RESOURCES_COUNT: str = "Blocked-Resources-Count"
+    BLOCKED_RESOURCES: str = "Blocked-Resources"
+
+    def _assert_external_resources_snapshot(self, *, location_path: str, custom_prefix: str, css: str) -> Response:
+        """Export one of the external-resource documents under one of the prepared CSS settings.
+
+        The header and footer are replaced by ones which name no external resource, because the default
+        header names a logo this server does not serve: with it in place no export could ever report
+        that it refused nothing.
+        """
+        return self._assert_convert_matches_snapshot(
+            location_path=location_path,
+            custom_prefix=custom_prefix,
+            expected_page_count=1,
+            custom_export_params={"css": css},
+            header_footer_settings=self.HEADER_FOOTER_WITHOUT_EXTERNAL_RESOURCES,
+        )
+
+    def test_convert_external_resources_happy_path(self) -> None:
+        """Nothing is refused: the page is whole and the answer reports no resource at all.
+
+        This is the picture the other three cases are read against. The row carries the fill, the border
+        and the tile its CSS setting asks for, and the attachment of the document is painted.
+        """
+        response: Response = self._assert_external_resources_snapshot(
+            location_path=self.EXTERNAL_RESOURCES_DOCUMENT,
+            custom_prefix="test_convert_external_resources_happy_path",
+            css="test_external_resources",
+        )
+
+        self.assertIsNone(response.headers.get(self.BLOCKED_RESOURCES_COUNT), "an export which refused nothing must report nothing")
+        self.assertIsNone(response.headers.get(self.BLOCKED_RESOURCES), "an export which refused nothing must name nothing")
+
+    def test_convert_external_resources_refused_image(self) -> None:
+        """A picture of the document is refused: its place stands empty and the rest of the page is whole.
+
+        Against the happy path the page differs in one dashed frame, which is the refused picture at the
+        size the document gives it. The row and the attachment are painted exactly as they were.
+        """
+        response: Response = self._assert_external_resources_snapshot(
+            location_path=self.EXTERNAL_RESOURCES_REFUSED_IMAGE_DOCUMENT,
+            custom_prefix="test_convert_external_resources_refused_image",
+            css="test_external_resources",
+        )
+
+        self.assertEqual("1", response.headers.get(self.BLOCKED_RESOURCES_COUNT))
+        self.assertEqual(self.REFUSED_ADDRESS, response.headers.get(self.BLOCKED_RESOURCES))
+
+    def test_convert_external_resources_refused_css(self) -> None:
+        """An address of the CSS setting is refused: the tile is gone and every other declaration applies.
+
+        The reported issue dropped the whole stylesheet here - a style package of 2.4 MB became 55 bytes
+        and the export carried none of its styles. Against the happy path this page differs in the tile
+        alone: the fill and the border of the row still stand.
+        """
+        response: Response = self._assert_external_resources_snapshot(
+            location_path=self.EXTERNAL_RESOURCES_DOCUMENT,
+            custom_prefix="test_convert_external_resources_refused_css",
+            css="test_external_resources_refused",
+        )
+
+        self.assertEqual("1", response.headers.get(self.BLOCKED_RESOURCES_COUNT))
+        self.assertEqual(self.REFUSED_ADDRESS, response.headers.get(self.BLOCKED_RESOURCES))
+
+    def test_convert_external_resources_unaccounted_css(self) -> None:
+        """An address the parser cannot account for: the walk over the text neutralizes it and no more.
+
+        A bracket inside `url(...)` leaves the parsed stylesheet naming no address there, and such a
+        stylesheet used to be dropped whole for it. The red left border of the row is written after that
+        address, so a page which carries it says the rest of the rule survived the walk.
+        """
+        response: Response = self._assert_external_resources_snapshot(
+            location_path=self.EXTERNAL_RESOURCES_DOCUMENT,
+            custom_prefix="test_convert_external_resources_unaccounted_css",
+            css="test_external_resources_unaccounted",
+        )
+
+        self.assertEqual("1", response.headers.get(self.BLOCKED_RESOURCES_COUNT))
+        # the address is neutralized where the walk ends the token, which is at the bracket it cannot read
+        self.assertEqual(f"{self.REFUSED_ADDRESS}?x=", response.headers.get(self.BLOCKED_RESOURCES))
+
     def _assert_convert_matches_snapshot(
         self,
         *,
