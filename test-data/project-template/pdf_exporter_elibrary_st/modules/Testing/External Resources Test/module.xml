@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+    <field id="author">admin</field>
+    <field id="created">2026-09-19 10:00:00.000 +0000</field>
+    <field id="homePageContent" text-type="text/html"><![CDATA[<h1 id="polarion_wiki macro name=module-workitem;params=id=EL-12760"></h1><p id="polarion_1">This document is exported under a prepared CSS setting, and each row below says what it proves. The expected image can be read without opening the test.</p><p id="polarion_2" class="external-resource-row">The CSS setting paints this row: a yellow fill, a blue border and a tile at its right edge. A row without the fill or the border says the whole stylesheet was dropped; a row without the tile says the stylesheet kept everything but the address it could not load.</p><p id="polarion_3">The picture below is an attachment of this document. It travels with the project, so no external-resource policy applies to it and it has to be painted whatever happens to the rest.</p><p id="polarion_4"><img src="attachment:carried.png" style="width: 240px; height: 120px;"/></p>]]></field>
+    <field id="status">draft</field>
+    <field id="structureLinkRole">parent</field>
+    <field id="title">External Resources Test</field>
+    <field id="type">generic</field>
+    <field id="usesOutlineNumbering">true</field>
+</module>

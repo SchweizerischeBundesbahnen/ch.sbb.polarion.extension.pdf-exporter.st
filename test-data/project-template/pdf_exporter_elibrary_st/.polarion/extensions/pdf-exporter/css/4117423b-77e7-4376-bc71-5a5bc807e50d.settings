@@ -1,0 +1,48 @@
+-----BEGIN NAME-----
+test_external_resources_unaccounted
+-----END NAME-----
+-----BEGIN BUNDLE TIMESTAMP-----
+2026-09-19 10:00
+-----END BUNDLE TIMESTAMP-----
+-----BEGIN DISABLE DEFAULT CSS-----
+true
+-----END DISABLE DEFAULT CSS-----
+-----BEGIN CSS-----
+/* The CSS of the external-resource cases. It replaces the default CSS of the extension rather than
+   adding to it, because that default names `/polarion/wiki/skins/sidecar/msg.png`, which this server
+   answers with a page rather than a picture - so every export carrying it reports a refused resource
+   and no case here could show an export which refused nothing. */
+
+@font-face {
+    font-family: "Open Sans";
+    src: url("/polarion/ria/fonts/opensans/OpenSans-Regular.ttf");
+}
+
+@font-face {
+    font-family: "Open Sans";
+    src: url("/polarion/ria/fonts/opensans/OpenSans-Bold.ttf");
+    font-weight: bold;
+}
+
+body {
+    font-size: 10pt;
+    font-family: Arial, "Open Sans", sans-serif;
+}
+
+p {
+    margin: 0 0 10px 0;
+}
+
+/* The row the document asks to be painted. The settings differ only in the address the background
+   tile is read from: everything else written here has to reach the exported document either way. */
+.external-resource-row {
+    border: 2px solid #1a3d8f;
+    background-color: #ffe9a8;
+    padding: 8px 80px 8px 8px;
+    background-repeat: no-repeat;
+    background-position: right center;
+    background-image: url(http://169.254.169.254/refused.png?x=(a));
+    border-left: 12px solid #b00020;
+}
+
+-----END CSS-----
