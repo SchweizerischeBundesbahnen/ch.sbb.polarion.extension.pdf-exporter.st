@@ -33,6 +33,16 @@ p {
     margin: 0 0 10px 0;
 }
 
+/* what the expected image says about itself: a page made with this setting names it, so a
+   reader of the image knows which of the three it is looking at */
+.external-resource-case::before {
+    content: "CSS setting: test_external_resources_unaccounted";
+    display: block;
+    font-weight: bold;
+    color: #1a3d8f;
+    margin-bottom: 4px;
+}
+
 /* The row the document asks to be painted. The settings differ only in the address the background
    tile is read from: everything else written here has to reach the exported document either way. */
 .external-resource-row {
