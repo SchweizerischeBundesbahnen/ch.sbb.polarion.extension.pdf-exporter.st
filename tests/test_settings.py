@@ -18,6 +18,7 @@ class PdfExporterSettingsTest(PdfExporterTestCase):
     def test_settings_get_css(self) -> None:
         # Act
         response: Response = self.api().get_setting_content(feature="css", scope=self.scope)
+        default_response: Response = self.api().get_setting_default_content(feature="css")
 
         # Assert
         self.assertEqual(HTTPStatus.OK, response.status_code)
@@ -25,9 +26,60 @@ class PdfExporterSettingsTest(PdfExporterTestCase):
         self.assertIn("bundleTimestamp", json_settings)
         self.assertIn("css", json_settings)
         self.assertIsInstance(json_settings["bundleTimestamp"], str)
-        self.assertIsInstance(json_settings["css"], str)
-        self.assertIn("Arial", json_settings["css"])  # type: ignore[arg-type]
-        self.assertIn("/polarion/ria/fonts/opensans/OpenSans-Regular.ttf", json_settings["css"])  # type: ignore[arg-type]
+        # The setup stores a copy of the default CSS, which is read as no custom CSS: the export applies the default CSS once.
+        self.assertEqual("", json_settings["css"])
+        self.assertFalse(json_settings["disableDefaultCss"])
+
+        self.assertEqual(HTTPStatus.OK, default_response.status_code)
+        default_css: str = default_response.json()["css"]
+        self.assertIn("Arial", default_css)
+        self.assertIn("/polarion/ria/fonts/opensans/OpenSans-Regular.ttf", default_css)
+
+    def test_settings_created_without_content_start_empty(self) -> None:
+        expected_contents: dict[str, JsonDict] = {
+            "css": {"css": "", "disableDefaultCss": False},
+            "cover-page": {"templateHtml": "", "templateCss": "", "useCustomValues": False},
+        }
+        for feature, expected in expected_contents.items():
+            with self.subTest(feature=feature):
+                # Act
+                url: str = f"{self.api().rest_api_url}/settings/{feature}/names/Created without content/content"
+                params: dict[str, str] = {
+                    "scope": self.scope,
+                }
+                create_response: Response = self.api().polarion_connection.api_request_put(url, params=params)
+                try:
+                    content_response: Response = self.api().get_setting_content(feature=feature, name="Created without content", scope=self.scope)
+                finally:
+                    self.api().delete_setting(feature=feature, name="Created without content", scope=self.scope)
+
+                # Assert
+                self.assertEqual(HTTPStatus.NO_CONTENT, create_response.status_code)
+                self.assertEqual(HTTPStatus.OK, content_response.status_code)
+                content: JsonDict = content_response.json()
+                for key, value in expected.items():
+                    self.assertEqual(value, content[key], key)
+
+    def test_settings_cover_page_template_content(self) -> None:
+        # Act
+        names_url: str = f"{self.api().rest_api_url}/settings/cover-page/templates"
+        names_response: Response = self.api().polarion_connection.api_request_get(names_url)
+        self.assertEqual(HTTPStatus.OK, names_response.status_code)
+        template_names: list[str] = names_response.json()
+
+        # Assert
+        self.assertIn("English", template_names)
+        for template_name in template_names:
+            with self.subTest(template=template_name):
+                content_url: str = f"{self.api().rest_api_url}/settings/cover-page/templates/{template_name}/content"
+                content_params: dict[str, str] = {
+                    "scope": self.scope,
+                }
+                content_response: Response = self.api().polarion_connection.api_request_post(content_url, params=content_params)
+                self.assertEqual(HTTPStatus.OK, content_response.status_code)
+                content: JsonDict = content_response.json()
+                self.assertTrue(content["templateHtml"])
+                self.assertRegex(str(content["defaultHash"]), r"^[0-9a-f]{64}$")
 
     def test_settings_post_css(self) -> None:
         # Act
