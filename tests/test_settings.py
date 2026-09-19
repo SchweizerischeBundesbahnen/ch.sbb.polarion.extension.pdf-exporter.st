@@ -72,7 +72,10 @@ class PdfExporterSettingsTest(PdfExporterTestCase):
         for template_name in template_names:
             with self.subTest(template=template_name):
                 content_url: str = f"{self.api().rest_api_url}/settings/cover-page/templates/{template_name}/content"
-                content_response: Response = self.api().polarion_connection.api_request_get(content_url)
+                content_params: dict[str, str] = {
+                    "scope": self.scope,
+                }
+                content_response: Response = self.api().polarion_connection.api_request_post(content_url, params=content_params)
                 self.assertEqual(HTTPStatus.OK, content_response.status_code)
                 content: JsonDict = content_response.json()
                 self.assertTrue(content["templateHtml"])
