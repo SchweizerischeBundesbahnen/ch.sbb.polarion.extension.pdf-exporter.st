@@ -522,13 +522,34 @@ class PdfExporterConvertTest(PdfExporterTestCase):
         header names a logo this server does not serve: with it in place no export could ever report
         that it refused nothing.
         """
-        return self._assert_convert_matches_snapshot(
+        response: Response = self._assert_convert_matches_snapshot(
             location_path=location_path,
             custom_prefix=custom_prefix,
             expected_page_count=1,
             custom_export_params={"css": css},
             header_footer_settings=self.HEADER_FOOTER_WITHOUT_EXTERNAL_RESOURCES,
         )
+
+        # Every one of these settings prints its own name on the page (`.external-resource-case::before`).
+        # The label is what tells the four expected images apart for a reader, and read back here it says
+        # the stylesheet was applied at all - which the pixel comparison says only by way of a whole page
+        # that differs, and which no comparison says at all once an upgrade moves every expected image.
+        page_text: str = self._text_without_spacing(response.content)
+        label: str = f"CSSsetting:{css}"
+        self.assertIn(label, page_text, f"the page does not name the CSS setting '{css}' it was exported under")
+        # one setting name is the start of the other two, so the label has to end where the name does
+        self.assertNotIn(f"{label}_", page_text, f"the page names a CSS setting other than '{css}'")
+        return response
+
+    @staticmethod
+    def _text_without_spacing(pdf_bytes: bytes) -> str:
+        """The text of the first page, without its spacing.
+
+        A reader breaks a line wherever it does not fit and spells the spacing of the file, not of the
+        document, so a case which looks for a phrase has to take the spacing out of both.
+        """
+        page_text: str = pypdf.PdfReader(io.BytesIO(pdf_bytes)).pages[0].extract_text()
+        return "".join(page_text.split())
 
     def test_convert_external_resources_happy_path(self) -> None:
         """Nothing is refused: the page is whole and the answer reports no resource at all.
@@ -565,7 +586,7 @@ class PdfExporterConvertTest(PdfExporterTestCase):
 
         The reported issue dropped the whole stylesheet here - a style package of 2.4 MB became 55 bytes
         and the export carried none of its styles. Against the happy path this page differs in the tile
-        alone: the fill and the border of the row still stand.
+        and in the label naming this setting: the fill and the border of the row still stand.
         """
         response: Response = self._assert_external_resources_snapshot(
             location_path=self.EXTERNAL_RESOURCES_DOCUMENT,
