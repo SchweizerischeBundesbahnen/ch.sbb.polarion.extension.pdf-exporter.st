@@ -534,11 +534,11 @@ class PdfExporterConvertTest(PdfExporterTestCase):
         # The label is what tells the four expected images apart for a reader, and read back here it says
         # the stylesheet was applied at all - which the pixel comparison says only by way of a whole page
         # that differs, and which no comparison says at all once an upgrade moves every expected image.
-        self.assertIn(
-            f"CSSsetting:{css}",
-            self._text_without_spacing(response.content),
-            f"the page does not name the CSS setting '{css}' it was exported under",
-        )
+        page_text: str = self._text_without_spacing(response.content)
+        label: str = f"CSSsetting:{css}"
+        self.assertIn(label, page_text, f"the page does not name the CSS setting '{css}' it was exported under")
+        # one setting name is the start of the other two, so the label has to end where the name does
+        self.assertNotIn(f"{label}_", page_text, f"the page names a CSS setting other than '{css}'")
         return response
 
     @staticmethod
@@ -586,7 +586,7 @@ class PdfExporterConvertTest(PdfExporterTestCase):
 
         The reported issue dropped the whole stylesheet here - a style package of 2.4 MB became 55 bytes
         and the export carried none of its styles. Against the happy path this page differs in the tile
-        alone: the fill and the border of the row still stand.
+        and in the label naming this setting: the fill and the border of the row still stand.
         """
         response: Response = self._assert_external_resources_snapshot(
             location_path=self.EXTERNAL_RESOURCES_DOCUMENT,
