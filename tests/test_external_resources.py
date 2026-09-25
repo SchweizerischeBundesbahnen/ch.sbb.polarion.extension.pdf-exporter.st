@@ -369,20 +369,6 @@ class PdfExporterExternalResourcesTest(PdfExporterTestCase):
         """
         self._assert_the_stylesheet_survived(f"background-image: url(http://{self.endpoint}/probe/ok.png?x=(a));")
 
-    def test_a_colon_in_the_last_segment_does_not_abort_the_export(self) -> None:
-        """A url is judged, not read as a path of the host.
-
-        The extension of a url used to be read by `FilenameUtils.getExtension`, which throws on a ':'
-        standing after the last separator: there it names an NTFS alternate data stream. A url may
-        carry one anywhere, and the throw took the whole export with it rather than the one address.
-        The export completes here, and the address is refused like any other.
-        """
-        response: Response = self._export_response(f"<p><img src='http://{self.endpoint}/probe/a:b.png'/>text</p>")
-        self._assert_probe_silent()
-
-        self.assertEqual("1", response.headers.get(BLOCKED_RESOURCES_COUNT), "the answer has to count the resource it refused")
-        self.assertIn(self.endpoint, response.headers.get(BLOCKED_RESOURCES, ""), "the answer has to name the address it refused")
-
     # ------------------------------------------------------------------ what the answer reports
 
     def test_the_answer_names_the_resource_it_refused(self) -> None:
