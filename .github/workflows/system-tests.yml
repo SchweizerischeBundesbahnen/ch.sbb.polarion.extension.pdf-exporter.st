@@ -41,6 +41,15 @@ env:
   # the name the service is started under below, so the cases which recreate it find it by name
   # rather than by matching the network alias, which the docker API has been moving away from
   WEASYPRINT_CONTAINER: weasyprint-service
+  # The bulk processing service merges several exported documents into one PDF. Unlike WeasyPrint it is
+  # started by the harness (testcontainers): it joins the run's network, is wired to the WeasyPrint
+  # service above -- its address, and, since that transport is TLS, the key (TC_WEASYPRINT_API_KEY,
+  # exported below) and the authority (TC_POLARION_CA_CERTIFICATES) -- and Polarion is handed its
+  # endpoint through BULK_PROCESSING_SERVICE_ENDPOINT. Its own API stays keyless, so the key-rejection
+  # case skips rather than runs.
+  TC_BULK_PROCESSING_SERVICE_IMAGE_NAME: ghcr.io/schweizerischebundesbahnen/bulk-processing-service:1.0.0
+  # the name the harness starts the service under, so the cases find its container by name
+  BULK_PROCESSING_CONTAINER: test-bulk-processing-service-container
 jobs:
   system-tests:
     # Skip draft PRs (this container suite is expensive); still runs on manual workflow_dispatch.
@@ -103,9 +112,11 @@ jobs:
           echo "::add-mask::$weasyprint_api_key"
           # TC_POLARION_SECRETS is what seeds the key into the store of Polarion before the container
           # runs: Polarion reads its secrets when it starts and keeps them, so one written into a
-          # running Polarion is never seen.
+          # running Polarion is never seen. TC_WEASYPRINT_API_KEY hands the same key to the harness, so
+          # the bulk processing service it starts can authenticate to WeasyPrint over TLS as well.
           {
             echo "WEASYPRINT_API_KEY=$weasyprint_api_key"
+            echo "TC_WEASYPRINT_API_KEY=$weasyprint_api_key"
             echo "TC_POLARION_CA_CERTIFICATES=$RUNNER_TEMP/tls/ca.pem"
             echo "TC_POLARION_SECRETS=$WEASYPRINT_API_KEY_SECRET=$weasyprint_api_key"
           } >> "$GITHUB_ENV"
