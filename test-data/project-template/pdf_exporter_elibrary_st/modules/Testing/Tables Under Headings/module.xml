@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+    <field id="author">admin</field>
+    <field id="created">2026-09-28 10:00:00.000 +0000</field>
+    <field id="homePageContent" text-type="text/html"><![CDATA[<h1 id="polarion_wiki macro name=module-workitem;params=id=EL-12770"></h1><h2 id="polarion_wiki macro name=module-workitem;params=id=EL-12771"></h2><div id="polarion_wiki macro name=toc"></div><h2 id="polarion_wiki macro name=module-workitem;params=id=EL-12772"></h2><div data-sequence="Figure" id="polarion_wiki macro name=tof;params=uid=1"></div><h2 id="polarion_wiki macro name=module-workitem;params=id=EL-12773"></h2><div data-sequence="Table" id="polarion_wiki macro name=tof;params=uid=2"></div><h2 id="polarion_wiki macro name=module-workitem;params=id=EL-12774"></h2><p id="polarion_1" class="polarion-rte-caption-paragraph">Figure <span data-sequence="Figure" class="polarion-rte-caption">#</span> - a figure of this chapter</p><p id="polarion_2" class="polarion-rte-caption-paragraph">Table <span data-sequence="Table" class="polarion-rte-caption">#</span> - a table of this chapter</p><p id="polarion_3">The chapters above hold nothing but a table each. With the empty chapters cut they used to be dropped, and the tables with them.</p>]]></field>
+    <field id="status">draft</field>
+    <field id="structureLinkRole">parent</field>
+    <field id="title">Tables Under Headings</field>
+    <field id="type">generic</field>
+    <field id="usesOutlineNumbering">true</field>
+</module>
