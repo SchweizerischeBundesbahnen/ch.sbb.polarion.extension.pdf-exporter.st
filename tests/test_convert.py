@@ -453,6 +453,27 @@ class PdfExporterConvertTest(PdfExporterTestCase):
             expected_page_count=9,
         )
 
+    def test_convert_live_doc_keeps_the_chapters_holding_a_table(self) -> None:
+        """A chapter whose whole content is a table of contents, figures or tables survives the cut.
+
+        Those tables are built after the empty chapters are cut, so until then each is an empty
+        placeholder. Taken for an empty chapter, the heading went and took the table with it, which is
+        what SchweizerischeBundesbahnen/ch.sbb.polarion.extension.pdf-exporter#1072 reported.
+        """
+        response: Response = self._convert(
+            project_id=self.project_id,
+            location_path="Testing/Tables Under Headings",
+            custom_export_params={"cutEmptyChapters": True},
+        )
+        self.assertEqual(HTTPStatus.OK, response.status_code)
+
+        text: str = " ".join(pypdf.PdfReader(io.BytesIO(response.content)).pages[0].extract_text().split())
+        for heading in ("Table of contents", "Table of figures", "Table of tables"):
+            self.assertIn(heading, text, f"the chapter '{heading}' was cut although it holds a table")
+        # and the tables themselves, which is what the chapters were there for
+        self.assertIn("Figure 1 - a figure of this chapter", text, text)
+        self.assertIn("Table 1 - a table of this chapter", text, text)
+
     def test_convert_live_doc_no_split_table_rows_between_pages(self) -> None:
         self._assert_convert_matches_snapshot(
             location_path="Specification/No_Split_Table",
