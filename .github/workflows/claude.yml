@@ -12,6 +12,8 @@ on:
 permissions: {}
 jobs:
   claude:
+    # The triggers here are read-only by default, and the callee must not be able to ask for more
+    cache-mode: none
     uses: SchweizerischeBundesbahnen/github-workflows-polarion/.github/workflows/reusable-claude.yml@main
     permissions:
       contents: read

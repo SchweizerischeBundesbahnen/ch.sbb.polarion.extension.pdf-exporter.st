@@ -9,6 +9,10 @@ WeasyPrint would fetch it from its own network. The probe records that hop too, 
 names the probe under an address both containers reach. The two loopback cases are the exception:
 `127.0.0.1` inside the conversion service names that service, not the probe, so there the probe
 witnesses the first hop alone.
+
+A refusal costs the document the resource and nothing else. The last section says so from both
+sides: what a stylesheet keeps around an address it may not load, and what the answer of the
+server reports about the addresses it refused.
 """
 
 from __future__ import annotations
@@ -19,6 +23,7 @@ from typing import TYPE_CHECKING, ClassVar, NoReturn
 
 import fitz
 
+from tests.constants import PdfExporterFeature
 from tests.pdf_exporter_test_case import PdfExporterTestCase
 from tests.ssrf_probe import PROBE_BODY_MARKER, PROBE_IMAGE_HEIGHT, PROBE_IMAGE_WIDTH, PROBE_PNG, SsrfProbe
 from tests.ssrf_support import (
@@ -36,6 +41,13 @@ from tests.ssrf_support import (
 if TYPE_CHECKING:
     from requests import Response
 
+
+BLOCKED_RESOURCES_COUNT: str = "Blocked-Resources-Count"
+# what `#ff0000` and `#000000` are once a reader has drawn them
+RED: int = 0xFF0000
+BLACK: int = 0x000000
+RED_DECLARATION: str = "#ff0000"
+BLOCKED_RESOURCES: str = "Blocked-Resources"
 
 TRANSPARENT_PIXEL: str = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVR42mNgAAIAAAUAAen63NgAAAAASUVORK5CYII="
 # a picture which paints, carried by the document itself: what a policy stripping everything loses
@@ -104,10 +116,13 @@ class PdfExporterExternalResourcesTest(PdfExporterTestCase):
     def _document(self, body: str) -> str:
         return f"<html><head><meta charset='utf-8'/></head><body>{body}</body></html>"
 
-    def _export(self, body: str) -> bytes:
+    def _export_response(self, body: str) -> Response:
         response: Response = self._convert_html(self.api(), html=self._document(body))
         self.assertEqual(HTTPStatus.OK, response.status_code, "a refused resource must not break the export")
-        return response.content
+        return response
+
+    def _export(self, body: str) -> bytes:
+        return self._export_response(body).content
 
     def _assert_probe_silent(self) -> None:
         recorded: list[str] = list(self._probe().requests)
@@ -309,3 +324,99 @@ class PdfExporterExternalResourcesTest(PdfExporterTestCase):
             return [document[index].get_pixmap(dpi=150).tobytes("png") for index in range(len(document))]
         finally:
             document.close()
+
+    # ------------------------------------------------------------------ what a refusal costs the stylesheet
+
+    def _styled(self, declarations: str) -> str:
+        return f"<style>p {{ {declarations} }}</style><p>text</p>"
+
+    def _text_colors(self, pdf_bytes: bytes) -> set[int]:
+        """Every color a glyph of the document is drawn in.
+
+        A whole page compares badly - a stylesheet naming one declaration more produces a file of
+        another size and the glyphs land on slightly other pixels - while the color of the text says
+        exactly what the case asks: whether the declaration beside the refused address still applies.
+        """
+        document: fitz.Document = fitz.open(stream=pdf_bytes, filetype="pdf")  # type: ignore[no-any-unimported]
+        try:
+            return {span["color"] for index in range(len(document)) for block in document[index].get_text("dict")["blocks"] for line in block.get("lines", []) for span in line["spans"]}
+        finally:
+            document.close()
+
+    def _assert_the_stylesheet_survived(self, declarations: str) -> None:
+        """Export a document styled red beside `declarations`, and read the color back out of it."""
+        refused: bytes = self._export(self._styled(f"color: {RED_DECLARATION}; {declarations}"))
+        self._assert_probe_silent()
+
+        self.assertEqual({RED}, self._text_colors(refused), "the stylesheet lost more than the address it named")
+        # and the color has to be read out of the file rather than assumed, or the case holds for free
+        self.assertEqual({BLACK}, self._text_colors(self._export(self._styled("color: #000000;"))))
+
+    def test_a_stylesheet_keeps_its_declarations_around_a_refused_address(self) -> None:
+        """A refused address costs the stylesheet the address and nothing else.
+
+        The reported case lost the whole file: a style package of 2.4 MB became 55 bytes and the
+        exported document carried none of its styles. The stylesheet here may lose the picture it
+        names - nothing fetches it - and may not lose the declaration standing beside it.
+        """
+        self._assert_the_stylesheet_survived(f"background-image: url(http://{self.endpoint}/probe/ok.png);")
+
+    def test_an_address_the_parser_cannot_account_for_leaves_the_rest_of_the_stylesheet(self) -> None:
+        """A bracket inside `url(...)`: the parser reads no address there, so the walk over the text does.
+
+        This is the stylesheet the inlining cannot vouch for declaration by declaration, and the one
+        which used to be dropped whole for it. Only the address is neutralized now.
+        """
+        self._assert_the_stylesheet_survived(f"background-image: url(http://{self.endpoint}/probe/ok.png?x=(a));")
+
+    # ------------------------------------------------------------------ what the answer reports
+
+    def test_the_answer_names_the_resource_it_refused(self) -> None:
+        """A refusal leaves no mark in the file, so the answer carries it: the export dialog reads these headers."""
+        response: Response = self._export_response(f"<p><img src='http://{self.endpoint}/probe/ok.png'/>text</p>")
+        self._assert_probe_silent()
+
+        self.assertEqual("1", response.headers.get(BLOCKED_RESOURCES_COUNT), "the answer has to count the resource it refused")
+        self.assertIn(self.endpoint, response.headers.get(BLOCKED_RESOURCES, ""), "the answer has to name the address it refused")
+
+    def test_the_answer_reports_nothing_when_nothing_was_refused(self) -> None:
+        # the other half: a document naming only what it carries itself is not degraded, and the answer
+        # carries no header at all for it - which is what the export dialog reads as "nothing to report"
+        response: Response = self._export_response(f"<p><img src='{VISIBLE_PICTURE}'/>text</p>")
+
+        self.assertIsNone(response.headers.get(BLOCKED_RESOURCES_COUNT), "an export which refused nothing must report nothing")
+        self.assertIsNone(response.headers.get(BLOCKED_RESOURCES), "an export which refused nothing must name nothing")
+
+    # ------------------------------------------------------------------ the reported case, end to end
+
+    def test_the_css_setting_of_a_document_export_keeps_its_declarations(self) -> None:
+        """The reported case from the setting to the exported document.
+
+        The reporter put `@page { background: url(...) }` into the CSS setting of a style package and the
+        export lost every style of it. Here the document keeps the color the same setting gives it, the
+        probe is never asked for the picture, and the answer names the address it refused.
+        """
+        name: str = "external-resource-case"
+        self.addCleanup(self.api().delete_setting, feature=PdfExporterFeature.CSS, name=name, scope=self.scope)
+        page: str = "@page { margin: 0; background: %s no-repeat center 100%%; background-size: contain; }"
+
+        refused: Response = self._export_with_css(name, (page % f"url('http://{self.endpoint}/probe/ok.png')") + f"\n* {{ color: {RED_DECLARATION} !important; }}")
+        self._assert_probe_silent()
+
+        self.assertGreaterEqual(int(refused.headers.get(BLOCKED_RESOURCES_COUNT, "0")), 1, "the answer has to count the resource it refused")
+        self.assertIn(self.endpoint, refused.headers.get(BLOCKED_RESOURCES, ""), "the answer has to name the address it refused")
+        self.assertIn(RED, self._text_colors(refused.content), "the document lost the color its CSS setting gives it")
+
+        # and the color has to come from the setting rather than from the document, or the case holds for free
+        without_the_color: Response = self._export_with_css(name, page % "none")
+        self.assertNotIn(RED, self._text_colors(without_the_color.content))
+
+    def _export_with_css(self, name: str, css: str) -> Response:
+        """Export the document of the suite under a CSS setting of this text."""
+        self._probe().reset()
+        saved: Response = self.api().save_setting(feature=PdfExporterFeature.CSS, name=name, scope=self.scope, data={"css": css, "disableDefaultCss": False})
+        self.assertEqual(HTTPStatus.NO_CONTENT, saved.status_code)
+
+        response: Response = self._convert(self.project_id, self.DOCUMENT_LOCATION, custom_export_params={"css": name})
+        self.assertEqual(HTTPStatus.OK, response.status_code, "a refused resource must not break the export")
+        return response

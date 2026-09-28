@@ -42,6 +42,25 @@ class PdfExporterUtilityTest(PdfExporterTestCase):
         # Assert
         self.assertEqual(HTTPStatus.NO_CONTENT, response.status_code)
 
+    def test_get_document_language_of_a_wiki_page(self) -> None:
+        """The endpoint knows a Live Document and nothing else.
+
+        It resolves an `IModule` before reading `docLanguage`, and a Classic Wiki page is none, so it
+        answers 404. That is why the export dialog skips this read for a wiki page: it used to make
+        the dialog unusable with "Error occurred loading form data". A day this answers 200 is a day
+        the dialog may ask again.
+        """
+        # Act
+        with self.suppress_api_errors():
+            response: Response = self.api().get_document_language(
+                project_id=self.project_id,
+                space_id="Specification",
+                document_name="Test Wiki page",
+            )
+
+        # Assert
+        self.assertEqual(HTTPStatus.NOT_FOUND, response.status_code)
+
     def test_get_link_role_names(self) -> None:
         # Act
         response: Response = self.api().get_link_role_names(scope=f"project/{self.project_id}/")

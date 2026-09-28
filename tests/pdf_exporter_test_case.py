@@ -44,6 +44,19 @@ class PdfExporterTestCase(GenericTestCase):
         "footerRight": "{{ PAGE_NUMBER }}/{{ PAGES_TOTAL_COUNT }}",
     }
 
+    # The default header and footer names `/polarion/icons/group/sbb-headerlogo.png`, which this server
+    # answers with an empty body, so every export carrying it reports a refused resource. A case which
+    # asserts what an export refused has to bring its own, or it can never show one which refused nothing.
+    HEADER_FOOTER_WITHOUT_EXTERNAL_RESOURCES: ClassVar[JsonDict] = {
+        "useCustomValues": True,
+        "headerLeft": "{{ PROJECT_NAME }}",
+        "headerCenter": "",
+        "headerRight": "",
+        "footerLeft": "{{ DOCUMENT_TITLE }}",
+        "footerCenter": "",
+        "footerRight": "{{ PAGE_NUMBER }}/{{ PAGES_TOTAL_COUNT }}",
+    }
+
     @classmethod
     def setUpClass(cls) -> None:
         super().setUpClass()
