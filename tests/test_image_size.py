@@ -29,11 +29,12 @@ class PdfExporterImageSizeTest(PdfExporterTestCase):
         # Assert
         self.assertEqual(HTTPStatus.OK, response.status_code)
 
-        widths: list[int] = []
+        # Every image carries its own raster, so they are read in the order the page draws them
+        drawn: list[tuple[float, float, int]] = []
         with fitz.open(stream=response.content, filetype="pdf") as document:
             for page in document:
-                for xref in sorted({image[0] for image in page.get_images(full=True)}):
-                    widths.extend(round(rect.width / self.PT_PER_PX) for rect in page.get_image_rects(xref))
+                for xref in {image[0] for image in page.get_images(full=True)}:
+                    drawn.extend((rect.y0, rect.x0, round(rect.width / self.PT_PER_PX)) for rect in page.get_image_rects(xref))
 
         # The diagram is 200x100 px: its own size where the document gives none, then half of it and twice it
-        self.assertEqual([200, 100, 400], widths)
+        self.assertEqual([200, 100, 400], [width for _, _, width in sorted(drawn)])
