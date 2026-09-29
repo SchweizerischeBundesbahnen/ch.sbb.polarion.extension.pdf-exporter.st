@@ -34,22 +34,28 @@ env:
   WEASYPRINT_HOST: weasyprint.system-tests
   TC_POLARION_NETWORK: system-tests
   TC_WEASYPRINT_SERVICE_URL: https://weasyprint.system-tests:9080
-  TC_POLARION_EXTRA_PROPERTIES: ch.sbb.polarion.extension.pdf-exporter.weasyprint.apiKeySecret=weasyprint.api.key
+  # ';'-separated; the secret names match WEASYPRINT_API_KEY_SECRET and BULK_PROCESSING_API_KEY_SECRET below
+  TC_POLARION_EXTRA_PROPERTIES: ch.sbb.polarion.extension.pdf-exporter.weasyprint.apiKeySecret=weasyprint.api.key;ch.sbb.polarion.extension.pdf-exporter.bulk.processing.apiKeySecret=bulk.processing.api.key
   # the same name, used below to seed the key into that secret. The two literals sit together so an
   # edit to one is made looking at the other
   WEASYPRINT_API_KEY_SECRET: weasyprint.api.key
   # the name the service is started under below, so the cases which recreate it find it by name
   # rather than by matching the network alias, which the docker API has been moving away from
   WEASYPRINT_CONTAINER: weasyprint-service
-  # The bulk processing service merges several exported documents into one PDF. Unlike WeasyPrint it is
-  # started by the harness (testcontainers): it joins the run's network, is wired to the WeasyPrint
-  # service above -- its address, and, since that transport is TLS, the key (TC_WEASYPRINT_API_KEY,
-  # exported below) and the authority (TC_POLARION_CA_CERTIFICATES) -- and Polarion is handed its
-  # endpoint through BULK_PROCESSING_SERVICE_ENDPOINT. Its own API stays keyless, so the key-rejection
-  # case skips rather than runs.
-  TC_BULK_PROCESSING_SERVICE_IMAGE_NAME: ghcr.io/schweizerischebundesbahnen/bulk-processing-service:1.0.0
-  # the name the harness starts the service under, so the cases find its container by name
-  BULK_PROCESSING_CONTAINER: test-bulk-processing-service-container
+  # The bulk processing service merges several exported documents into one PDF. It is deployed the way
+  # WeasyPrint is -- TLS, with an API key -- and started here for the same reason: the harness can pass
+  # it neither a certificate nor a key. Its certificate is signed by an authority of its own, so a case
+  # which takes that authority out of the truststore breaks the Polarion -> bulk connection only, and
+  # the exports through WeasyPrint keep working. The service in turn reaches WeasyPrint over TLS,
+  # trusting its authority through SSL_CERT_FILE. The harness is handed the address
+  # (TC_BULK_PROCESSING_SERVICE_URL) rather than an image, and passes it to Polarion through
+  # BULK_PROCESSING_SERVICE_ENDPOINT.
+  BULK_PROCESSING_SERVICE_IMAGE: ghcr.io/schweizerischebundesbahnen/bulk-processing-service:1.0.0
+  BULK_PROCESSING_HOST: bulk.system-tests
+  TC_BULK_PROCESSING_SERVICE_URL: https://bulk.system-tests:9070
+  BULK_PROCESSING_API_KEY_SECRET: bulk.processing.api.key
+  # the name the service is started under below, so the cases which recreate it find it by name
+  BULK_PROCESSING_CONTAINER: bulk-processing-service
 jobs:
   system-tests:
     # Skip draft PRs (this container suite is expensive); still runs on manual workflow_dispatch.
@@ -92,33 +98,60 @@ jobs:
       # the name the service answers under, and a key which lives as long as the run. Polarion is
       # given the authority, the property naming the secret and the key itself, all before it starts:
       # it reads its properties and its secrets once and keeps them.
-      - name: 📜 Issue the certificate the WeasyPrint service serves
+      - name: 📜 Issue the certificates the WeasyPrint and bulk processing services serve
         run: |
           mkdir -p "$RUNNER_TEMP/tls"
           cd "$RUNNER_TEMP/tls"
           openssl genrsa -out ca.key 4096
+          # keyUsage=keyCertSign is required by the bulk processing service, which verifies WeasyPrint's
+          # TLS with Python's ssl.create_default_context() (OpenSSL 3): it rejects a CA without keyUsage
+          # ("CA cert does not include key usage extension"), so the service reports WeasyPrint
+          # unavailable, its /ready returns 503 and the merge cases fail. curl and the JVM truststore
+          # accept such a CA, so only the bulk path needs this.
           openssl req -x509 -new -key ca.key -sha256 -days 30 -out ca.pem \
-            -subj "/CN=Polarion system tests CA" -addext "basicConstraints=critical,CA:TRUE"
+            -subj "/CN=Polarion system tests CA" \
+            -addext "basicConstraints=critical,CA:TRUE" -addext "keyUsage=critical,keyCertSign,cRLSign"
           openssl genrsa -out service.key 2048
           openssl req -new -key service.key -out service.csr -subj "/CN=$WEASYPRINT_HOST"
           printf 'basicConstraints=critical,CA:FALSE\nkeyUsage=critical,digitalSignature,keyEncipherment\nextendedKeyUsage=serverAuth\nsubjectAltName=DNS:%s\n' "$WEASYPRINT_HOST" > service.ext
           openssl x509 -req -in service.csr -CA ca.pem -CAkey ca.key -CAcreateserial \
             -out service.crt -days 30 -sha256 -extfile service.ext
           cat service.crt ca.pem > service.pem
+          # The bulk processing service gets an authority of its own, so taking it out of the truststore
+          # breaks the Polarion -> bulk connection and nothing else. Its name contains no other one:
+          # the cases find the alias of an authority by its common name. keyUsage as above, which the
+          # JVM does not insist on, but a CA without it is not one a deployment should model
+          openssl genrsa -out bulk-ca.key 4096
+          openssl req -x509 -new -key bulk-ca.key -sha256 -days 30 -out bulk-ca.pem \
+            -subj "/CN=Bulk processing system tests authority" \
+            -addext "basicConstraints=critical,CA:TRUE" -addext "keyUsage=critical,keyCertSign,cRLSign"
+          # the certificate the service serves, and one by the same authority for a name the service is
+          # not reached under, for the case which shows that the name is checked and not only the chain
+          for cert in "bulk:$BULK_PROCESSING_HOST" "bulk-other-name:not-the-bulk-service.system-tests"; do
+            file="${cert%%:*}"
+            name="${cert#*:}"
+            openssl genrsa -out "$file.key" 2048
+            openssl req -new -key "$file.key" -out "$file.csr" -subj "/CN=$name"
+            printf 'basicConstraints=critical,CA:FALSE\nkeyUsage=critical,digitalSignature,keyEncipherment\nextendedKeyUsage=serverAuth\nsubjectAltName=DNS:%s\n' "$name" > "$file.ext"
+            openssl x509 -req -in "$file.csr" -CA bulk-ca.pem -CAkey bulk-ca.key -CAcreateserial \
+              -out "$file.crt" -days 30 -sha256 -extfile "$file.ext"
+            cat "$file.crt" bulk-ca.pem > "$file.pem"
+          done
           chmod 644 ./*.pem ./*.key
-          # a key which lives as long as this run, so no credential is written into the repository
+          # keys which live as long as this run, so no credential is written into the repository
           weasyprint_api_key="$(openssl rand -hex 24)"
-          # masked at the point it is minted, which covers every step and every test that receives it
+          bulk_processing_api_key="$(openssl rand -hex 24)"
+          # masked at the point they are minted, which covers every step and every test that receives them
           echo "::add-mask::$weasyprint_api_key"
-          # TC_POLARION_SECRETS is what seeds the key into the store of Polarion before the container
+          echo "::add-mask::$bulk_processing_api_key"
+          # TC_POLARION_SECRETS is what seeds the keys into the store of Polarion before the container
           # runs: Polarion reads its secrets when it starts and keeps them, so one written into a
-          # running Polarion is never seen. TC_WEASYPRINT_API_KEY hands the same key to the harness, so
-          # the bulk processing service it starts can authenticate to WeasyPrint over TLS as well.
+          # running Polarion is never seen. Both authorities go into its truststore.
           {
             echo "WEASYPRINT_API_KEY=$weasyprint_api_key"
-            echo "TC_WEASYPRINT_API_KEY=$weasyprint_api_key"
-            echo "TC_POLARION_CA_CERTIFICATES=$RUNNER_TEMP/tls/ca.pem"
-            echo "TC_POLARION_SECRETS=$WEASYPRINT_API_KEY_SECRET=$weasyprint_api_key"
+            echo "BULK_PROCESSING_API_KEY=$bulk_processing_api_key"
+            echo "TC_POLARION_CA_CERTIFICATES=$RUNNER_TEMP/tls/ca.pem,$RUNNER_TEMP/tls/bulk-ca.pem"
+            echo "TC_POLARION_SECRETS=$WEASYPRINT_API_KEY_SECRET=$weasyprint_api_key;$BULK_PROCESSING_API_KEY_SECRET=$bulk_processing_api_key"
           } >> "$GITHUB_ENV"
       # Started here rather than by the harness, which can pass neither a certificate nor a key. The
       # network alias is the name the certificate carries, and Polarion joins the same network, so it
@@ -142,12 +175,37 @@ jobs:
               sleep 2
             done' \
             || { echo "the WeasyPrint service did not become healthy"; docker logs "$WEASYPRINT_CONTAINER"; exit 1; }
+      # Started here for the reason WeasyPrint is. It serves its own certificate under the alias the
+      # certificate carries, holds its own key, and reaches WeasyPrint over TLS: with the WeasyPrint key,
+      # trusting the WeasyPrint authority through SSL_CERT_FILE. The directory holds the certificate for
+      # another name as well, which a case swaps in by recreating the container.
+      - name: 🔒 Start the bulk processing service over TLS
+        run: |
+          docker run --detach --name "$BULK_PROCESSING_CONTAINER" \
+            --network "$TC_POLARION_NETWORK" --network-alias "$BULK_PROCESSING_HOST" \
+            --volume "$RUNNER_TEMP/tls:/tls:ro" \
+            --env API_KEY="$BULK_PROCESSING_API_KEY" \
+            --env TLS_CERT_FILE=/tls/bulk.pem \
+            --env TLS_KEY_FILE=/tls/bulk.key \
+            --env WEASYPRINT_SERVICE_URL="$TC_WEASYPRINT_SERVICE_URL" \
+            --env WEASYPRINT_API_KEY="$WEASYPRINT_API_KEY" \
+            --env SSL_CERT_FILE=/tls/ca.pem \
+            "$BULK_PROCESSING_SERVICE_IMAGE"
+          # shellcheck disable=SC2016  # the expansion belongs to the inner shell, on every turn
+          timeout 90 sh -c 'until [ "$(docker inspect -f "{{.State.Health.Status}}" "$BULK_PROCESSING_CONTAINER")" = healthy ]; do
+              [ "$(docker inspect -f "{{.State.Running}}" "$BULK_PROCESSING_CONTAINER")" = true ] || exit 1
+              sleep 2
+            done' \
+            || { echo "the bulk processing service did not become healthy"; docker logs "$BULK_PROCESSING_CONTAINER"; exit 1; }
       - name: 🧪 Run system tests against Polarion in Docker
         run: uv run tox -e test
       - name: 🧾 WeasyPrint service log
         if: always()
         # the containers replaced during the run print their own log as they go, from the suite
         run: docker logs "$WEASYPRINT_CONTAINER" 2>/dev/null || true
+      - name: 🧾 Bulk processing service log
+        if: always()
+        run: docker logs "$BULK_PROCESSING_CONTAINER" 2>/dev/null || true
       - name: 📤 Upload test reports and generated/diff artifacts
         # Always upload so failures can be diagnosed: the output folder contains the generated
         # PDFs, the rendered page PNGs and the *_diff.png images highlighting visual mismatches.

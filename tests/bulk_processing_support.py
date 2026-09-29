@@ -17,19 +17,19 @@ that container instead, the way the WeasyPrint cases read theirs.
 from __future__ import annotations
 
 import json
-import logging
-import os
+import time
 import uuid
 from dataclasses import dataclass
-from typing import Any
-from urllib.parse import urlparse
+from http import HTTPStatus
+from typing import TYPE_CHECKING, Any
 
-from tests.ssrf_support import docker_client, polarion_container
+from tests.tls_service_support import TlsService, polarion_exec
 
 
-logger = logging.getLogger(__name__)
+if TYPE_CHECKING:
+    from python_sbb_polarion.types import JsonList
 
-PROPERTIES_PATH = "/opt/polarion/etc/polarion.properties"
+
 SERVICE_PROPERTY = "ch.sbb.polarion.extension.pdf-exporter.bulk.processing.service"
 API_KEY_SECRET_PROPERTY = "ch.sbb.polarion.extension.pdf-exporter.bulk.processing.apiKeySecret"
 
@@ -40,36 +40,29 @@ UNKNOWN_JOB_ID = "no-such-job-00000000000000000000"
 # path inside the Polarion container, not on the host.
 _DOWNLOAD_DIR = "/tmp"
 
+# The service is found, recreated and trusted the way the WeasyPrint one is (tls_service_support); this
+# names the bulk processing one.
+BULK: TlsService = TlsService(
+    label="bulk processing service",
+    service_property=SERVICE_PROPERTY,
+    api_key_secret_property=API_KEY_SECRET_PROPERTY,
+    container_env="BULK_PROCESSING_CONTAINER",
+    # the authority which signed the certificate of the service, where the environment names it itself
+    ca_alias_env="BULK_PROCESSING_CA_ALIAS",
+)
 
-def _polarion_exec(command: list[str]) -> tuple[int, str] | None:
-    """Run a command inside the Polarion container, or None where there is no container to ask."""
-    container: Any = polarion_container()
-    if container is None:
-        return None
-    try:
-        answer: Any = container.exec_run(command)
-    except Exception:  # noqa: BLE001 - an unreachable container is reported, not raised
-        logger.info("a command could not be run in the Polarion container")
-        return None
-    return int(answer[0]), answer[1].decode(errors="replace")
-
-
-def configured_property(name: str) -> str | None:
-    """The value of a property of the running Polarion, read from the file it was started with."""
-    answer: tuple[int, str] | None = _polarion_exec(["grep", "-m1", f"^{name}=", PROPERTIES_PATH])
-    if answer is None or answer[0] != 0:
-        return None
-    return answer[1].strip().partition("=")[2].strip() or None
-
-
-def service_url() -> str | None:
-    """The address Polarion names for the bulk processing service, or None where none is named."""
-    return configured_property(SERVICE_PROPERTY)
-
-
-def api_key_secret_name() -> str | None:
-    """The name of the Polarion secret holding the API key, or None where no key is configured."""
-    return configured_property(API_KEY_SECRET_PROPERTY)
+service_url = BULK.service_url
+api_key_secret_name = BULK.api_key_secret_name
+authenticated_over_tls = BULK.authenticated_over_tls
+service_answers = BULK.service_answers
+service_container = BULK.service_container
+service_has_file = BULK.service_has_file
+service_log_lines = BULK.service_log_lines
+service_restartable = BULK.service_restartable
+service_running_with = BULK.service_running_with
+trusted_ca_alias = BULK.trusted_ca_alias
+ca_in_truststore = BULK.ca_in_truststore
+ca_removed = BULK.ca_removed
 
 
 def configured() -> bool:
@@ -77,65 +70,13 @@ def configured() -> bool:
     return service_url() is not None
 
 
-def service_answers() -> bool:
-    """Whether the named service answers Polarion on its open ``/version`` endpoint, the certificate aside.
-
-    Asked from inside the Polarion container with ``-k`` on purpose: a privately signed certificate must
-    not turn "the service is up" into "the truststore is wrong". The certificate is the concern of the
-    authenticated cases, not of a reachability check, and ``/version`` needs no API key.
-    """
-    url: str | None = service_url()
-    if url is None:
-        return False
-    answer: tuple[int, str] | None = _polarion_exec(["curl", "-sk", "-m", "5", "-o", "/dev/null", "-w", "%{http_code}", f"{url}/version"])
-    return answer is not None and answer[0] == 0 and answer[1].strip() == "200"
-
-
-# ------------------------------------------------------------------ the service container
-
-
-def service_container() -> Any:
-    """The container serving the address Polarion names, found by name or by the name it answers under.
-
-    An explicit name is taken as an answer; otherwise the container is the one a network answers under
-    the host of the configured address, the same way the WeasyPrint container is found.
-    """
-    url: str | None = service_url()
-    if url is None:
-        return None
-    named: str | None = os.environ.get("BULK_PROCESSING_CONTAINER")
-    wanted_host: str = urlparse(url).hostname or ""
-    client: Any = docker_client()
-    if client is None:
-        return None
-
-    for container in client.containers.list():
-        if named and container.name == named:
-            return container
-        if named:
-            continue
-        networks: dict[str, dict[str, Any]] = container.attrs["NetworkSettings"]["Networks"]
-        for settings in networks.values():
-            # both spellings: newer daemons report the names under DNSNames and leave Aliases behind
-            if wanted_host in (settings.get("Aliases") or []) or wanted_host in (settings.get("DNSNames") or []):
-                return container
-    if named:
-        logger.info("no container is named %s", named)
-    return None
-
-
 def service_api_key() -> str | None:
     """One key the service accepts, read from its container, or None where it holds none.
 
     The service may be started with several comma-separated keys for rotation, and it accepts any of
-    them, so the first is enough to authenticate a request. The value is read from the container rather
-    than from Polarion, whose secret is not readable through the API; the service Polarion talks to is
-    the one holding the matching key.
+    them, so the first is enough to authenticate a request.
     """
-    container: Any = service_container()
-    if container is None:
-        return None
-    configured_keys: str | None = next((value.partition("=")[2] for value in container.attrs["Config"]["Env"] if value.startswith("API_KEY=")), None)
+    configured_keys: str | None = BULK.service_api_keys()
     if not configured_keys:
         return None
     first: str = configured_keys.split(",")[0].strip()
@@ -167,7 +108,7 @@ def request(method: str, path: str, api_key: str | None = None, json_body: dict[
         command += ["-H", "Content-Type: application/json", "--data", json.dumps(json_body)]
     command.append(f"{url}{path}")
 
-    answer: tuple[int, str] | None = _polarion_exec(command)
+    answer: tuple[int, str] | None = polarion_exec(command)
     if answer is None or answer[0] != 0:
         return None
     body: str
@@ -186,6 +127,61 @@ def service_ready() -> bool:
     """
     answer: tuple[int, str] | None = request("GET", "/ready")
     return answer is not None and answer[0] == 200
+
+
+def readiness() -> tuple[int, dict[str, Any]] | None:
+    """What ``/ready`` answers, with the body read, or None where it could not be asked.
+
+    The body names each dependency, so a case can tell a service which cannot reach WeasyPrint apart
+    from one whose storage is full, and say which it was.
+    """
+    answer: tuple[int, str] | None = request("GET", "/ready")
+    if answer is None:
+        return None
+    try:
+        body: Any = json.loads(answer[1])
+    except json.JSONDecodeError:
+        body = {}
+    return answer[0], body if isinstance(body, dict) else {}
+
+
+@dataclass
+class MergeJobOutcome:
+    """How a merge job the extension ran ended: its last status, why it failed, and the merged PDF."""
+
+    status: int
+    error_message: str
+    pdf: bytes | None
+
+
+def merge_through_extension(api: Any, merge_params: JsonList, timeout_in_sec: int) -> MergeJobOutcome:
+    """Start a merge job in the extension, wait for it, and return how it ended.
+
+    The status endpoint answers 202 while the job runs, 303 once the merge is ready and 409 where it
+    failed, the reason in ``errorMessage``. A caller expecting a failure keeps those out of the error
+    log itself, since only it knows which of them it expects.
+    """
+    response: Any = api.start_pdf_merge_job(merge_params)
+    if response.status_code != HTTPStatus.ACCEPTED:
+        return MergeJobOutcome(status=response.status_code, error_message=response.text, pdf=None)
+    job_id: str = str(response.headers.get("Location", "")).rsplit("/", 1)[-1]
+
+    start: float = time.time()
+    while time.time() - start < timeout_in_sec:
+        response = api.get_pdf_converter_job_status(job_id=job_id)
+        if response.status_code != HTTPStatus.ACCEPTED:
+            break
+        time.sleep(1)
+    if response.status_code != HTTPStatus.SEE_OTHER:
+        error_message: str = ""
+        try:
+            error_message = str(response.json().get("errorMessage") or "")
+        except ValueError:
+            error_message = response.text
+        return MergeJobOutcome(status=response.status_code, error_message=error_message, pdf=None)
+
+    response = api.get_pdf_converter_job_result(job_id=job_id)
+    return MergeJobOutcome(status=response.status_code, error_message="", pdf=response.content if response.status_code == HTTPStatus.OK else None)
 
 
 def start_job(api_key: str | None, file_name: str) -> str | None:
@@ -240,19 +236,19 @@ def finish_job(job_id: str, api_key: str | None) -> FinishOutcome | None:
         command += ["-H", f"X-API-Key: {api_key}"]
     command.append(f"{url}/api/convert/{job_id}/finish")
 
-    answer: tuple[int, str] | None = _polarion_exec(command)
+    answer: tuple[int, str] | None = polarion_exec(command)
     if answer is None or answer[0] != 0 or not answer[1].strip().isdigit():
-        _polarion_exec(["rm", "-f", pdf_path, headers_path])
+        polarion_exec(["rm", "-f", pdf_path, headers_path])
         return None
     status: int = int(answer[1].strip())
 
-    headers: tuple[int, str] | None = _polarion_exec(["cat", headers_path])
+    headers: tuple[int, str] | None = polarion_exec(["cat", headers_path])
     documents_merged: int | None = _header_count(headers[1], "X-Documents-Merged") if headers is not None and headers[0] == 0 else None
 
-    magic: tuple[int, str] | None = _polarion_exec(["head", "-c", "5", pdf_path])
+    magic: tuple[int, str] | None = polarion_exec(["head", "-c", "5", pdf_path])
     is_pdf: bool = magic is not None and magic[0] == 0 and magic[1].startswith("%PDF-")
 
-    _polarion_exec(["rm", "-f", pdf_path, headers_path])
+    polarion_exec(["rm", "-f", pdf_path, headers_path])
     return FinishOutcome(status=status, documents_merged=documents_merged, is_pdf=is_pdf)
 
 

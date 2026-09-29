@@ -22,7 +22,6 @@ from __future__ import annotations
 
 import io
 import json
-import time
 from http import HTTPStatus
 from typing import TYPE_CHECKING, NoReturn
 
@@ -35,6 +34,7 @@ from tests.bulk_processing_support import (
     configured,
     delete_job,
     finish_job,
+    merge_through_extension,
     request,
     service_answers,
     service_api_key,
@@ -51,7 +51,7 @@ if TYPE_CHECKING:
     from python_sbb_polarion.types import JsonList
     from requests import Response
 
-    from tests.bulk_processing_support import FinishOutcome
+    from tests.bulk_processing_support import FinishOutcome, MergeJobOutcome
 
 
 WRONG_KEY: str = "a-key-the-service-was-not-started-with"
@@ -216,25 +216,10 @@ class PdfExporterBulkProcessingTest(PdfExporterTestCase):
         kept out of the error log the way the other job-driven cases keep theirs.
         """
         with self.suppress_api_errors():
-            response: Response = self.api().start_pdf_merge_job(merge_params)
-            self.assertEqual(HTTPStatus.ACCEPTED, response.status_code, "the merge job was not accepted")
-            location: str | None = response.headers.get("Location")
-            self.assertIsNotNone(location, "the accepted merge job named no location to poll")
-            assert location is not None  # narrows the type after the assertion above
-            job_id: str = location.rsplit("/", 1)[1]
-
-            start: float = time.time()
-            while time.time() - start < MERGE_JOB_TIMEOUT_IN_SEC:
-                response = self.api().get_pdf_converter_job_status(job_id=job_id)
-                if response.status_code == HTTPStatus.ACCEPTED:
-                    time.sleep(1)
-                    continue
-                break
-            self.assertEqual(HTTPStatus.SEE_OTHER, response.status_code, "the merge job did not finish in time")
-
-            response = self.api().get_pdf_converter_job_result(job_id=job_id)
-            self.assertEqual(HTTPStatus.OK, response.status_code, "the merged pdf could not be read")
-            return response.content
+            outcome: MergeJobOutcome = merge_through_extension(self.api(), merge_params, MERGE_JOB_TIMEOUT_IN_SEC)
+        self.assertEqual(HTTPStatus.OK, outcome.status, f"the merge job did not return the merged pdf: {outcome.error_message}")
+        assert outcome.pdf is not None  # an OK outcome carries the pdf
+        return outcome.pdf
 
     # ------------------------------------------------------------------ the key the endpoints require
 
