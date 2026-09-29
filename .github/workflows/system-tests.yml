@@ -34,8 +34,12 @@ env:
   WEASYPRINT_HOST: weasyprint.system-tests
   TC_POLARION_NETWORK: system-tests
   TC_WEASYPRINT_SERVICE_URL: https://weasyprint.system-tests:9080
-  # ';'-separated; the secret names match WEASYPRINT_API_KEY_SECRET and BULK_PROCESSING_API_KEY_SECRET below
-  TC_POLARION_EXTRA_PROPERTIES: ch.sbb.polarion.extension.pdf-exporter.weasyprint.apiKeySecret=weasyprint.api.key;ch.sbb.polarion.extension.pdf-exporter.bulk.processing.apiKeySecret=bulk.processing.api.key
+  # ';'-separated; the secret names match WEASYPRINT_API_KEY_SECRET and BULK_PROCESSING_API_KEY_SECRET below.
+  # The address of the bulk processing service is named here too: the harness hands it to Polarion as
+  # BULK_PROCESSING_SERVICE_ENDPOINT, which the image turns into the property only where its
+  # polarion.properties carries a placeholder for it, and polarion:2606-0 carries none. The value
+  # matches TC_BULK_PROCESSING_SERVICE_URL below
+  TC_POLARION_EXTRA_PROPERTIES: ch.sbb.polarion.extension.pdf-exporter.weasyprint.apiKeySecret=weasyprint.api.key;ch.sbb.polarion.extension.pdf-exporter.bulk.processing.service=https://bulk.system-tests:9070;ch.sbb.polarion.extension.pdf-exporter.bulk.processing.apiKeySecret=bulk.processing.api.key
   # the same name, used below to seed the key into that secret. The two literals sit together so an
   # edit to one is made looking at the other
   WEASYPRINT_API_KEY_SECRET: weasyprint.api.key
