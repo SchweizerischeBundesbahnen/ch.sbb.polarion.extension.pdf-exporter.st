@@ -368,8 +368,10 @@ class TlsService:
         certificate case affordable at all.
         """
         # where the authority waits while a case runs without it, so a killed run leaves it recoverable;
-        # a path inside the container, one per alias so two services never share it
-        parked: str = f"/tmp/ca-under-test-{alias}.pem"
+        # a path inside the container, one per service so two services never share it. It is named
+        # after the service and not the alias: the alias is read through a command carrying the
+        # password of the truststore, and the path is logged below
+        parked: str = f"/tmp/ca-under-test-{self.container_env.lower()}.pem"
         exported: tuple[int, str] | None = polarion_exec(["keytool", "-exportcert", "-alias", alias, "-keystore", CACERTS_PATH, "-storepass", CACERTS_PASSWORD, "-rfc", "-file", parked])
         if exported is None or exported[0] != 0:
             yield False

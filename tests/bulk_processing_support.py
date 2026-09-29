@@ -17,6 +17,7 @@ that container instead, the way the WeasyPrint cases read theirs.
 from __future__ import annotations
 
 import json
+import os
 import time
 import uuid
 from dataclasses import dataclass
@@ -68,6 +69,20 @@ ca_removed = BULK.ca_removed
 def configured() -> bool:
     """Whether this Polarion names a bulk processing service at all."""
     return service_url() is not None
+
+
+# what hands the harness a bulk processing service: the address of one started beside it, or the image
+# of one it starts itself. Either way the run asked for the service, and Polarion is to name it
+HARNESS_SERVICE_VARIABLES = ("TC_BULK_PROCESSING_SERVICE_URL", "TC_BULK_PROCESSING_SERVICE_IMAGE_NAME")
+
+
+def requested_by_the_run() -> bool:
+    """Whether this run handed the harness a bulk processing service, so a Polarion naming none is broken.
+
+    Asked of the environment of the run rather than of whether it is containerized: a containerized run
+    which starts no bulk processing service is one which leaves the feature out, and it skips.
+    """
+    return any(os.environ.get(name, "").strip() for name in HARNESS_SERVICE_VARIABLES)
 
 
 def service_api_key() -> str | None:

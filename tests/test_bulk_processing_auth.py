@@ -35,6 +35,7 @@ from tests.bulk_processing_support import (
     configured,
     merge_through_extension,
     readiness,
+    requested_by_the_run,
     service_answers,
     service_has_file,
     service_log_lines,
@@ -87,6 +88,10 @@ class PdfExporterBulkProcessingAuthTest(PdfExporterTestCase):
         # authenticated service should not pay for that first. The service is optional, so a Polarion
         # naming none skips, the way the other bulk processing cases decide it
         if not configured():
+            # the run asked for the service, so a Polarion naming none is a broken run: the property
+            # did not reach polarion.properties, and a skip would leave the required check green
+            if requested_by_the_run():
+                self.fail("the run handed the harness a bulk processing service, but this Polarion does not name it")
             self.skipTest("this Polarion does not name a bulk processing service")
         if not authenticated_over_tls():
             self._unavailable("this Polarion does not name the bulk processing service over https with a configured key")

@@ -36,6 +36,7 @@ from tests.bulk_processing_support import (
     finish_job,
     merge_through_extension,
     request,
+    requested_by_the_run,
     service_answers,
     service_api_key,
     service_enforces_key,
@@ -90,6 +91,10 @@ class PdfExporterBulkProcessingTest(PdfExporterTestCase):
         # asked before the base settings are reinitialised: a Polarion which names no bulk processing
         # service should not pay for that first
         if not configured():
+            # the run asked for the service, so a Polarion naming none is a broken run: the property
+            # did not reach polarion.properties, and a skip would leave the required check green
+            if requested_by_the_run():
+                self.fail("the run handed the harness a bulk processing service, but this Polarion does not name it")
             self.skipTest("this Polarion does not name a bulk processing service")
         super().setUp()
 
