@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+    <field id="author">admin</field>
+    <field id="created">2026-09-30 10:00:00.000 +0000</field>
+    <field id="homePageContent" text-type="text/html"><![CDATA[<h1 id="polarion_wiki macro name=module-workitem;params=id=EL-12800"></h1><p id="polarion_1">A chapter which the document ends with, followed by the page break the editor writes when the orientation of the page above it is set to landscape. A chapter which the document ends with, followed by the page break the editor writes when the orientation of the page above it is set to landscape. A chapter which the document ends with, followed by the page break the editor writes when the orientation of the page above it is set to landscape. </p><p id="polarion_2">A chapter which the document ends with, followed by the page break the editor writes when the orientation of the page above it is set to landscape. A chapter which the document ends with, followed by the page break the editor writes when the orientation of the page above it is set to landscape. A chapter which the document ends with, followed by the page break the editor writes when the orientation of the page above it is set to landscape. </p><p id="polarion_3">A chapter which the document ends with, followed by the page break the editor writes when the orientation of the page above it is set to landscape. A chapter which the document ends with, followed by the page break the editor writes when the orientation of the page above it is set to landscape. A chapter which the document ends with, followed by the page break the editor writes when the orientation of the page above it is set to landscape. </p><div id="polarion_wiki macro name=page_break;params=uid=1" contentEditable="false" data-is-landscape="true"></div>]]></field>
+    <field id="status">draft</field>
+    <field id="structureLinkRole">parent</field>
+    <field id="title">Br LA at the end</field>
+    <field id="type">generic</field>
+    <field id="usesOutlineNumbering">true</field>
+</module>
