@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+    <field id="author">admin</field>
+    <field id="created">2026-09-28 10:00:00.000 +0000</field>
+    <field id="homePageContent" text-type="text/html"><![CDATA[<h1 id="polarion_wiki macro name=module-workitem;params=id=EL-12780"></h1><p id="polarion_1">The same diagram three times: its own size, half of it, twice it.</p><p id="polarion_2"><img src="attachment:diagram-actor.svg" style="max-width: 650px;"/></p><p id="polarion_3"><img src="attachment:diagram-actor.svg" style="width: 100px;height: 50px;"/></p><p id="polarion_4"><img src="attachment:diagram-actor.svg" style="width: 400px;height: 200px;"/></p>]]></field>
+    <field id="status">draft</field>
+    <field id="structureLinkRole">parent</field>
+    <field id="title">Diagram Sizes</field>
+    <field id="type">generic</field>
+    <field id="usesOutlineNumbering">true</field>
+</module>
