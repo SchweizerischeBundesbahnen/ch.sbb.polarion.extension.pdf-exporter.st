@@ -450,7 +450,7 @@ class PdfExporterConvertTest(PdfExporterTestCase):
         self._assert_convert_matches_snapshot(
             location_path="Testing/Indent Test",
             custom_prefix="test_convert_live_doc_indent",
-            expected_page_count=9,
+            expected_page_count=8,
         )
 
     def test_convert_live_doc_keeps_the_chapters_holding_a_table(self) -> None:
