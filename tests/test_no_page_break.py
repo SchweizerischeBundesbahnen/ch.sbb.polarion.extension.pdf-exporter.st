@@ -56,8 +56,17 @@ class PdfExporterNoPageBreakTest(PdfExporterTestCase):
 
         self.assertEqual(HTTPStatus.OK, response.status_code)
         pages: list[str] = self._page_texts(response.content)
+        self.assertEqual(2, len(pages))
         self.assertEqual(0, self._page_of(pages, self.FIRST_LINE), "The requirement starts on the first page")
         self.assertEqual(1, self._page_of(pages, self.LAST_LINE), "The requirement ends on the second page")
+
+        page_numbers: int = self._pdf_to_png(pdf_bytes=response.content, custom_prefix="test_no_page_break_off", output_folder=self._get_output_folder())
+        self._compare_pdf_pages(
+            custom_prefix="test_no_page_break_off",
+            page_numbers=page_numbers,
+            expected_folder=self._get_expected_folder(),
+            output_folder=self._get_output_folder(),
+        )
 
     @staticmethod
     def _page_of(pages: list[str], text: str) -> int:
