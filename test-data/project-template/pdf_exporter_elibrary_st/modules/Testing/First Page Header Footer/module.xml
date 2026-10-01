@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+    <field id="author">admin</field>
+    <field id="created">2026-09-30 10:00:00.000 +0000</field>
+    <field id="homePageContent" text-type="text/html"><![CDATA[<h1 id="polarion_wiki macro name=module-workitem;params=id=EL-12810"></h1><p id="polarion_1">The first page of this document gets a header and footer of its own. Its title page parts replace the running ones here, and the pages after it keep the running ones. The first page of this document gets a header and footer of its own. Its title page parts replace the running ones here, and the pages after it keep the running ones. </p><p id="polarion_2">The first page of this document gets a header and footer of its own. Its title page parts replace the running ones here, and the pages after it keep the running ones. The first page of this document gets a header and footer of its own. Its title page parts replace the running ones here, and the pages after it keep the running ones. </p><div id="polarion_wiki macro name=page_break;params=uid=1" contentEditable="false" data-is-landscape="false"></div><h1 id="polarion_wiki macro name=module-workitem;params=id=EL-12811"></h1><p id="polarion_3">The second page gets the running header and footer again, as every page after the first one does. The second page gets the running header and footer again, as every page after the first one does. </p><p id="polarion_4">The second page gets the running header and footer again, as every page after the first one does. The second page gets the running header and footer again, as every page after the first one does. </p>]]></field>
+    <field id="status">draft</field>
+    <field id="structureLinkRole">parent</field>
+    <field id="title">First Page Header Footer</field>
+    <field id="type">generic</field>
+    <field id="usesOutlineNumbering">true</field>
+</module>
