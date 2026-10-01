@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<work-item>
+    <field id="author">admin</field>
+    <field id="created">2026-10-01 10:00:00.000 +0000</field>
+    <field id="description" text-type="text/html">&lt;p&gt;Requirement line L1L of a work item which the document asks to keep on one page.&lt;/p&gt;&lt;p&gt;Requirement line L2L of a work item which the document asks to keep on one page.&lt;/p&gt;&lt;p&gt;Requirement line L3L of a work item which the document asks to keep on one page.&lt;/p&gt;&lt;p&gt;Requirement line L4L of a work item which the document asks to keep on one page.&lt;/p&gt;&lt;p&gt;Requirement line L5L of a work item which the document asks to keep on one page.&lt;/p&gt;&lt;p&gt;Requirement line L6L of a work item which the document asks to keep on one page.&lt;/p&gt;&lt;p&gt;Requirement line L7L of a work item which the document asks to keep on one page.&lt;/p&gt;&lt;p&gt;Requirement line L8L of a work item which the document asks to keep on one page.&lt;/p&gt;&lt;p&gt;Requirement line L9L of a work item which the document asks to keep on one page.&lt;/p&gt;&lt;p&gt;Requirement line L10L of a work item which the document asks to keep on one page.&lt;/p&gt;&lt;p&gt;Requirement line L11L of a work item which the document asks to keep on one page.&lt;/p&gt;&lt;p&gt;Requirement line L12L of a work item which the document asks to keep on one page.&lt;/p&gt;</field>
+    <field id="priority">50.0</field>
+    <field id="severity">should_have</field>
+    <field id="status">draft</field>
+    <field id="title">A requirement with No Page Break</field>
+    <field id="type">requirement</field>
+</work-item>
