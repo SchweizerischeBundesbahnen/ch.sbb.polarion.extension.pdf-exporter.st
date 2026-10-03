@@ -4,6 +4,7 @@ import io
 from http import HTTPStatus
 from typing import TYPE_CHECKING
 
+import fitz
 import pypdf
 from python_sbb_polarion.extensions.pdf_exporter import DocumentType
 from python_sbb_polarion.types import MediaType
@@ -345,6 +346,34 @@ class PdfExporterConvertTest(PdfExporterTestCase):
                 "includeUnreferencedComments": "true",
             },
         )
+
+    def test_convert_live_doc_with_comments_in_a_referenced_work_item(self) -> None:
+        """The document of #1118: a comment placed in the description of a referenced work item is exported where it stands."""
+        response: Response = self._assert_convert_matches_snapshot(
+            location_path="Testing/Comments in a referenced WI",
+            custom_prefix="test_convert_live_doc_comments_in_referenced_wi",
+            expected_page_count=1,
+            custom_export_params={
+                "renderComments": "ALL",
+                "includeUnreferencedComments": "true",
+            },
+        )
+
+        with fitz.open(stream=response.content, filetype="pdf") as document:
+            text: str = " ".join(" ".join(page.get_text(sort=True).split()) for page in document)
+        words: list[str] = [
+            "This is the Solution of the Another Req",
+            "Review comment inside the WI",
+            "Review comment outside of WI",
+            "text",
+            "Refinement of the URS requirement",
+            "Review comment inside the referenced WI",
+            "Here is the solution for the Refinement",
+            "This is a comment for the deleted WI.",
+        ]
+        positions: list[int] = [text.find(word) for word in words]
+        self.assertNotIn(-1, positions, text)
+        self.assertEqual(sorted(positions), positions, f"Each comment follows the text it is placed in, the unreferenced one comes last: {text}")
 
     def test_convert_live_doc_with_open_native_comments(self) -> None:
         self._assert_convert_matches_snapshot(
