@@ -406,6 +406,20 @@ class PdfExporterConvertTest(PdfExporterTestCase):
         self.assertEqual(4, text.count("Assessment"), f"The empty attribute is cut, the others are kept: {text}")
         self.assertEqual(2, pictures, "The big picture and the picture an attribute holds alone are both printed")
 
+    def test_convert_live_doc_with_the_icon_of_a_plan(self) -> None:
+        """#1141 embeds each font of Font Awesome once: the icon Polarion puts before a plan is still drawn, by the one font left."""
+        response: Response = self._assert_convert_matches_snapshot(
+            location_path="Specification/Catalog Specification",
+            custom_prefix="test_convert_live_doc_icon_of_a_plan",
+            expected_page_count=2,
+        )
+
+        with fitz.open(stream=response.content, filetype="pdf") as document:
+            fonts: set[str] = {font[3].split("+")[-1] for page in document for font in page.get_fonts()}
+            icons: list[str] = [span["text"] for page in document for block in page.get_text("dict")["blocks"] for line in block.get("lines", []) for span in line["spans"] if "Font-Awesome" in span["font"]]
+        self.assertEqual({"Font-Awesome-6-Free-Heavy"}, {font for font in fonts if "Font-Awesome" in font}, f"One font of Font Awesome is embedded: {fonts}")
+        self.assertTrue(icons, "The icons of the plans are drawn with Font Awesome")
+
     def test_convert_live_doc_with_open_native_comments(self) -> None:
         self._assert_convert_matches_snapshot(
             location_path="Specification/live_doc_with_comments",
