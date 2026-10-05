@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<work-item>
+    <field id="author">admin</field>
+    <field id="created">2026-10-05 16:07:41.012 +0200</field>
+    <field id="priority">50.0</field>
+    <field id="qaAssessment" text-type="text/html" type="text/html">&lt;p&gt;A short assessment, no picture.&lt;/p&gt;</field>
+    <field id="severity">should_have</field>
+    <field id="status">draft</field>
+    <field id="title">A release with a short assessment</field>
+    <field id="type">release</field>
+</work-item>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+    <field id="author">admin</field>
+    <field id="created">2026-10-05 16:07:30.515 +0200</field>
+    <field id="homePageContent" text-type="text/html"><![CDATA[<p id="polarion_1">Four releases whose QA Assessment is shown in the attribute table: a big picture, a short text, nothing, and only a picture.</p>
+<div id="polarion_wiki macro name=module-workitem;params=id=EL-14480"></div>
+<div id="polarion_wiki macro name=module-workitem;params=id=EL-14481"></div>
+<div id="polarion_wiki macro name=module-workitem;params=id=EL-14483"></div>
+<div id="polarion_wiki macro name=module-workitem;params=id=EL-14482"></div>
+]]></field>
+    <field id="renderingLayouts">
+        <list>
+            <struct>
+                <item id="layouter">paragraph</item>
+                <item id="properties">
+                    <list>
+                        <struct>
+                            <item id="key">fieldsAtEnd</item>
+                            <item id="value">qaAssessment,status</item>
+                        </struct>
+                        <struct>
+                            <item id="key">fieldsAtEndAsTable</item>
+                            <item id="value">true</item>
+                        </struct>
+                        <struct>
+                            <item id="key">fieldsAtStart</item>
+                            <item id="value">id,title</item>
+                        </struct>
+                    </list>
+                </item>
+                <item id="type">release</item>
+            </struct>
+        </list>
+    </field>
+    <field id="status">draft</field>
+    <field id="structureLinkRole">parent</field>
+    <field id="title">Attribute Table Pictures</field>
+    <field id="type">generic</field>
+</module>

@@ -375,6 +375,37 @@ class PdfExporterConvertTest(PdfExporterTestCase):
         self.assertNotIn(-1, positions, text)
         self.assertEqual(sorted(positions), positions, f"Each comment follows the text it is placed in, the unreferenced one comes last: {text}")
 
+    def test_convert_live_doc_with_a_big_picture_in_an_attribute_table(self) -> None:
+        """The document of #1160: a big picture fitted to the page leaves the label column of its attribute table as wide as in the others."""
+        response: Response = self._assert_convert_matches_snapshot(
+            location_path="Testing/Attribute Table Pictures",
+            custom_prefix="test_convert_live_doc_big_picture_in_attribute_table",
+            expected_page_count=2,
+            custom_export_params={"fitToPage": True, "cutEmptyWIAttributes": False},
+        )
+
+        with fitz.open(stream=response.content, filetype="pdf") as document:
+            values: list[float] = [round(word[0]) for page in document for word in page.get_text("words") if word[4] == "Draft"]
+        self.assertEqual(4, len(values), "Each of the four attribute tables shows the status")
+        self.assertEqual(1, len(set(values)), f"The value column starts at the same place in every table: {values}")
+
+    def test_convert_live_doc_with_an_attribute_holding_only_a_picture(self) -> None:
+        """The document of #1158: cutting empty attributes cuts the empty one and keeps the one holding only a picture."""
+        response: Response = self._assert_convert_matches_snapshot(
+            location_path="Testing/Attribute Table Pictures",
+            custom_prefix="test_convert_live_doc_attribute_holding_only_a_picture",
+            expected_page_count=1,
+            custom_export_params={"fitToPage": True, "cutEmptyWIAttributes": True},
+        )
+
+        with fitz.open(stream=response.content, filetype="pdf") as document:
+            text: str = " ".join(" ".join(page.get_text(sort=True).split()) for page in document)
+            # The icons of the status are pictures too, the two of the attributes are far wider
+            pictures: int = sum(1 for page in document for image in page.get_image_info() if image["bbox"][2] - image["bbox"][0] > 100)
+        # Named by the sentence above the work items and by the labels of the three attributes kept, wrapped after "QA"
+        self.assertEqual(4, text.count("Assessment"), f"The empty attribute is cut, the others are kept: {text}")
+        self.assertEqual(2, pictures, "The big picture and the picture an attribute holds alone are both printed")
+
     def test_convert_live_doc_with_open_native_comments(self) -> None:
         self._assert_convert_matches_snapshot(
             location_path="Specification/live_doc_with_comments",

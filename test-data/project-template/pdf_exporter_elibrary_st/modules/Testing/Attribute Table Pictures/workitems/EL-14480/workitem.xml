@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<work-item>
+    <field id="author">admin</field>
+    <field id="created">2026-10-05 16:07:40.724 +0200</field>
+    <field id="priority">50.0</field>
+    <field id="qaAssessment" text-type="text/html" type="text/html">Big:&lt;br/&gt;&lt;img title="big picture - big1160.png" src="workitemimg:1-big1160.png" style="width: 1000px;height: 750px;"/&gt;</field>
+    <field id="severity">should_have</field>
+    <field id="status">draft</field>
+    <field id="title">A release with a big picture</field>
+    <field id="type">release</field>
+</work-item>
