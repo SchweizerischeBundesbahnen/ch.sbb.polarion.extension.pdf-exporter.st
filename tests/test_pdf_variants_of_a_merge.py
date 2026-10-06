@@ -31,6 +31,8 @@ MERGED_DOCUMENTS: list[str] = [
     "Specification/Product Specification",
     "Specification/Catalog Specification",
 ]
+# A test run of the elibrary with attachments, merged twice: PDF/A-4f requires embedded files, and only a test run embeds them
+MERGED_TEST_RUN: JsonDict = {"documentType": DocumentType.TEST_RUN, "embedAttachments": True, "urlQueryParameters": {"id": "Test"}}
 # A merge job renders every document through WeasyPrint before combining them
 MERGE_JOB_TIMEOUT_IN_SEC: int = 100
 
@@ -49,12 +51,12 @@ class PdfExporterMergeVariantsTest(BulkProcessingTestCase):
         PdfVariant.PDF_A_3B,
         PdfVariant.PDF_A_3U,
         PdfVariant.PDF_A_4E,
+        PdfVariant.PDF_A_4F,
         PdfVariant.PDF_A_4U,
     ]
 
     # PDF variants this test does not cover, and why
     EXCLUDED_VARIANTS: ClassVar[dict[PdfVariant, str]] = {
-        PdfVariant.PDF_A_4F: "requires embedded files, which a merge does not carry (pdf-exporter#1166)",
         PdfVariant.PDF_UA_1: "a cover page loses the headers of its table cells, so a TH needs a Scope (PDF/UA-1, 7.5), pdf-exporter#1170",
         PdfVariant.PDF_UA_2: "a link pseudo element makes a Link inside a Link (ISO 32005, Table 5), pdf-exporter#1171",
     }
@@ -72,12 +74,12 @@ class PdfExporterMergeVariantsTest(BulkProcessingTestCase):
         self._require_ready()
 
         # Arrange
+        documents: list[JsonDict] = [MERGED_TEST_RUN, MERGED_TEST_RUN] if pdf_variant == PdfVariant.PDF_A_4F else [{"locationPath": location_path, "documentType": DocumentType.LIVE_DOC} for location_path in MERGED_DOCUMENTS]
         merge_params: JsonList = []
-        for location_path in MERGED_DOCUMENTS:
+        for document in documents:
             params: JsonDict = {
                 "projectId": self.project_id,
-                "locationPath": location_path,
-                "documentType": DocumentType.LIVE_DOC,
+                **document,
                 "pdfVariant": str(pdf_variant.value),
             }
             if cover_page:
