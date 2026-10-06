@@ -23,6 +23,8 @@ concurrency:
 env:
   JAVA_VERSION: '21'
   JAVA_DISTRIBUTION: temurin
+  # The PDF variant tests take long, so run.py leaves them out unless this is set; CI always runs them
+  RUN_PDF_VARIANT_TESTS: 'true'
   TC_EXTENSION_VERSION: 13.9.2-SNAPSHOT
   TC_ADMIN_UTILITY_VERSION: 5.0.0
   TC_TEST_DATA_VERSION: 5.1.0
