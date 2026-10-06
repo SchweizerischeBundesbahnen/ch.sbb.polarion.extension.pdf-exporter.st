@@ -107,16 +107,16 @@ A single export validates `Product Specification`, without and with the `Default
 |---|---|---|---|
 | PDF/A-1a | yes | yes | |
 | PDF/A-1b | yes | yes | |
-| PDF/A-2a | no | no | Font Awesome icons use Unicode PUA characters without ActualText entries (ISO 32000-1:2008, 14.9.4) ([pdf-exporter#1169](https://github.com/SchweizerischeBundesbahnen/ch.sbb.polarion.extension.pdf-exporter/issues/1169)) |
+| PDF/A-2a | yes | yes | |
 | PDF/A-2b | yes | yes | |
 | PDF/A-2u | yes | yes | |
-| PDF/A-3a | no | no | Font Awesome icons use Unicode PUA characters without ActualText entries (ISO 32000-1:2008, 14.9.4) ([pdf-exporter#1169](https://github.com/SchweizerischeBundesbahnen/ch.sbb.polarion.extension.pdf-exporter/issues/1169)) |
+| PDF/A-3a | yes | yes | |
 | PDF/A-3b | yes | yes | |
 | PDF/A-3u | yes | yes | |
 | PDF/A-4e | yes | yes | |
 | PDF/A-4f | yes, a test run with embedded attachments | no | A merge does not carry the embedded files it requires ([pdf-exporter#1166](https://github.com/SchweizerischeBundesbahnen/ch.sbb.polarion.extension.pdf-exporter/issues/1166)) |
 | PDF/A-4u | yes | yes | |
-| PDF/UA-1 | no | no | A Figure in a link has no alt text, and a link is not tagged as a Link element ([pdf-exporter#1170](https://github.com/SchweizerischeBundesbahnen/ch.sbb.polarion.extension.pdf-exporter/issues/1170)) |
-| PDF/UA-2 | no | no | Breaks the rules of PDF/UA-1 and PDF/A-2a, and more of its own, as a list without ListNumbering ([pdf-exporter#1171](https://github.com/SchweizerischeBundesbahnen/ch.sbb.polarion.extension.pdf-exporter/issues/1171)) |
+| PDF/UA-1 | no | no | A cover page loses the headers of its table cells, so a TH needs a Scope ([pdf-exporter#1170](https://github.com/SchweizerischeBundesbahnen/ch.sbb.polarion.extension.pdf-exporter/issues/1170)) |
+| PDF/UA-2 | no | no | A link pseudo element, as the page number of a table of contents, makes a Link inside a Link, which ISO 32005 forbids ([pdf-exporter#1171](https://github.com/SchweizerischeBundesbahnen/ch.sbb.polarion.extension.pdf-exporter/issues/1171)) |
 
 Each variant not tested has an issue in the backlog. The lists of variants and the reasons live in `PDF_VARIANTS` and `EXCLUDED_VARIANTS` of each test class. Keep this table in step with them.
