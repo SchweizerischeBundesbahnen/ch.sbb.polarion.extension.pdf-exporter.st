@@ -54,7 +54,7 @@ env:
   # trusting its authority through SSL_CERT_FILE. The harness is handed the address
   # (TC_BULK_PROCESSING_SERVICE_URL) rather than an image, and passes it to Polarion through
   # BULK_PROCESSING_SERVICE_ENDPOINT.
-  BULK_PROCESSING_SERVICE_IMAGE: ghcr.io/schweizerischebundesbahnen/bulk-processing-service:1.0.0
+  BULK_PROCESSING_SERVICE_IMAGE: ghcr.io/schweizerischebundesbahnen/bulk-processing-service:1.1.0
   BULK_PROCESSING_HOST: bulk.system-tests
   TC_BULK_PROCESSING_SERVICE_URL: https://bulk.system-tests:9070
   BULK_PROCESSING_API_KEY_SECRET: bulk.processing.api.key
