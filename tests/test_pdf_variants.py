@@ -31,8 +31,10 @@ class PdfExporterVariantsTest(PdfExporterTestCase):
     PDF_VARIANTS: ClassVar[list[PdfVariant]] = [
         PdfVariant.PDF_A_1A,
         PdfVariant.PDF_A_1B,
+        PdfVariant.PDF_A_2A,
         PdfVariant.PDF_A_2B,
         PdfVariant.PDF_A_2U,
+        PdfVariant.PDF_A_3A,
         PdfVariant.PDF_A_3B,
         PdfVariant.PDF_A_3U,
         PdfVariant.PDF_A_4E,
@@ -41,11 +43,9 @@ class PdfExporterVariantsTest(PdfExporterTestCase):
 
     # PDF variants this test does not cover, and why
     EXCLUDED_VARIANTS: ClassVar[dict[PdfVariant, str]] = {
-        PdfVariant.PDF_A_2A: "FontAwesome uses Unicode PUA characters without ActualText entries (ISO 32000-1:2008, 14.9.4), pdf-exporter#1169",
-        PdfVariant.PDF_A_3A: "FontAwesome uses Unicode PUA characters without ActualText entries (ISO 32000-1:2008, 14.9.4), pdf-exporter#1169",
         PdfVariant.PDF_A_4F: "covered by test_pdf_a_4f_variant()",
-        PdfVariant.PDF_UA_1: "a Figure in a link has no alt text and a link is not tagged as a Link element, pdf-exporter#1170",
-        PdfVariant.PDF_UA_2: "breaks the rules of PDF/UA-1 and PDF/A-2a and more of its own, pdf-exporter#1171",
+        PdfVariant.PDF_UA_1: "a cover page loses the headers of its table cells, so a TH needs a Scope (PDF/UA-1, 7.5), pdf-exporter#1170",
+        PdfVariant.PDF_UA_2: "a link pseudo element makes a Link inside a Link (ISO 32005, Table 5), pdf-exporter#1171",
     }
 
     def _run_pdf_variant(self, pdf_variant: PdfVariant, cover_page: str | None) -> None:
