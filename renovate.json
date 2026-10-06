@@ -59,6 +59,17 @@
     },
     {
       "customType": "regex",
+      "description": "Track the bulk processing service Docker image pinned in the system-tests workflow",
+      "managerFilePatterns": [
+        "/(^|/)system-tests\\.yml$/"
+      ],
+      "matchStrings": [
+        "BULK_PROCESSING_SERVICE_IMAGE:\\s*(?<depName>[^\\s:]+):(?<currentValue>[^\\s\"']+)"
+      ],
+      "datasourceTemplate": "docker"
+    },
+    {
+      "customType": "regex",
       "description": "Track the Polarion Docker image pinned in the system-tests workflow (JFrog Docker registry; YYMM-N tag scheme)",
       "managerFilePatterns": [
         "/(^|/)system-tests\\.yml$/"
