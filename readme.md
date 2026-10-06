@@ -99,14 +99,24 @@ docker ps
 
 **Note**: If Docker is not available, the PDF variant tests will be automatically skipped with a clear message.
 
-### Supported PDF Variants
-The following PDF variants are tested:
-- PDF/A-1b
-- PDF/A-2b
-- PDF/A-3b
-- PDF/A-4b
-- PDF/A-2u
-- PDF/A-3u
-- PDF/A-4u
+### Tested PDF Variants
 
-**Note:** PDF/UA-1 validation is currently disabled as it requires additional accessibility features (alt text for images and proper list structure) to be implemented in the PDF exporter.
+A single export validates `Product Specification`, without and with the `Default` cover page. A merge validates `Product Specification` and `Catalog Specification` merged through the bulk processing service, without and with the `Default` cover page on each.
+
+| Variant | Single export | Merge | Why not tested |
+|---|---|---|---|
+| PDF/A-1a | yes | yes | |
+| PDF/A-1b | yes | yes | |
+| PDF/A-2a | no | no | Font Awesome icons use Unicode PUA characters without ActualText entries (ISO 32000-1:2008, 14.9.4) |
+| PDF/A-2b | yes | yes | |
+| PDF/A-2u | yes | yes | |
+| PDF/A-3a | no | no | Font Awesome icons use Unicode PUA characters without ActualText entries (ISO 32000-1:2008, 14.9.4) |
+| PDF/A-3b | yes | yes | |
+| PDF/A-3u | yes | yes | |
+| PDF/A-4e | yes | yes | |
+| PDF/A-4f | yes, a test run with embedded attachments | no | Requires embedded files, which a merge does not carry ([pdf-exporter#1166](https://github.com/SchweizerischeBundesbahnen/ch.sbb.polarion.extension.pdf-exporter/issues/1166)) |
+| PDF/A-4u | yes | yes | |
+| PDF/UA-1 | no | no | Requires alt text for images and a correct list structure |
+| PDF/UA-2 | no | no | Requires alt text for images and a correct list structure |
+
+The lists of variants and the reasons live in `PDF_VARIANTS` and `EXCLUDED_VARIANTS` of each test class. Keep this table in step with them.
