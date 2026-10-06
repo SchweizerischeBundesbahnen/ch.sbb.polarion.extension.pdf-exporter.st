@@ -116,7 +116,7 @@ A single export validates `Product Specification`, without and with the `Default
 | PDF/A-4e | yes | yes | |
 | PDF/A-4f | yes, a test run with embedded attachments | yes, that test run twice | |
 | PDF/A-4u | yes | yes | |
-| PDF/UA-1 | no | no | A cover page loses the headers of its table cells, so a TH needs a Scope ([pdf-exporter#1170](https://github.com/SchweizerischeBundesbahnen/ch.sbb.polarion.extension.pdf-exporter/issues/1170)) |
-| PDF/UA-2 | no | no | A link pseudo element, as the page number of a table of contents, makes a Link inside a Link, which ISO 32005 forbids ([pdf-exporter#1171](https://github.com/SchweizerischeBundesbahnen/ch.sbb.polarion.extension.pdf-exporter/issues/1171)) |
+| PDF/UA-1 | yes | yes | |
+| PDF/UA-2 | yes | yes | |
 
 Each variant not tested has an issue in the backlog. The lists of variants and the reasons live in `PDF_VARIANTS` and `EXCLUDED_VARIANTS` of each test class. Keep this table in step with them.

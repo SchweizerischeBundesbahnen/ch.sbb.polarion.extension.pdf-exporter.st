@@ -53,13 +53,12 @@ class PdfExporterMergeVariantsTest(BulkProcessingTestCase):
         PdfVariant.PDF_A_4E,
         PdfVariant.PDF_A_4F,
         PdfVariant.PDF_A_4U,
+        PdfVariant.PDF_UA_1,
+        PdfVariant.PDF_UA_2,
     ]
 
     # PDF variants this test does not cover, and why
-    EXCLUDED_VARIANTS: ClassVar[dict[PdfVariant, str]] = {
-        PdfVariant.PDF_UA_1: "a cover page loses the headers of its table cells, so a TH needs a Scope (PDF/UA-1, 7.5), pdf-exporter#1170",
-        PdfVariant.PDF_UA_2: "a link pseudo element makes a Link inside a Link (ISO 32005, Table 5), pdf-exporter#1171",
-    }
+    EXCLUDED_VARIANTS: ClassVar[dict[PdfVariant, str]] = {}
 
     @classmethod
     def tearDownClass(cls) -> None:
