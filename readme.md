@@ -66,6 +66,13 @@ All parameters can be specified as environment variables.
 
 The test suite includes validation of PDF variants (PDF/A and PDF/UA) using VeraPDF. The test `test_pdf_variants.py` validates that generated PDFs comply with their specified variants.
 
+`test_pdf_variants.py` validates single exports. `test_pdf_variants_of_a_merge.py` validates merges through the bulk processing service.
+
+These tests take long, so `tests/run.py` leaves out every module named `test_pdf_variants*` by default. CI sets `RUN_PDF_VARIANT_TESTS=true` and always runs them. To run them locally, set it too:
+```bash
+RUN_PDF_VARIANT_TESTS=true uv run python tests/run.py --app_url BASE_POLARION_URL --app_token AUTH_TOKEN
+```
+
 ### Docker-based VeraPDF Validation
 
 The test suite uses the official VeraPDF Docker image:

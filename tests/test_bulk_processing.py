@@ -23,7 +23,7 @@ from __future__ import annotations
 import io
 import json
 from http import HTTPStatus
-from typing import TYPE_CHECKING, NoReturn
+from typing import TYPE_CHECKING
 
 import pypdf
 from python_sbb_polarion.extensions.pdf_exporter import DocumentType
@@ -31,21 +31,17 @@ from python_sbb_polarion.extensions.pdf_exporter import DocumentType
 from tests.bulk_processing_support import (
     UNKNOWN_JOB_ID,
     add_document,
-    configured,
     delete_job,
     finish_job,
     merge_through_extension,
     request,
-    requested_by_the_run,
     service_answers,
     service_api_key,
     service_enforces_key,
-    service_ready,
     service_url,
     start_job,
 )
-from tests.pdf_exporter_test_case import PdfExporterTestCase
-from tests.ssrf_support import containerized_run, release_docker
+from tests.bulk_processing_test_case import BulkProcessingTestCase
 
 
 if TYPE_CHECKING:
@@ -78,54 +74,8 @@ def _pdf_page_count(pdf_bytes: bytes) -> int:
     return len(pypdf.PdfReader(io.BytesIO(pdf_bytes)).pages)
 
 
-class PdfExporterBulkProcessingTest(PdfExporterTestCase):
+class PdfExporterBulkProcessingTest(BulkProcessingTestCase):
     """Cases for the bulk processing service the extension merges documents through."""
-
-    @classmethod
-    def tearDownClass(cls) -> None:
-        # the docker client this class opened through the container lookup is given back
-        release_docker()
-        super().tearDownClass()
-
-    def setUp(self) -> None:
-        # asked before the base settings are reinitialised: a Polarion which names no bulk processing
-        # service should not pay for that first
-        if not configured():
-            # the run asked for the service, so a Polarion naming none is a broken run: the property
-            # did not reach polarion.properties, and a skip would leave the required check green
-            if requested_by_the_run():
-                self.fail("the run handed the harness a bulk processing service, but this Polarion does not name it")
-            self.skipTest("this Polarion does not name a bulk processing service")
-        super().setUp()
-
-    def _unavailable(self, reason: str) -> NoReturn:
-        """A missing piece of the harness: a failure where the run owns it, a skip where it does not.
-
-        A run which starts the service itself is configured for these cases and is the only thing which
-        measures them, so a skip there would leave a required check green over a run that covered none
-        of what it exists to cover. A run against a long-lived server configures none of this and has
-        no docker to ask, so it skips.
-        """
-        if containerized_run():
-            self.fail(f"the bulk processing cases cannot run: {reason}")
-        self.skipTest(reason)
-
-    def _require_answering(self) -> None:
-        if not service_answers():
-            self._unavailable("the named bulk processing service does not answer Polarion")
-
-    def _require_ready(self) -> None:
-        # a merge converts each document through WeasyPrint, so a service which is not ready would fail
-        # every document for a reason which is not the merge
-        self._require_answering()
-        if not service_ready():
-            self._unavailable("the bulk processing service is not ready, it cannot reach WeasyPrint behind it")
-
-    def _require_key(self) -> str:
-        key: str | None = service_api_key()
-        if key is None:
-            self._unavailable("the key the bulk processing service runs with could not be read")
-        return key
 
     # ------------------------------------------------------------------ reachability and contract
 
