@@ -16,18 +16,23 @@ that container instead, the way the WeasyPrint cases read theirs.
 
 from __future__ import annotations
 
+import base64
 import json
 import os
+import secrets
 import time
 import uuid
 from dataclasses import dataclass
 from http import HTTPStatus
 from typing import TYPE_CHECKING, Any
 
+from tests.ssrf_support import polarion_container
 from tests.tls_service_support import TlsService, polarion_exec
 
 
 if TYPE_CHECKING:
+    from collections.abc import Mapping
+
     from python_sbb_polarion.types import JsonList
 
 
@@ -106,12 +111,13 @@ def service_enforces_key() -> bool:
 # ------------------------------------------------------------------ the merge lifecycle
 
 
-def request(method: str, path: str, api_key: str | None = None, json_body: dict[str, Any] | None = None) -> tuple[int, str] | None:
+def request(method: str, path: str, api_key: str | None = None, json_body: dict[str, Any] | None = None, headers: Mapping[str, str] | None = None) -> tuple[int, str] | None:
     """A request to the service from inside the Polarion container, returning ``(status, body)``.
 
     None where there is no container to ask, or where curl itself could not run. The call travels the
     path Polarion uses: the same network, the same address, the key in the header the service reads.
-    The body is passed as one argument, so its quotes reach the service rather than a shell.
+    The body is passed as one argument, so its quotes reach the service rather than a shell. ``headers``
+    are sent as they are, which is how a case presents a token of Polarion, or a forged one.
     """
     url: str | None = service_url()
     if url is None:
@@ -119,6 +125,8 @@ def request(method: str, path: str, api_key: str | None = None, json_body: dict[
     command: list[str] = ["curl", "-sk", "-m", "30", "-X", method, "-w", "\n%{http_code}"]
     if api_key:
         command += ["-H", f"X-API-Key: {api_key}"]
+    for header_name, header_value in (headers or {}).items():
+        command += ["-H", f"{header_name}: {header_value}"]
     if json_body is not None:
         command += ["-H", "Content-Type: application/json", "--data", json.dumps(json_body)]
     command.append(f"{url}{path}")
@@ -278,3 +286,153 @@ def _header_count(headers: str, name: str) -> int | None:
             trimmed: str = value.strip()
             return int(trimmed) if trimmed.isdigit() else None
     return None
+
+
+# ------------------------------------------------------------------ the tokens of Polarion
+
+# Where the service fetches the keys Polarion signs its tokens with. The run names it itself where the
+# default does not fit: Polarion answers a request only under the host name it knows itself by, so the
+# address a service reaches it under may have to be spelled out.
+JWKS_URL_ENV = "BULK_PROCESSING_JWKS_URL"
+# The host name Polarion is asked for its keys under. Polarion answers only under the host name of its own base URL
+# and refuses any other with a 400, so a service which reaches it by the name of its container has to say whose key
+# set it wants. Its base URL is localhost in the images the runs use; a run whose Polarion knows itself by another name says so here.
+JWKS_HOST_ENV = "BULK_PROCESSING_JWKS_HOST"
+DEFAULT_JWKS_HOST = "localhost"
+JWKS_HOST_SETTING = "POLARION_JWKS_HOST"
+# set where the image of the service is known to check Polarion tokens: a service which does not is then
+# a failure of the run, not a skip which would leave the required check green over a run which covered none
+REQUIRE_JWT_ENV = "BULK_PROCESSING_REQUIRE_JWT"
+POLARION_TOKEN_HEADER = "X-Polarion-Token"
+JWKS_PATH = "/polarion/.well-known/jwks.json"
+SERVICE_NAME = "bulk-processing-service"
+# what the service answers a call without a token and a call with one it does not accept, so a case can tell the
+# refusal of the token from the refusal of the API key, which is a 401 as well
+MISSING_TOKEN_ANSWER = "Missing Polarion token"
+INVALID_TOKEN_ANSWER = "Invalid Polarion token"
+TOKEN_REFUSAL_LOGGED = "Polarion token refused"
+# the service got as far as the signature, and that is what it refused
+FORGED_TOKEN_LOGGED = "Polarion token refused (InvalidSignatureError)"
+KEY_SET_UNREACHABLE_ANSWER = "key set is unreachable"
+# where the service keeps its jobs; the default of the image
+JOB_STORAGE_DIR = "/data/jobs"
+
+
+def polarion_jwks_url() -> str | None:
+    """The address the service is to fetch the key set of Polarion from, or None where there is none to name.
+
+    The run's own answer wins. Otherwise Polarion is named the way the network the run created answers it,
+    by its container name, which is how the service reaches it at all.
+    """
+    named: str = os.environ.get(JWKS_URL_ENV, "").strip()
+    if named:
+        return named
+    container: Any = polarion_container()
+    if container is None:
+        return None
+    return f"http://{container.name}{JWKS_PATH}"
+
+
+def polarion_jwks_host() -> str:
+    """The host name the service is to ask Polarion for its keys under."""
+    return os.environ.get(JWKS_HOST_ENV, "").strip() or DEFAULT_JWKS_HOST
+
+
+def jwt_required_by_the_run() -> bool:
+    """Whether the run says its service checks Polarion tokens, so one which does not is a broken run."""
+    return os.environ.get(REQUIRE_JWT_ENV, "").strip().lower() in {"1", "true", "yes", "on"}
+
+
+def token_answer(method: str, path: str, token: str | None = None, json_body: dict[str, Any] | None = None) -> tuple[int, str] | None:
+    """A request to the service which presents this token, with the API key the service holds beside it.
+
+    The key is sent where there is one, so a 401 is the refusal of the token and not of the key. A body is
+    given where the call needs one: a service which checks no tokens validates it first, and answers 422 to a
+    ``start`` without one, which says nothing about tokens.
+    """
+    headers: dict[str, str] = {POLARION_TOKEN_HEADER: token} if token is not None else {}
+    return request(method, path, api_key=service_api_key(), json_body=json_body, headers=headers)
+
+
+def tokens_enforced() -> bool:
+    """Whether the service refuses a call which carries no token of Polarion.
+
+    A service which predates the tokens ignores the setting which switches them on, and starts a job
+    for anyone: that is how a case tells it has nothing to check.
+    """
+    answer: tuple[int, str] | None = token_answer("POST", "/api/convert/start", json_body={})
+    if answer is not None and answer[0] == HTTPStatus.CREATED:
+        # the service started a job for nobody: not one to leave behind for its cleanup
+        job_id: str | None = job_id_of(answer[1])
+        if job_id is not None:
+            token_answer("DELETE", f"/api/convert/{job_id}")
+    return answer is not None and answer[0] == HTTPStatus.UNAUTHORIZED and MISSING_TOKEN_ANSWER in answer[1]
+
+
+def job_id_of(body: str) -> str | None:
+    """The id of the job a ``start`` answered with, or None where the answer holds none."""
+    try:
+        job_id: Any = json.loads(body).get("jobId")
+    except json.JSONDecodeError, AttributeError:
+        return None
+    return str(job_id) if job_id else None
+
+
+def polarion_key_id() -> str | None:
+    """The id of the key Polarion publishes, read from inside Polarion, which answers under its own name there.
+
+    None where it cannot be read: a token naming a guessed key would be refused for its unknown key id and not for its
+    signature, which is what the cases which use it are about.
+    """
+    answer: tuple[int, str] | None = polarion_exec(["curl", "-s", "-m", "5", f"http://localhost{JWKS_PATH}"])
+    if answer is None or answer[0] != 0:
+        return None
+    try:
+        keys: Any = json.loads(answer[1]).get("keys") or []
+    except json.JSONDecodeError, AttributeError:
+        return None
+    key_id: Any = keys[0].get("kid") if keys and isinstance(keys[0], dict) else None
+    return str(key_id) if key_id else None
+
+
+def _base64url(data: bytes) -> str:
+    return base64.urlsafe_b64encode(data).rstrip(b"=").decode()
+
+
+def forged_token(key_id: str, job_id: str | None = None) -> str:
+    """A token which looks like one of Polarion's but was not signed by it.
+
+    Its header names the key Polarion really publishes and its claims are the ones the service asks for, so
+    the service gets as far as checking the signature, which is random bytes. Nothing else of the token is
+    wrong, so a refusal can only be for the signature.
+    """
+    now: int = int(time.time())
+    claims: dict[str, Any] = {"sub": "forger", "iat": now, "exp": now + 300, "svc": SERVICE_NAME}
+    if job_id is not None:
+        claims["job"] = job_id
+    header: dict[str, str] = {"alg": "RS256", "typ": "JWT", "kid": key_id}
+    return ".".join([_base64url(json.dumps(header).encode()), _base64url(json.dumps(claims).encode()), _base64url(secrets.token_bytes(256))])
+
+
+def stored_jobs() -> list[dict[str, Any]] | None:
+    """The metadata of every job the service holds, read from its container, or None where it cannot be read (an empty list is no job)."""
+    container: Any = service_container()
+    if container is None:
+        return None
+    try:
+        answer: Any = container.exec_run(["sh", "-c", f'for f in {JOB_STORAGE_DIR}/*/metadata.json; do cat "$f"; echo; done 2>/dev/null'])
+    except Exception:  # noqa: BLE001 - a container which cannot be asked holds nothing a case can read
+        return None
+    if int(answer[0]) != 0:
+        return None
+    jobs: list[dict[str, Any]] = []
+    for line in answer[1].decode(errors="replace").splitlines():
+        if not line.strip():
+            continue
+        try:
+            parsed: Any = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        if isinstance(parsed, dict):
+            jobs.append(parsed)
+    return jobs

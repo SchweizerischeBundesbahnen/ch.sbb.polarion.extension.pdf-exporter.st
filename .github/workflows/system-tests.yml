@@ -62,6 +62,13 @@ env:
   BULK_PROCESSING_API_KEY_SECRET: bulk.processing.api.key
   # the name the service is started under below, so the cases which recreate it find it by name
   BULK_PROCESSING_CONTAINER: bulk-processing-service
+  # The cases of test_bulk_processing_jwt cover the Polarion tokens which bind a merge job to the user who started
+  # it: the extension sends them, the service checks them against the key set Polarion publishes. They need a
+  # service AND an extension which know tokens, and they skip while either predates them, so that the run
+  # stays green over images which cannot be measured. A skip leaves a required check green over a run which covered
+  # none of it, so once BULK_PROCESSING_SERVICE_IMAGE and TC_EXTENSION_VERSION above carry the tokens, uncomment
+  # this: a service which ignores the tokens then fails the run instead of skipping the cases.
+  # BULK_PROCESSING_REQUIRE_JWT: 'true'
 jobs:
   system-tests:
     # Skip draft PRs (this container suite is expensive); still runs on manual workflow_dispatch.
