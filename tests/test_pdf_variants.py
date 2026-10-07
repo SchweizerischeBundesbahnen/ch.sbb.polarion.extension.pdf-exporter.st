@@ -1,14 +1,12 @@
 from __future__ import annotations
 
-import tempfile
 from http import HTTPStatus
-from pathlib import Path
-from typing import TYPE_CHECKING, Any, ClassVar
+from typing import TYPE_CHECKING, ClassVar
 
 from python_sbb_polarion.extensions.pdf_exporter import DocumentType, PdfVariant
 
 from tests.pdf_exporter_test_case import PdfExporterTestCase
-from tests.verapdf_manager import VeraPDFManager
+from tests.pdf_variant_support import DOCKER_AVAILABLE, stop_verapdf, verify_pdf_with_verapdf
 
 
 if TYPE_CHECKING:
@@ -16,13 +14,6 @@ if TYPE_CHECKING:
 
     from python_sbb_polarion.types import JsonDict
     from requests import Response
-
-
-# Module-level VeraPDF manager
-_verapdf_manager = VeraPDFManager()
-
-# Check if Docker is available for testcontainers
-DOCKER_AVAILABLE = VeraPDFManager.is_docker_available()
 
 
 class PdfExporterVariantsTest(PdfExporterTestCase):
@@ -33,130 +24,29 @@ class PdfExporterVariantsTest(PdfExporterTestCase):
     @classmethod
     def tearDownClass(cls) -> None:
         """Stop VeraPDF container after all tests."""
-        _verapdf_manager.stop_container()
+        stop_verapdf()
         super().tearDownClass()
 
     # PDF variants this test covers
     PDF_VARIANTS: ClassVar[list[PdfVariant]] = [
         PdfVariant.PDF_A_1A,
         PdfVariant.PDF_A_1B,
+        PdfVariant.PDF_A_2A,
         PdfVariant.PDF_A_2B,
         PdfVariant.PDF_A_2U,
+        PdfVariant.PDF_A_3A,
         PdfVariant.PDF_A_3B,
         PdfVariant.PDF_A_3U,
         PdfVariant.PDF_A_4E,
         PdfVariant.PDF_A_4U,
+        PdfVariant.PDF_UA_1,
+        PdfVariant.PDF_UA_2,
     ]
 
     # PDF variants this test does not cover, and why
     EXCLUDED_VARIANTS: ClassVar[dict[PdfVariant, str]] = {
-        PdfVariant.PDF_A_2A: "FontAwesome uses Unicode PUA characters without ActualText entries (ISO 32000-1:2008, 14.9.4)",
-        PdfVariant.PDF_A_3A: "FontAwesome uses Unicode PUA characters without ActualText entries (ISO 32000-1:2008, 14.9.4)",
         PdfVariant.PDF_A_4F: "covered by test_pdf_a_4f_variant()",
-        PdfVariant.PDF_UA_1: "requires alt text for images and correct list structure",
-        PdfVariant.PDF_UA_2: "requires alt text for images and correct list structure",
     }
-
-    # Map PDF variant to VeraPDF flavour codes
-    VARIANT_FLAVOUR_MAP: ClassVar[dict[PdfVariant, str]] = {
-        PdfVariant.PDF_A_1A: "1a",
-        PdfVariant.PDF_A_1B: "1b",
-        PdfVariant.PDF_A_2A: "2a",
-        PdfVariant.PDF_A_2B: "2b",
-        PdfVariant.PDF_A_2U: "2u",
-        PdfVariant.PDF_A_3A: "3a",
-        PdfVariant.PDF_A_3B: "3b",
-        PdfVariant.PDF_A_3U: "3u",
-        PdfVariant.PDF_A_4E: "4e",
-        PdfVariant.PDF_A_4F: "4f",
-        PdfVariant.PDF_A_4U: "4",
-        PdfVariant.PDF_UA_1: "ua1",
-        PdfVariant.PDF_UA_2: "ua2",
-    }
-
-    def _parse_verapdf_response(self, verapdf_result: JsonDict) -> tuple[bool, str]:
-        """Parse VeraPDF REST API JSON response and extract validation result."""
-        # Cast to Any for easier nested dict access without excessive type checks
-        result: Any = verapdf_result
-        report: Any = result.get("report", {})
-        jobs: list[Any] = report.get("jobs", [])
-
-        if not jobs:
-            return False, "No validation jobs found in VeraPDF output"
-
-        job: Any = jobs[0]
-        # REST API returns validationResult as a LIST, not a single object
-        validation_results: list[Any] = job.get("validationResult", [])
-
-        if not validation_results:
-            return False, "No validation result found in VeraPDF output"
-
-        # Get first validation result from the list
-        validation_result: Any = validation_results[0]
-
-        is_compliant: bool = validation_result.get("compliant", False)
-        profile_name: str = validation_result.get("profileName", "Unknown")
-
-        if is_compliant:
-            return True, f"PDF is compliant with {profile_name}"
-
-        # Extract validation errors from ruleSummaries
-        errors: list[str] = []
-        details: Any = validation_result.get("details", {})
-        rule_summaries: list[Any] = details.get("ruleSummaries", [])
-
-        for rule_summary in rule_summaries:
-            rule_id: Any = rule_summary.get("ruleId", {})
-            specification: str = rule_id.get("specification", "Unknown")
-            clause: str = rule_id.get("clause", "Unknown")
-            description: str = rule_summary.get("description", "No description")
-            failed_checks: int = rule_summary.get("checks", 0)
-            errors.append(f"{specification} {clause}: {description} ({failed_checks} failed checks)")
-
-        # Show first 5 errors
-        error_msg: str = f"PDF is not compliant with {profile_name}. Errors:\n" + "\n".join(errors[:5])
-        if len(errors) > 5:
-            error_msg += f"\n... and {len(errors) - 5} more errors"
-        return False, error_msg
-
-    def _verify_pdf_with_verapdf(self, pdf_content: bytes, expected_variant: PdfVariant) -> tuple[bool, str]:
-        """
-        Verify PDF compliance using VeraPDF REST API.
-
-        Args:
-            pdf_content: PDF file content as bytes
-            expected_variant: Expected PDF variant (e.g., PdfVariant.PDF_A_1B)
-
-        Returns:
-            Tuple of (is_compliant, message)
-        """
-        # Create temporary file for PDF with automatic cleanup
-        with tempfile.NamedTemporaryFile(suffix=".pdf", delete=False) as tmp_file:
-            tmp_file.write(pdf_content)
-            tmp_pdf_path = Path(tmp_file.name)
-
-        try:
-            # Run VeraPDF validation using REST API
-            flavour: str = self.VARIANT_FLAVOUR_MAP[expected_variant]
-            success: bool
-            verapdf_result: JsonDict | None
-            error_msg: str
-            success, verapdf_result, error_msg = _verapdf_manager.validate_pdf(tmp_pdf_path, flavour)
-
-            if not success:
-                return False, f"VeraPDF validation failed: {error_msg}"
-
-            if verapdf_result is None:
-                return False, "VeraPDF returned empty response"
-
-            return self._parse_verapdf_response(verapdf_result)
-
-        # The validator reports failures as a result, it never raises at the caller.
-        except Exception as e:  # noqa: BLE001
-            return False, f"Unexpected error during VeraPDF validation: {e}"
-        finally:
-            # Clean up temporary file
-            tmp_pdf_path.unlink(missing_ok=True)
 
     def _run_pdf_variant(self, pdf_variant: PdfVariant, cover_page: str | None) -> None:
         """Test PDF variant compliance using VeraPDF validation"""
@@ -191,7 +81,7 @@ class PdfExporterVariantsTest(PdfExporterTestCase):
         # Verify PDF compliance with VeraPDF
         is_compliant: bool
         message: str
-        is_compliant, message = self._verify_pdf_with_verapdf(response.content, pdf_variant)
+        is_compliant, message = verify_pdf_with_verapdf(response.content, pdf_variant)
         self.assertTrue(
             is_compliant,
             f"PDF variant {pdf_variant} {cover_info} validation failed: {message}",
@@ -214,7 +104,7 @@ class PdfExporterVariantsTest(PdfExporterTestCase):
 
         is_compliant: bool
         message: str
-        is_compliant, message = self._verify_pdf_with_verapdf(response.content, pdf_variant)
+        is_compliant, message = verify_pdf_with_verapdf(response.content, pdf_variant)
         self.assertTrue(
             is_compliant,
             f"PDF variant {pdf_variant} validation failed: {message}",

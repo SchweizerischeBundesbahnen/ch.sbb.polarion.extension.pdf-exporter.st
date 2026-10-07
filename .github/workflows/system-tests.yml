@@ -23,10 +23,12 @@ concurrency:
 env:
   JAVA_VERSION: '21'
   JAVA_DISTRIBUTION: temurin
-  TC_EXTENSION_VERSION: 13.8.1-SNAPSHOT
+  # The PDF variant tests take long, so run.py leaves them out unless this is set; CI always runs them
+  RUN_PDF_VARIANT_TESTS: 'true'
+  TC_EXTENSION_VERSION: 13.9.2-SNAPSHOT
   TC_ADMIN_UTILITY_VERSION: 5.0.0
   TC_TEST_DATA_VERSION: 5.1.0
-  TC_WEASYPRINT_SERVICE_IMAGE_NAME: ghcr.io/schweizerischebundesbahnen/weasyprint-service:70.0.0
+  TC_WEASYPRINT_SERVICE_IMAGE_NAME: ghcr.io/schweizerischebundesbahnen/weasyprint-service:70.0.3
   TC_POLARION_IMAGE_NAME: sbb.jfrog.io/polarion-docker/polarion/polarion:2606-0
   # The suite runs against the service the way it is deployed: TLS, with an API key. The service is
   # started here rather than by the harness, so it can be given a certificate and a key, and Polarion
@@ -54,7 +56,7 @@ env:
   # trusting its authority through SSL_CERT_FILE. The harness is handed the address
   # (TC_BULK_PROCESSING_SERVICE_URL) rather than an image, and passes it to Polarion through
   # BULK_PROCESSING_SERVICE_ENDPOINT.
-  BULK_PROCESSING_SERVICE_IMAGE: ghcr.io/schweizerischebundesbahnen/bulk-processing-service:1.0.0
+  BULK_PROCESSING_SERVICE_IMAGE: ghcr.io/schweizerischebundesbahnen/bulk-processing-service:1.2.0
   BULK_PROCESSING_HOST: bulk.system-tests
   TC_BULK_PROCESSING_SERVICE_URL: https://bulk.system-tests:9070
   BULK_PROCESSING_API_KEY_SECRET: bulk.processing.api.key

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<work-item>
+    <field id="author">admin</field>
+    <field id="created">2026-10-05 16:07:41.312 +0200</field>
+    <field id="priority">50.0</field>
+    <field id="severity">should_have</field>
+    <field id="status">draft</field>
+    <field id="title">A release with no assessment</field>
+    <field id="type">release</field>
+</work-item>

@@ -66,6 +66,13 @@ All parameters can be specified as environment variables.
 
 The test suite includes validation of PDF variants (PDF/A and PDF/UA) using VeraPDF. The test `test_pdf_variants.py` validates that generated PDFs comply with their specified variants.
 
+`test_pdf_variants.py` validates single exports. `test_pdf_variants_of_a_merge.py` validates merges through the bulk processing service.
+
+These tests take long, so `tests/run.py` leaves out every module named `test_pdf_variants*` by default. CI sets `RUN_PDF_VARIANT_TESTS=true` and always runs them. To run them locally, set it too:
+```bash
+RUN_PDF_VARIANT_TESTS=true uv run python tests/run.py --app_url BASE_POLARION_URL --app_token AUTH_TOKEN
+```
+
 ### Docker-based VeraPDF Validation
 
 The test suite uses the official VeraPDF Docker image:
@@ -92,14 +99,24 @@ docker ps
 
 **Note**: If Docker is not available, the PDF variant tests will be automatically skipped with a clear message.
 
-### Supported PDF Variants
-The following PDF variants are tested:
-- PDF/A-1b
-- PDF/A-2b
-- PDF/A-3b
-- PDF/A-4b
-- PDF/A-2u
-- PDF/A-3u
-- PDF/A-4u
+### Tested PDF Variants
 
-**Note:** PDF/UA-1 validation is currently disabled as it requires additional accessibility features (alt text for images and proper list structure) to be implemented in the PDF exporter.
+A single export validates `Product Specification`, without and with the `Default` cover page. A merge validates `Product Specification` and `Catalog Specification` merged through the bulk processing service, without and with the `Default` cover page on each.
+
+| Variant | Single export | Merge | Why not tested |
+|---|---|---|---|
+| PDF/A-1a | yes | yes | |
+| PDF/A-1b | yes | yes | |
+| PDF/A-2a | yes | yes | |
+| PDF/A-2b | yes | yes | |
+| PDF/A-2u | yes | yes | |
+| PDF/A-3a | yes | yes | |
+| PDF/A-3b | yes | yes | |
+| PDF/A-3u | yes | yes | |
+| PDF/A-4e | yes | yes | |
+| PDF/A-4f | yes, a test run with embedded attachments | yes, that test run twice | |
+| PDF/A-4u | yes | yes | |
+| PDF/UA-1 | yes | yes | |
+| PDF/UA-2 | yes | yes | |
+
+Each variant not tested has an issue in the backlog. The lists of variants and the reasons live in `PDF_VARIANTS` and `EXCLUDED_VARIANTS` of each test class. Keep this table in step with them.

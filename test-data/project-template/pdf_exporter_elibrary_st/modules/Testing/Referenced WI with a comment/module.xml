@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+    <field id="author">admin</field>
+    <field id="created">2026-09-29 10:40:00.000 +0000</field>
+    <field id="homePageContent" text-type="text/html"><![CDATA[<p id="polarion_1">The document which holds the work item the other one references.</p><div id="polarion_wiki macro name=module-workitem;params=id=EL-12825"></div>]]></field>
+    <field id="renderingLayouts">
+        <list>
+            <struct>
+                <item id="label">Requirement</item>
+                <item id="layouter">paragraph</item>
+                <item id="properties">
+                    <list>
+                        <struct>
+                            <item id="key">fieldsAtStart</item>
+                            <item id="value">id</item>
+                        </struct>
+                        <struct>
+                            <item id="key">fieldsAtEnd</item>
+                            <item id="value">status,type</item>
+                        </struct>
+                        <struct>
+                            <item id="key">fieldsAtEndAsTable</item>
+                            <item id="value">true</item>
+                        </struct>
+                    </list>
+                </item>
+                <item id="type">requirement</item>
+            </struct>
+        </list>
+    </field>
+    <field id="status">draft</field>
+    <field id="structureLinkRole">parent</field>
+    <field id="title">Referenced WI with a comment</field>
+    <field id="type">generic</field>
+    <field id="usesOutlineNumbering">false</field>
+</module>
