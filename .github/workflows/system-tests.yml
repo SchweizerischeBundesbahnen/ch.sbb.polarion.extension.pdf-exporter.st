@@ -25,7 +25,7 @@ env:
   JAVA_DISTRIBUTION: temurin
   # The PDF variant tests take long, so run.py leaves them out unless this is set; CI always runs them
   RUN_PDF_VARIANT_TESTS: 'true'
-  TC_EXTENSION_VERSION: 13.9.2-SNAPSHOT
+  TC_EXTENSION_VERSION: 13.10.2-SNAPSHOT
   TC_ADMIN_UTILITY_VERSION: 5.0.0
   TC_TEST_DATA_VERSION: 5.1.0
   TC_WEASYPRINT_SERVICE_IMAGE_NAME: ghcr.io/schweizerischebundesbahnen/weasyprint-service:70.0.3
@@ -56,19 +56,19 @@ env:
   # trusting its authority through SSL_CERT_FILE. The harness is handed the address
   # (TC_BULK_PROCESSING_SERVICE_URL) rather than an image, and passes it to Polarion through
   # BULK_PROCESSING_SERVICE_ENDPOINT.
-  BULK_PROCESSING_SERVICE_IMAGE: ghcr.io/schweizerischebundesbahnen/bulk-processing-service:1.2.0
+  BULK_PROCESSING_SERVICE_IMAGE: ghcr.io/schweizerischebundesbahnen/bulk-processing-service:1.3.0
   BULK_PROCESSING_HOST: bulk.system-tests
   TC_BULK_PROCESSING_SERVICE_URL: https://bulk.system-tests:9070
   BULK_PROCESSING_API_KEY_SECRET: bulk.processing.api.key
   # the name the service is started under below, so the cases which recreate it find it by name
   BULK_PROCESSING_CONTAINER: bulk-processing-service
   # The cases of test_bulk_processing_jwt cover the Polarion tokens which bind a merge job to the user who started
-  # it: the extension sends them, the service checks them against the key set Polarion publishes. They need a
-  # service AND an extension which know tokens, and they skip while either predates them, so that the run
-  # stays green over images which cannot be measured. A skip leaves a required check green over a run which covered
-  # none of it, so once BULK_PROCESSING_SERVICE_IMAGE and TC_EXTENSION_VERSION above carry the tokens, uncomment
-  # this: a service which ignores the tokens then fails the run instead of skipping the cases.
-  # BULK_PROCESSING_REQUIRE_JWT: 'true'
+  # it: the extension sends them, the service checks them against the key set Polarion publishes. Both the service
+  # image and the extension above have to know the tokens. This makes the cases fail, rather than skip, when the
+  # service ignores the tokens, so a skip cannot leave the required check green over a run which covered nothing.
+  # A service which knows the tokens paired with an extension which does not sends the merge cases into a 409
+  # ("Missing Polarion token"), which is also a failure: the two versions are raised together.
+  BULK_PROCESSING_REQUIRE_JWT: 'true'
 jobs:
   system-tests:
     # Skip draft PRs (this container suite is expensive); still runs on manual workflow_dispatch.
