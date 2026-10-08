@@ -15,18 +15,21 @@ outside: the merge Polarion signs for itself, and the calls which present no tok
 somebody else. A token of another user, or for another job, and one which has expired, need the key of Polarion and
 stay with the unit tests of the service.
 
-A service which already checks tokens is used as it is. One which does not is recreated with the setting for the
-cases which need it, and put back as it was, where the run owns the containers: so the other bulk processing cases keep
-running against a service which does not check tokens, since the ones which drive the service by hand from inside
-Polarion present a key and no token, and a service which checks tokens would refuse them.
+A service which already checks tokens is used as it is. One which does not is recreated with the setting, once for
+the cases of a class which need it, and put back as it was when the class is over, where the run owns the containers:
+so the other bulk processing cases keep running against a service which does not check tokens, since the ones which
+drive the service by hand from inside Polarion present a key and no token, and a service which checks tokens would
+refuse them. The address of the service is the one named in the properties of Polarion, which the extension merges
+through, so the service cannot be a second one: it is the same one, recreated.
 """
 
 from __future__ import annotations
 
 import re
-from contextlib import contextmanager
+import unittest
+from contextlib import ExitStack
 from http import HTTPStatus
-from typing import TYPE_CHECKING, Any, NoReturn
+from typing import TYPE_CHECKING, Any, ClassVar, NoReturn
 
 from python_sbb_polarion.extensions.pdf_exporter import DocumentType
 
@@ -57,8 +60,6 @@ from tests.ssrf_support import containerized_run
 
 
 if TYPE_CHECKING:
-    from collections.abc import Generator
-
     from python_sbb_polarion.types import JsonList
 
     from tests.bulk_processing_support import MergeJobOutcome
@@ -78,8 +79,61 @@ SETTING: str = "POLARION_JWKS_URL"
 SHA256_HEX: re.Pattern[str] = re.compile(r"[0-9a-f]{64}")
 
 
-class PdfExporterBulkProcessingJwtTest(BulkProcessingTestCase):
-    """Cases for a bulk processing service which checks the tokens of Polarion."""
+class _CheckingServiceCase(BulkProcessingTestCase):
+    """A class whose cases run against a service which checks tokens, recreated once for all of them.
+
+    A service which already checks them is used as it is: nothing is recreated, which is what a run against a long-lived
+    server with such a service needs. One which does not is recreated with the setting, where the run owns the
+    containers, and put back when the class is over. A service which predates the tokens ignores the setting, and the
+    class then has nothing to check: a skip, or a failure where the run says its image checks them.
+    """
+
+    # the address of the key set to give the service, or None for the one of Polarion
+    jwks_url: ClassVar[str | None] = None
+    _prepared: ClassVar[bool] = False
+    _unusable: ClassVar[tuple[type[BaseException], str] | None] = None
+    _service_stack: ClassVar[ExitStack | None] = None
+
+    @classmethod
+    def tearDownClass(cls) -> None:
+        # the service is put back before the docker client is given back
+        stack: ExitStack | None = cls._service_stack
+        cls._service_stack = None
+        try:
+            if stack is not None:
+                stack.close()
+        finally:
+            super().tearDownClass()
+
+    def setUp(self) -> None:
+        super().setUp()
+        cls: type[_CheckingServiceCase] = type(self)
+        if cls._prepared:
+            # what kept the first case from running keeps the others from it, without recreating anything again
+            if cls._unusable is not None:
+                raise cls._unusable[0](cls._unusable[1])
+            return
+        cls._prepared = True
+        try:
+            self._prepare_service()
+        except (unittest.SkipTest, AssertionError) as error:
+            cls._unusable = (type(error), str(error))
+            raise
+
+    def _prepare_service(self) -> None:
+        cls: type[_CheckingServiceCase] = type(self)
+        if cls.jwks_url is None and tokens_enforced():
+            return
+        address: str = cls.jwks_url or self._require_recreatable_service()
+        if cls.jwks_url is not None:
+            self._require_recreatable_service()
+        stack: ExitStack = ExitStack()
+        cls._service_stack = stack
+        answering: bool = stack.enter_context(service_running_with(BULK.service_api_keys(), {SETTING: address, JWKS_HOST_SETTING: polarion_jwks_host()}))
+        self.assertTrue(answering, "the service did not come back with the setting for the Polarion tokens")
+        # a call without a token is refused before the key set is asked for, so this holds for an unreachable one too
+        if not tokens_enforced():
+            self._service_predates_tokens()
 
     def _cannot_check(self, reason: str) -> NoReturn:
         """What a case cannot check here: a skip, or a failure where the run says its service checks Polarion tokens.
@@ -107,36 +161,9 @@ class PdfExporterBulkProcessingJwtTest(BulkProcessingTestCase):
             self._unavailable("the address of the key set of Polarion is unknown: the container of Polarion was not found and none is named")
         return str(jwks_url)
 
-    @contextmanager
-    def _service_checking_tokens(self, jwks_url: str | None = None) -> Generator[None]:
-        """Run the block with the service checking tokens, then put the service back as it was.
-
-        A service which already checks them is used as it is: nothing is recreated, which is what a run against a
-        long-lived server with such a service needs. One which does not is recreated with the setting, where the run owns
-        the containers. A service which predates the tokens ignores the setting, and the block then has nothing to check:
-        a skip, or a failure where the run says its image checks them. That is decided before the block runs, whatever
-        address the service was given.
-
-        Given an address, the service is always recreated with that one: the case asks what a service does which cannot
-        fetch the key set, and only a service recreated with a bad address can be asked.
-        """
-        if jwks_url is None and tokens_enforced():
-            yield
-            return
-        address: str = jwks_url or self._require_recreatable_service()
-        if jwks_url is not None:
-            self._require_recreatable_service()
-        with service_running_with(BULK.service_api_keys(), {SETTING: address, JWKS_HOST_SETTING: polarion_jwks_host()}) as answering:
-            self.assertTrue(answering, "the service did not come back with the setting for the Polarion tokens")
-            # a call without a token is refused before the key set is asked for, so this holds for an unreachable one too
-            if not tokens_enforced():
-                self._service_predates_tokens()
-            yield
-
     def _service_predates_tokens(self) -> NoReturn:
         """The service ignored the setting: a skip, or a failure where the run says its image checks tokens."""
-        reason: str = "the bulk processing service does not check Polarion tokens: its image predates them"
-        self._cannot_check(reason)
+        self._cannot_check("the bulk processing service does not check Polarion tokens: its image predates them")
 
     def _key_id(self) -> str:
         """The id of the key Polarion publishes: a token naming any other would be refused for its key id, not its signature."""
@@ -157,15 +184,18 @@ class PdfExporterBulkProcessingJwtTest(BulkProcessingTestCase):
         self.assertEqual(status, answer[0], f"the service answered {answer[0]}: {answer[1]}")
         self.assertIn(text, answer[1], f"the refusal does not say why: {answer[1]}")
 
+
+class PdfExporterBulkProcessingJwtTest(_CheckingServiceCase):
+    """Cases for a bulk processing service which checks the tokens of Polarion."""
+
     # ------------------------------------------------------------------ a merge the service checks
 
     def test_a_merge_succeeds_while_the_service_checks_tokens(self) -> None:
         # the token is signed by this Polarion, with the key it publishes, and the service read that key set:
         # a pdf alone is no evidence, so the merge is also looked for in the log of the service
-        with self._service_checking_tokens():
-            finished_before: int = service_log_lines(FINISH_LOGGED)
-            outcome: MergeJobOutcome = self._merge()
-            finished_after: int = service_log_lines(FINISH_LOGGED)
+        finished_before: int = service_log_lines(FINISH_LOGGED)
+        outcome: MergeJobOutcome = self._merge()
+        finished_after: int = service_log_lines(FINISH_LOGGED)
 
         self.assertEqual(HTTPStatus.OK, outcome.status, f"the merge did not succeed: {outcome.error_message}")
         assert outcome.pdf is not None  # an OK outcome carries the pdf
@@ -173,10 +203,9 @@ class PdfExporterBulkProcessingJwtTest(BulkProcessingTestCase):
         self.assertGreater(finished_after, finished_before, "the merge was not made by the bulk processing service")
 
     def test_the_service_keeps_a_digest_of_the_initiator_of_a_job(self) -> None:
-        with self._service_checking_tokens():
-            before: list[dict[str, Any]] | None = stored_jobs()
-            outcome: MergeJobOutcome = self._merge()
-            after: list[dict[str, Any]] | None = stored_jobs()
+        before: list[dict[str, Any]] | None = stored_jobs()
+        outcome: MergeJobOutcome = self._merge()
+        after: list[dict[str, Any]] | None = stored_jobs()
 
         self.assertEqual(HTTPStatus.OK, outcome.status, f"the merge did not succeed: {outcome.error_message}")
         if before is None or after is None:
@@ -197,27 +226,24 @@ class PdfExporterBulkProcessingJwtTest(BulkProcessingTestCase):
             ("POST", f"/api/convert/{UNKNOWN_JOB_ID}/finish"),
             ("DELETE", f"/api/convert/{UNKNOWN_JOB_ID}"),
         ]
-        with self._service_checking_tokens():
-            answers: list[tuple[str, tuple[int, str] | None]] = [(f"{method} {path}", token_answer(method, path)) for method, path in calls]
+        answers: list[tuple[str, tuple[int, str] | None]] = [(f"{method} {path}", token_answer(method, path)) for method, path in calls]
 
         for name, answer in answers:
             with self.subTest(call=name):
                 self._assert_status_and_answer(answer, HTTPStatus.UNAUTHORIZED, MISSING_TOKEN_ANSWER)
 
     def test_the_service_refuses_a_garbage_token(self) -> None:
-        with self._service_checking_tokens():
-            answer: tuple[int, str] | None = token_answer("POST", "/api/convert/start", token="a.b.c", json_body={})
+        answer: tuple[int, str] | None = token_answer("POST", "/api/convert/start", token="a.b.c", json_body={})
 
         self._assert_status_and_answer(answer, HTTPStatus.UNAUTHORIZED, INVALID_TOKEN_ANSWER)
 
     def test_the_service_refuses_a_token_which_polarion_did_not_sign(self) -> None:
         # it names the key Polarion really publishes and carries every claim the service asks for, so the
         # signature is the only thing wrong with it
-        with self._service_checking_tokens():
-            key_id: str = self._key_id()
-            refused_before: int = service_log_lines(FORGED_TOKEN_LOGGED)
-            answer: tuple[int, str] | None = token_answer("POST", "/api/convert/start", token=forged_token(key_id), json_body={})
-            refused_after: int = service_log_lines(FORGED_TOKEN_LOGGED)
+        key_id: str = self._key_id()
+        refused_before: int = service_log_lines(FORGED_TOKEN_LOGGED)
+        answer: tuple[int, str] | None = token_answer("POST", "/api/convert/start", token=forged_token(key_id), json_body={})
+        refused_after: int = service_log_lines(FORGED_TOKEN_LOGGED)
 
         self._assert_status_and_answer(answer, HTTPStatus.UNAUTHORIZED, INVALID_TOKEN_ANSWER)
         # it is the signature which was refused, not a key id the service does not know
@@ -225,27 +251,31 @@ class PdfExporterBulkProcessingJwtTest(BulkProcessingTestCase):
 
     def test_a_forged_token_does_not_open_a_job_by_naming_it(self) -> None:
         # the claims are the ones a job asks for, the signature is not: naming the job opens nothing
-        with self._service_checking_tokens():
-            token: str = forged_token(self._key_id(), job_id=UNKNOWN_JOB_ID)
-            answers: list[tuple[int, str] | None] = [
-                token_answer("POST", f"/api/convert/{UNKNOWN_JOB_ID}/finish", token=token),
-                token_answer("DELETE", f"/api/convert/{UNKNOWN_JOB_ID}", token=token),
-            ]
+        token: str = forged_token(self._key_id(), job_id=UNKNOWN_JOB_ID)
+        answers: list[tuple[int, str] | None] = [
+            token_answer("POST", f"/api/convert/{UNKNOWN_JOB_ID}/finish", token=token),
+            token_answer("DELETE", f"/api/convert/{UNKNOWN_JOB_ID}", token=token),
+        ]
 
         for answer in answers:
             self._assert_status_and_answer(answer, HTTPStatus.UNAUTHORIZED, INVALID_TOKEN_ANSWER)
 
-    # ------------------------------------------------------------------ a key set which cannot be fetched
+
+class PdfExporterBulkProcessingJwtKeySetTest(_CheckingServiceCase):
+    """Cases for a service which checks the tokens of Polarion but cannot fetch the keys to check them with."""
+
+    jwks_url = UNREACHABLE_JWKS_URL
 
     def test_a_service_which_cannot_fetch_the_key_set_fails_the_merge_and_says_so(self) -> None:
         # nothing can be verified, so nothing is let through, and the reason reaches the person who exports
-        with self._service_checking_tokens(UNREACHABLE_JWKS_URL):
-            outcome: MergeJobOutcome = self._merge()
+        outcome: MergeJobOutcome = self._merge()
 
         self.assertEqual(HTTPStatus.CONFLICT, outcome.status, "a merge which cannot be verified must not report success")
         self.assertIn(KEY_SET_UNREACHABLE_ANSWER, outcome.error_message, f"the merge did not say why it failed: {outcome.error_message}")
 
-    # ------------------------------------------------------------------ a service which does not check
+
+class PdfExporterBulkProcessingJwtOffTest(BulkProcessingTestCase):
+    """Cases for a service which does not check the tokens of Polarion: the one the run started, which is left as it is."""
 
     def test_a_service_without_a_key_set_takes_the_tokens_without_checking_them(self) -> None:
         # the service as the run started it: the extension sends a token with every call and the service does not look at it
