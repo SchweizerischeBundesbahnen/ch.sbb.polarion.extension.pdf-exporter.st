@@ -386,6 +386,35 @@ class PdfExporterConvertTest(PdfExporterTestCase):
             "A mark in the description of the referenced work item belongs to the document which holds it, and is not exported here",
         )
 
+    def test_convert_live_doc_with_a_multi_paragraph_comment(self) -> None:
+        """The document of #1201: a comment with several paragraphs in a work item description is exported as the settings say, never as Polarion's icon."""
+        rendered_comments: dict[str | None, list[str]] = {
+            None: [],
+            "OPEN": ["open"],
+            "ALL": ["resolved", "open"],
+        }
+        for render_comments, rendered in rendered_comments.items():
+            with self.subTest(render_comments=render_comments):
+                response: Response = self._convert(
+                    project_id=self.project_id,
+                    location_path="Testing/Multi-paragraph comment",
+                    custom_export_params={"renderComments": render_comments} if render_comments else None,
+                )
+                self.assertEqual(HTTPStatus.OK, response.status_code)
+
+                with fitz.open(stream=response.content, filetype="pdf") as document:
+                    text: str = " ".join(" ".join(page.get_text(sort=True).split()) for page in document)
+                    icons: list[tuple[int, int]] = [(image[2], image[3]) for page in document for image in page.get_images() if (image[2], image[3]) == (19, 19)]
+                self.assertEqual([], icons, "Polarion's comment icon is not in the PDF")
+                self.assertIn("Optional values of the types 1-4", text)
+                for status in ("resolved", "open"):
+                    for paragraph in ("First", "Second"):
+                        comment_text: str = f"{paragraph} paragraph of the {status} comment"
+                        if status in rendered:
+                            self.assertIn(comment_text, text)
+                        else:
+                            self.assertNotIn(comment_text, text)
+
     def test_convert_live_doc_with_a_big_picture_in_an_attribute_table(self) -> None:
         """The document of #1160: a big picture fitted to the page leaves the label column of its attribute table as wide as in the others."""
         response: Response = self._assert_convert_matches_snapshot(
