@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<work-item>
+    <field id="author">admin</field>
+    <field id="created">2026-10-09 10:00:00.000 +0000</field>
+    <field id="description" text-type="text/html"><![CDATA[Optional values of the types 1-4<span id="polarion-comment:1"></span> and lists of them<span id="polarion-comment:2"></span>]]></field>
+    <field id="priority">50.0</field>
+    <field id="reqType" type="enum:reqtype">other</field>
+    <field id="severity">should_have</field>
+    <field id="status">draft</field>
+    <field id="title">Data types</field>
+    <field id="type">requirement</field>
+</work-item>
