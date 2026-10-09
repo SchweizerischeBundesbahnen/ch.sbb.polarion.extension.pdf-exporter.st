@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module-comment>
     <field id="author">admin</field>
-    <field id="created">2026-09-29 10:46:20.000 +0000</field>
-    <field id="referredWorkItem">EL-12825</field>
-    <field id="text" text-type="text/plain">Review comment inside the referenced WI</field>
+    <field id="created">2026-09-29 10:46:10.000 +0000</field>
+    <field id="text" text-type="text/plain">Review comment outside of WI</field>
 </module-comment>
