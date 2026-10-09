@@ -348,7 +348,12 @@ class PdfExporterConvertTest(PdfExporterTestCase):
         )
 
     def test_convert_live_doc_with_comments_in_a_referenced_work_item(self) -> None:
-        """The document of #1118: a comment placed in the description of a referenced work item is exported where it stands."""
+        """The document of #1118: a comment placed in the description of a referenced work item is exported where Polarion shows it.
+
+        Polarion marks no place in the description of a referenced work item: the comment refers to the work item, and its editor
+        shows the comment at the end of the description. A mark in the description is one of the document which holds the work item,
+        and its comment 1 is not the comment 1 of this document, which comes last as the unreferenced one.
+        """
         response: Response = self._assert_convert_matches_snapshot(
             location_path="Testing/Comments in a referenced WI",
             custom_prefix="test_convert_live_doc_comments_in_referenced_wi",
@@ -374,6 +379,12 @@ class PdfExporterConvertTest(PdfExporterTestCase):
         positions: list[int] = [text.find(word) for word in words]
         self.assertNotIn(-1, positions, text)
         self.assertEqual(sorted(positions), positions, f"Each comment follows the text it is placed in, the unreferenced one comes last: {text}")
+        self.assertEqual(1, text.count("Review comment inside the referenced WI"), f"The comment of the referenced work item is exported once: {text}")
+        self.assertNotIn(
+            "Comment of the document which holds the work item",
+            text,
+            "A mark in the description of the referenced work item belongs to the document which holds it, and is not exported here",
+        )
 
     def test_convert_live_doc_with_a_multi_paragraph_comment(self) -> None:
         """The document of #1201: a comment with several paragraphs in a work item description is exported as the settings say, never as Polarion's icon."""

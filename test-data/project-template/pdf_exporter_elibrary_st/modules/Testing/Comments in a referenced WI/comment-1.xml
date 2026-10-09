@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module-comment>
     <field id="author">admin</field>
-    <field id="created">2026-09-29 10:46:00.000 +0000</field>
-    <field id="text" text-type="text/plain">Review comment inside the WI</field>
+    <field id="created">2026-09-29 10:45:50.000 +0000</field>
+    <field id="text" text-type="text/plain">This is a comment for the deleted WI. So it should be shown at the end of the document as unreferenced.</field>
 </module-comment>

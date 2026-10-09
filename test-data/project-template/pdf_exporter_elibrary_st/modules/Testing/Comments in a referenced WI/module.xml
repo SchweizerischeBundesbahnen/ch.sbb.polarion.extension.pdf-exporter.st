@@ -2,7 +2,7 @@
 <module>
     <field id="author">admin</field>
     <field id="created">2026-09-29 10:40:00.000 +0000</field>
-    <field id="homePageContent" text-type="text/html"><![CDATA[<div id="polarion_wiki macro name=module-workitem;params=id=EL-12824"></div><p id="polarion_1">A<span id="polarion-comment:2"></span> text</p><div id="polarion_wiki macro name=module-workitem;params=id=EL-12825|external=true"></div><div id="polarion_wiki macro name=module-workitem;params=id=EL-12826"></div>]]></field>
+    <field id="homePageContent" text-type="text/html"><![CDATA[<div id="polarion_wiki macro name=module-workitem;params=id=EL-12824"></div><p id="polarion_1">A<span id="polarion-comment:3"></span> text</p><div id="polarion_wiki macro name=module-workitem;params=id=EL-12825|external=true"></div><div id="polarion_wiki macro name=module-workitem;params=id=EL-12826"></div>]]></field>
     <field id="renderingLayouts">
         <list>
             <struct>
