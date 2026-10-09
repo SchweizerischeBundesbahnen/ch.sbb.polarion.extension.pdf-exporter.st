@@ -348,7 +348,11 @@ class PdfExporterConvertTest(PdfExporterTestCase):
         )
 
     def test_convert_live_doc_with_comments_in_a_referenced_work_item(self) -> None:
-        """The document of #1118: a comment placed in the description of a referenced work item is exported where it stands."""
+        """The document of #1118: a comment placed in the description of a referenced work item is exported where Polarion shows it.
+
+        Polarion marks no place in the description of a referenced work item: the comment refers to the work item, and its editor
+        shows the comment at the end of the description.
+        """
         response: Response = self._assert_convert_matches_snapshot(
             location_path="Testing/Comments in a referenced WI",
             custom_prefix="test_convert_live_doc_comments_in_referenced_wi",
@@ -374,6 +378,7 @@ class PdfExporterConvertTest(PdfExporterTestCase):
         positions: list[int] = [text.find(word) for word in words]
         self.assertNotIn(-1, positions, text)
         self.assertEqual(sorted(positions), positions, f"Each comment follows the text it is placed in, the unreferenced one comes last: {text}")
+        self.assertEqual(1, text.count("Review comment inside the referenced WI"), f"The comment of the referenced work item is exported once: {text}")
 
     def test_convert_live_doc_with_a_big_picture_in_an_attribute_table(self) -> None:
         """The document of #1160: a big picture fitted to the page leaves the label column of its attribute table as wide as in the others."""
