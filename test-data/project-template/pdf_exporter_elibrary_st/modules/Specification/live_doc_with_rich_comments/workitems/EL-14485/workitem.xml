@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<work-item>
+    <field id="author">admin</field>
+    <field id="created">2026-10-13 14:11:43.693 +0200</field>
+    <field id="description" text-type="text/html">Same comments&lt;span id="polarion-comment:3"&gt;&lt;/span&gt; but now inside&lt;span id="polarion-comment:4"&gt;&lt;/span&gt; of WI description</field>
+    <field id="previousStatus">draft</field>
+    <field id="priority">50.0</field>
+    <field id="reqType" type="enum:reqtype">other</field>
+    <field id="severity">should_have</field>
+    <field id="status">draft</field>
+    <field id="type">requirement</field>
+</work-item>

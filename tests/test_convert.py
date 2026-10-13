@@ -489,6 +489,74 @@ class PdfExporterConvertTest(PdfExporterTestCase):
             expected_page_count=1,
         )
 
+    def test_convert_live_doc_without_rich_comments_rendering(self) -> None:
+        self._assert_convert_matches_snapshot(
+            location_path="Specification/live_doc_with_rich_comments",
+            custom_prefix="test_convert_live_doc_without_rich_comments_rendering",
+            expected_page_count=1,
+        )
+
+    def test_convert_live_doc_with_open_rich_comments(self) -> None:
+        self._assert_convert_matches_snapshot(
+            location_path="Specification/live_doc_with_rich_comments",
+            custom_prefix="test_convert_live_doc_with_open_rich_comments",
+            expected_page_count=1,
+            custom_export_params={"renderComments": "OPEN"},
+        )
+
+    def test_convert_live_doc_with_all_rich_comments(self) -> None:
+        self._assert_convert_matches_snapshot(
+            location_path="Specification/live_doc_with_rich_comments",
+            custom_prefix="test_convert_live_doc_with_all_rich_comments",
+            expected_page_count=2,
+            custom_export_params={"renderComments": "ALL"},
+        )
+
+    def test_convert_live_doc_with_all_unreferenced_rich_comments(self) -> None:
+        self._assert_convert_matches_snapshot(
+            location_path="Specification/live_doc_with_rich_comments",
+            custom_prefix="test_convert_live_doc_with_all_unref_rich_comments",
+            expected_page_count=2,
+            custom_export_params={
+                "renderComments": "ALL",
+                "includeUnreferencedComments": "true",
+            },
+        )
+
+    def test_convert_live_doc_with_open_native_rich_comments(self) -> None:
+        self._assert_convert_matches_snapshot(
+            location_path="Specification/live_doc_with_rich_comments",
+            custom_prefix="test_convert_live_doc_with_open_native_rich_comments",
+            expected_page_count=1,
+            custom_export_params={
+                "renderComments": "OPEN",
+                "renderNativeComments": "true",
+            },
+        )
+
+    def test_convert_live_doc_with_all_native_rich_comments(self) -> None:
+        self._assert_convert_matches_snapshot(
+            location_path="Specification/live_doc_with_rich_comments",
+            custom_prefix="test_convert_live_doc_with_all_native_rich_comments",
+            expected_page_count=1,
+            custom_export_params={
+                "renderComments": "ALL",
+                "renderNativeComments": "true",
+            },
+        )
+
+    def test_convert_live_doc_with_all_unreferenced_native_rich_comments(self) -> None:
+        self._assert_convert_matches_snapshot(
+            location_path="Specification/live_doc_with_rich_comments",
+            custom_prefix="test_convert_live_doc_with_all_unref_native_rich_comments",
+            expected_page_count=1,
+            custom_export_params={
+                "renderComments": "ALL",
+                "includeUnreferencedComments": "true",
+                "renderNativeComments": "true",
+            },
+        )
+
     def test_convert_live_doc_with_filter(self) -> None:
         # Test LiveDoc export with workitem filter using urlQueryParameters.
 

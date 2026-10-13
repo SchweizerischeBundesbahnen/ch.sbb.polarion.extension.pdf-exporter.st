@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module-comment>
+    <field id="author">admin</field>
+    <field id="created">2026-10-13 14:15:02.114 +0200</field>
+    <field id="resolved">true</field>
+    <field id="text" text-type="text/html"><![CDATA[Multi<br/>line<br/>comment<br/><span style="font-weight: bold;">with bold text</span><br/><br/>
+<ol>
+  <li>and </li>
+  <li>some</li>
+  <li>ordered</li>
+</ol>
+<br/>
+<ul>
+  <li>and</li>
+  <li>unnordered</li>
+  <li>lists</li>
+</ul>]]></field>
+</module-comment>
