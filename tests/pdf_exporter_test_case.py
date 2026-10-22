@@ -70,8 +70,8 @@ class PdfExporterTestCase(GenericTestCase):
         cls.elibrary = elibrary
 
     def setUp(self) -> None:
-        # The prefixes of the pages weasysvg drew an SVG on, which are compared with its own expected images where it has one
-        self.weasysvg_prefixes: set[str] = set()
+        # The prefixes of the pages weasysvg drew no SVG on, which are compared with the expected images of Chromium where it has one
+        self.chromium_prefixes: set[str] = set()
         self.project_id: str = self.__class__.elibrary.temp_project_id
         self.scope: str = f"project/{self.project_id}/"
         self.reinit_all_settings(features=SUPPORTED_FEATURES, scope=self.scope)
@@ -113,9 +113,9 @@ class PdfExporterTestCase(GenericTestCase):
 
     def _pdf_to_png(self, pdf_bytes: bytes, custom_prefix: str, output_folder: str) -> int:
         if drawn_by_weasysvg(pdf_bytes):
-            self.weasysvg_prefixes.add(custom_prefix)
+            self.chromium_prefixes.discard(custom_prefix)
         else:
-            self.weasysvg_prefixes.discard(custom_prefix)
+            self.chromium_prefixes.add(custom_prefix)
 
         pdf_document: fitz.Document = fitz.open(stream=pdf_bytes, filetype="pdf")  # type: ignore[no-any-unimported]
 
@@ -268,18 +268,19 @@ class PdfExporterTestCase(GenericTestCase):
                 Rectangle format per entry: (left, top, right, bottom)
                 Example: ignore only on page 2 -> {2: [(100, 200, 300, 260)]}
 
-        A page the weasysvg plugin of WeasyPrint service drew is compared with its image in the folder
-        ``weasysvg`` of the expected folder, where there is one. It draws an SVG as vector, where Chromium
-        rasterized it, so its edges and text differ, and it places a diagram as a browser does.
+        The expected images are what weasysvg, the default SVG renderer of WeasyPrint service, draws. A page of
+        a pdf in which it drew no SVG is compared with its image in the folder ``chromium`` of the expected
+        folder, where there is one: Chromium, the fallback renderer, rasterizes an SVG, so its edges and its
+        text differ. That folder goes when the service drops Chromium.
         """
         failed_pages: list[str] = []
 
         for page_index in range(page_numbers):
             page_number: int = page_index + 1
             expected_page: str = f"{expected_folder}/{custom_prefix}_page_{page_number}.png"
-            weasysvg_page: pathlib.Path = pathlib.Path(expected_folder) / "weasysvg" / f"{custom_prefix}_page_{page_number}.png"
-            if custom_prefix in self.weasysvg_prefixes and weasysvg_page.is_file():
-                expected_page = str(weasysvg_page)
+            chromium_page: pathlib.Path = pathlib.Path(expected_folder) / "chromium" / f"{custom_prefix}_page_{page_number}.png"
+            if custom_prefix in self.chromium_prefixes and chromium_page.is_file():
+                expected_page = str(chromium_page)
             generated_page: str = f"{output_folder}/{custom_prefix}_page_{page_number}.png"
             regions: list[tuple[int, int, int, int]] | None = None
             if ignore_regions_per_page and isinstance(ignore_regions_per_page, dict):
