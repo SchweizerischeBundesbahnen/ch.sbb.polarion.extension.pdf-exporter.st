@@ -81,8 +81,8 @@ jobs:
         include:
           - svg-renderer: ''
             suffix: ''
-          - svg-renderer: weasysvg
-            suffix: -weasysvg
+          - svg-renderer: chromium
+            suffix: -chromium
     # Skip draft PRs (this container suite is expensive); still runs on manual workflow_dispatch.
     if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
     runs-on: ubuntu-latest
