@@ -186,7 +186,10 @@ python-version = "3.14"  # Check against Python 3.14 features, as the mypy confi
 # Fail on warning-level diagnostics too, as mypy did, so the gate does not depend on the ty default.
 error-on-warning = true
 
-# ty has no equivalent of mypy's disallow_untyped_defs / disallow_any_*: missing annotations in library code are enforced by ruff's ANN rules (select = ["ALL"]). Tests are exempt from ANN (see per-file-ignores), so their signatures are not checked.
+[tool.ty.rules]
+unused-ignore-comment = "error"  # mypy's warn_unused_ignores: a stale "# ty: ignore" fails the check
+
+# ty has no equivalent of mypy's disallow_untyped_defs / disallow_any_*. All Python in this repo is test code and tests are exempt from ruff's ANN rules (see per-file-ignores), so type annotations are not enforced here.
 
 # =============================================================================
 # SBB Polarion Linter Configuration
