@@ -19,7 +19,7 @@ import time
 from typing import Any
 from urllib.parse import ParseResult, urlparse
 
-import docker  # type: ignore[import-untyped]
+import docker
 
 
 logger = logging.getLogger(__name__)

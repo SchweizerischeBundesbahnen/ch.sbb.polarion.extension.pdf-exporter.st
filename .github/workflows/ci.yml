@@ -29,11 +29,11 @@ jobs:
           enable-cache: true
       - name: 🧱 Install dependencies
         run: uv sync --frozen
-      - name: 🔍 Run static checks (ruff lint + format, mypy, psp-linter)
+      - name: 🔍 Run static checks (ruff lint + format, ty, psp-linter)
         # The Polarion-dependent `test` env runs in system-tests.yml (containerized) and nightly on
         # Jenkins. Static checks run here so lint/type/format regressions are caught on the PR.
         run: |
-          uv run tox -e lint,mypy,psp-linter
+          uv run tox -e lint,ty,psp-linter
           uv run ruff format --check --diff .
       - name: SonarCloud scan for PR
         uses: sonarsource/sonarqube-scan-action@d209202bc7d53ff1cc128f7f907dac145c9d6ae9  # v8.3
