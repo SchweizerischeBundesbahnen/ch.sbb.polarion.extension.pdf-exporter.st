@@ -74,6 +74,8 @@ jobs:
     # One run per SVG renderer of the service. The run of the default renderer keeps the name
     # `system-tests`, the required check of ruleset main-requires-status-checks; the other one is named
     # after its renderer. The suite picks the expected pages of the renderer which drew the PDF.
+    # The Chromium run takes only the modules with expected pages of its own, test-data/expected/chromium/:
+    # the rest does not depend on who draws an SVG.
     name: system-tests${{ matrix.suffix }}
     strategy:
       fail-fast: false
@@ -81,8 +83,10 @@ jobs:
         include:
           - svg-renderer: ''
             suffix: ''
-          - svg-renderer: weasysvg
-            suffix: -weasysvg
+            modules: ''
+          - svg-renderer: chromium
+            suffix: -chromium
+            modules: test_convert,test_fit_to_page,test_orphan_header
     # Skip draft PRs (this container suite is expensive); still runs on manual workflow_dispatch.
     if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
     runs-on: ubuntu-latest
@@ -92,6 +96,8 @@ jobs:
       IO_JFROG_SBB_POLARION_TOKEN: ${{ secrets.IO_JFROG_SBB_POLARION_TOKEN }}
       # empty for the default renderer of the image; the cases which recreate the service keep it
       SVG_RENDERER: ${{ matrix.svg-renderer }}
+      # empty for all modules, see tests/run.py
+      SYSTEM_TEST_MODULES: ${{ matrix.modules }}
     steps:
       - name: 📄 Checkout code
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7
