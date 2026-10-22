@@ -12,6 +12,7 @@ from python_sbb_polarion.testing.generic_test_case import GenericTestCase
 from python_sbb_polarion.util import abs_path, abs_path_str
 
 from tests.constants import PDF_RENDER_DPI, SUPPORTED_FEATURES
+from tests.drawn_pictures import drawn_by_weasysvg
 
 
 if TYPE_CHECKING:
@@ -69,6 +70,8 @@ class PdfExporterTestCase(GenericTestCase):
         cls.elibrary = elibrary
 
     def setUp(self) -> None:
+        # The prefixes of the pages weasysvg drew an SVG on, which are compared with its own expected images where it has one
+        self.weasysvg_prefixes: set[str] = set()
         self.project_id: str = self.__class__.elibrary.temp_project_id
         self.scope: str = f"project/{self.project_id}/"
         self.reinit_all_settings(features=SUPPORTED_FEATURES, scope=self.scope)
@@ -109,6 +112,11 @@ class PdfExporterTestCase(GenericTestCase):
             return content
 
     def _pdf_to_png(self, pdf_bytes: bytes, custom_prefix: str, output_folder: str) -> int:
+        if drawn_by_weasysvg(pdf_bytes):
+            self.weasysvg_prefixes.add(custom_prefix)
+        else:
+            self.weasysvg_prefixes.discard(custom_prefix)
+
         pdf_document: fitz.Document = fitz.open(stream=pdf_bytes, filetype="pdf")  # type: ignore[no-any-unimported]
 
         page_numbers: int = 0
@@ -259,12 +267,19 @@ class PdfExporterTestCase(GenericTestCase):
                 - Or pass a list[tuple] to apply the same rectangles to all pages.
                 Rectangle format per entry: (left, top, right, bottom)
                 Example: ignore only on page 2 -> {2: [(100, 200, 300, 260)]}
+
+        A page the weasysvg plugin of WeasyPrint service drew is compared with its image in the folder
+        ``weasysvg`` of the expected folder, where there is one. It draws an SVG as vector, where Chromium
+        rasterized it, so its edges and text differ, and it places a diagram as a browser does.
         """
         failed_pages: list[str] = []
 
         for page_index in range(page_numbers):
             page_number: int = page_index + 1
             expected_page: str = f"{expected_folder}/{custom_prefix}_page_{page_number}.png"
+            weasysvg_page: pathlib.Path = pathlib.Path(expected_folder) / "weasysvg" / f"{custom_prefix}_page_{page_number}.png"
+            if custom_prefix in self.weasysvg_prefixes and weasysvg_page.is_file():
+                expected_page = str(weasysvg_page)
             generated_page: str = f"{output_folder}/{custom_prefix}_page_{page_number}.png"
             regions: list[tuple[int, int, int, int]] | None = None
             if ignore_regions_per_page and isinstance(ignore_regions_per_page, dict):

@@ -5,6 +5,7 @@ from typing import TYPE_CHECKING
 
 import fitz
 
+from tests.drawn_pictures import drawn_pictures
 from tests.pdf_exporter_test_case import PdfExporterTestCase
 
 
@@ -20,9 +21,6 @@ class PdfExporterOrphanHeaderTest(PdfExporterTestCase):
 
     # A logo is drawn on every page, so the diagram is told from it by the height it is drawn at.
     DIAGRAM_HEIGHT_PT = 200
-
-    def _draws_the_diagram(self, document: fitz.Document, page: fitz.Page) -> bool:  # type: ignore[no-any-unimported]
-        return any(rect.height > self.DIAGRAM_HEIGHT_PT for xref in {image[0] for image in page.get_images(full=True)} for rect in page.get_image_rects(xref))
 
     def test_convert_live_doc_keeps_a_table_header_with_its_row(self) -> None:
         """The row holds a diagram taller than a page, which fit to page shortens to a page of its own."""
@@ -45,9 +43,10 @@ class PdfExporterOrphanHeaderTest(PdfExporterTestCase):
 
         with fitz.open(stream=response.content, filetype="pdf") as document:
             header_pages: list[int] = [page.number for page in document if self.HEADER_CELL in page.get_text()]
-            diagram_pages: list[int] = [page.number for page in document if self._draws_the_diagram(document, page)]
             page_numbers: int = document.page_count
 
+        # A diagram is a raster with Chromium and a vector form with weasysvg, and either is told from the logo by its height
+        diagram_pages: list[int] = [picture.page for picture in drawn_pictures(response.content) if picture.height > self.DIAGRAM_HEIGHT_PT]
         orphans: list[int] = [page for page in header_pages if page not in diagram_pages]
         self.assertEqual([], orphans, f"A header without the row it heads says nothing, and pages {orphans} carry one")
 

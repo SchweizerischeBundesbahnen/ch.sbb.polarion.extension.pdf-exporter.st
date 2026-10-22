@@ -3,8 +3,7 @@ from __future__ import annotations
 from http import HTTPStatus
 from typing import TYPE_CHECKING
 
-import fitz
-
+from tests.drawn_pictures import drawn_pictures
 from tests.pdf_exporter_test_case import PdfExporterTestCase
 
 
@@ -29,12 +28,8 @@ class PdfExporterImageSizeTest(PdfExporterTestCase):
         # Assert
         self.assertEqual(HTTPStatus.OK, response.status_code)
 
-        # Every image carries its own raster, so they are read in the order the page draws them
-        drawn: list[tuple[float, float, int]] = []
-        with fitz.open(stream=response.content, filetype="pdf") as document:
-            for page in document:
-                for xref in {image[0] for image in page.get_images(full=True)}:
-                    drawn.extend((rect.y0, rect.x0, round(rect.width / self.PT_PER_PX)) for rect in page.get_image_rects(xref))
+        # A diagram is a raster with Chromium and a vector form with weasysvg, so they are read where the page draws them
+        drawn: list[tuple[int, float, float, int]] = [(picture.page, picture.y0, picture.x0, round(picture.width / self.PT_PER_PX)) for picture in drawn_pictures(response.content)]
 
         # The diagram is 200x100 px: its own size where the document gives none, then half of it and twice it
-        self.assertEqual([200, 100, 400], [width for _, _, width in sorted(drawn)])
+        self.assertEqual([200, 100, 400], [width for _, _, _, width in sorted(drawn)])
