@@ -236,13 +236,13 @@ class TestRunAttachmentTest(PdfExporterTestCase):
             total_pages: int = len(pdf_reader.pages)
             self.assertEqual(2, total_pages)
 
-            embedded_files: object = pdf_reader.trailer["/Root"].get("/Names", {}).get("/EmbeddedFiles")  # type: ignore[attr-defined]
+            embedded_files: object = pdf_reader.trailer["/Root"].get("/Names", {}).get("/EmbeddedFiles")  # ty: ignore[unresolved-attribute]
             self.assertIsNotNone(embedded_files)
 
-            embedded_files_obj: object = embedded_files.get_object()  # type: ignore[attr-defined]
-            names: list[object] = embedded_files_obj.get("/Names", [])  # type: ignore[attr-defined]
+            embedded_files_obj: object = embedded_files.get_object()  # ty: ignore[unresolved-attribute]
+            names: list[object] = embedded_files_obj.get("/Names", [])  # ty: ignore[unresolved-attribute]
             file_names: list[object] = [names[i] for i in range(0, len(names), 2)]
-            assert "test_attachment_file_name" in file_names[0]  # type: ignore[operator]
+            assert "test_attachment_file_name" in file_names[0]  # ty: ignore[unsupported-operator]
         finally:
             # Clean up
             response = polarion_api.delete_testrun_attachment(

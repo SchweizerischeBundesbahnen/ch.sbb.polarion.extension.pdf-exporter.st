@@ -113,12 +113,12 @@ class VeraPDFManager:
 
             # Read PDF file and send to REST API
             with pdf_path.open("rb") as pdf_file:
-                files: dict[str, tuple[str, ...]] = {
-                    "file": (pdf_path.name, pdf_file, MediaType.PDF),  # type: ignore[dict-item]
+                files: dict[str, tuple[str, ...]] = {  # ty: ignore[invalid-assignment]
+                    "file": (pdf_path.name, pdf_file, MediaType.PDF),
                 }
                 response: requests.Response = requests.post(
                     validate_url,
-                    files=files,  # type: ignore[arg-type]
+                    files=files,  # ty: ignore[invalid-argument-type]
                     headers={Header.ACCEPT: MediaType.JSON},
                     timeout=120,
                 )

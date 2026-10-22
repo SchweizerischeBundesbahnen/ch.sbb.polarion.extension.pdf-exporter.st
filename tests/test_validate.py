@@ -29,9 +29,9 @@ class PdfExporterValidateTest(PdfExporterTestCase):
 
         json_response: JsonDict = response.json()
         self.assertIsNotNone(json_response)
-        self.assertEqual(1, len(json_response["invalidPages"]))  # type: ignore[arg-type]
-        self.assertEqual(5, json_response["invalidPages"][0]["number"])  # type: ignore[index,call-overload]
-        self.assertEqual(0, len(json_response["suspiciousWorkItems"]))  # type: ignore[arg-type]
+        self.assertEqual(1, len(json_response["invalidPages"]))  # ty: ignore[invalid-argument-type]
+        self.assertEqual(5, json_response["invalidPages"][0]["number"])  # ty: ignore[invalid-argument-type,not-subscriptable]
+        self.assertEqual(0, len(json_response["suspiciousWorkItems"]))  # ty: ignore[invalid-argument-type]
 
     def test_validate_document_without_invalid_pages(self) -> None:
         # Act
@@ -45,8 +45,8 @@ class PdfExporterValidateTest(PdfExporterTestCase):
 
         json_response: JsonDict = response.json()
         self.assertIsNotNone(json_response)
-        self.assertEqual(0, len(json_response["invalidPages"]))  # type: ignore[arg-type]
-        self.assertEqual(0, len(json_response["suspiciousWorkItems"]))  # type: ignore[arg-type]
+        self.assertEqual(0, len(json_response["invalidPages"]))  # ty: ignore[invalid-argument-type]
+        self.assertEqual(0, len(json_response["suspiciousWorkItems"]))  # ty: ignore[invalid-argument-type]
 
     def test_validate_unknown_project(self) -> None:
         # Act

@@ -21,7 +21,7 @@ class PdfExporterOrphanHeaderTest(PdfExporterTestCase):
     # A logo is drawn on every page, so the diagram is told from it by the height it is drawn at.
     DIAGRAM_HEIGHT_PT = 200
 
-    def _draws_the_diagram(self, document: fitz.Document, page: fitz.Page) -> bool:  # type: ignore[no-any-unimported]
+    def _draws_the_diagram(self, document: fitz.Document, page: fitz.Page) -> bool:
         return any(rect.height > self.DIAGRAM_HEIGHT_PT for xref in {image[0] for image in page.get_images(full=True)} for rect in page.get_image_rects(xref))
 
     def test_convert_live_doc_keeps_a_table_header_with_its_row(self) -> None:

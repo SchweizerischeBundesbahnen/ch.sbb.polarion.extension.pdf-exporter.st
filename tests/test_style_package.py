@@ -75,7 +75,7 @@ class PdfExporterStylePackageTest(PdfExporterTestCase):
         # extract just those items which were created in scope of this test
         just_created_packages: list[str | JsonDict] = [item for item in updated_suitable_packages if item in test_scope_package_names + global_scope_package_names]
         # and check whether they are sorted alphabetically, because by default they must have the same weight (50.0)
-        self.assertTrue(just_created_packages == sorted(just_created_packages, key=lambda x: x.lower()))  # type: ignore[union-attr]
+        self.assertTrue(just_created_packages == sorted(just_created_packages, key=lambda x: x.lower()))  # ty: ignore[unresolved-attribute]
 
         # modify weights for our items
         self.api().save_style_package_weights(
@@ -147,13 +147,13 @@ class PdfExporterStylePackageTest(PdfExporterTestCase):
 
         self.assertIsNotNone(
             next(
-                (entry for entry in doc_1_suitable_packages if entry["name"] == test_package_name),  # type: ignore[index]
+                (entry for entry in doc_1_suitable_packages if entry["name"] == test_package_name),  # ty: ignore[invalid-argument-type]
                 None,
             )
         )
         self.assertIsNotNone(
             next(
-                (entry for entry in doc_2_suitable_packages if entry["name"] == test_package_name),  # type: ignore[index]
+                (entry for entry in doc_2_suitable_packages if entry["name"] == test_package_name),  # ty: ignore[invalid-argument-type]
                 None,
             )
         )
@@ -168,13 +168,13 @@ class PdfExporterStylePackageTest(PdfExporterTestCase):
         doc_2_suitable_packages_updated: list[str | JsonDict] = json.loads(self.api().find_suitable_style_package_names(data=catalog_specification_data).content)
         self.assertIsNone(
             next(
-                (entry for entry in doc_1_suitable_packages_updated if entry["name"] == test_package_name),  # type: ignore[index]
+                (entry for entry in doc_1_suitable_packages_updated if entry["name"] == test_package_name),  # ty: ignore[invalid-argument-type]
                 None,
             )
         )
         self.assertIsNotNone(
             next(
-                (entry for entry in doc_2_suitable_packages_updated if entry["name"] == test_package_name),  # type: ignore[index]
+                (entry for entry in doc_2_suitable_packages_updated if entry["name"] == test_package_name),  # ty: ignore[invalid-argument-type]
                 None,
             )
         )

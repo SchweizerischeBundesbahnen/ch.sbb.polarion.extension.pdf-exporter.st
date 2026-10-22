@@ -100,13 +100,13 @@ class PdfExporterSettingsTest(PdfExporterTestCase):
         self.assertIn("bundleTimestamp", json_settings)
         self.assertIn("translations", json_settings)
         self.assertIsInstance(json_settings["bundleTimestamp"], str)
-        self.assertIsInstance(json_settings["translations"]["Accepted"], list)  # type: ignore[index,call-overload]
+        self.assertIsInstance(json_settings["translations"]["Accepted"], list)  # ty: ignore[invalid-argument-type,not-subscriptable]
 
-        for json_entry in json_settings["translations"]["Accepted"]:  # type: ignore[index,call-overload,union-attr]
-            self.assertIn("language", json_entry)  # type: ignore[arg-type]
-            self.assertIn("value", json_entry)  # type: ignore[arg-type]
-            self.assertIsInstance(json_entry["language"], str)  # type: ignore[index,call-overload]
-            self.assertIsInstance(json_entry["value"], str)  # type: ignore[index,call-overload]
+        for json_entry in json_settings["translations"]["Accepted"]:  # ty: ignore[invalid-argument-type,not-iterable,not-subscriptable]
+            self.assertIn("language", json_entry)  # ty: ignore[invalid-argument-type]
+            self.assertIn("value", json_entry)  # ty: ignore[invalid-argument-type]
+            self.assertIsInstance(json_entry["language"], str)  # ty: ignore[invalid-argument-type,not-subscriptable]
+            self.assertIsInstance(json_entry["value"], str)  # ty: ignore[invalid-argument-type,not-subscriptable]
 
     def test_settings_post_localization(self) -> None:
         # Act
@@ -119,7 +119,7 @@ class PdfExporterSettingsTest(PdfExporterTestCase):
                 {"language": "it", "value": "Test it"},
             ]
         }
-        json_data["translations"]["Test"] = new_entry["Test"]  # type: ignore[index,call-overload]
+        json_data["translations"]["Test"] = new_entry["Test"]  # ty: ignore[invalid-assignment]
         response_save: Response = self.api().save_setting(feature="localization", scope=self.scope, data=json_data)
 
         # Assert
@@ -127,7 +127,7 @@ class PdfExporterSettingsTest(PdfExporterTestCase):
 
         response: Response = self.api().get_setting_content(feature="localization", scope=self.scope)
         stored_settings: JsonDict = response.json()
-        test_value: list[JsonDict] = stored_settings["translations"]["Test"]  # type: ignore[assignment,index,call-overload]
+        test_value: list[JsonDict] = stored_settings["translations"]["Test"]  # ty: ignore[invalid-argument-type,invalid-assignment,not-subscriptable]
         self.assertIsNotNone(test_value)
 
         self.assertEqual("de", test_value[0]["language"])

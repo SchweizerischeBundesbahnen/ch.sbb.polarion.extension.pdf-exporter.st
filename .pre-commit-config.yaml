@@ -50,15 +50,13 @@ repos:
         types: [text]
   - repo: local
     hooks:
-      - id: mypy
-        name: mypy
-        entry: uv run mypy
+      - id: ty
+        name: ty
+        entry: uv run ty check tests/
         language: system
         types: [python]
         files: ^tests/
-        args: [--config-file, pyproject.toml, tests/]
-        require_serial: true  # Serial processing is required for mypy (better performance and error reporting)
-        pass_filenames: false  # Don't pass individual files, use the specified path
+        pass_filenames: false  # Check the whole tests/ tree, ty resolves cross-file types
   - repo: local
     hooks:
       # Custom code style linter (PSP001-PSP005)
