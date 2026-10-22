@@ -17,8 +17,13 @@ Example:
 The PDF variant tests, the modules named ``test_pdf_variants*``, run only where RUN_PDF_VARIANT_TESTS
 is true. CI sets it; a local run leaves them out, as they take long:
         $ RUN_PDF_VARIANT_TESTS=true python tests/run.py --app_url https://<POLARION_URL> --app_token TOKEN
+
+SYSTEM_TEST_MODULES, a comma-separated list of module names, runs only those modules. A name which
+matches no module fails the run, so a renamed module cannot leave it empty:
+        $ SYSTEM_TEST_MODULES=test_convert,test_fit_to_page python tests/run.py --app_url https://<POLARION_URL> --app_token TOKEN
 """
 
+import os
 import sys
 import unittest
 
@@ -42,12 +47,41 @@ def without_group(tests: unittest.TestSuite) -> unittest.TestSuite:
     return kept
 
 
+def only_modules(tests: unittest.TestSuite, modules: set[str]) -> unittest.TestSuite:
+    """The tests of a suite which belong to the given modules."""
+    kept = unittest.TestSuite()
+    for test in tests:
+        if isinstance(test, unittest.TestSuite):
+            kept.addTest(only_modules(test, modules))
+        elif type(test).__module__.rpartition(".")[2] in modules:
+            kept.addTest(test)
+    return kept
+
+
+def modules_of(tests: unittest.TestSuite) -> set[str]:
+    """The names of the modules the tests of a suite belong to."""
+    names: set[str] = set()
+    for test in tests:
+        if isinstance(test, unittest.TestSuite):
+            names |= modules_of(test)
+        else:
+            names.add(type(test).__module__.rpartition(".")[2])
+    return names
+
+
 # find and load tests
 loader = unittest.TestLoader()
 suite = loader.discover(abs_path_str("."))
 if not group_requested():
     sys.stderr.write(f"The PDF variant tests are left out; set {GROUP_VARIABLE}=true to run them\n")
     suite = without_group(suite)
+requested_modules = {name.strip() for name in os.environ.get("SYSTEM_TEST_MODULES", "").split(",") if name.strip()}
+if requested_modules:
+    suite = only_modules(suite, requested_modules)
+    missing_modules = requested_modules - modules_of(suite)
+    if missing_modules:
+        sys.exit(f"SYSTEM_TEST_MODULES names modules with no tests: {', '.join(sorted(missing_modules))}")
+    sys.stderr.write(f"Only the modules of SYSTEM_TEST_MODULES run: {', '.join(sorted(requested_modules))}\n")
 
 testcontainers_helper = TestContainersHelper()
 testcontainers_helper.create_test_container_if_required("pdf-exporter")
