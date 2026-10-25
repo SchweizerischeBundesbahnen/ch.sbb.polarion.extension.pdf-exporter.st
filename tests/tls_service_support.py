@@ -21,7 +21,6 @@ from __future__ import annotations
 import logging
 import os
 import shlex
-import sys
 import time
 from contextlib import contextmanager
 from dataclasses import dataclass
@@ -80,6 +79,20 @@ def _network_aliases(settings: dict[str, Any], container_name: str, container_id
     names: list[str] = [*(settings.get("Aliases") or []), *(settings.get("DNSNames") or [])]
     given: set[str] = {container_name, container_id[:12]}
     return [name for name in dict.fromkeys(names) if name not in given]
+
+
+# Where the logs of the replaced services go: a folder of the output CI uploads
+SERVICE_LOG_FOLDER: Path = Path(__file__).resolve().parent.parent / "test-data" / "output" / "service-logs"
+
+# The logs of the services replaced since the running case began, printed only where it fails
+_kept_service_logs: list[str] = []
+
+
+def take_service_logs() -> list[str]:
+    """The logs of the services replaced since the last call, which are then forgotten."""
+    logs: list[str] = list(_kept_service_logs)
+    _kept_service_logs.clear()
+    return logs
 
 
 @dataclass(frozen=True)
@@ -229,14 +242,23 @@ class TlsService:
             "networks": {name: _network_aliases(settings, attributes["Name"].lstrip("/"), attributes["Id"]) for name, settings in attributes["NetworkSettings"]["Networks"].items()},
         }
 
-    def _print_service_log(self, container: Any) -> None:
-        """Put the log of a container into the output of the run, before it is taken away with it."""
+    def _keep_service_log(self, container: Any) -> None:
+        """Keep the log of a container before it is taken away with it.
+
+        It goes into a file of the output folder, which CI uploads, and is held for the case running, which
+        prints it only where the case fails: the cases which replace a service expect most of what it logs,
+        errors included, and a passing run should not read like a failing one.
+        """
         try:
             lines: str = container.logs().decode(errors="replace")
         except Exception:  # noqa: BLE001 - a log which cannot be read is not worth failing a case over
             return
-        if lines.strip():
-            sys.stdout.write(f"--- the {self.label}, before it was replaced ---\n{lines}\n")
+        if not lines.strip():
+            return
+        SERVICE_LOG_FOLDER.mkdir(parents=True, exist_ok=True)
+        file: Path = SERVICE_LOG_FOLDER / f"{time.strftime('%Y%m%d-%H%M%S')}-{time.monotonic_ns()}-{container.name}.log"
+        file.write_text(lines, encoding="utf-8")
+        _kept_service_logs.append(f"--- the {self.label}, before it was replaced ({file.name}) ---\n{lines}\n")
 
     def _recreate(self, spec: dict[str, Any], api_keys: str | None, environment_overrides: Mapping[str, str | None] | None = None) -> None:
         """Put the service back from a spec, with these keys, these overrides and every name it answered under.
@@ -260,7 +282,7 @@ class TlsService:
         if existing is not None:
             # What the container said is read before it goes, since removing it takes its log along,
             # and the cases which replace it are the ones whose failures are read out of that log.
-            self._print_service_log(existing)
+            self._keep_service_log(existing)
             existing.stop(timeout=10)
             existing.remove()
 
