@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import pathlib
+import sys
+import unittest
 from contextlib import contextmanager
 from http import HTTPStatus
 from typing import TYPE_CHECKING, ClassVar
@@ -13,6 +15,7 @@ from python_sbb_polarion.util import abs_path, abs_path_str
 
 from tests.constants import PDF_RENDER_DPI, SUPPORTED_FEATURES
 from tests.drawn_pictures import drawn_by_weasysvg
+from tests.tls_service_support import take_service_logs
 
 
 if TYPE_CHECKING:
@@ -68,6 +71,21 @@ class PdfExporterTestCase(GenericTestCase):
     @classmethod
     def set_elibrary(cls, elibrary: TempProject) -> None:
         cls.elibrary = elibrary
+
+    def run(self, result: unittest.TestResult | None = None) -> unittest.TestResult | None:
+        """Run the case, and print the logs of the services it replaced only where it fails.
+
+        A case which replaces a service expects most of what the service logs, errors included; the logs
+        are in the output folder either way (tls_service_support).
+        """
+        # those of the class fixtures or of an earlier case, which are in their files already
+        take_service_logs()
+        problems_before: int = _problems(result)
+        outcome: unittest.TestResult | None = super().run(result)
+        logs: list[str] = take_service_logs()
+        if logs and outcome is not None and _problems(outcome) > problems_before:
+            sys.stdout.write("".join(logs))
+        return outcome
 
     def setUp(self) -> None:
         # The prefixes of the pages weasysvg drew no SVG on, which are compared with the expected images of Chromium where it has one
@@ -387,3 +405,10 @@ class PdfExporterTestCase(GenericTestCase):
         pdf_document: fitz.Document = fitz.open(stream=pdf_bytes, filetype="pdf")  # type: ignore[no-any-unimported]
         pdf_document[0].get_pixmap(dpi=PDF_RENDER_DPI).save(str(output_file))
         pdf_document.close()
+
+
+def _problems(result: unittest.TestResult | None) -> int:
+    """How many cases a result counts as failed, erroneous or unexpectedly passing."""
+    if result is None:
+        return 0
+    return len(result.failures) + len(result.errors) + len(result.unexpectedSuccesses)

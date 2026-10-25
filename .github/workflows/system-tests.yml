@@ -8,12 +8,8 @@ on:
   pull_request:
     branches: [main]
     types: [opened, synchronize, reopened, ready_for_review]
-  # Run the suite on Renovate's own branches so branch-automerge bumps
-  # (automergeType: branch in renovate.json) are exercised by system-tests
-  # before Renovate fast-forwards them into main. Renovate opens no PR for
-  # these, so the pull_request trigger above never fires for them.
-  push:
-    branches: ['renovate/**']
+  # Renovate opens a pull request for every update (automergeType: pr in renovate.json), so the trigger
+  # above runs the suite once for each; a push trigger on its branches ran it a second time.
   workflow_dispatch:
 permissions:
   contents: read
@@ -23,8 +19,6 @@ concurrency:
 env:
   JAVA_VERSION: '21'
   JAVA_DISTRIBUTION: temurin
-  # The PDF variant tests take long, so run.py leaves them out unless this is set; CI always runs them
-  RUN_PDF_VARIANT_TESTS: 'true'
   TC_EXTENSION_VERSION: 13.12.1-SNAPSHOT
   TC_ADMIN_UTILITY_VERSION: 5.0.0
   TC_TEST_DATA_VERSION: 5.1.0
@@ -71,11 +65,13 @@ env:
   BULK_PROCESSING_REQUIRE_JWT: 'true'
 jobs:
   system-tests:
-    # One run per SVG renderer of the service. The run of the default renderer keeps the name
-    # `system-tests`, the required check of ruleset main-requires-status-checks; the other one is named
-    # after its renderer. The suite picks the expected pages of the renderer which drew the PDF.
-    # The Chromium run takes only the modules with expected pages of its own, test-data/expected/chromium/:
-    # the rest does not depend on who draws an SVG.
+    # One run per SVG renderer of the service, and one for the PDF variant tests. The run of the default
+    # renderer keeps the name `system-tests`, the required check of ruleset main-requires-status-checks;
+    # the others are named after what they run. The suite picks the expected pages of the renderer which
+    # drew the PDF. The Chromium run takes only the modules with expected pages of its own,
+    # test-data/expected/chromium/: the rest does not depend on who draws an SVG. The PDF variant tests
+    # validate with veraPDF and take long, so they run apart (run.py leaves them out unless
+    # RUN_PDF_VARIANT_TESTS is set).
     name: system-tests${{ matrix.suffix }}
     strategy:
       fail-fast: false
@@ -84,9 +80,15 @@ jobs:
           - svg-renderer: ''
             suffix: ''
             modules: ''
+            pdf-variants: 'false'
           - svg-renderer: chromium
             suffix: -chromium
             modules: test_convert,test_fit_to_page,test_orphan_header
+            pdf-variants: 'false'
+          - svg-renderer: ''
+            suffix: -verapdf
+            modules: test_pdf_variants,test_pdf_variants_of_a_merge
+            pdf-variants: 'true'
     # Skip draft PRs (this container suite is expensive); still runs on manual workflow_dispatch.
     if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
     runs-on: ubuntu-latest
@@ -98,6 +100,7 @@ jobs:
       SVG_RENDERER: ${{ matrix.svg-renderer }}
       # empty for all modules, see tests/run.py
       SYSTEM_TEST_MODULES: ${{ matrix.modules }}
+      RUN_PDF_VARIANT_TESTS: ${{ matrix.pdf-variants }}
     steps:
       - name: 📄 Checkout code
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7
@@ -233,13 +236,21 @@ jobs:
             || { echo "the bulk processing service did not become healthy"; docker logs "$BULK_PROCESSING_CONTAINER"; exit 1; }
       - name: 🧪 Run system tests against Polarion in Docker
         run: uv run tox -e test
+      # The logs of the services go with the reports; the containers replaced during the run left theirs
+      # there already (tests/tls_service_support.py). Printed only where the run failed, as a passing run
+      # holds the errors the cases provoke on purpose.
+      - name: 🧾 Keep the service logs
+        if: always()
+        run: |
+          mkdir -p test-data/output/service-logs
+          docker logs "$WEASYPRINT_CONTAINER" > test-data/output/service-logs/weasyprint-service.log 2>&1 || true
+          docker logs "$BULK_PROCESSING_CONTAINER" > test-data/output/service-logs/bulk-processing-service.log 2>&1 || true
       - name: 🧾 WeasyPrint service log
-        if: always()
-        # the containers replaced during the run print their own log as they go, from the suite
-        run: docker logs "$WEASYPRINT_CONTAINER" 2>/dev/null || true
+        if: failure()
+        run: cat test-data/output/service-logs/weasyprint-service.log
       - name: 🧾 Bulk processing service log
-        if: always()
-        run: docker logs "$BULK_PROCESSING_CONTAINER" 2>/dev/null || true
+        if: failure()
+        run: cat test-data/output/service-logs/bulk-processing-service.log
       - name: 📤 Upload test reports and generated/diff artifacts
         # Always upload so failures can be diagnosed: the output folder contains the generated
         # PDFs, the rendered page PNGs and the *_diff.png images highlighting visual mismatches.
