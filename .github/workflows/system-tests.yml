@@ -235,9 +235,6 @@ jobs:
             done' \
             || { echo "the bulk processing service did not become healthy"; docker logs "$BULK_PROCESSING_CONTAINER"; exit 1; }
       - name: 🧪 Run system tests against Polarion in Docker
-        env:
-          # the harness fetches the extension with Maven; quiet, so the run reads as its tests
-          MAVEN_ARGS: --no-transfer-progress --quiet
         run: uv run tox -e test
       # The logs of the services go with the reports; the containers replaced during the run left theirs
       # there already (tests/tls_service_support.py). Printed only where the run failed, as a passing run
