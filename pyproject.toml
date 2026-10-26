@@ -180,7 +180,7 @@ section-order = [
 # =============================================================================
 
 [tool.mypy]
-python_version = "3.14"                  # Tells mypy to check against Python 3.14 features
+python_version = "3.15"                  # Tells mypy to check against Python 3.15 features
 warn_return_any = true                   # Warns if function returns 'Any' type
 warn_unused_configs = true               # Warns about unused mypy settings
 disallow_untyped_defs = true             # Disallows functions without type hints
