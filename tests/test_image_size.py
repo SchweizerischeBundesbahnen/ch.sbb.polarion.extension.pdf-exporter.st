@@ -28,7 +28,7 @@ class PdfExporterImageSizeTest(PdfExporterTestCase):
         # Assert
         self.assertEqual(HTTPStatus.OK, response.status_code)
 
-        # A diagram is a raster with Chromium and a vector form with weasysvg, so they are read where the page draws them
+        # weasysvg draws a diagram as a vector form, so it is read where the page draws it
         drawn: list[tuple[int, float, float, int]] = [(picture.page, picture.y0, picture.x0, round(picture.width / self.PT_PER_PX)) for picture in drawn_pictures(response.content)]
 
         # The diagram is 200x100 px: its own size where the document gives none, then half of it and twice it

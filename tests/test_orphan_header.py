@@ -45,7 +45,7 @@ class PdfExporterOrphanHeaderTest(PdfExporterTestCase):
             header_pages: list[int] = [page.number for page in document if self.HEADER_CELL in page.get_text()]
             page_numbers: int = document.page_count
 
-        # A diagram is a raster with Chromium and a vector form with weasysvg, and either is told from the logo by its height
+        # A diagram is told from the logo by its height
         diagram_pages: list[int] = [picture.page for picture in drawn_pictures(response.content) if picture.height > self.DIAGRAM_HEIGHT_PT]
         orphans: list[int] = [page for page in header_pages if page not in diagram_pages]
         self.assertEqual([], orphans, f"A header without the row it heads says nothing, and pages {orphans} carry one")
