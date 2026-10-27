@@ -1,10 +1,9 @@
-"""Where a PDF draws its pictures, whichever renderer of WeasyPrint service drew an SVG.
+"""Where a PDF draws its pictures, raster images and SVG alike.
 
-WeasyPrint service draws an SVG in one of two ways, as its ``SVG_RENDERER`` states. Chromium rasterizes it
-to a PNG, an image XObject like any other picture. The weasysvg plugin draws it as vector, a form XObject of
-its own without a transparency group: the forms WeasyPrint itself makes, for a page or for opacity, all carry
-one. Both count as a picture here, so a test checks the same number, size and place whichever renderer drew them.
-A form counted as a picture is not read further, so a picture inside an SVG is not counted a second time.
+A raster picture is an image XObject. The weasysvg plugin of WeasyPrint service draws an SVG as vector, a form
+XObject of its own without a transparency group: the forms WeasyPrint itself makes, for a page or for opacity,
+all carry one. Both count as a picture here. A form counted as a picture is not read further, so a picture
+inside an SVG is not counted a second time.
 """
 
 from __future__ import annotations
@@ -40,7 +39,6 @@ class DrawnPicture:
     y0: float
     width: float
     height: float
-    vector: bool
 
 
 def _multiply(first: Matrix, second: Matrix) -> Matrix:
@@ -93,23 +91,23 @@ class _Collector:
     def _draw(self, xobject: DictionaryObject, ctm: Matrix, depth: int) -> None:
         subtype: object = xobject.get("/Subtype")
         if subtype == "/Image":
-            self._add(UNIT_SQUARE, ctm, vector=False)
+            self._add(UNIT_SQUARE, ctm)
         elif subtype == "/Form":
             matrix: Matrix = _multiply(_matrix_of(xobject.get("/Matrix")), ctm)
             if "/Group" not in xobject:
                 bbox: PdfObject | None = xobject["/BBox"].get_object()
                 if isinstance(bbox, ArrayObject) and len(bbox) == 4:
                     corners: list[float] = [float(value) for value in bbox]
-                    self._add((corners[0], corners[1], corners[2], corners[3]), matrix, vector=True)
+                    self._add((corners[0], corners[1], corners[2], corners[3]), matrix)
             elif depth < MAX_GROUP_DEPTH:
                 self.read(xobject, _dictionary_of(xobject.get("/Resources")), matrix, depth + 1)
 
-    def _add(self, rectangle: tuple[float, float, float, float], matrix: Matrix, *, vector: bool) -> None:
+    def _add(self, rectangle: tuple[float, float, float, float], matrix: Matrix) -> None:
         """Adds the box the rectangle is drawn in: its four corners through the matrix."""
         corners: list[tuple[float, float]] = [(rectangle[0], rectangle[1]), (rectangle[2], rectangle[1]), (rectangle[0], rectangle[3]), (rectangle[2], rectangle[3])]
         xs: list[float] = [matrix[0] * corner[0] + matrix[2] * corner[1] + matrix[4] for corner in corners]
         ys: list[float] = [matrix[1] * corner[0] + matrix[3] * corner[1] + matrix[5] for corner in corners]
-        self.pictures.append(DrawnPicture(self.page_index, min(xs), self.page_height - max(ys), max(xs) - min(xs), max(ys) - min(ys), vector))
+        self.pictures.append(DrawnPicture(self.page_index, min(xs), self.page_height - max(ys), max(xs) - min(xs), max(ys) - min(ys)))
 
 
 def drawn_pictures(pdf_bytes: bytes) -> list[DrawnPicture]:
@@ -128,8 +126,3 @@ def _pictures_of(reader: pypdf.PdfReader, page_index: int, page: PageObject) -> 
     collector: _Collector = _Collector(reader, page_index, float(page.mediabox.height))
     collector.read(contents, _dictionary_of(page.get("/Resources")), IDENTITY, 0)
     return collector.pictures
-
-
-def drawn_by_weasysvg(pdf_bytes: bytes) -> bool:
-    """Whether the weasysvg plugin drew an SVG of the document, which decides the reference images it is compared with."""
-    return any(picture.vector for picture in drawn_pictures(pdf_bytes))
