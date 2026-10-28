@@ -28,10 +28,9 @@ if TYPE_CHECKING:
     from requests import Response
 
 
-class PdfExporterTestCase(GenericTestCase):
+class PdfExporterTestCase(GenericTestCase[PolarionPdfExporterApi]):
     """PDF Exporter Test Case."""
 
-    extension_api: PolarionPdfExporterApi
     admin_utility_api: PolarionAdminUtilityApi
     elibrary: TempProject
 
@@ -110,9 +109,6 @@ class PdfExporterTestCase(GenericTestCase):
             yield
         finally:
             self.api().polarion_connection.set_print_error(True)
-
-    def api(self) -> PolarionPdfExporterApi:
-        return self.extension_api
 
     def _get_expected_folder(self) -> str:
         return abs_path_str("../test-data/expected")
