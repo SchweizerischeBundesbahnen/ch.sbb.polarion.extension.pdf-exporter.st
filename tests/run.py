@@ -14,12 +14,12 @@ Example:
     Run with Docker test container:
         $ python tests/run.py --tc_polarion_image_name polarion:POLARION_VERSION
 
-The PDF variant tests, the modules named ``test_pdf_variants*``, run only where RUN_PDF_VARIANT_TESTS
-is true. CI sets it; a local run leaves them out, as they take long:
-        $ RUN_PDF_VARIANT_TESTS=true python tests/run.py --app_url https://<POLARION_URL> --app_token TOKEN
+SYSTEM_TEST_SUITE names the suites to run, separated by commas, or ``all``, see tests/suites.py. Where it names none,
+the run takes ``default``: no test of the bulk processing service, and none of the PDF variant tests, which take long:
+        $ SYSTEM_TEST_SUITE=default,bulk python tests/run.py --app_url https://<POLARION_URL> --app_token TOKEN
 
-SYSTEM_TEST_MODULES, a comma-separated list of module names, runs only those modules. A name which
-matches no module fails the run, so a renamed module cannot leave it empty:
+SYSTEM_TEST_MODULES, a comma-separated list of module names, runs only those modules of the suite. A name which
+matches no module of the suite fails the run, so a renamed module cannot leave it empty:
         $ SYSTEM_TEST_MODULES=test_convert,test_fit_to_page python tests/run.py --app_url https://<POLARION_URL> --app_token TOKEN
 """
 
@@ -33,18 +33,7 @@ from python_sbb_polarion.testing.testcontainers_helper import TestContainersHelp
 from python_sbb_polarion.util import abs_path, abs_path_str
 
 from tests.pdf_exporter_test_case import PdfExporterTestCase
-from tests.pdf_variant_support import GROUP_MODULE_PREFIX, GROUP_VARIABLE, group_requested
-
-
-def without_group(tests: unittest.TestSuite) -> unittest.TestSuite:
-    """The tests of a suite, those of the modules of the PDF variant group left out."""
-    kept = unittest.TestSuite()
-    for test in tests:
-        if isinstance(test, unittest.TestSuite):
-            kept.addTest(without_group(test))
-        elif not type(test).__module__.rpartition(".")[2].startswith(GROUP_MODULE_PREFIX):
-            kept.addTest(test)
-    return kept
+from tests.suites import ALL, SUITE_VARIABLE, SUITES, of_no_suite, requested_suites, tests_of
 
 
 def only_modules(tests: unittest.TestSuite, modules: set[str]) -> unittest.TestSuite:
@@ -72,15 +61,22 @@ def modules_of(tests: unittest.TestSuite) -> set[str]:
 # find and load tests
 loader = unittest.TestLoader()
 suite = loader.discover(abs_path_str("."))
-if not group_requested():
-    sys.stderr.write(f"The PDF variant tests are left out; set {GROUP_VARIABLE}=true to run them\n")
-    suite = without_group(suite)
+# A test of a suite of no other name would be left out of every run
+lost_tests = of_no_suite(suite)
+if lost_tests:
+    sys.exit(f"Tests state a suite of no other name ({', '.join(SUITES)}): {', '.join(sorted(lost_tests))}")
+requested = requested_suites()
+unknown_suites = requested - set(SUITES)
+if unknown_suites:
+    sys.exit(f"{SUITE_VARIABLE} names no suite: {', '.join(sorted(unknown_suites))}; the suites are {', '.join((*SUITES, ALL))}")
+suite = tests_of(suite, requested)
+sys.stderr.write(f"Suites of this run: {', '.join(sorted(requested))}; {SUITE_VARIABLE} names them\n")
 requested_modules = {name.strip() for name in os.environ.get("SYSTEM_TEST_MODULES", "").split(",") if name.strip()}
 if requested_modules:
     suite = only_modules(suite, requested_modules)
     missing_modules = requested_modules - modules_of(suite)
     if missing_modules:
-        sys.exit(f"SYSTEM_TEST_MODULES names modules with no tests: {', '.join(sorted(missing_modules))}")
+        sys.exit(f"SYSTEM_TEST_MODULES names modules with no tests in the suites {', '.join(sorted(requested))}: {', '.join(sorted(missing_modules))}")
     sys.stderr.write(f"Only the modules of SYSTEM_TEST_MODULES run: {', '.join(sorted(requested_modules))}\n")
 
 testcontainers_helper = TestContainersHelper()

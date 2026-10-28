@@ -16,6 +16,7 @@ from python_sbb_polarion.extensions.pdf_exporter import DocumentType, PdfVariant
 from tests.bulk_processing_support import merge_through_extension
 from tests.bulk_processing_test_case import BulkProcessingTestCase
 from tests.pdf_variant_support import DOCKER_AVAILABLE, stop_verapdf, verify_pdf_with_verapdf
+from tests.suites import VERAPDF
 
 
 if TYPE_CHECKING:
@@ -39,6 +40,8 @@ MERGE_JOB_TIMEOUT_IN_SEC: int = 100
 
 class PdfExporterMergeVariantsTest(BulkProcessingTestCase):
     """Each PDF variant of a merge of two documents validated with veraPDF."""
+
+    SUITE: ClassVar[str] = VERAPDF
 
     # PDF variants this test covers, those of a single export
     PDF_VARIANTS: ClassVar[list[PdfVariant]] = [

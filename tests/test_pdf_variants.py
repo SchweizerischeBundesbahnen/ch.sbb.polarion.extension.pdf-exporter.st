@@ -7,6 +7,7 @@ from python_sbb_polarion.extensions.pdf_exporter import DocumentType, PdfVariant
 
 from tests.pdf_exporter_test_case import PdfExporterTestCase
 from tests.pdf_variant_support import DOCKER_AVAILABLE, stop_verapdf, verify_pdf_with_verapdf
+from tests.suites import VERAPDF
 
 
 if TYPE_CHECKING:
@@ -18,6 +19,8 @@ if TYPE_CHECKING:
 
 class PdfExporterVariantsTest(PdfExporterTestCase):
     """Test PDF variants validation using VeraPDF"""
+
+    SUITE: ClassVar[str] = VERAPDF
 
     PRODUCT_SPECIFICATION_LOCATION: str = "Specification/Product Specification"
 
