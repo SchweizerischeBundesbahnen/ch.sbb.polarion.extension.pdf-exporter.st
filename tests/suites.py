@@ -40,9 +40,10 @@ def requested_suites() -> set[str]:
 
 
 def suite_of(test: unittest.TestCase) -> str:
-    """The suite the class of the test states, ``default`` where it states none."""
+    """The suite the class of the test states, ``default`` where it states none. A value which is no name stands as it is
+    written, so it names no suite."""
     suite: object = getattr(type(test), "SUITE", DEFAULT)
-    return suite if isinstance(suite, str) else DEFAULT
+    return suite if isinstance(suite, str) else repr(suite)
 
 
 def tests_of(tests: unittest.TestSuite, suites: set[str]) -> unittest.TestSuite:
