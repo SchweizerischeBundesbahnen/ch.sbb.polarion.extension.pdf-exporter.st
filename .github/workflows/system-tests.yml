@@ -77,7 +77,7 @@ jobs:
             modules: ''
             pdf-variants: 'false'
           - suffix: -verapdf
-            modules: test_pdf_variants,test_pdf_variants_of_a_merge
+            modules: test_pdf_variants,test_pdf_variants_of_a_merge,test_pdf_variants_of_formulas
             pdf-variants: 'true'
     # Skip draft PRs (this container suite is expensive); still runs on manual workflow_dispatch.
     if: github.event_name != 'pull_request' || github.event.pull_request.draft == false

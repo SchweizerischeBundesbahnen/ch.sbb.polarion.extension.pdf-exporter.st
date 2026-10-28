@@ -66,9 +66,9 @@ All parameters can be specified as environment variables.
 
 The test suite includes validation of PDF variants (PDF/A and PDF/UA) using VeraPDF. The test `test_pdf_variants.py` validates that generated PDFs comply with their specified variants.
 
-`test_pdf_variants.py` validates single exports. `test_pdf_variants_of_a_merge.py` validates merges through the bulk processing service.
+`test_pdf_variants.py` validates single exports. `test_pdf_variants_of_a_merge.py` validates merges through the bulk processing service. `test_pdf_variants_of_formulas.py` validates a document with formulas, whose text a PDF/A-1 export leaves out.
 
-These tests take long, so `tests/run.py` leaves out every module named `test_pdf_variants*` by default. CI runs them in a job of their own, `system-tests-verapdf`, which sets `RUN_PDF_VARIANT_TESTS=true` and `SYSTEM_TEST_MODULES` to these modules. To run them locally, set it too:
+These tests take long, so `tests/run.py` leaves out every module named `test_pdf_variants*` by default. CI runs them in a job of their own, `system-tests-verapdf`, which sets `RUN_PDF_VARIANT_TESTS=true` and `SYSTEM_TEST_MODULES` to these modules: a new one needs its name in the `modules` list of that job in `system-tests.yml`. To run them locally, set it too:
 ```bash
 RUN_PDF_VARIANT_TESTS=true uv run python tests/run.py --app_url BASE_POLARION_URL --app_token AUTH_TOKEN
 ```
