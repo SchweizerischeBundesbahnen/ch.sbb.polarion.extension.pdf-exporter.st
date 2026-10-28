@@ -342,6 +342,55 @@ class PdfExporterTestCase(GenericTestCase[PolarionPdfExporterApi]):
 
         return previous_header_footer_settings, previous_header_footer_settings
 
+    def _assert_convert_matches_snapshot(
+        self,
+        *,
+        location_path: str,
+        custom_prefix: str,
+        expected_page_count: int,
+        custom_export_params: JsonDict | None = None,
+        ignore_regions_per_page: dict[int, list[tuple[int, int, int, int]]] | None = None,
+        header_footer_settings: JsonDict | None = None,
+    ) -> Response:
+        """Convert a document and compare its rendered pages against the stored snapshot.
+
+        Sets header/footer settings without a timestamp (unless overridden) so snapshots are
+        stable, converts, then restores the original settings before asserting.
+        """
+        settings: JsonDict = header_footer_settings if header_footer_settings is not None else self.HEADER_FOOTER_WITHOUT_TIMESTAMP
+        previous_header_footer_settings: JsonDict
+        previous_header_footer_settings, _ = self._save_header_footer_settings(settings)
+
+        # Act
+        response: Response = self._convert(
+            project_id=self.project_id,
+            location_path=location_path,
+            custom_export_params=custom_export_params,
+        )
+
+        # Restore original header footer settings
+        self._save_header_footer_settings(previous_header_footer_settings)
+
+        # Assert
+        self.assertEqual(HTTPStatus.OK, response.status_code)
+        self.assertIsNotNone(response.content)
+
+        # Verify PDF content
+        page_numbers: int = self._pdf_to_png(
+            pdf_bytes=response.content,
+            custom_prefix=custom_prefix,
+            output_folder=self._get_output_folder(),
+        )
+        self.assertEqual(expected_page_count, page_numbers)
+        self._compare_pdf_pages(
+            custom_prefix=custom_prefix,
+            page_numbers=page_numbers,
+            expected_folder=self._get_expected_folder(),
+            output_folder=self._get_output_folder(),
+            ignore_regions_per_page=ignore_regions_per_page,
+        )
+        return response
+
     def _convert(self, project_id: str | None, location_path: str, custom_export_params: JsonDict | None = None, print_error: bool = True) -> Response:
         export_params: JsonDict = {
             "projectId": project_id,
