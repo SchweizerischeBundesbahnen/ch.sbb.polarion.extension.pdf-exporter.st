@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<work-item>
+    <field id="author">admin</field>
+    <field id="created">2026-10-28 12:00:00.000 +0000</field>
+    <field id="description" text-type="text/html"><![CDATA[An image of 560px ends the description:<br/><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAAAECAAAAAAby2Z4AAAAEElEQVR42mPYQCFgGPoGAABmO7ABG04GlAAAAABJRU5ErkJggg==" style="width: 560px;height: 20px;"/>]]></field>
+    <field id="priority">50.0</field>
+    <field id="severity">should_have</field>
+    <field id="status">draft</field>
+    <field id="title">An image of 560px</field>
+    <field id="type">requirement</field>
+</work-item>
