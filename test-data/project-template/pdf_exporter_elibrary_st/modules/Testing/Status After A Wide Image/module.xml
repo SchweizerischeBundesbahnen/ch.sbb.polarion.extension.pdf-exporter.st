@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+    <field id="author">admin</field>
+    <field id="created">2026-10-28 12:00:00.000 +0000</field>
+    <field id="homePageContent" text-type="text/html"><![CDATA[<p id="polarion_0">Work items whose description ends in an image almost as wide as the column, each followed by its status.</p><div id="polarion_wiki macro name=module-workitem;params=id=EL-14488"></div><div id="polarion_wiki macro name=module-workitem;params=id=EL-14489"></div><div id="polarion_wiki macro name=module-workitem;params=id=EL-14490"></div><div id="polarion_wiki macro name=module-workitem;params=id=EL-14491"></div><div id="polarion_wiki macro name=module-workitem;params=id=EL-14492"></div><div id="polarion_wiki macro name=module-workitem;params=id=EL-14493"></div><div id="polarion_wiki macro name=module-workitem;params=id=EL-14494"></div><div id="polarion_wiki macro name=module-workitem;params=id=EL-14495"></div><div id="polarion_wiki macro name=module-workitem;params=id=EL-14496"></div><div id="polarion_wiki macro name=module-workitem;params=id=EL-14497"></div><div id="polarion_wiki macro name=module-workitem;params=id=EL-14498"></div><div id="polarion_wiki macro name=module-workitem;params=id=EL-14499"></div><div id="polarion_wiki macro name=module-workitem;params=id=EL-14500"></div><div id="polarion_wiki macro name=module-workitem;params=id=EL-14501"></div><div id="polarion_wiki macro name=module-workitem;params=id=EL-14502"></div><div id="polarion_wiki macro name=module-workitem;params=id=EL-14503"></div><div id="polarion_wiki macro name=module-workitem;params=id=EL-14504"></div><div id="polarion_wiki macro name=module-workitem;params=id=EL-14505"></div><div id="polarion_wiki macro name=module-workitem;params=id=EL-14506"></div><div id="polarion_wiki macro name=module-workitem;params=id=EL-14507"></div><div id="polarion_wiki macro name=module-workitem;params=id=EL-14508"></div><div id="polarion_wiki macro name=module-workitem;params=id=EL-14509"></div><div id="polarion_wiki macro name=module-workitem;params=id=EL-14510"></div>]]></field>
+    <field id="renderingLayouts">
+        <list>
+            <struct>
+                <item id="label">Requirement</item>
+                <item id="layouter">paragraph</item>
+                <item id="properties">
+                    <list>
+                        <struct>
+                            <item id="key">fieldsAtEnd</item>
+                            <item id="value">status</item>
+                        </struct>
+                    </list>
+                </item>
+                <item id="type">requirement</item>
+            </struct>
+        </list>
+    </field>
+    <field id="status">draft</field>
+    <field id="structureLinkRole">parent</field>
+    <field id="title">Status After A Wide Image</field>
+    <field id="type">generic</field>
+</module>
