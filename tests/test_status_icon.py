@@ -18,13 +18,20 @@ class PdfExporterStatusIconTest(PdfExporterTestCase):
     """Tests that the icon of a status stays on the line of its label after a wide image.
 
     A work item lists its fields after its description, in brackets: ``[<icon>Draft]``. After an image almost as wide as
-    the column, the line had room for the bracket and the icon alone, and the label went to the next line. The document
-    holds work items whose description ends in an image from 556 to 600 px wide, two pixels apart, so that one of them
-    leaves exactly that room.
+    the column, the line had room for the bracket and the icon alone, and the label went to the next line. pdf-exporter
+    13.12.0 broke them so from an image of 574 px on. The document holds a work item for each of these widths:
+
+    * 560 px, which leaves the status room on the line of the image.
+    * 572 px, the widest image after which 13.12.0 kept the status whole.
+    * 574 px, the narrowest after which it broke it.
+    * 584 px, in the middle of the widths it broke it after.
+    * 600 px, wider than the page, which the exporter narrows to it.
+
+    Each description gives its image in its source, so the document needs no attachments.
     """
 
     LOCATION: str = "Testing/Status After A Wide Image"
-    WORK_ITEMS: int = 23
+    WORK_ITEMS: int = 5
 
     # An icon is 12 pt wide, the images before the fields are far wider
     MAX_ICON_WIDTH_PT: float = 20
@@ -52,6 +59,13 @@ class PdfExporterStatusIconTest(PdfExporterTestCase):
                     self.assertGreater(label[0], icon[0], f"The label at {label} follows its icon at {icon}")
                 statuses += len(labels)
         self.assertEqual(self.WORK_ITEMS, statuses)
+
+    def test_convert_live_doc_draws_the_statuses_after_wide_images(self) -> None:
+        self._assert_convert_matches_snapshot(
+            location_path=self.LOCATION,
+            custom_prefix="test_convert_live_doc_status_after_a_wide_image",
+            expected_page_count=1,
+        )
 
 
 Box = tuple[float, float, float, float]
