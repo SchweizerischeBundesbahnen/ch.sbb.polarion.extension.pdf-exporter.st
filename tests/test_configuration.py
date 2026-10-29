@@ -71,3 +71,20 @@ class PdfExporterConfigurationTest(PdfExporterTestCase):
         json_settings: list[JsonDict] = response.json()
         self.assertIn("name", json_settings[0])
         self.assertEqual("WeasyPrint Service", json_settings[0]["name"])
+
+    def test_check_weasyprint_names_what_draws_svg_and_visio_drawings(self) -> None:
+        """The About page names the SVG renderer and what draws Visio drawings, and no Chromium where the service starts none."""
+        response: Response = self.api().check_weasyprint()
+        self.assertEqual(HTTPStatus.OK, response.status_code)
+
+        statuses: dict[str, JsonDict] = {status["name"]: status for status in response.json()}
+        self.assertIn("WeasyPrint Service: SVG renderer", statuses)
+        self.assertIn("WeasyPrint Service: Visio drawings", statuses)
+
+        svg_renderer: JsonDict = statuses["WeasyPrint Service: SVG renderer"]
+        self.assertEqual("OK", svg_renderer["status"])
+        self.assertRegex(str(svg_renderer["details"]), r"^weasysvg \S+$")
+        visio: JsonDict = statuses["WeasyPrint Service: Visio drawings"]
+        self.assertEqual("OK", visio["status"])
+        self.assertRegex(str(visio["details"]), r"^weasyvsdx \S+, libvisio \S+$")
+        self.assertNotIn("WeasyPrint Service: Chromium", statuses)

@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import pathlib
+import sys
+import unittest
 from contextlib import contextmanager
 from http import HTTPStatus
 from typing import TYPE_CHECKING, ClassVar
@@ -12,6 +14,7 @@ from python_sbb_polarion.testing.generic_test_case import GenericTestCase
 from python_sbb_polarion.util import abs_path, abs_path_str
 
 from tests.constants import PDF_RENDER_DPI, SUPPORTED_FEATURES
+from tests.tls_service_support import take_service_logs
 
 
 if TYPE_CHECKING:
@@ -25,10 +28,9 @@ if TYPE_CHECKING:
     from requests import Response
 
 
-class PdfExporterTestCase(GenericTestCase):
+class PdfExporterTestCase(GenericTestCase[PolarionPdfExporterApi]):
     """PDF Exporter Test Case."""
 
-    extension_api: PolarionPdfExporterApi  # ty: ignore[invalid-mutable-override]
     admin_utility_api: PolarionAdminUtilityApi
     elibrary: TempProject
 
@@ -68,6 +70,21 @@ class PdfExporterTestCase(GenericTestCase):
     def set_elibrary(cls, elibrary: TempProject) -> None:
         cls.elibrary = elibrary
 
+    def run(self, result: unittest.TestResult | None = None) -> unittest.TestResult | None:
+        """Run the case, and print the logs of the services it replaced only where it fails.
+
+        A case which replaces a service expects most of what the service logs, errors included; the logs
+        are in the output folder either way (tls_service_support).
+        """
+        # those of the class fixtures or of an earlier case, which are in their files already
+        take_service_logs()
+        problems_before: int = _problems(result)
+        outcome: unittest.TestResult | None = super().run(result)
+        logs: list[str] = take_service_logs()
+        if logs and outcome is not None and _problems(outcome) > problems_before:
+            sys.stdout.write("".join(logs))
+        return outcome
+
     def setUp(self) -> None:
         self.project_id: str = self.__class__.elibrary.temp_project_id
         self.scope: str = f"project/{self.project_id}/"
@@ -92,9 +109,6 @@ class PdfExporterTestCase(GenericTestCase):
             yield
         finally:
             self.api().polarion_connection.set_print_error(True)
-
-    def api(self) -> PolarionPdfExporterApi:
-        return self.extension_api
 
     def _get_expected_folder(self) -> str:
         return abs_path_str("../test-data/expected")
@@ -259,6 +273,8 @@ class PdfExporterTestCase(GenericTestCase):
                 - Or pass a list[tuple] to apply the same rectangles to all pages.
                 Rectangle format per entry: (left, top, right, bottom)
                 Example: ignore only on page 2 -> {2: [(100, 200, 300, 260)]}
+
+        The expected images are what weasysvg, the only SVG renderer of WeasyPrint service, draws.
         """
         failed_pages: list[str] = []
 
@@ -326,6 +342,55 @@ class PdfExporterTestCase(GenericTestCase):
 
         return previous_header_footer_settings, previous_header_footer_settings
 
+    def _assert_convert_matches_snapshot(
+        self,
+        *,
+        location_path: str,
+        custom_prefix: str,
+        expected_page_count: int,
+        custom_export_params: JsonDict | None = None,
+        ignore_regions_per_page: dict[int, list[tuple[int, int, int, int]]] | None = None,
+        header_footer_settings: JsonDict | None = None,
+    ) -> Response:
+        """Convert a document and compare its rendered pages against the stored snapshot.
+
+        Sets header/footer settings without a timestamp (unless overridden) so snapshots are
+        stable, converts, then restores the original settings before asserting.
+        """
+        settings: JsonDict = header_footer_settings if header_footer_settings is not None else self.HEADER_FOOTER_WITHOUT_TIMESTAMP
+        previous_header_footer_settings: JsonDict
+        previous_header_footer_settings, _ = self._save_header_footer_settings(settings)
+
+        # Act
+        response: Response = self._convert(
+            project_id=self.project_id,
+            location_path=location_path,
+            custom_export_params=custom_export_params,
+        )
+
+        # Restore original header footer settings
+        self._save_header_footer_settings(previous_header_footer_settings)
+
+        # Assert
+        self.assertEqual(HTTPStatus.OK, response.status_code)
+        self.assertIsNotNone(response.content)
+
+        # Verify PDF content
+        page_numbers: int = self._pdf_to_png(
+            pdf_bytes=response.content,
+            custom_prefix=custom_prefix,
+            output_folder=self._get_output_folder(),
+        )
+        self.assertEqual(expected_page_count, page_numbers)
+        self._compare_pdf_pages(
+            custom_prefix=custom_prefix,
+            page_numbers=page_numbers,
+            expected_folder=self._get_expected_folder(),
+            output_folder=self._get_output_folder(),
+            ignore_regions_per_page=ignore_regions_per_page,
+        )
+        return response
+
     def _convert(self, project_id: str | None, location_path: str, custom_export_params: JsonDict | None = None, print_error: bool = True) -> Response:
         export_params: JsonDict = {
             "projectId": project_id,
@@ -371,3 +436,10 @@ class PdfExporterTestCase(GenericTestCase):
         pdf_document: fitz.Document = fitz.open(stream=pdf_bytes, filetype="pdf")
         pdf_document[0].get_pixmap(dpi=PDF_RENDER_DPI).save(str(output_file))
         pdf_document.close()
+
+
+def _problems(result: unittest.TestResult | None) -> int:
+    """How many cases a result counts as failed, erroneous or unexpectedly passing."""
+    if result is None:
+        return 0
+    return len(result.failures) + len(result.errors) + len(result.unexpectedSuccesses)

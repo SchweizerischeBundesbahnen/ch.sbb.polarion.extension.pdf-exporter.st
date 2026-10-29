@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+    <field id="author">admin</field>
+    <field id="created">2026-10-25 10:00:00.000 +0000</field>
+    <field id="homePageContent" text-type="text/html"><![CDATA[<h1 id="polarion_wiki macro name=module-workitem;params=id=EL-14487"></h1><p id="polarion_1">A Visio drawing in VSDX, the format of Visio 2013 and later:</p><p id="polarion_2"><img src="attachment:apache-poi-test.vsdx" style="max-width: 650px;"/></p><p id="polarion_3">A Visio drawing in VSD, the format of Visio 2003 to 2010:</p><p id="polarion_4"><img src="attachment:apache-poi-test.vsd" style="max-width: 650px;"/></p>]]></field>
+    <field id="status">draft</field>
+    <field id="structureLinkRole">parent</field>
+    <field id="title">Visio Drawings</field>
+    <field id="type">generic</field>
+    <field id="usesOutlineNumbering">true</field>
+</module>
