@@ -123,13 +123,13 @@ class PdfExporterTestCase(GenericTestCase[PolarionPdfExporterApi]):
             return content
 
     def _pdf_to_png(self, pdf_bytes: bytes, custom_prefix: str, output_folder: str) -> int:
-        pdf_document: fitz.Document = fitz.open(stream=pdf_bytes, filetype="pdf")  # type: ignore[no-any-unimported]
+        pdf_document: fitz.Document = fitz.open(stream=pdf_bytes, filetype="pdf")
 
         page_numbers: int = 0
         for page_index in range(len(pdf_document)):
             page_number: int = page_index + 1
-            page: fitz.Page = pdf_document[page_index]  # type: ignore[no-any-unimported]
-            pix: fitz.Pixmap = page.get_pixmap(dpi=PDF_RENDER_DPI)  # type: ignore[no-any-unimported]
+            page: fitz.Page = pdf_document[page_index]
+            pix: fitz.Pixmap = page.get_pixmap(dpi=PDF_RENDER_DPI)
             output_file: str = f"{output_folder}/{custom_prefix}_page_{page_number}.png"
             pix.save(output_file)
             page_numbers += 1
@@ -196,7 +196,7 @@ class PdfExporterTestCase(GenericTestCase[PolarionPdfExporterApi]):
 
         updated_mask: NDArray[np.uint8] = np.asarray(cv2.bitwise_and(mask, cv2.bitwise_not(ignore_mask)), dtype=np.uint8)
         # Also zero out color diff in ignored areas (for diff visualization)
-        inv: NDArray[np.uint8] = cv2.bitwise_not(ignore_mask)  # type: ignore[assignment]
+        inv: NDArray[np.uint8] = cv2.bitwise_not(ignore_mask)  # ty: ignore[invalid-assignment]
         if diff.ndim == 3:
             updated_diff: NDArray[np.uint8] = np.asarray(cv2.bitwise_and(diff, diff, mask=inv), dtype=np.uint8)
         else:
@@ -216,8 +216,8 @@ class PdfExporterTestCase(GenericTestCase[PolarionPdfExporterApi]):
         Returns:
             Tuple of (number of different pixels, diff image array)
         """
-        img1: NDArray[np.uint8] = cv2.imread(image1_path)  # type: ignore[assignment]
-        img2: NDArray[np.uint8] = cv2.imread(image2_path)  # type: ignore[assignment]
+        img1: NDArray[np.uint8] = cv2.imread(image1_path)  # ty: ignore[invalid-assignment]
+        img2: NDArray[np.uint8] = cv2.imread(image2_path)  # ty: ignore[invalid-assignment]
 
         if img1 is None or img2 is None:
             raise AssertionError(f"Failed to read images: '{image1_path}' or '{image2_path}'")
@@ -228,15 +228,15 @@ class PdfExporterTestCase(GenericTestCase[PolarionPdfExporterApi]):
 
         import numpy as np
 
-        diff_raw: NDArray[np.uint8] = cv2.absdiff(img1, img2)  # type: ignore[assignment]
+        diff_raw: NDArray[np.uint8] = cv2.absdiff(img1, img2)  # ty: ignore[invalid-assignment]
 
         # Convert to grayscale for thresholding
-        gray_diff: NDArray[np.uint8] = cv2.cvtColor(diff_raw, cv2.COLOR_BGR2GRAY) if len(diff_raw.shape) == 3 else diff_raw  # type: ignore[assignment]
+        gray_diff: NDArray[np.uint8] = cv2.cvtColor(diff_raw, cv2.COLOR_BGR2GRAY) if len(diff_raw.shape) == 3 else diff_raw  # ty: ignore[invalid-assignment]
 
         tolerance: int = 10
         _: float
         mask_raw: NDArray[np.uint8]
-        _, mask_raw = cv2.threshold(gray_diff, tolerance, 255, cv2.THRESH_BINARY)  # type: ignore[assignment]
+        _, mask_raw = cv2.threshold(gray_diff, tolerance, 255, cv2.THRESH_BINARY)  # ty: ignore[invalid-assignment]
 
         # Ensure proper types
         mask: NDArray[np.uint8] = np.asarray(mask_raw, dtype=np.uint8)
@@ -428,12 +428,12 @@ class PdfExporterTestCase(GenericTestCase[PolarionPdfExporterApi]):
 
     def _is_rightmost_column_white(self, file_name: str) -> bool:
         file_path: pathlib.Path = pathlib.Path(self._get_output_folder()) / file_name
-        img: NDArray[np.uint8] = cv2.imread(str(file_path), cv2.IMREAD_GRAYSCALE)  # type: ignore[assignment]
+        img: NDArray[np.uint8] = cv2.imread(str(file_path), cv2.IMREAD_GRAYSCALE)  # ty: ignore[invalid-assignment]
         return img is not None and all(img[:, -1] == 255)
 
     def convert_pdf_to_png_first_page(self, pdf_bytes: bytes, file_name: str) -> None:
         output_file: pathlib.Path = pathlib.Path(self._get_output_folder()) / file_name
-        pdf_document: fitz.Document = fitz.open(stream=pdf_bytes, filetype="pdf")  # type: ignore[no-any-unimported]
+        pdf_document: fitz.Document = fitz.open(stream=pdf_bytes, filetype="pdf")
         pdf_document[0].get_pixmap(dpi=PDF_RENDER_DPI).save(str(output_file))
         pdf_document.close()
 

@@ -129,7 +129,7 @@ class PdfExporterExternalResourcesTest(PdfExporterTestCase):
         self.assertEqual([], recorded, f"the server loaded a resource it had to refuse: {recorded}")
 
     def _assert_probe_picture_absent(self, pdf_bytes: bytes) -> None:
-        document: fitz.Document = fitz.open(stream=pdf_bytes, filetype="pdf")  # type: ignore[no-any-unimported]
+        document: fitz.Document = fitz.open(stream=pdf_bytes, filetype="pdf")
         try:
             for page_index in range(len(document)):
                 for image in document[page_index].get_images(full=True):
@@ -161,7 +161,7 @@ class PdfExporterExternalResourcesTest(PdfExporterTestCase):
         so a case which looks for a body in the file has to read the file as a reader does. The
         spacing goes because a long word is broken across lines wherever it does not fit.
         """
-        document: fitz.Document = fitz.open(stream=pdf_bytes, filetype="pdf")  # type: ignore[no-any-unimported]
+        document: fitz.Document = fitz.open(stream=pdf_bytes, filetype="pdf")
         try:
             return "".join("".join(document[index].get_text().split()) for index in range(len(document)))
         finally:
@@ -278,7 +278,7 @@ class PdfExporterExternalResourcesTest(PdfExporterTestCase):
     def _embedded_pictures(self, pdf_bytes: bytes) -> list[tuple[int, int]]:
         """Every embedded picture larger than the 1x1 placeholder."""
         found: list[tuple[int, int]] = []
-        document: fitz.Document = fitz.open(stream=pdf_bytes, filetype="pdf")  # type: ignore[no-any-unimported]
+        document: fitz.Document = fitz.open(stream=pdf_bytes, filetype="pdf")
         try:
             for page_index in range(len(document)):
                 for image in document[page_index].get_images(full=True):
@@ -319,7 +319,7 @@ class PdfExporterExternalResourcesTest(PdfExporterTestCase):
         self.assertNotEqual(self._rendered_pages(visible), self._rendered_pages(refused))
 
     def _rendered_pages(self, pdf_bytes: bytes) -> list[bytes]:
-        document: fitz.Document = fitz.open(stream=pdf_bytes, filetype="pdf")  # type: ignore[no-any-unimported]
+        document: fitz.Document = fitz.open(stream=pdf_bytes, filetype="pdf")
         try:
             return [document[index].get_pixmap(dpi=150).tobytes("png") for index in range(len(document))]
         finally:
@@ -337,7 +337,7 @@ class PdfExporterExternalResourcesTest(PdfExporterTestCase):
         another size and the glyphs land on slightly other pixels - while the color of the text says
         exactly what the case asks: whether the declaration beside the refused address still applies.
         """
-        document: fitz.Document = fitz.open(stream=pdf_bytes, filetype="pdf")  # type: ignore[no-any-unimported]
+        document: fitz.Document = fitz.open(stream=pdf_bytes, filetype="pdf")
         try:
             return {span["color"] for index in range(len(document)) for block in document[index].get_text("dict")["blocks"] for line in block.get("lines", []) for span in line["spans"]}
         finally:

@@ -73,7 +73,7 @@ class PdfExporterNoPageBreakTest(PdfExporterTestCase):
         return next((index for index, page in enumerate(pages) if text in page), -1)
 
     def _page_texts(self, pdf_bytes: bytes) -> list[str]:
-        pdf_document: fitz.Document = fitz.open(stream=pdf_bytes, filetype="pdf")  # type: ignore[no-any-unimported]
+        pdf_document: fitz.Document = fitz.open(stream=pdf_bytes, filetype="pdf")
         try:
             return [page.get_text() for page in pdf_document]
         finally:

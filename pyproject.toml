@@ -13,7 +13,7 @@ dependencies = [
     "python-sbb-polarion",
     "unittest-xml-reporting>=4,<5",
     "ruff==0.17.2",
-    "mypy==2.4.0",
+    "ty==0.0.89",
     "types-requests==2.33.0.20261006",
     "tox>=4,<5",
     "pypdf==6.21.2",
@@ -176,39 +176,20 @@ section-order = [
 ]
 
 # =============================================================================
-# MyPy Configuration (Strict Type Checking)
+# ty Configuration (Type Checking)
 # =============================================================================
 
-[tool.mypy]
-python_version = "3.15"                  # Tells mypy to check against Python 3.15 features
-warn_return_any = true                   # Warns if function returns 'Any' type
-warn_unused_configs = true               # Warns about unused mypy settings
-disallow_untyped_defs = true             # Disallows functions without type hints
-disallow_incomplete_defs = true          # Disallows partially typed functions
-check_untyped_defs = true                # Type checks bodies of functions without type annotations
-disallow_untyped_calls = false           # Allow calling untyped functions (too strict for third-party libs)
-warn_redundant_casts = true              # Warns about unnecessary type casts
-warn_unused_ignores = true               # Warns about unused '# type: ignore' comments
-warn_no_return = true                    # Warns about functions that don't return a value
-warn_unreachable = true                  # Warns about unreachable code
-strict_equality = true                   # Strict checking of equality operations
-extra_checks = true                      # Enable additional checks
-no_implicit_optional = true              # Disallows implicit Optional types (e.g., x: str = None)
+[tool.ty.environment]
+python-version = "3.15"  # Match requires-python
 
-# Strict Any checks - prevent untyped variables
-disallow_any_unimported = true           # Disallows Any from unfollowed imports (stricter typing)
-disallow_any_generics = true             # Requires type parameters for generic types (e.g., list[str] not list)
-disallow_subclassing_any = true          # Disallows subclassing Any types
+[tool.ty.terminal]
+# Fail on warning-level diagnostics too, as mypy did, so the gate does not depend on the ty default.
+error-on-warning = true
 
-# xmlrunner has no type stubs
-[[tool.mypy.overrides]]
-module = ["xmlrunner"]
-ignore_missing_imports = true
+[tool.ty.rules]
+unused-ignore-comment = "error"  # mypy's warn_unused_ignores: a stale "# ty: ignore" fails the check
 
-# fitz (PyMuPDF) has no type stubs
-[[tool.mypy.overrides]]
-module = ["fitz"]
-ignore_missing_imports = true
+# ty has no equivalent of mypy's disallow_untyped_defs / disallow_any_*. All Python in this repo is test code and tests are exempt from ruff's ANN rules (see per-file-ignores), so type annotations are not enforced here.
 
 # =============================================================================
 # SBB Polarion Linter Configuration

@@ -138,7 +138,7 @@ class PdfExporterFirstPageHeaderFooterTest(PdfExporterTestCase):
         return self._page_texts(response.content)
 
     def _page_texts(self, pdf_bytes: bytes) -> list[str]:
-        pdf_document: fitz.Document = fitz.open(stream=pdf_bytes, filetype="pdf")  # type: ignore[no-any-unimported]
+        pdf_document: fitz.Document = fitz.open(stream=pdf_bytes, filetype="pdf")
         try:
             return [page.get_text() for page in pdf_document]
         finally:

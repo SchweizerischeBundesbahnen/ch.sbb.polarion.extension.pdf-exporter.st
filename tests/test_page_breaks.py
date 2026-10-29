@@ -72,12 +72,12 @@ class PdfExporterPageBreaksTest(PdfExporterTestCase):
 
     def _pdf_pages_orientation(self, pdf_bytes: bytes) -> list[bool]:
         """Get orientations of all PDF pages (True for landscape, False for portrait)."""
-        pdf_document: fitz.Document = fitz.open(stream=pdf_bytes, filetype="pdf")  # type: ignore[no-any-unimported]
+        pdf_document: fitz.Document = fitz.open(stream=pdf_bytes, filetype="pdf")
         page_count: int = pdf_document.page_count
         result: list[bool] = []
 
         for i in range(page_count):
-            rect: fitz.Rect = pdf_document[i].rect  # type: ignore[no-any-unimported]
+            rect: fitz.Rect = pdf_document[i].rect
             result.append(rect.width > rect.height)
 
         pdf_document.close()
