@@ -14,6 +14,7 @@ from python_sbb_polarion.testing.generic_test_case import GenericTestCase
 from python_sbb_polarion.util import abs_path, abs_path_str
 
 from tests.constants import PDF_RENDER_DPI, SUPPORTED_FEATURES
+from tests.suites import DEFAULT
 from tests.tls_service_support import take_service_logs
 
 
@@ -33,6 +34,9 @@ class PdfExporterTestCase(GenericTestCase[PolarionPdfExporterApi]):
 
     admin_utility_api: PolarionAdminUtilityApi
     elibrary: TempProject
+
+    # The suite the tests of the class belong to, see suites.py
+    SUITE: ClassVar[str] = DEFAULT
 
     DOCUMENT_LOCATION: str = "Specification/Administration Specification"
 

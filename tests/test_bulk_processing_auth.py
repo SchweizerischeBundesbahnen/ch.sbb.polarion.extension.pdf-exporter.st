@@ -22,7 +22,7 @@ with an http address, which a run cannot switch to; the unit tests of the connec
 from __future__ import annotations
 
 from http import HTTPStatus
-from typing import TYPE_CHECKING, Any, NoReturn
+from typing import TYPE_CHECKING, Any, ClassVar, NoReturn
 
 from python_sbb_polarion.extensions.pdf_exporter import DocumentType
 
@@ -46,6 +46,7 @@ from tests.bulk_processing_support import (
 )
 from tests.pdf_exporter_test_case import PdfExporterTestCase
 from tests.ssrf_support import containerized_run, release_docker
+from tests.suites import BULK as BULK_SUITE
 
 
 if TYPE_CHECKING:
@@ -76,6 +77,8 @@ OTHER_NAME_KEY: str = "/tls/bulk-other-name.key"
 
 class PdfExporterBulkProcessingAuthTest(PdfExporterTestCase):
     """Cases for the API key and the certificates the bulk processing service is reached with."""
+
+    SUITE: ClassVar[str] = BULK_SUITE
 
     @classmethod
     def tearDownClass(cls) -> None:

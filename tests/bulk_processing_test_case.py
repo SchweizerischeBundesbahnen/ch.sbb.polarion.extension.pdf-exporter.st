@@ -8,15 +8,18 @@ failure rather than a skip, the way the WeasyPrint authenticated cases decide it
 
 from __future__ import annotations
 
-from typing import NoReturn
+from typing import ClassVar, NoReturn
 
 from tests.bulk_processing_support import configured, requested_by_the_run, service_answers, service_api_key, service_ready
 from tests.pdf_exporter_test_case import PdfExporterTestCase
 from tests.ssrf_support import containerized_run, release_docker
+from tests.suites import BULK
 
 
 class BulkProcessingTestCase(PdfExporterTestCase):
     """Cases which reach the bulk processing service Polarion names."""
+
+    SUITE: ClassVar[str] = BULK
 
     @classmethod
     def tearDownClass(cls) -> None:

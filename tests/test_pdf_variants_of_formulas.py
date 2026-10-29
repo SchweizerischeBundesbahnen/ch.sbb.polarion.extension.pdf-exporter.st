@@ -1,13 +1,14 @@
 from __future__ import annotations
 
 from http import HTTPStatus
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, ClassVar
 
 import fitz
 from python_sbb_polarion.extensions.pdf_exporter import PdfVariant
 
 from tests.pdf_exporter_test_case import PdfExporterTestCase
 from tests.pdf_variant_support import DOCKER_AVAILABLE, stop_verapdf, verify_pdf_with_verapdf
+from tests.suites import VERAPDF
 
 
 if TYPE_CHECKING:
@@ -20,6 +21,8 @@ class PdfExporterVariantsOfFormulasTest(PdfExporterTestCase):
     The source of a formula lies over it as transparent text. PDF/A-1 allows no transparency (ISO 19005-1, 6.4), so a
     PDF/A-1 export leaves the text out, and veraPDF passes both.
     """
+
+    SUITE: ClassVar[str] = VERAPDF
 
     LOCATION: str = "Testing/formula test"
     SOURCE: str = r"x=\frac{-b\pm\sqrt{\color{Red}{b^2-4ac}}}{2a}"

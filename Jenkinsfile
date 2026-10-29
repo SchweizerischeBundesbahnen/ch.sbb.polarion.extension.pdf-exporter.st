@@ -68,7 +68,7 @@ pipeline {
                         ]) {
                             sh '''
                                 export PATH="$HOME/.local/bin:$PATH"
-                                export RUN_PDF_VARIANT_TESTS=true
+                                export SYSTEM_TEST_SUITE=all
                                 uv run tox -e test -- --app_url ${POLARION_BASE_URL} --app_token ${AUTH_TOKEN}
                             '''
                         }
