@@ -14,8 +14,30 @@ if TYPE_CHECKING:
     from requests import Response
 
 
+# The labels of the cross-references of the document: EL-255 refers to EL-253 with its title, EL-256 to EL-251 by its ID
+CROSS_REFERENCE_LABELS: frozenset[str] = frozenset({"EL-253 - wi 2", "EL-251"})
+
+# The color of a link in Polarion, #007993, as the PDF sets it: RGB components from 0 to 1, to three decimals
+LINK_COLOR: tuple[float, ...] = (0.0, 0.475, 0.576)
+
+
 class PdfExporterWILinksConvertTest(PdfExporterTestCase):
     """Test cases for converting work item links to internal PDF links."""
+
+    def test_convert_live_doc_draws_cross_references_as_polarion_does(self) -> None:
+        """pdf-exporter#1268: a cross-reference is in the color of a link, as in Polarion, not black, with local URLs cut or not."""
+        for cut_local_urls in (False, True):
+            with self.subTest(cut_local_urls=cut_local_urls):
+                response: Response = self._convert(
+                    project_id=self.project_id,
+                    location_path="Specification/convert_wi_links_to_internal",
+                    custom_export_params={"cutLocalUrls": cut_local_urls},
+                )
+
+                self.assertEqual(HTTPStatus.OK, response.status_code)
+                text_in_link_color: str = self._text_in_color(response.content, LINK_COLOR)
+                for label in sorted(CROSS_REFERENCE_LABELS):
+                    self.assertIn(label, text_in_link_color, f"The cross-reference '{label}' is in the color of a link")
 
     def test_convert_live_doc_with_wi_links_to_internal(self) -> None:
         # Set header footer settings without timestamp
@@ -81,6 +103,23 @@ class PdfExporterWILinksConvertTest(PdfExporterTestCase):
         # Verify all required links were found
         self.assertTrue(el_256_to_251_verified, "EL-256 link to EL-251 was not found or verified")
         self.assertTrue(el_255_to_253_verified, "EL-255 link to EL-253 was not found or verified")
+
+    def _text_in_color(self, pdf: bytes, color: tuple[float, ...]) -> str:
+        """The text the PDF draws in a fill color, its pieces joined by a line break."""
+        pieces: list[str] = []
+        fill: list[tuple[float, ...] | None] = [None]
+
+        def before(operator: bytes, operands: list[Any], _cm: Any, _tm: Any) -> None:
+            if operator == b"rg":
+                fill[0] = tuple(round(float(operand), 3) for operand in operands)
+
+        def text(piece: str, _cm: Any, _tm: Any, _font: Any, _size: Any) -> None:
+            if fill[0] == color:
+                pieces.append(piece)
+
+        for page in pypdf.PdfReader(io.BytesIO(pdf)).pages:
+            page.extract_text(visitor_operand_before=before, visitor_text=text)
+        return "\n".join(pieces)
 
     def _find_page_with_text(self, pdf_reader: pypdf.PdfReader, search_text: str) -> int | None:
         """Find the first page containing the specified text."""
