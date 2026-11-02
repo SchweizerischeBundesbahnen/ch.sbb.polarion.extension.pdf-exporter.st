@@ -104,23 +104,6 @@ class PdfExporterWILinksConvertTest(PdfExporterTestCase):
         self.assertTrue(el_256_to_251_verified, "EL-256 link to EL-251 was not found or verified")
         self.assertTrue(el_255_to_253_verified, "EL-255 link to EL-253 was not found or verified")
 
-    def _text_in_color(self, pdf: bytes, color: tuple[float, ...]) -> str:
-        """The text the PDF draws in a fill color, its pieces joined by a line break."""
-        pieces: list[str] = []
-        fill: list[tuple[float, ...] | None] = [None]
-
-        def before(operator: bytes, operands: list[Any], _cm: Any, _tm: Any) -> None:
-            if operator == b"rg":
-                fill[0] = tuple(round(float(operand), 3) for operand in operands)
-
-        def text(piece: str, _cm: Any, _tm: Any, _font: Any, _size: Any) -> None:
-            if fill[0] == color:
-                pieces.append(piece)
-
-        for page in pypdf.PdfReader(io.BytesIO(pdf)).pages:
-            page.extract_text(visitor_operand_before=before, visitor_text=text)
-        return "\n".join(pieces)
-
     def _find_page_with_text(self, pdf_reader: pypdf.PdfReader, search_text: str) -> int | None:
         """Find the first page containing the specified text."""
         for page_num in range(len(pdf_reader.pages)):

@@ -1,14 +1,16 @@
 from __future__ import annotations
 
+import io
 import pathlib
 import sys
 import unittest
 from contextlib import contextmanager
 from http import HTTPStatus
-from typing import TYPE_CHECKING, ClassVar
+from typing import TYPE_CHECKING, Any, ClassVar
 
 import cv2
 import fitz
+import pypdf
 from python_sbb_polarion.extensions.pdf_exporter import DocumentType, Orientation, PaperSize, PolarionPdfExporterApi
 from python_sbb_polarion.testing.generic_test_case import GenericTestCase
 from python_sbb_polarion.util import abs_path, abs_path_str
@@ -425,6 +427,23 @@ class PdfExporterTestCase(GenericTestCase[PolarionPdfExporterApi]):
         )
         api.polarion_connection.set_print_error(True)
         return response
+
+    def _text_in_color(self, pdf: bytes, color: tuple[float, ...]) -> str:
+        """The text the PDF draws in a fill color, its pieces joined by a line break."""
+        pieces: list[str] = []
+        fill: list[tuple[float, ...] | None] = [None]
+
+        def before(operator: bytes, operands: list[Any], _cm: Any, _tm: Any) -> None:
+            if operator == b"rg":
+                fill[0] = tuple(round(float(operand), 3) for operand in operands)
+
+        def text(piece: str, _cm: Any, _tm: Any, _font: Any, _size: Any) -> None:
+            if fill[0] == color:
+                pieces.append(piece)
+
+        for page in pypdf.PdfReader(io.BytesIO(pdf)).pages:
+            page.extract_text(visitor_operand_before=before, visitor_text=text)
+        return "\n".join(pieces)
 
     def _is_rightmost_column_white(self, file_name: str) -> bool:
         file_path: pathlib.Path = pathlib.Path(self._get_output_folder()) / file_name
