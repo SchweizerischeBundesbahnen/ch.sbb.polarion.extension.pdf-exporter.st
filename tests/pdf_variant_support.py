@@ -1,13 +1,11 @@
 """Validation of a PDF against the variant it was exported in, with veraPDF.
 
-Shared by the variant tests of a single export and of a merge. Every module named ``test_pdf_variants*``
-belongs to the group of PDF variant tests, which ``run.py`` runs only where ``RUN_PDF_VARIANT_TESTS`` is
-set: they validate dozens of exports and take long, so a local run leaves them out and CI runs them.
+Shared by the PDF variant tests, which belong to the suite ``verapdf`` (see ``suites.py``): they validate dozens of
+exports and take long, so a local run leaves them out and CI runs them apart.
 """
 
 from __future__ import annotations
 
-import os
 import tempfile
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
@@ -20,10 +18,6 @@ from tests.verapdf_manager import VeraPDFManager
 if TYPE_CHECKING:
     from python_sbb_polarion.types import JsonDict
 
-
-# The prefix of the modules of the group, and the variable which runs it
-GROUP_MODULE_PREFIX: str = "test_pdf_variants"
-GROUP_VARIABLE: str = "RUN_PDF_VARIANT_TESTS"
 
 # Module-level VeraPDF manager
 _verapdf_manager = VeraPDFManager()
@@ -47,11 +41,6 @@ VARIANT_FLAVOUR_MAP: dict[PdfVariant, str] = {
     PdfVariant.PDF_UA_1: "ua1",
     PdfVariant.PDF_UA_2: "ua2",
 }
-
-
-def group_requested() -> bool:
-    """Whether this run asked for the group of PDF variant tests."""
-    return os.environ.get(GROUP_VARIABLE, "").strip().lower() in {"1", "true", "yes"}
 
 
 def stop_verapdf() -> None:

@@ -66,19 +66,18 @@ env:
 jobs:
   system-tests:
     # Two runs, both required checks of ruleset main-requires-status-checks: `system-tests` runs the
-    # suite, `system-tests-verapdf` the PDF variant tests. Those validate with veraPDF and take long, so
-    # they run apart (run.py leaves them out unless RUN_PDF_VARIANT_TESTS is set).
+    # suites default and bulk, `system-tests-verapdf` the PDF variant tests. Those validate with veraPDF
+    # and take long, so they run apart. A test class states its suite, see tests/suites.py: the runs
+    # name suites, not modules, and together they name every suite.
     name: system-tests${{ matrix.suffix }}
     strategy:
       fail-fast: false
       matrix:
         include:
           - suffix: ''
-            modules: ''
-            pdf-variants: 'false'
+            suites: default,bulk
           - suffix: -verapdf
-            modules: test_pdf_variants,test_pdf_variants_of_a_merge,test_pdf_variants_of_formulas
-            pdf-variants: 'true'
+            suites: verapdf
     # Skip draft PRs (this container suite is expensive); still runs on manual workflow_dispatch.
     if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
     runs-on: ubuntu-latest
@@ -86,9 +85,8 @@ jobs:
       contents: read
     env:
       IO_JFROG_SBB_POLARION_TOKEN: ${{ secrets.IO_JFROG_SBB_POLARION_TOKEN }}
-      # empty for all modules, see tests/run.py
-      SYSTEM_TEST_MODULES: ${{ matrix.modules }}
-      RUN_PDF_VARIANT_TESTS: ${{ matrix.pdf-variants }}
+      # see tests/suites.py
+      SYSTEM_TEST_SUITE: ${{ matrix.suites }}
     steps:
       - name: 📄 Checkout code
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7
