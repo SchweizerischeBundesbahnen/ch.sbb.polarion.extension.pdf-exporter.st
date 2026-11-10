@@ -16,7 +16,7 @@ dependencies = [
     "ty==0.0.99",
     "types-requests==2.33.0.20261030",
     "tox>=4,<5",
-    "pypdf==6.21.4",
+    "pypdf==7.0.0",
     "PyMuPDF==1.28.2",
     "opencv-python-headless==5.0.0.93",
     "testcontainers==4.15.0",
