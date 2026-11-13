@@ -236,11 +236,11 @@ class TestRunAttachmentTest(PdfExporterTestCase):
             total_pages: int = len(pdf_reader.pages)
             self.assertEqual(2, total_pages)
 
-            embedded_files: object = pdf_reader.trailer["/Root"].get("/Names", {}).get("/EmbeddedFiles")  # ty: ignore[unresolved-attribute]
+            embedded_files: object = pdf_reader.trailer["/Root"].get("/Names", {}).get("/EmbeddedFiles")  # ty: ignore[missing-attribute]
             self.assertIsNotNone(embedded_files)
 
-            embedded_files_obj: object = embedded_files.get_object()  # ty: ignore[unresolved-attribute]
-            names: list[object] = embedded_files_obj.get("/Names", [])  # ty: ignore[unresolved-attribute]
+            embedded_files_obj: object = embedded_files.get_object()  # ty: ignore[missing-attribute]
+            names: list[object] = embedded_files_obj.get("/Names", [])  # ty: ignore[missing-attribute]
             file_names: list[object] = [names[i] for i in range(0, len(names), 2)]
             assert "test_attachment_file_name" in file_names[0]  # ty: ignore[unsupported-operator]
         finally:
