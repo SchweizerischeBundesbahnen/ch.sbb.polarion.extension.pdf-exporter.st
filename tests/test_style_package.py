@@ -75,7 +75,7 @@ class PdfExporterStylePackageTest(PdfExporterTestCase):
         # extract just those items which were created in scope of this test
         just_created_packages: list[str | JsonDict] = [item for item in updated_suitable_packages if item in test_scope_package_names + global_scope_package_names]
         # and check whether they are sorted alphabetically, because by default they must have the same weight (50.0)
-        self.assertTrue(just_created_packages == sorted(just_created_packages, key=lambda x: x.lower()))  # ty: ignore[missing-union-attribute]
+        self.assertEqual(just_created_packages, sorted(just_created_packages, key=lambda x: x.lower()))  # ty: ignore[missing-union-attribute]
 
         # modify weights for our items
         self.api().save_style_package_weights(
