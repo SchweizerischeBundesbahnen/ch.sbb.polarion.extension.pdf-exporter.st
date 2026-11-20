@@ -463,7 +463,7 @@ requires-dist = [
     { name = "opencv-python-headless", specifier = "==5.0.0.93" },
     { name = "pymupdf", specifier = "==1.28.2" },
     { name = "pypdf", specifier = "==7.1.0" },
-    { name = "python-sbb-polarion", git = "https://github.com/SchweizerischeBundesbahnen/python-sbb-polarion?tag=v5.1.0" },
+    { name = "python-sbb-polarion", git = "https://github.com/SchweizerischeBundesbahnen/python-sbb-polarion?tag=v5.2.0" },
     { name = "ruff", specifier = "==0.17.5" },
     { name = "testcontainers", specifier = "==4.15.0" },
     { name = "tox", specifier = ">=4,<5" },
@@ -612,8 +612,8 @@ wheels = [
 
 [[package]]
 name = "python-sbb-polarion"
-version = "5.1.0"
-source = { git = "https://github.com/SchweizerischeBundesbahnen/python-sbb-polarion?tag=v5.1.0#962a6248dff4426d15e736354769f209b4bc08af" }
+version = "5.2.0"
+source = { git = "https://github.com/SchweizerischeBundesbahnen/python-sbb-polarion?tag=v5.2.0#2009422aa61bebcd81ad75d2991c0c52335ce3a8" }
 dependencies = [
     { name = "docker" },
     { name = "ldap3" },
