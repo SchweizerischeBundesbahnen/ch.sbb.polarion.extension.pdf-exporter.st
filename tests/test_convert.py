@@ -635,6 +635,9 @@ class PdfExporterConvertTest(PdfExporterTestCase):
         places to break. flying-saucer, which measures it, broke a word where its formatted part starts or
         ends until 10.8.0, so the table measured narrower than it prints, its words got no places to break,
         and the text ran past the right margin.
+
+        WeasyPrint still overflows "Gleisfreimeldeanlage" into the next column, as the expected page shows: it
+        skips a break point inside an inline box once the box fits (Kozea/WeasyPrint#1614).
         """
         response: Response = self._assert_convert_matches_snapshot(
             location_path="Testing/Formatted Words In A Cramped Table",
