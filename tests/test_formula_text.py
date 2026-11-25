@@ -3,8 +3,7 @@ from __future__ import annotations
 from http import HTTPStatus
 from typing import TYPE_CHECKING, ClassVar
 
-import fitz
-
+from tests import pdf_probe
 from tests.pdf_exporter_test_case import PdfExporterTestCase
 
 
@@ -35,7 +34,7 @@ class PdfExporterFormulaTextTest(PdfExporterTestCase):
         response: Response = self._convert(project_id=self.project_id, location_path=self.LOCATION)
         self.assertEqual(HTTPStatus.OK, response.status_code)
 
-        with fitz.open(stream=response.content, filetype="pdf") as document:
-            text: str = " ".join(" ".join(page.get_text().split()) for page in document)
+        with pdf_probe.open_pdf(response.content) as document:
+            text: str = " ".join(" ".join(pdf_probe.text(page).split()) for page in document)
         for source in self.SOURCES:
             self.assertIn(source, text)

@@ -3,8 +3,7 @@ from __future__ import annotations
 from http import HTTPStatus
 from typing import TYPE_CHECKING
 
-import fitz
-
+from tests import pdf_probe
 from tests.pdf_exporter_test_case import PdfExporterTestCase
 
 
@@ -41,5 +40,5 @@ class PdfExporterVisioTest(PdfExporterTestCase):
             location_path="Testing/Visio Drawings",
         )
         self.assertEqual(HTTPStatus.OK, response.status_code)
-        with fitz.open(stream=response.content, filetype="pdf") as document:
-            return " ".join(" ".join(page.get_text().split()) for page in document)
+        with pdf_probe.open_pdf(response.content) as document:
+            return " ".join(" ".join(pdf_probe.text(page).split()) for page in document)

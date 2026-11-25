@@ -21,8 +21,7 @@ import base64
 from http import HTTPStatus
 from typing import TYPE_CHECKING, ClassVar, NoReturn
 
-import fitz
-
+from tests import pdf_probe
 from tests.constants import PdfExporterFeature
 from tests.pdf_exporter_test_case import PdfExporterTestCase
 from tests.ssrf_probe import PROBE_BODY_MARKER, PROBE_IMAGE_HEIGHT, PROBE_IMAGE_WIDTH, PROBE_PNG, SsrfProbe
@@ -129,15 +128,11 @@ class PdfExporterExternalResourcesTest(PdfExporterTestCase):
         self.assertEqual([], recorded, f"the server loaded a resource it had to refuse: {recorded}")
 
     def _assert_probe_picture_absent(self, pdf_bytes: bytes) -> None:
-        document: fitz.Document = fitz.open(stream=pdf_bytes, filetype="pdf")
-        try:
-            for page_index in range(len(document)):
-                for image in document[page_index].get_images(full=True):
-                    extracted: dict[str, int] = document.extract_image(image[0])
-                    if extracted["width"] == PROBE_IMAGE_WIDTH and extracted["height"] == PROBE_IMAGE_HEIGHT:
+        with pdf_probe.open_pdf(pdf_bytes) as document:
+            for page in document:
+                for image in pdf_probe.images(page):
+                    if image.width == PROBE_IMAGE_WIDTH and image.height == PROBE_IMAGE_HEIGHT:
                         self.fail("the picture of the probe reached the exported document")
-        finally:
-            document.close()
 
     def _refused(self, body: str) -> bytes:
         pdf_bytes: bytes = self._export(body)
@@ -161,11 +156,8 @@ class PdfExporterExternalResourcesTest(PdfExporterTestCase):
         so a case which looks for a body in the file has to read the file as a reader does. The
         spacing goes because a long word is broken across lines wherever it does not fit.
         """
-        document: fitz.Document = fitz.open(stream=pdf_bytes, filetype="pdf")
-        try:
-            return "".join("".join(document[index].get_text().split()) for index in range(len(document)))
-        finally:
-            document.close()
+        with pdf_probe.open_pdf(pdf_bytes) as document:
+            return "".join("".join(pdf_probe.text(page).split()) for page in document)
 
     # ------------------------------------------------------------------ the address decides
 
@@ -278,15 +270,9 @@ class PdfExporterExternalResourcesTest(PdfExporterTestCase):
     def _embedded_pictures(self, pdf_bytes: bytes) -> list[tuple[int, int]]:
         """Every embedded picture larger than the 1x1 placeholder."""
         found: list[tuple[int, int]] = []
-        document: fitz.Document = fitz.open(stream=pdf_bytes, filetype="pdf")
-        try:
-            for page_index in range(len(document)):
-                for image in document[page_index].get_images(full=True):
-                    extracted: dict[str, int] = document.extract_image(image[0])
-                    if extracted["width"] > 1 or extracted["height"] > 1:
-                        found.append((extracted["width"], extracted["height"]))
-        finally:
-            document.close()
+        with pdf_probe.open_pdf(pdf_bytes) as document:
+            for page in document:
+                found.extend((image.width, image.height) for image in pdf_probe.images(page) if image.width > 1 or image.height > 1)
         return found
 
     # ------------------------------------------------------------------ what must keep working
@@ -319,11 +305,8 @@ class PdfExporterExternalResourcesTest(PdfExporterTestCase):
         self.assertNotEqual(self._rendered_pages(visible), self._rendered_pages(refused))
 
     def _rendered_pages(self, pdf_bytes: bytes) -> list[bytes]:
-        document: fitz.Document = fitz.open(stream=pdf_bytes, filetype="pdf")
-        try:
-            return [document[index].get_pixmap(dpi=150).tobytes("png") for index in range(len(document))]
-        finally:
-            document.close()
+        with pdf_probe.open_pdf(pdf_bytes) as document:
+            return [pdf_probe.render_png(page, 150) for page in document]
 
     # ------------------------------------------------------------------ what a refusal costs the stylesheet
 
@@ -337,11 +320,8 @@ class PdfExporterExternalResourcesTest(PdfExporterTestCase):
         another size and the glyphs land on slightly other pixels - while the color of the text says
         exactly what the case asks: whether the declaration beside the refused address still applies.
         """
-        document: fitz.Document = fitz.open(stream=pdf_bytes, filetype="pdf")
-        try:
-            return {span["color"] for index in range(len(document)) for block in document[index].get_text("dict")["blocks"] for line in block.get("lines", []) for span in line["spans"]}
-        finally:
-            document.close()
+        with pdf_probe.open_pdf(pdf_bytes) as document:
+            return {span.color for page in document for span in pdf_probe.spans(page)}
 
     def _assert_the_stylesheet_survived(self, declarations: str) -> None:
         """Export a document styled red beside `declarations`, and read the color back out of it."""

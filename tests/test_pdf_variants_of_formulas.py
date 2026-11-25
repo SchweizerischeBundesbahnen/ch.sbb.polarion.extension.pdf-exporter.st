@@ -3,9 +3,9 @@ from __future__ import annotations
 from http import HTTPStatus
 from typing import TYPE_CHECKING
 
-import fitz
 from python_sbb_polarion.extensions.pdf_exporter import PdfVariant
 
+from tests import pdf_probe
 from tests.pdf_exporter_test_case import PdfExporterTestCase
 from tests.pdf_variant_support import DOCKER_AVAILABLE, stop_verapdf, verify_pdf_with_verapdf
 
@@ -57,5 +57,5 @@ class PdfExporterVariantsOfFormulasTest(PdfExporterTestCase):
         is_compliant, message = verify_pdf_with_verapdf(response.content, pdf_variant)
         self.assertTrue(is_compliant, f"PDF variant {pdf_variant} validation failed: {message}")
 
-        with fitz.open(stream=response.content, filetype="pdf") as document:
-            return " ".join(" ".join(page.get_text().split()) for page in document)
+        with pdf_probe.open_pdf(response.content) as document:
+            return " ".join(" ".join(pdf_probe.text(page).split()) for page in document)

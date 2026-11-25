@@ -4,9 +4,9 @@ import re
 from http import HTTPStatus
 from typing import TYPE_CHECKING, ClassVar
 
-import fitz
 from python_sbb_polarion.extensions.pdf_exporter import Orientation
 
+from tests import pdf_probe
 from tests.pdf_exporter_test_case import PdfExporterTestCase
 
 
@@ -72,16 +72,9 @@ class PdfExporterPageBreaksTest(PdfExporterTestCase):
 
     def _pdf_pages_orientation(self, pdf_bytes: bytes) -> list[bool]:
         """Get orientations of all PDF pages (True for landscape, False for portrait)."""
-        pdf_document: fitz.Document = fitz.open(stream=pdf_bytes, filetype="pdf")
-        page_count: int = pdf_document.page_count
-        result: list[bool] = []
-
-        for i in range(page_count):
-            rect: fitz.Rect = pdf_document[i].rect
-            result.append(rect.width > rect.height)
-
-        pdf_document.close()
-        return result
+        with pdf_probe.open_pdf(pdf_bytes) as pdf_document:
+            sizes: list[tuple[float, float]] = [pdf_probe.size(page) for page in pdf_document]
+        return [width > height for width, height in sizes]
 
 
 def _sanitize_name(name: str) -> str:

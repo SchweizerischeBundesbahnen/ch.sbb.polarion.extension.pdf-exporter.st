@@ -3,8 +3,7 @@ from __future__ import annotations
 from http import HTTPStatus
 from typing import TYPE_CHECKING
 
-import fitz
-
+from tests import pdf_probe
 from tests.pdf_exporter_test_case import PdfExporterTestCase
 
 
@@ -43,17 +42,17 @@ class PdfExporterStatusIconTest(PdfExporterTestCase):
         self.assertEqual(HTTPStatus.OK, response.status_code)
 
         statuses: int = 0
-        with fitz.open(stream=response.content, filetype="pdf") as document:
-            for page in document:
+        with pdf_probe.open_pdf(response.content) as document:
+            for number, page in enumerate(document):
                 icons: list[Box] = sorted(
-                    (box for box in (_box(info["bbox"]) for info in page.get_image_info()) if box[2] - box[0] < self.MAX_ICON_WIDTH_PT),
+                    (box for box in (_box((image.box.x0, image.box.y0, image.box.x1, image.box.y1)) for image in pdf_probe.images(page)) if box[2] - box[0] < self.MAX_ICON_WIDTH_PT),
                     key=_reading_order,
                 )
                 labels: list[Box] = sorted(
-                    (_box(span["bbox"]) for block in page.get_text("dict")["blocks"] for line in block.get("lines", []) for span in line["spans"] if span["text"].startswith("Draft")),
+                    (_box((span.box.x0, span.box.y0, span.box.x1, span.box.y1)) for span in pdf_probe.spans(page) if span.text.startswith("Draft")),
                     key=_reading_order,
                 )
-                self.assertEqual(len(labels), len(icons), f"Each label on page {page.number + 1} has its icon")
+                self.assertEqual(len(labels), len(icons), f"Each label on page {number + 1} has its icon")
                 for icon, label in zip(icons, labels, strict=True):
                     self.assertAlmostEqual(_middle(label), _middle(icon), delta=self.TOLERANCE_PT, msg=f"The icon at {icon} is on the line of its label at {label}")
                     self.assertGreater(label[0], icon[0], f"The label at {label} follows its icon at {icon}")

@@ -3,8 +3,7 @@ from __future__ import annotations
 from http import HTTPStatus
 from typing import TYPE_CHECKING
 
-import fitz
-
+from tests import pdf_probe
 from tests.drawn_pictures import drawn_pictures
 from tests.pdf_exporter_test_case import PdfExporterTestCase
 
@@ -41,9 +40,9 @@ class PdfExporterOrphanHeaderTest(PdfExporterTestCase):
         # Assert
         self.assertEqual(HTTPStatus.OK, response.status_code)
 
-        with fitz.open(stream=response.content, filetype="pdf") as document:
-            header_pages: list[int] = [page.number for page in document if self.HEADER_CELL in page.get_text()]
-            page_numbers: int = document.page_count
+        with pdf_probe.open_pdf(response.content) as document:
+            header_pages: list[int] = [number for number, page in enumerate(document) if self.HEADER_CELL in pdf_probe.text(page)]
+            page_numbers: int = len(document)
 
         # A diagram is told from the logo by its height
         diagram_pages: list[int] = [picture.page for picture in drawn_pictures(response.content) if picture.height > self.DIAGRAM_HEIGHT_PT]

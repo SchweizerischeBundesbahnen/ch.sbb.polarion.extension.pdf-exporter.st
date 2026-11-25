@@ -9,12 +9,12 @@ from http import HTTPStatus
 from typing import TYPE_CHECKING, Any, ClassVar
 
 import cv2
-import fitz
 import pypdf
 from python_sbb_polarion.extensions.pdf_exporter import DocumentType, Orientation, PaperSize, PolarionPdfExporterApi
 from python_sbb_polarion.testing.generic_test_case import GenericTestCase
 from python_sbb_polarion.util import abs_path, abs_path_str
 
+from tests import pdf_probe
 from tests.constants import PDF_RENDER_DPI, SUPPORTED_FEATURES
 from tests.tls_service_support import take_service_logs
 
@@ -125,18 +125,13 @@ class PdfExporterTestCase(GenericTestCase[PolarionPdfExporterApi]):
             return content
 
     def _pdf_to_png(self, pdf_bytes: bytes, custom_prefix: str, output_folder: str) -> int:
-        pdf_document: fitz.Document = fitz.open(stream=pdf_bytes, filetype="pdf")
-
         page_numbers: int = 0
-        for page_index in range(len(pdf_document)):
-            page_number: int = page_index + 1
-            page: fitz.Page = pdf_document[page_index]
-            pix: fitz.Pixmap = page.get_pixmap(dpi=PDF_RENDER_DPI)
-            output_file: str = f"{output_folder}/{custom_prefix}_page_{page_number}.png"
-            pix.save(output_file)
-            page_numbers += 1
-
-        pdf_document.close()
+        with pdf_probe.open_pdf(pdf_bytes) as pdf_document:
+            for page_index, page in enumerate(pdf_document):
+                page_number: int = page_index + 1
+                output_file: pathlib.Path = pathlib.Path(output_folder) / f"{custom_prefix}_page_{page_number}.png"
+                output_file.write_bytes(pdf_probe.render_png(page, PDF_RENDER_DPI))
+                page_numbers += 1
         return page_numbers
 
     def _create_ignore_mask(self, ignore_regions: list[tuple[int, int, int, int]], height: int, width: int) -> NDArray[np.uint8]:
@@ -452,9 +447,8 @@ class PdfExporterTestCase(GenericTestCase[PolarionPdfExporterApi]):
 
     def convert_pdf_to_png_first_page(self, pdf_bytes: bytes, file_name: str) -> None:
         output_file: pathlib.Path = pathlib.Path(self._get_output_folder()) / file_name
-        pdf_document: fitz.Document = fitz.open(stream=pdf_bytes, filetype="pdf")
-        pdf_document[0].get_pixmap(dpi=PDF_RENDER_DPI).save(str(output_file))
-        pdf_document.close()
+        with pdf_probe.open_pdf(pdf_bytes) as pdf_document:
+            output_file.write_bytes(pdf_probe.render_png(pdf_document[0], PDF_RENDER_DPI))
 
 
 def _problems(result: unittest.TestResult | None) -> int:
