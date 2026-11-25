@@ -3,8 +3,7 @@ from __future__ import annotations
 from http import HTTPStatus
 from typing import TYPE_CHECKING, ClassVar
 
-import fitz
-
+from tests import pdf_probe
 from tests.pdf_exporter_test_case import PdfExporterTestCase
 
 
@@ -138,8 +137,5 @@ class PdfExporterFirstPageHeaderFooterTest(PdfExporterTestCase):
         return self._page_texts(response.content)
 
     def _page_texts(self, pdf_bytes: bytes) -> list[str]:
-        pdf_document: fitz.Document = fitz.open(stream=pdf_bytes, filetype="pdf")
-        try:
-            return [page.get_text() for page in pdf_document]
-        finally:
-            pdf_document.close()
+        with pdf_probe.open_pdf(pdf_bytes) as pdf_document:
+            return [pdf_probe.text(page) for page in pdf_document]

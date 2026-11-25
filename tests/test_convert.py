@@ -4,11 +4,11 @@ import io
 from http import HTTPStatus
 from typing import TYPE_CHECKING
 
-import fitz
 import pypdf
 from python_sbb_polarion.extensions.pdf_exporter import DocumentType
 from python_sbb_polarion.types import MediaType
 
+from tests import pdf_probe
 from tests.pdf_exporter_test_case import PdfExporterTestCase
 
 
@@ -364,8 +364,8 @@ class PdfExporterConvertTest(PdfExporterTestCase):
             },
         )
 
-        with fitz.open(stream=response.content, filetype="pdf") as document:
-            text: str = " ".join(" ".join(page.get_text(sort=True).split()) for page in document)
+        with pdf_probe.open_pdf(response.content) as document:
+            text: str = " ".join(" ".join(pdf_probe.sorted_text(page).split()) for page in document)
         words: list[str] = [
             "This is the Solution of the Another Req",
             "Review comment inside the WI",
@@ -402,9 +402,9 @@ class PdfExporterConvertTest(PdfExporterTestCase):
                 )
                 self.assertEqual(HTTPStatus.OK, response.status_code)
 
-                with fitz.open(stream=response.content, filetype="pdf") as document:
-                    text: str = " ".join(" ".join(page.get_text(sort=True).split()) for page in document)
-                    icons: list[tuple[int, int]] = [(image[2], image[3]) for page in document for image in page.get_images() if (image[2], image[3]) == (19, 19)]
+                with pdf_probe.open_pdf(response.content) as document:
+                    text: str = " ".join(" ".join(pdf_probe.sorted_text(page).split()) for page in document)
+                    icons: list[tuple[int, int]] = [(image.width, image.height) for page in document for image in pdf_probe.images(page) if (image.width, image.height) == (19, 19)]
                 self.assertEqual([], icons, "Polarion's comment icon is not in the PDF")
                 self.assertIn("Optional values of the types 1-4", text)
                 for status in ("resolved", "open"):
@@ -424,8 +424,8 @@ class PdfExporterConvertTest(PdfExporterTestCase):
             custom_export_params={"fitToPage": True, "cutEmptyWIAttributes": False},
         )
 
-        with fitz.open(stream=response.content, filetype="pdf") as document:
-            values: list[float] = [round(word[0]) for page in document for word in page.get_text("words") if word[4] == "Draft"]
+        with pdf_probe.open_pdf(response.content) as document:
+            values: list[float] = [round(word.box.x0) for page in document for word in pdf_probe.words(page) if word.text == "Draft"]
         self.assertEqual(4, len(values), "Each of the four attribute tables shows the status")
         self.assertEqual(1, len(set(values)), f"The value column starts at the same place in every table: {values}")
 
@@ -438,10 +438,10 @@ class PdfExporterConvertTest(PdfExporterTestCase):
             custom_export_params={"fitToPage": True, "cutEmptyWIAttributes": True},
         )
 
-        with fitz.open(stream=response.content, filetype="pdf") as document:
-            text: str = " ".join(" ".join(page.get_text(sort=True).split()) for page in document)
+        with pdf_probe.open_pdf(response.content) as document:
+            text: str = " ".join(" ".join(pdf_probe.sorted_text(page).split()) for page in document)
             # The icons of the status are pictures too, the two of the attributes are far wider
-            pictures: int = sum(1 for page in document for image in page.get_image_info() if image["bbox"][2] - image["bbox"][0] > 100)
+            pictures: int = sum(1 for page in document for image in pdf_probe.images(page) if image.box.width > 100)
         # Named by the sentence above the work items and by the labels of the three attributes kept, wrapped after "QA"
         self.assertEqual(4, text.count("Assessment"), f"The empty attribute is cut, the others are kept: {text}")
         self.assertEqual(2, pictures, "The big picture and the picture an attribute holds alone are both printed")
@@ -454,9 +454,9 @@ class PdfExporterConvertTest(PdfExporterTestCase):
             expected_page_count=2,
         )
 
-        with fitz.open(stream=response.content, filetype="pdf") as document:
-            fonts: set[str] = {font[3].split("+")[-1] for page in document for font in page.get_fonts()}
-            icons: list[str] = [span["text"] for page in document for block in page.get_text("dict")["blocks"] for line in block.get("lines", []) for span in line["spans"] if "Font-Awesome" in span["font"]]
+        with pdf_probe.open_pdf(response.content) as document:
+            fonts: set[str] = pdf_probe.embedded_fonts(response.content)
+            icons: list[str] = [span.text for page in document for span in pdf_probe.spans(page) if "Font-Awesome" in span.font]
         self.assertEqual({"Font-Awesome-6-Free-Heavy"}, {font for font in fonts if "Font-Awesome" in font}, f"One font of Font Awesome is embedded: {fonts}")
         self.assertTrue(icons, "The icons of the plans are drawn with Font Awesome")
 
