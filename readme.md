@@ -37,6 +37,21 @@ In this mode, the tests will be executed against running Polarion server specifi
 ```
 uv run python tests/run.py --app_url BASE_POLARION_URL --app_token AUTH_TOKEN
 ```
+
+### Suites
+Each test class states the suite it belongs to, in `tests/suites.py`:
+
+| Suite     | Tests                                                          |
+|-----------|----------------------------------------------------------------|
+| `default` | the tests which need Polarion and the WeasyPrint service alone |
+| `bulk`    | the tests which need the bulk processing service too           |
+| `verapdf` | the PDF variant tests, which validate with veraPDF and take long |
+
+`SYSTEM_TEST_SUITE` names the suites of a run, separated by commas, or `all`. A run which names none takes `default`. CI runs `default,bulk` and `verapdf` in two jobs, the nightly Jenkins run `all`. `SYSTEM_TEST_MODULES` narrows a run to the named modules.
+```
+SYSTEM_TEST_SUITE=default,bulk uv run python tests/run.py --app_url BASE_POLARION_URL --app_token AUTH_TOKEN
+```
+
 ## 2. Run tests against local Polarion Test Container
 In this mode Polarion and Weasyprint containers will be created on the fly from the Docker image and tests will be executed against it.
 Both containers will be bound to common network and Weasyprint service endpoint set dynamically as environment variable in Polarion container
@@ -68,9 +83,9 @@ The test suite includes validation of PDF variants (PDF/A and PDF/UA) using Vera
 
 `test_pdf_variants.py` validates single exports. `test_pdf_variants_of_a_merge.py` validates merges through the bulk processing service. `test_pdf_variants_of_formulas.py` validates a document with formulas, whose text a PDF/A-1 export leaves out.
 
-These tests take long, so `tests/run.py` leaves out every module named `test_pdf_variants*` by default. CI runs them in a job of their own, `system-tests-verapdf`, which sets `RUN_PDF_VARIANT_TESTS=true` and `SYSTEM_TEST_MODULES` to these modules: a new one needs its name in the `modules` list of that job in `system-tests.yml`. To run them locally, set it too:
+These tests take long, so they belong to a suite of their own, `verapdf`, which a run takes only where it names it. CI runs them in a job of their own, `system-tests-verapdf`. To run them locally, name the suite:
 ```bash
-RUN_PDF_VARIANT_TESTS=true uv run python tests/run.py --app_url BASE_POLARION_URL --app_token AUTH_TOKEN
+SYSTEM_TEST_SUITE=verapdf uv run python tests/run.py --app_url BASE_POLARION_URL --app_token AUTH_TOKEN
 ```
 
 ### Docker-based VeraPDF Validation
