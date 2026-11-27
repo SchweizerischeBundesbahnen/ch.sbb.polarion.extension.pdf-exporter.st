@@ -628,6 +628,33 @@ class PdfExporterConvertTest(PdfExporterTestCase):
         # Verify filter actually reduced page count
         self.assertLess(page_numbers_with_filter, page_numbers_no_filter, "Filter should reduce page count")
 
+    def test_convert_live_doc_keeps_a_cramped_table_of_formatted_words_inside_the_page(self) -> None:
+        """A word with a formatted part is one word, so a table of such words is as wide as they are.
+
+        The table is measured before WeasyPrint lays it out, to give the long words of a table with no room
+        places to break. flying-saucer, which measures it, broke a word where its formatted part starts or
+        ends until 10.8.0, so the table measured narrower than it prints, its words got no places to break,
+        and the text ran past the right margin.
+
+        WeasyPrint still overflows "Gleisfreimeldeanlage" into the next column, as the expected page shows: it
+        skips a break point inside an inline box once the box fits (Kozea/WeasyPrint#1614).
+        """
+        response: Response = self._assert_convert_matches_snapshot(
+            location_path="Testing/Formatted Words In A Cramped Table",
+            custom_prefix="test_convert_live_doc_formatted_words_in_a_cramped_table",
+            expected_page_count=1,
+        )
+
+        with fitz.open(stream=response.content, filetype="pdf") as document:
+            page: fitz.Page = document[0]
+            # the right margin of the default style package, 60 CSS pixels
+            right_edge: float = page.rect.width - 45
+            text: str = " ".join(page.get_text(sort=True).split())
+            words_past_the_margin: list[str] = [word[4] for word in page.get_text("words") if word[2] > right_edge + 1]
+        self.assertEqual([], words_past_the_margin, "the text runs past the right margin")
+        for work_item in ("EL-17", "EL-21", "EL-25"):
+            self.assertIn(work_item, text, f"the link to {work_item} is printed whole")
+
     def test_convert_live_doc_indentation_format(self) -> None:
         self._assert_convert_matches_snapshot(
             location_path="Testing/Indent Test",
